@@ -1,0 +1,26 @@
+name: Build and Deploy Next.js App
+
+on:
+  push:
+    branches:
+      - main # Change this to your main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Build the Next.js app
+        run: |
+          npm run build
+
+      - name: Deploy to production
+        run: |
+          # Add your deployment script or commands here
