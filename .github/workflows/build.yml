@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Build the application
+      - name: Run tests
         run: yarn test
   build:
     runs-on: ubuntu-latest
