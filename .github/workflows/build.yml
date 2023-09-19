@@ -1,11 +1,28 @@
-name: Build and Deploy Next.js App
+name: Build and Deploy
 
 on:
   push:
     branches:
-      - main
+      - main # Replace with your main branch name
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build the application
+        run: yarn build
   build:
     runs-on: ubuntu-latest
 
@@ -13,14 +30,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
       - name: Install dependencies
-        run: |
-          npm install
+        run: yarn install
 
-      - name: Build the Next.js app
-        run: |
-          npm run build
-
-      - name: Deploy to production
-        run: |
-          # Add your deployment script or commands here
+      - name: Build the application
+        run: yarn build

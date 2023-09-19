@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { Home } from "./page"; // Adjust the import path as needed
+import Home from "./page"; // Adjust the import path as needed
 
 describe("Home component", () => {
   it("renders the text correctly", () => {
