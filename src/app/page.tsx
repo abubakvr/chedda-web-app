@@ -1,5 +1,5 @@
-import Image from "next/image";
+import React from "react";
 
-export default function Home() {
+export const Home = () => {
   return <p className="text-center text-3xl">Hello Chedda</p>;
-}
+};
