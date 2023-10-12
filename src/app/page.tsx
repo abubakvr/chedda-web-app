@@ -1,7 +1,14 @@
+"use client";
+
+import { AppHeader } from "@/layout";
 import React from "react";
 
 const Home: React.FC = () => {
-  return <p className="text-center text-3xl">Hello Chedda</p>;
+  return (
+    <>
+      <AppHeader />
+    </>
+  );
 };
 
 export default Home;
