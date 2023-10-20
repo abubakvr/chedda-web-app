@@ -3,11 +3,14 @@ import Link from "next/link";
 import Image from "next/image";
 import CheddaLogo from "@/assets/logos/app-logo.svg";
 import CheddaMiniLogo from "@/assets/logos/chedda-logo.svg";
-import { ConnectButton } from "./components/ConnectButton";
-import { NetworkMenu } from "./components/NetworkMenu";
-import { ProfileMenu } from "./components/ProfileMenu";
+import { NetworkMenu } from "./components";
+import { ProfileMenu } from "./components";
 import { menuItems } from "@/utils/constants";
 import { useWeb3React } from "@web3-react/core";
+import { metaMask } from "@/connectors/metaMask";
+import { getName } from "@/connectors/getConnectorName";
+import { walletConnect } from "@/connectors/walletConnect";
+import { coinbaseWallet } from "@/connectors/coinbaseWallet";
 
 export const HeaderComponent: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -28,12 +31,31 @@ export const HeaderComponent: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (localStorage.getItem("connectorId") === getName(metaMask)) {
+      void metaMask.connectEagerly().catch(() => {
+        console.log("Failed to connect eagerly to metamask");
+      });
+    } else if (localStorage.getItem("connectorId") === getName(walletConnect)) {
+      void walletConnect.connectEagerly().catch(() => {
+        console.log("Failed to connect eagerly to wallet connect");
+      });
+    } else if (
+      localStorage.getItem("connectorId") === getName(coinbaseWallet)
+    ) {
+      void coinbaseWallet.connectEagerly().catch(() => {
+        console.log("Failed to connect eagerly to coinbase wallet");
+      });
+    }
+  }, []);
+
   return (
     <>
       <div
         className={`h-20 bg-black border-b border-gray-800 flex items-center ${
           isScrolled ? " w-full fixed mb-20" : ""
         }`}
+        data-testid="header-component"
       >
         <div className="flex flex-row justify-between w-11/12 xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto items-center">
           <div>
@@ -42,6 +64,7 @@ export const HeaderComponent: React.FC = () => {
               width={30}
               className="w-40 md:hidden lg:flex"
               alt="App Logo"
+              data-testid="app-logo"
             />
             <Image
               src={CheddaMiniLogo}
@@ -49,6 +72,7 @@ export const HeaderComponent: React.FC = () => {
               width={70}
               height={20}
               alt="Chedda Logo"
+              data-testid="chedda-logo"
             />
           </div>
           <div className="flex flex-row text-white space-x-10 mt-2 text-sm sm:text-lg font-semibold">
@@ -58,7 +82,7 @@ export const HeaderComponent: React.FC = () => {
                 href={item.path}
                 className="relative hover:opacity-80"
               >
-                <div>{item.name}</div>
+                <div data-testid={`menu-item-${index}`}>{item.name}</div>
                 <div className="hidden pacman-loader">
                   {/* Include your Pacman Loader component */}
                 </div>
@@ -66,8 +90,8 @@ export const HeaderComponent: React.FC = () => {
             ))}
           </div>
           <div className="flex flex-row gap-2 text-white">
-            <NetworkMenu />
-            {account ? <ProfileMenu address={account} /> : <ConnectButton />}
+            <NetworkMenu data-testid="network-menu" />
+            <ProfileMenu account={account} data-testid="profile-menu" />
           </div>
         </div>
       </div>

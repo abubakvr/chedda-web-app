@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from "react";
-
 import coinbase_Logo from "@/assets/images/coinbase_Logo.png";
 import metamask_Logo from "@/assets/svg/metamask_Logo.svg";
 import walletconnect_Logo from "@/assets/svg/walletconnect_Logo.svg";
@@ -14,7 +13,7 @@ import {
   walletConnect,
 } from "@/connectors/walletConnect";
 
-import SelectButton from "./SelectButton";
+import { SelectButton } from "../selectButton/SelectButton";
 
 interface ConnectModalProps {
   isModalOpen: boolean;
@@ -25,7 +24,7 @@ const { useIsActivating: useMMIsActivating } = metaMaskhooks;
 const { useIsActivating: useWCIsActivating } = walletConnecthooks;
 const { useIsActivating: useCBIsActivating } = coinbaseWallethooks;
 
-const ConnectModal: React.FC<ConnectModalProps> = ({
+export const ConnectModal: React.FC<ConnectModalProps> = ({
   isModalOpen,
   setIsModalOpen,
 }) => {
@@ -66,6 +65,7 @@ const ConnectModal: React.FC<ConnectModalProps> = ({
         console.log("Failed to connect eagerly to metamask");
       });
     } else if (localStorage.getItem("connetorId") === getName(walletConnect)) {
+      (async () => await walletConnect.activate())();
       void walletConnect.connectEagerly().catch(() => {
         console.log("Failed to connect eagerly to wallet connect");
       });
@@ -83,6 +83,7 @@ const ConnectModal: React.FC<ConnectModalProps> = ({
       className={`fixed inset-0 overflow-y-auto bg-gray-900 bg-opacity-75 z-50 ${
         isModalOpen ? "" : "hidden"
       }`}
+      data-testid="connect-modal"
     >
       <div className="flex justify-center items-center h-screen">
         <div className="w-96 bg-white bg-opacity-100 rounded-lg shadow-lg p-4 space-y-4 text-center">
@@ -91,6 +92,7 @@ const ConnectModal: React.FC<ConnectModalProps> = ({
             <button
               className="absolute top-0 right-0 p-1 text-gray-500 hover:text-gray-700"
               onClick={() => setIsModalOpen(false)}
+              data-testid="modal-close-button"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -133,5 +135,3 @@ const ConnectModal: React.FC<ConnectModalProps> = ({
     </div>
   );
 };
-
-export default ConnectModal;

@@ -1,7 +1,7 @@
 import "@/styles/globals.scss";
 
 import type { Metadata } from "next";
-import { AppProviders } from "@/components/AppProviders";
+import { AppProviders } from "@/components/AppProviders/AppProviders";
 
 export const metadata: Metadata = {
   title: "Chedda Markets",

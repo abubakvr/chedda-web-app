@@ -8,7 +8,7 @@ import { useSwitchChain } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
 import { defaultNetwork } from "@/utils/constants";
 
-interface networkList {
+interface NetworkList {
   label: string;
   key: string;
   icon: StaticImageData;
@@ -17,7 +17,7 @@ interface networkList {
 export const NetworkMenu: React.FC = () => {
   const [isOpenNetworkMenu, setIsOpenNetworkMenu] = useState(false);
   const switchChain = useSwitchChain();
-  const [selected, setSelected] = useState<networkList>(defaultNetwork);
+  const [selected, setSelected] = useState<NetworkList>(defaultNetwork);
 
   const { chainId } = useWeb3React();
 
@@ -25,7 +25,7 @@ export const NetworkMenu: React.FC = () => {
     setIsOpenNetworkMenu(!isOpenNetworkMenu);
   };
 
-  const networkList: networkList[] = useMemo(
+  const networkList: NetworkList[] = useMemo(
     () => [
       {
         label: "Arbitrum ",
@@ -76,10 +76,14 @@ export const NetworkMenu: React.FC = () => {
   }, [chainId, networkList]);
 
   return (
-    <div className="relative network-menu-container">
+    <div
+      className="relative network-menu-container"
+      data-testid="network-menu-container"
+    >
       <button
         onClick={openNetworkMenu}
         className="h-10 w-36 sm:h-11 lg:w-36 p-1 rounded sm:rounded-lg network_button flex justify-evenly items-center text-sm lg:text-[16px] font-semibold hover:opacity-90"
+        data-testid="network-menu-button"
       >
         <div>
           <Image
@@ -90,7 +94,7 @@ export const NetworkMenu: React.FC = () => {
             height={24}
           />
         </div>
-        <div>{selected?.label}</div>
+        <div data-testid="selected-network-label">{selected?.label}</div>
         <div>
           <Image src={ArrowDown} alt="Arrow" className="w-2.5 h-2.5" />
         </div>
@@ -100,6 +104,7 @@ export const NetworkMenu: React.FC = () => {
           isOpenNetworkMenu ? "" : "hidden"
         }`}
         id="mySelectMenu"
+        data-testid="network-menu-dropdown"
       >
         <ul className="list-reset">
           {networkList.map((network, index) => (
@@ -111,6 +116,7 @@ export const NetworkMenu: React.FC = () => {
                   ? "last:border-none hover:last:rounded-t-none last:rounded-b-md"
                   : ""
               }`}
+              data-testid={`network-item-${index}`}
             >
               <Image
                 src={network.icon}
