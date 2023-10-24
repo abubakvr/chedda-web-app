@@ -1,16 +1,11 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  screen,
-  waitFor,
-  act,
-} from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { ProfileMenu } from "../ProfileMenu"; // Adjust the import path as needed
 import { mockLocalStorage } from "@/utils/Mocks/MockLocalStorage";
 import { Web3ReactProvider } from "@web3-react/core";
 import connectors from "@/connectors";
 import { copyToClipboard } from "@/utils/copyToClipboard";
+import { connectorIdKey } from "@/utils/constants";
 
 jest.mock("../../../../..//utils/copyToClipboard", () => ({
   copyToClipboard: jest.fn(),
@@ -88,7 +83,7 @@ describe("ProfileMenu", () => {
     fireEvent.click(disconnectButton);
 
     waitFor(() => {
-      expect(localStorageMock.removeItem).toHaveBeenCalledWith("connectorId");
+      expect(localStorageMock.removeItem).toHaveBeenCalledWith(connectorIdKey);
       expect(connector.deactivate).toHaveBeenCalled();
       expect(connector.resetState).toHaveBeenCalled();
       expect(connector.close).toHaveBeenCalled();

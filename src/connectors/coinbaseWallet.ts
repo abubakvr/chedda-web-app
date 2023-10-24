@@ -8,7 +8,7 @@ export const [coinbaseWallet, hooks] = initializeConnector<CoinbaseWallet>(
     new CoinbaseWallet({
       actions,
       options: {
-        url: URLS[5][0],
+        url: URLS[5][1],
         appName: "Chedda finance",
       },
     })

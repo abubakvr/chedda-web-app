@@ -1,45 +1,21 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Arbitrum_Logo from "@/assets/logos/arbitrum-logo.png";
-import Ethereum_Logo from "@/assets/logos/ethereum-logo.png";
+import React, { useCallback, useEffect, useState } from "react";
 import ArrowDown from "@/assets/icon/arrow-down.svg";
-import Image, { StaticImageData } from "next/image";
-import { chainIds } from "@/data/chainIds";
+import Image from "next/image";
 import { useSwitchChain } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
-import { defaultNetwork } from "@/utils/constants";
-
-interface NetworkList {
-  label: string;
-  key: string;
-  icon: StaticImageData;
-}
+import { supportedNetworksConfig as networkList } from "@/utils/constants";
+import { INetworkList } from "@/utils/types";
 
 export const NetworkMenu: React.FC = () => {
   const [isOpenNetworkMenu, setIsOpenNetworkMenu] = useState(false);
   const switchChain = useSwitchChain();
-  const [selected, setSelected] = useState<NetworkList>(defaultNetwork);
+  const [selected, setSelected] = useState<INetworkList>(networkList[0]);
 
   const { chainId } = useWeb3React();
 
   const openNetworkMenu = () => {
     setIsOpenNetworkMenu(!isOpenNetworkMenu);
   };
-
-  const networkList: NetworkList[] = useMemo(
-    () => [
-      {
-        label: "Arbitrum ",
-        key: chainIds.arbitrumtest,
-        icon: Arbitrum_Logo,
-      },
-      {
-        label: "Goerli",
-        key: chainIds.goerli,
-        icon: Ethereum_Logo,
-      },
-    ],
-    []
-  );
 
   const onClick = useCallback(
     ({ key }: { key: string }) => {
@@ -69,7 +45,7 @@ export const NetworkMenu: React.FC = () => {
     if (!chainId) return;
 
     const selectedNetwork = networkList.find(
-      (item) => item.key === chainId.toString()
+      (item) => item.chainId === chainId.toString()
     );
 
     setSelected(selectedNetwork ? selectedNetwork : networkList[0]);
@@ -94,7 +70,7 @@ export const NetworkMenu: React.FC = () => {
             height={24}
           />
         </div>
-        <div data-testid="selected-network-label">{selected?.label}</div>
+        <div data-testid="selected-network-label">{selected?.name}</div>
         <div>
           <Image src={ArrowDown} alt="Arrow" className="w-2.5 h-2.5" />
         </div>
@@ -110,7 +86,7 @@ export const NetworkMenu: React.FC = () => {
           {networkList.map((network, index) => (
             <li
               key={index}
-              onClick={() => onClick({ key: network.key })}
+              onClick={() => onClick({ key: network.chainId })}
               className={`py-2 px-2 border-b border-gray-700 hover:bg-gray-700 hover:rounded-t-md cursor-pointer flex items-center text-sm sm:text-[16px] font-semibold gap-2 ${
                 index === networkList.length - 1
                   ? "last:border-none hover:last:rounded-t-none last:rounded-b-md"
@@ -120,12 +96,12 @@ export const NetworkMenu: React.FC = () => {
             >
               <Image
                 src={network.icon}
-                alt={`${network.label} Icon`}
+                alt={`${network.name} Icon`}
                 className="w-6 h-6 lg:h-7 lg:w-7"
                 width={24}
                 height={24}
               />
-              {network.label}
+              {network.name}
             </li>
           ))}
         </ul>

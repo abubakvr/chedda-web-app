@@ -14,11 +14,8 @@ import {
 } from "@/connectors/walletConnect";
 
 import { SelectButton } from "../selectButton/SelectButton";
-
-interface ConnectModalProps {
-  isModalOpen: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { ConnectModalProps } from "@/utils/types";
+import { connectorIdKey } from "@/utils/constants";
 
 const { useIsActivating: useMMIsActivating } = metaMaskhooks;
 const { useIsActivating: useWCIsActivating } = walletConnecthooks;
@@ -37,18 +34,18 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
       switch (label) {
         case "MetaMask":
           await metaMask.activate();
-          window.localStorage.setItem("connectorId", getName(metaMask));
+          window.localStorage.setItem(connectorIdKey, getName(metaMask));
           break;
 
         case "WalletConnect":
           console.log("Pressed");
           await walletConnect.activate();
-          window.localStorage.setItem("connectorId", getName(walletConnect));
+          window.localStorage.setItem(connectorIdKey, getName(walletConnect));
           break;
 
         case "Coinbase Wallet":
           await coinbaseWallet.activate();
-          window.localStorage.setItem("connectorId", getName(coinbaseWallet));
+          window.localStorage.setItem(connectorIdKey, getName(coinbaseWallet));
           break;
 
         default:
@@ -56,25 +53,6 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
       }
     } catch (error) {
       console.log("Failed to connect wallet. Please try again.");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (localStorage.getItem("connectorId") === getName(metaMask)) {
-      void metaMask.connectEagerly().catch(() => {
-        console.log("Failed to connect eagerly to metamask");
-      });
-    } else if (localStorage.getItem("connetorId") === getName(walletConnect)) {
-      (async () => await walletConnect.activate())();
-      void walletConnect.connectEagerly().catch(() => {
-        console.log("Failed to connect eagerly to wallet connect");
-      });
-    } else if (
-      localStorage.getItem("connectorId") === getName(coinbaseWallet)
-    ) {
-      void coinbaseWallet.connectEagerly().catch(() => {
-        console.log("Failed to connect eagerly to coinbase wallet");
-      });
     }
   }, []);
 

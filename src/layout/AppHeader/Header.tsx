@@ -5,7 +5,7 @@ import CheddaLogo from "@/assets/logos/app-logo.svg";
 import CheddaMiniLogo from "@/assets/logos/chedda-logo.svg";
 import { NetworkMenu } from "./components";
 import { ProfileMenu } from "./components";
-import { menuItems } from "@/utils/constants";
+import { connectorIdKey, menuItems } from "@/utils/constants";
 import { useWeb3React } from "@web3-react/core";
 import { metaMask } from "@/connectors/metaMask";
 import { getName } from "@/connectors/getConnectorName";
@@ -32,16 +32,18 @@ export const HeaderComponent: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem("connectorId") === getName(metaMask)) {
+    if (localStorage.getItem(connectorIdKey) === getName(metaMask)) {
       void metaMask.connectEagerly().catch(() => {
         console.log("Failed to connect eagerly to metamask");
       });
-    } else if (localStorage.getItem("connectorId") === getName(walletConnect)) {
+    } else if (
+      localStorage.getItem(connectorIdKey) === getName(walletConnect)
+    ) {
       void walletConnect.connectEagerly().catch(() => {
         console.log("Failed to connect eagerly to wallet connect");
       });
     } else if (
-      localStorage.getItem("connectorId") === getName(coinbaseWallet)
+      localStorage.getItem(connectorIdKey) === getName(coinbaseWallet)
     ) {
       void coinbaseWallet.connectEagerly().catch(() => {
         console.log("Failed to connect eagerly to coinbase wallet");

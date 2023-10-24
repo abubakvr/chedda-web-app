@@ -9,6 +9,7 @@ import { walletConnect } from "@/connectors/walletConnect";
 import { coinbaseWallet } from "@/connectors/coinbaseWallet";
 import { ConnectButton } from "../connectButton/ConnectButton";
 import { copyToClipboard } from "@/utils/copyToClipboard";
+import { connectorIdKey } from "@/utils/constants";
 
 interface ProfileMenuProps {
   account: string | undefined;
@@ -56,7 +57,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
   const disconnectWallet = useCallback(async () => {
     const connector = metaMask || walletConnect || coinbaseWallet;
     clearWeb3ConnectorCache();
-    localStorage.removeItem("connectorId");
+    localStorage.removeItem(connectorIdKey);
     if (connector.deactivate) {
       connector.deactivate();
     } else {
