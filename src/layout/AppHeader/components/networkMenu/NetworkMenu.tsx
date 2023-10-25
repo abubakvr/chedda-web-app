@@ -49,7 +49,7 @@ export const NetworkMenu: React.FC = () => {
     );
 
     setSelected(selectedNetwork ? selectedNetwork : networkList[0]);
-  }, [chainId, networkList]);
+  }, [chainId]);
 
   return (
     <div
