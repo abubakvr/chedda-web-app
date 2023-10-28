@@ -12,7 +12,7 @@ export const ConnectButton = ({}) => {
       />
       <button
         onClick={() => setIsAuthModalOpen(true)}
-        className="h-9 w-32 sm:h-11 sm:w-40 px-2 flex rounded-lg justify-center font-bold text-xs sm:text-lg account_button items-center hover:opacity-90"
+        className="h-10 w-40 sm:h-10 xl:h-12  sm:w-40 px-2 flex rounded-lg justify-center font-bold text-md sm:text-lg account_button items-center hover:opacity-90"
         data-testid="connect-button"
       >
         Connect wallet

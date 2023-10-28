@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, act, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { AppProviders } from "../AppProviders";
 
 describe("AppProviders Component", () => {

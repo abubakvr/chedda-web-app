@@ -10,24 +10,28 @@ export const connectorIdKey = "connectorId";
 
 export const menuItems: IMenuItem[] = [
   {
-    name: "Lend",
-    path: "/lend",
-    icon: "briefcase",
+    name: "Dashboard",
+    path: "/dashboard",
   },
   {
-    name: "Borrow",
-    path: "/borrow",
-    icon: "cash",
+    name: "Market",
+    path: "/market",
   },
   {
-    name: "Grotto",
-    path: "/grotto",
-    icon: "storefront",
+    name: "$CHEDDA",
+    path: "/chedda",
   },
   {
-    name: "Vote",
-    path: "/vote",
-    icon: "checkbox",
+    name: "Lock",
+    path: "/lock",
+  },
+  {
+    name: "Rewards",
+    path: "/rewards",
+  },
+  {
+    name: "Bridge",
+    path: "/bridge",
   },
 ];
 

@@ -4,7 +4,6 @@ import React from "react";
 export interface IMenuItem {
   name: string;
   path: string;
-  icon: string;
 }
 
 export interface INetworkList {
