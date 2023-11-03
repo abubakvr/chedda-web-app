@@ -134,3 +134,10 @@ body {
 div.vault-item:last-child {
   border-bottom: none;
 }
+
+.market-gradient-text {
+  background: linear-gradient(137deg, #51d5fa 8.34%, #b74af1 95.26%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

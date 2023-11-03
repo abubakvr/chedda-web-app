@@ -53,7 +53,7 @@ export const NetworkMenu: React.FC = () => {
 
   return (
     <div
-      className="hidden sm:flex relative network-menu-container"
+      className="hidden sm:block relative network-menu-container"
       data-testid="network-menu-container"
     >
       <button

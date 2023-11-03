@@ -24,17 +24,17 @@ export const VaultCard = () => {
         <div className="text-white font-open-sans text-xl sm:text-2xl xl:text-3xl font-semibold leading-9 tracking-wider">
           Vaults
         </div>
-        <div className="flex flex-col justify-center items-center gap-4 h-8 sm:h-11 rounded-md border bg-transparent focus:border-blue border-opacity-70 mt-1">
+        <div className="flex flex-col justify-center items-center gap-4 h-8 sm:h-11 rounded-md border border-white border-opacity-60 bg-transparent focus:border-blue mt-1">
           <div className="relative">
             <input
               type="text"
-              className="w-48 sm:w-72 h-full bg-transparent focus:outline-none border border-none border-white focus:border-blue-500 border-opacity-70 text-white pl-3 pr-10"
+              className="w-48 sm:w-72 h-full bg-transparent focus:outline-none  text-white pl-3 pr-10"
               placeholder="Search"
             />
             <Image
               src={SearchIcon}
               alt="Search Icon"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white opacity-60"
             />
           </div>
         </div>
