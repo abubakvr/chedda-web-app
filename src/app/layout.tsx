@@ -21,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="bg-black">
-      <body className={openSans.className}>
+    <html lang="en" className="bg-black" suppressHydrationWarning={true}>
+      <body className={openSans.className} suppressHydrationWarning={true}>
         <AppProviders>
           <AppHeader />
           {children}

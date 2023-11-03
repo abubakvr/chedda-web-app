@@ -2,12 +2,14 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { Signer } from "ethers";
 import { useCheddaSdk } from "@/hooks/useCheddaSdk";
 import { IAggregateStats } from "chedda-sdk";
+import { useEnvironment } from "./useEnviroment";
 
 export const useAggregateStats = () => {
   const [aggregateStats, setAggregateStats] = useState<IAggregateStats>();
   const { chedda, signer } = useCheddaSdk();
+  const { currentEnvironment } = useEnvironment();
   const lens = chedda.poolLens(
-    "0x7b45b2DDf88e0ceDC14172d2Fa2c0578EdEa5B9c",
+    currentEnvironment.contracts.LendingPoolLens,
     signer as Signer
   );
 
@@ -18,6 +20,6 @@ export const useAggregateStats = () => {
 
   useEffect(() => {
     getAggregateStats();
-  }, []);
+  }, [currentEnvironment]);
   return { aggregateStats };
 };

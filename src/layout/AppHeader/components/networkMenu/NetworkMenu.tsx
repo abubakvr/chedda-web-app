@@ -1,20 +1,20 @@
+import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import ArrowDown from "@/assets/icon/arrow-down.svg";
-import Image from "next/image";
 import { useSwitchChain } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
 import { supportedNetworksConfig as networkList } from "@/utils/constants";
 import { INetworkList } from "@/utils/types";
 
 export const NetworkMenu: React.FC = () => {
-  const [isOpenNetworkMenu, setIsOpenNetworkMenu] = useState(false);
+  const [isNetworkMenuOpen, setIsNetworkMenuOpen] = useState(false);
   const switchChain = useSwitchChain();
   const [selected, setSelected] = useState<INetworkList>(networkList[0]);
 
   const { chainId } = useWeb3React();
 
   const openNetworkMenu = () => {
-    setIsOpenNetworkMenu(!isOpenNetworkMenu);
+    setIsNetworkMenuOpen(!isNetworkMenuOpen);
   };
 
   const onClick = useCallback(
@@ -22,6 +22,7 @@ export const NetworkMenu: React.FC = () => {
       switchChain(Number(key)).catch((error) => {
         console.error(`Failed to switch chains: ${error}`);
       });
+      setIsNetworkMenuOpen(false);
     },
     [switchChain]
   );
@@ -29,7 +30,7 @@ export const NetworkMenu: React.FC = () => {
   const onDocumentClick = (event: MouseEvent) => {
     const targetElement = event.target as HTMLElement;
     if (!targetElement.closest(".network-menu-container")) {
-      setIsOpenNetworkMenu(false);
+      setIsNetworkMenuOpen(false);
     }
   };
 
@@ -72,12 +73,18 @@ export const NetworkMenu: React.FC = () => {
         </div>
         <div data-testid="selected-network-label">{selected?.name}</div>
         <div>
-          <Image src={ArrowDown} alt="Arrow" className="w-2.5 h-2.5" />
+          <Image
+            src={ArrowDown}
+            alt="Arrow"
+            className="w-2.5 h-2.5"
+            width={10}
+            height={10}
+          />
         </div>
       </button>
       <div
         className={`absolute mt-1 w-full bg-[#13161F] text-white menu-bg rounded-[10px] shadow-lg z-10 ${
-          isOpenNetworkMenu ? "" : "hidden"
+          isNetworkMenuOpen ? "" : "hidden"
         }`}
         id="mySelectMenu"
         data-testid="network-menu-dropdown"

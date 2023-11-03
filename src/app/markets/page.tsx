@@ -48,7 +48,12 @@ const Page = () => {
       </div>
       <div className="grid grid-cols-2 gap-x-2 gap-y-2 lg:flex lg:gap-x-0 mt-5 lg:space-x-3 xl:space-x-5 flex-wrap lg:flex-nowrap">
         {marketInfoData.map((data, index) => (
-          <MarketInfoCard index={index} title={data.title} value={data.value} />
+          <MarketInfoCard
+            key={index}
+            index={index}
+            title={data.title}
+            value={data.value}
+          />
         ))}
       </div>
       <div className="mt-8">

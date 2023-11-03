@@ -67,6 +67,7 @@ export const HeaderComponent: React.FC = () => {
             className="w-40 hidden lg:flex"
             alt="App Logo"
             data-testid="app-logo"
+            priority
           />
           <Image
             src={CheddaMiniLogo}

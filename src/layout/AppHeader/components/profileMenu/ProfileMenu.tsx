@@ -109,7 +109,13 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
               {account?.substring(account?.length - 4)}
             </div>
             <div>
-              <Image src={ArrowDown} alt="Arrow" className="w-2.5 h-2.5" />
+              <Image
+                src={ArrowDown}
+                alt="Arrow"
+                className="w-2.5 h-2.5"
+                width={10}
+                height={10}
+              />
             </div>
           </button>
           {isOpenProfileMenu && (
