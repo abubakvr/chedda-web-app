@@ -23,7 +23,7 @@ export const VaultItem = ({ pool }: { pool: any }) => {
       </div>
       <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-1">
         <div className="flex ml-1">
-          {pool.collateral.map((collateral: any, i: number) => (
+          {pool.collaterals.map((collateral: any, i: number) => (
             <div key={i} className="logo-cascade round-image">
               <Image
                 src={collateral.logo}
@@ -34,47 +34,47 @@ export const VaultItem = ({ pool }: { pool: any }) => {
           ))}
         </div>
         <div className=" w-max font-bold grid grid-cols-2 m-0 gap-x-1">
-          {pool.collateral.map((collateral: any, i: number) => (
+          {pool.collaterals.map((collateral: any, i: number) => (
             <div className="flex justify-start items-start" key={i}>
               {collateral.symbol}
-              {i !== pool.collateral.length - 1 && <span>,</span>}
+              {i !== pool.collaterals.length - 1 && <span>,</span>}
             </div>
           ))}
         </div>
       </div>
-      {pool.stats && (
+      {pool && (
         <React.Fragment>
           <div className="flex justify-center items-center">
             <div className="text-sm flex flex-col font-semibold md:col-span-1 w-[100px]">
-              <div>{pool.stats.totalSupply.toFixed(2)} M USDC</div>
+              <div>{pool.supplied / 100000000000} M USDC</div>
               <div className="opacity-50">
-                ${pool.stats.totalSupply.toFixed(2)} M
+                ${pool.suppliedValue / 100000000} M
               </div>
             </div>
           </div>
           <div className="flex justify-end ">
             <div className="text-sm flex items-center space-x-2 font-semibold md:col-span-1 w-[100px]">
-              <div className="">{pool.stats.supplyApy.toFixed(2)}%</div>
+              <div className="">{pool.maxSupplyAPY / 10000000000000000}%</div>
               <Image src={InfoIcon} alt="Info Icon" />
             </div>
           </div>
           <div className="flex justify-end items-center">
             <div className="text-sm flex flex-col font-semibold md:col-span-1 w-[100px]">
-              <div className="">{pool.stats.totalBorrow.toFixed(2)} USDC</div>
+              <div className="">{pool.borrowed / 100000000000} USDC</div>
               <div className="opacity-50">
-                ${pool.stats.totalBorrow.toFixed(2)} M
+                ${pool.borrowedValue / 100000000000} M
               </div>
             </div>
           </div>
           <div className="flex justify-end">
             <div className="text-sm flex items-center space-x-2 font-semibold md:col-span-1 w-[100px]">
-              <div className="">{pool.stats.borrowApy.toFixed(2)}%</div>
+              <div className="">{pool.maxBorrowAPY / 10000000000000000}%</div>
               <Image src={InfoIcon} alt="Info Icon" />
             </div>
           </div>
           <div className="flex justify-end">
             <div className="text-sm flex flex-col justify-center font-semibold md:col-span-1 w-[100px]">
-              <div className="">{pool.stats.utilization.toFixed(2)}%</div>
+              <div className="">{pool.utilization / 100000000000}%</div>
             </div>
           </div>
         </React.Fragment>

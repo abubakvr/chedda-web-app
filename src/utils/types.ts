@@ -19,6 +19,17 @@ export interface ConnectModalProps {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+export interface Token {
+  name: string;
+  symbol: string;
+  address: string;
+  logo: StaticImageData;
+}
+
+export interface TokenConfig {
+  [tokenAddress: string]: Token;
+}
+
 export interface IEnvironment {
   production: boolean;
   environmentName: string;
@@ -34,14 +45,7 @@ export interface IEnvironment {
     Faucet: string;
     GaugeController: string;
   };
-  tokens: {
-    [tokenAddress: string]: {
-      name: string;
-      symbol: string;
-      address: string;
-      logo: StaticImageData;
-    };
-  };
+  tokens: TokenConfig;
 }
 
 export interface EnvironmentConfig {

@@ -5,7 +5,7 @@ import SearchIcon from "@/assets/icon/search-icon.svg";
 
 import { samplePools } from "@/data/samplePool";
 import { VaultItem } from "./VaultItem";
-import { MobileVaultItem } from "./MobileVaultItem";
+import { usePools } from "@/hooks/usePools";
 
 const vaultHeaderItems = [
   "Asset",
@@ -18,6 +18,8 @@ const vaultHeaderItems = [
 ];
 
 export const VaultCard = () => {
+  const { poolStats } = usePools();
+
   return (
     <div className="rounded-lg vaults-card w-full p-3 sm:p-7">
       <div className="flex justify-between pb-3 sm:pb-5">
@@ -58,19 +60,20 @@ export const VaultCard = () => {
         ))}
       </div>
       <div>
-        {samplePools.map((item: any, index: number) => (
-          <div
-            key={index}
-            className={`vault-item ${
-              index !== samplePools.length - 1
-                ? "border-b border-gray-500 border-opacity-20"
-                : ""
-            }`}
-          >
-            <VaultItem pool={item} />
-            <MobileVaultItem pool={item} />
-          </div>
-        ))}
+        {poolStats &&
+          poolStats?.map((item: any, index: number) => (
+            <div
+              key={index}
+              className={`vault-item ${
+                index !== samplePools.length - 1
+                  ? "border-b border-gray-500 border-opacity-20"
+                  : ""
+              }`}
+            >
+              {poolStats && <VaultItem pool={item} />}
+              {/* {poolStats && <MobileVaultItem pool={item} />} */}
+            </div>
+          ))}
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ export const MarketInfoCard = ({
   value,
 }: MarketInfoCardProps) => {
   return (
-    <div className="w-full market-info-card rounded-lg text-white p-4 sm:p-6 xl:p-9 flex flex-col items-center justify-center">
+    <div className="w-full market-info-card rounded-lg text-white p-4 sm:p-6 xl:px-8 xl:py-7 flex flex-col justify-center">
       <div>
         <div className="text-white opacity-50 font-open-sans text-xs font-semibold leading-6 tracking-wide ">
           {title}
