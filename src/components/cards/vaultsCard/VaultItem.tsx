@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-
 import InfoIcon from "@/assets/icon/info-icon.svg";
+import { formatCurrency } from "@/utils/formatters";
 
 export const VaultItem = ({ pool }: { pool: any }) => {
   return (
@@ -46,35 +46,35 @@ export const VaultItem = ({ pool }: { pool: any }) => {
         <React.Fragment>
           <div className="flex justify-center items-center">
             <div className="text-sm flex flex-col font-semibold md:col-span-1 w-[100px]">
-              <div>{pool.supplied / 100000000000} M USDC</div>
+              <div>{formatCurrency(pool.supplied)}</div>
               <div className="opacity-50">
-                ${pool.suppliedValue / 100000000} M
+                {formatCurrency(pool.suppliedValue)} M
               </div>
             </div>
           </div>
           <div className="flex justify-end ">
             <div className="text-sm flex items-center space-x-2 font-semibold md:col-span-1 w-[100px]">
-              <div className="">{pool.maxSupplyAPY / 10000000000000000}%</div>
+              <div className="">{pool.maxSupplyAPY}%</div>
               <Image src={InfoIcon} alt="Info Icon" />
             </div>
           </div>
           <div className="flex justify-end items-center">
             <div className="text-sm flex flex-col font-semibold md:col-span-1 w-[100px]">
-              <div className="">{pool.borrowed / 100000000000} USDC</div>
+              <div className="">{formatCurrency(pool.borrowed)} USDC</div>
               <div className="opacity-50">
-                ${pool.borrowedValue / 100000000000} M
+                {formatCurrency(pool.borrowedValue)} M
               </div>
             </div>
           </div>
           <div className="flex justify-end">
             <div className="text-sm flex items-center space-x-2 font-semibold md:col-span-1 w-[100px]">
-              <div className="">{pool.maxBorrowAPY / 10000000000000000}%</div>
+              <div className="">{pool.maxBorrowAPY}%</div>
               <Image src={InfoIcon} alt="Info Icon" />
             </div>
           </div>
           <div className="flex justify-end">
             <div className="text-sm flex flex-col justify-center font-semibold md:col-span-1 w-[100px]">
-              <div className="">{pool.utilization / 100000000000}%</div>
+              <div className="">{pool.utilization}%</div>
             </div>
           </div>
         </React.Fragment>

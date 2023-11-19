@@ -1,31 +1,17 @@
-import { useState, useCallback, useEffect } from "react";
-import { environmentConfig } from "@/data/environments";
-import { IEnvironment } from "@/utils/types";
-import { useWeb3React } from "@web3-react/core";
+import {
+  EnvironmentContext,
+  EnvironmentContextProps,
+} from "@/contexts/EnvironmentContext";
+import { useContext } from "react";
 
-export function useEnvironment() {
-  const { chainId } = useWeb3React();
-  const [currentEnvironment, setCurrentEnvironment] = useState<IEnvironment>(
-    environmentConfig[chainId ?? 421613]
-  );
+export const useEnvironment = (): EnvironmentContextProps => {
+  const context = useContext(EnvironmentContext);
 
-  const switchEnvironment = useCallback((environmentId: number) => {
-    if (environmentId in environmentConfig) {
-      setCurrentEnvironment(environmentConfig[environmentId]);
-    } else {
-      console.log(`Environment with ID ${environmentId} not found.`);
-    }
-  }, []);
+  if (!context) {
+    throw new Error(
+      "useEnvironment must be used within an EnvironmentProvider"
+    );
+  }
 
-  useEffect(() => {
-    // Update the current environment whenever chainId changes
-    if (chainId && chainId in environmentConfig) {
-      setCurrentEnvironment(environmentConfig[chainId]);
-    }
-  }, [chainId]);
-
-  return {
-    currentEnvironment,
-    switchEnvironment,
-  };
-}
+  return context;
+};

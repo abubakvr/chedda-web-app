@@ -1,24 +1,19 @@
 "use client";
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import Image from "next/image";
 import SearchIcon from "@/assets/icon/search-icon.svg";
-
-import { samplePools } from "@/data/samplePool";
 import { VaultItem } from "./VaultItem";
 import { usePools } from "@/hooks/usePools";
-
-const vaultHeaderItems = [
-  "Asset",
-  "Collateral",
-  "Total Supply",
-  "Supply APY",
-  "Total Borrow",
-  "Borrow APY",
-  "Utilization",
-];
+import { LoadingSkeleton } from "@/components/ui/skeleton/LoadingSkeleton";
+import { MobileVaultItem } from "./MobileVaultItem";
+import { vaultHeaderItems } from "@/utils/constants";
 
 export const VaultCard = () => {
-  const { poolStats } = usePools();
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const { poolStats, loading } = usePools();
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) =>
+    setSearchKeyword(e.target.value);
 
   return (
     <div className="rounded-lg vaults-card w-full p-3 sm:p-7">
@@ -32,6 +27,7 @@ export const VaultCard = () => {
               type="text"
               className="w-48 sm:w-72 h-full bg-transparent focus:outline-none  text-white pl-3 pr-10"
               placeholder="Search"
+              onChange={handleSearch}
             />
             <Image
               src={SearchIcon}
@@ -60,20 +56,30 @@ export const VaultCard = () => {
         ))}
       </div>
       <div>
-        {poolStats &&
+        {!loading &&
+          poolStats &&
           poolStats?.map((item: any, index: number) => (
             <div
               key={index}
               className={`vault-item ${
-                index !== samplePools.length - 1
+                index !== poolStats.length - 1
                   ? "border-b border-gray-500 border-opacity-20"
                   : ""
               }`}
             >
-              {poolStats && <VaultItem pool={item} />}
-              {/* {poolStats && <MobileVaultItem pool={item} />} */}
+              {searchKeyword &&
+              item.asset.name
+                .toLowerCase()
+                .includes(searchKeyword.toLowerCase()) ? (
+                <VaultItem pool={item} />
+              ) : (
+                ""
+              )}
+              {!searchKeyword && <VaultItem pool={item} />}
+              {poolStats && <MobileVaultItem pool={item} />}
             </div>
           ))}
+        {loading && <LoadingSkeleton itemCount={4} />}
       </div>
     </div>
   );

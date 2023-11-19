@@ -1,4 +1,4 @@
-import { BigNumber } from "ethers";
+import { BigNumber, ethers, utils } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
 
 export const n6 = new Intl.NumberFormat("en-us", {
@@ -48,17 +48,24 @@ export const tokenValueTxt = (
   symbol: string
 ) => `${n4.format(tokenValue(value, decimals))} ${symbol}`;
 
-export function parseBigNumberToFloat(val: BigNumber, decimals = 18) {
-  if (!val) {
-    return 0;
+export const parseBigNumberToFloat = (val: BigNumber): string => {
+  if (!val || !ethers.BigNumber.isBigNumber(val)) {
+    return ""; // Adjust this default value as needed
   }
 
-  const formatted = formatUnits(val, decimals);
-  const parsed = parseFloat(formatted);
-  return parsed;
-}
+  const formatted = utils.formatUnits(val._hex, "ether");
+  return parseFloat(formatted).toFixed(2);
+};
 
-export function formatCurrency(number: string | number) {
+export const formatToValue = (val: BigNumber): string => {
+  if (!val || !ethers.BigNumber.isBigNumber(val)) {
+    return ""; // Adjust this default value as needed
+  }
+
+  return ethers.BigNumber.from(val._hex).toString();
+};
+
+export const formatCurrency = (number: string | number) => {
   let numberr;
 
   if (typeof number === "string") {
@@ -76,8 +83,8 @@ export function formatCurrency(number: string | number) {
   });
 
   if (numberr >= 1000000) {
-    return formatter.format(numberr / 100000) + " M";
+    return formatter.format(numberr) + " M";
   } else {
     return formatter.format(numberr);
   }
-}
+};

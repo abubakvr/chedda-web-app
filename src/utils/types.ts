@@ -19,15 +19,16 @@ export interface ConnectModalProps {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export interface Token {
+export interface IToken {
   name: string;
   symbol: string;
   address: string;
   logo: StaticImageData;
+  decimals: number;
 }
 
-export interface TokenConfig {
-  [tokenAddress: string]: Token;
+export interface ITokenConfig {
+  [tokenAddress: string]: IToken;
 }
 
 export interface IEnvironment {
@@ -35,6 +36,7 @@ export interface IEnvironment {
   environmentName: string;
   jsonRpcUrl: string;
   webSocketUrl: string;
+  chainId: number;
   contracts: {
     LendingPool: string;
     LendingPoolLens: string;
@@ -45,9 +47,45 @@ export interface IEnvironment {
     Faucet: string;
     GaugeController: string;
   };
-  tokens: TokenConfig;
+  tokens: ITokenConfig;
 }
 
-export interface EnvironmentConfig {
+export interface IConvertedPoolStats {
+  pool: string;
+  asset: any;
+  characterization: string;
+  supplied: number;
+  suppliedValue: number;
+  borrowed: number;
+  borrowedValue: number;
+  baseSupplyAPY: number;
+  maxSupplyAPY: number;
+  baseBorrowAPY: number;
+  maxBorrowAPY: number;
+  utilization: number;
+  feesPaid: number;
+  tvl: number;
+  collaterals: IToken[];
+}
+
+export interface IEnvironmentConfig {
   [networkId: number]: IEnvironment;
+}
+
+export interface IPoolStatsResponse {
+  pool: string;
+  asset: IToken | null;
+  characterization: string;
+  supplied: string | number;
+  suppliedValue: string | number;
+  borrowed: string | number;
+  borrowedValue: string | number;
+  baseSupplyAPY: string | number;
+  maxSupplyAPY: string | number;
+  baseBorrowAPY: string | number;
+  maxBorrowAPY: string | number;
+  utilization: string | number;
+  feesPaid: string | number;
+  tvl: string | number;
+  collaterals: (IToken | null)[];
 }

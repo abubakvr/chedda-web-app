@@ -1,25 +1,48 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Signer } from "ethers";
-import { useCheddaSdk } from "@/hooks/useCheddaSdk";
 import { IAggregateStats } from "chedda-sdk";
+import { useCheddaSdk } from "./useCheddaSdk";
 import { useEnvironment } from "./useEnviroment";
 
 export const useAggregateStats = () => {
   const [aggregateStats, setAggregateStats] = useState<IAggregateStats>();
-  const { chedda, signer } = useCheddaSdk();
+  const [isLoading, setIsLoading] = useState(false);
   const { currentEnvironment } = useEnvironment();
-  const lens = chedda.poolLens(
-    currentEnvironment.contracts.LendingPoolLens,
-    signer as Signer
-  );
+  const { chedda, signer } = useCheddaSdk();
 
   const getAggregateStats = useCallback(async () => {
-    const stats = await lens.getAggregateStats();
-    setAggregateStats(stats);
-  }, [lens]);
+    if (!currentEnvironment || !chedda) return;
+    try {
+      const lendingPoolLens = chedda.poolLens(
+        currentEnvironment.contracts.LendingPoolLens,
+        signer as Signer
+      );
+      const stats = await lendingPoolLens.getAggregateStats();
+      return stats;
+    } catch (error) {
+      console.error("Error in getAggregateStats:", error);
+    }
+  }, [currentEnvironment, chedda, signer]);
 
   useEffect(() => {
-    getAggregateStats();
-  }, [currentEnvironment]);
-  return { aggregateStats };
+    const fetchData = async () => {
+      if (!currentEnvironment) return;
+      try {
+        setIsLoading(true);
+        const response = await getAggregateStats();
+        if (response) {
+          setAggregateStats(response);
+        }
+      } catch (error) {
+        console.error("error getting stats", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+    // eslint-disable-next-line
+  }, [chedda]);
+
+  return { aggregateStats, isLoading, getAggregateStats };
 };

@@ -23,7 +23,7 @@ export const MobileVaultItem = ({ pool }: { pool: any }) => {
         <div className={`flex flex-col justify-start items-end `}>
           <div className="text-lg opacity-70">Collateral</div>
           <div className="flex mr-4 mt-2">
-            {pool.collateral.map((collateral: any, i: number) => (
+            {pool.collaterals.map((collateral: any, i: number) => (
               <div key={i} className="logo-cascade round-image">
                 <Image
                   src={collateral.logo}
@@ -35,13 +35,13 @@ export const MobileVaultItem = ({ pool }: { pool: any }) => {
           </div>
           <div
             className={`w-max font-bold ${
-              pool.collateral.length > 1 && "grid"
+              pool.collaterals.length > 1 && "grid"
             } grid-cols-2 mt-2 text-sm gap-x-1 justify-end items-end`}
           >
-            {pool.collateral.map((collateral: any, i: number) => (
+            {pool.collaterals.map((collateral: any, i: number) => (
               <div className="flex justify-end items-end" key={i}>
                 {collateral.symbol}
-                {i !== pool.collateral.length - 1 && <span>,</span>}
+                {i !== pool.collaterals.length - 1 && <span>,</span>}
               </div>
             ))}
           </div>

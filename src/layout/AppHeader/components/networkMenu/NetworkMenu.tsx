@@ -2,16 +2,15 @@ import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import ArrowDown from "@/assets/icon/arrow-down.svg";
 import { useSwitchChain } from "@/hooks";
-import { useWeb3React } from "@web3-react/core";
 import { supportedNetworksConfig as networkList } from "@/utils/constants";
 import { INetworkList } from "@/utils/types";
+import { useEnvironment } from "@/hooks/useEnviroment";
 
 export const NetworkMenu: React.FC = () => {
   const [isNetworkMenuOpen, setIsNetworkMenuOpen] = useState(false);
-  const switchChain = useSwitchChain();
   const [selected, setSelected] = useState<INetworkList>(networkList[0]);
-
-  const { chainId } = useWeb3React();
+  const { currentEnvironment } = useEnvironment();
+  const switchChain = useSwitchChain();
 
   const openNetworkMenu = () => {
     setIsNetworkMenuOpen(!isNetworkMenuOpen);
@@ -43,14 +42,12 @@ export const NetworkMenu: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!chainId) return;
-
-    const selectedNetwork = networkList.find(
-      (item) => item.chainId === chainId.toString()
+    let selectedNetwork = networkList.find(
+      (item) => item.chainId === currentEnvironment?.chainId.toString()
     );
 
-    setSelected(selectedNetwork ? selectedNetwork : networkList[0]);
-  }, [chainId]);
+    setSelected(selectedNetwork || networkList[0]);
+  }, [currentEnvironment]);
 
   return (
     <div

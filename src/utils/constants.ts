@@ -7,6 +7,7 @@ export const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_KEY;
 
 // localstorage constants
 export const connectorIdKey = "connectorId";
+export const savedChainId = "savedChainId";
 
 export const menuItems: IMenuItem[] = [
   {
@@ -50,4 +51,14 @@ export const supportedNetworksConfig: INetworkList[] = [
     txUrlPrefix: "https://goerli.etherscan.io/tx/",
     icon: Arbitrum_Logo,
   },
+];
+
+export const vaultHeaderItems = [
+  "Asset",
+  "Collateral",
+  "Total Supply",
+  "Supply APY",
+  "Total Borrow",
+  "Borrow APY",
+  "Utilization",
 ];

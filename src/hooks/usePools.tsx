@@ -2,42 +2,55 @@ import { useState, useEffect, useCallback } from "react";
 import { Signer } from "ethers";
 import { useCheddaSdk } from "@/hooks/useCheddaSdk";
 import { useEnvironment } from "./useEnviroment";
-import { IPoolStats } from "chedda-sdk";
-import { convertResponseToObject } from "@/utils/formatResponse";
+import { IPoolStatsResponse } from "@/utils/types";
+import { formatPoolStats } from "@/utils/formatResponse";
 
 export const usePools = () => {
-  const { chedda, signer } = useCheddaSdk();
+  const [poolStats, setPoolStats] = useState<IPoolStatsResponse[]>();
+  const [loading, setLoading] = useState(false);
   const { currentEnvironment } = useEnvironment();
-  const lens = chedda.poolLens(
-    currentEnvironment.contracts.LendingPoolLens,
-    signer as Signer
-  );
+  const { chedda, signer } = useCheddaSdk();
 
   const getPoolStats = useCallback(async () => {
-    const pools = await lens.activePools();
-    return lens.getPoolStatsList(pools);
-  }, [lens]);
+    if (!chedda || !currentEnvironment) return null;
 
-  const [poolStats, setPoolStats] = useState<any>(undefined);
+    try {
+      const lendingPoolLens = chedda.poolLens(
+        currentEnvironment.contracts.LendingPoolLens,
+        signer as Signer
+      );
+      const pools = await lendingPoolLens.activePools();
+      return lendingPoolLens.getPoolStatsList(pools);
+    } catch (error) {
+      console.error("Error in getPoolStats:", error);
+      return null;
+    }
+  }, [chedda, currentEnvironment, signer]);
 
   useEffect(() => {
-    getPoolStats()
-      .then((response) => {
+    const fetchData = async () => {
+      if (!currentEnvironment) return;
+
+      try {
+        setLoading(true);
+        const response = await getPoolStats();
         if (response) {
-          const mappedObjects = convertResponseToObject(
+          const mappedObjects = formatPoolStats(
             response,
             currentEnvironment.tokens
           );
           setPoolStats(mappedObjects);
-        } else {
-          console.error("poolStats is undefined");
         }
-      })
-      .catch((error: any) => {
-        console.error("error getting stats", error);
-      });
-    console.log(currentEnvironment);
-  }, [currentEnvironment]);
+      } catch (error) {
+        console.error("error getting pools", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  return { poolStats };
+    fetchData();
+    // eslint-disable-next-line
+  }, [chedda]);
+
+  return { poolStats, loading };
 };

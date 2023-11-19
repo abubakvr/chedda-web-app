@@ -44,9 +44,9 @@ export declare class LendingPool {
     characterization(): Promise<string>;
     collateralAllowed(collateral: string): Promise<boolean>;
     collateralFactor(collateral: string): Promise<BigNumber>;
-    collateralTokenList(collateral: string): Promise<string>;
+    collateralTokenList(collateral: string[]): Promise<string>;
     collateralTokenTypes(collateral: string): Promise<number>;
-    collaterals(collateral: string): Promise<string[]>;
+    collaterals(): Promise<string[]>;
     convertToAssets(shares: BigNumber): Promise<BigNumber>;
     convertToShares(assets: BigNumber): Promise<BigNumber>;
     debtToken(): Promise<string>;

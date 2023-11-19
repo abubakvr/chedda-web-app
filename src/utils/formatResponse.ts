@@ -1,62 +1,78 @@
-import { IPoolStats } from "chedda-sdk";
-import { BigNumber, ethers } from "ethers";
-import { TokenConfig } from "./types";
+import { IAggregateStats, IPoolStats } from "chedda-sdk";
+import { BigNumber } from "ethers";
+import { formatToValue, parseBigNumberToFloat } from "./formatters";
+import { IPoolStatsResponse, IToken, ITokenConfig } from "./types";
 
-export interface ResponseItem {
-  pool: string;
-  asset: string;
-  characterization: string;
-  supplied: string;
-  suppliedValue: string;
-  borrowed: string;
-  borrowedValue: string;
-  baseSupplyAPY: string;
-  maxSupplyAPY: string;
-  baseBorrowAPY: string;
-  maxBorrowAPY: string;
-  utilization: string;
-  feesPaid: string;
-  tvl: string;
-  collaterals: string[];
-}
-
-export const convertResponseToObject = (
+export const formatPoolStats = (
   response: IPoolStats[],
-  tokens: TokenConfig
-): Array<Record<string, any>> => {
-  const formatValue = (value: BigNumber) => {
-    return value ? ethers.BigNumber.from(value._hex).toString() : 0;
-  };
-
-  const formatRatio = (value: BigNumber) => {
-    return value ? ethers.BigNumber.from(value._hex).toString() : 0;
-  };
-
-  return response.map((item) => ({
+  tokens: ITokenConfig
+): IPoolStatsResponse[] => {
+  return response.map((item: IPoolStats) => ({
     pool: item.pool,
     asset: tokens[item.asset],
     characterization: item.characterization,
-    supplied: formatValue(item.supplied),
-    suppliedValue: formatValue(item.suppliedValue),
-    borrowed: formatValue(item.borrowed),
-    borrowedValue: formatValue(item.borrowedValue),
-    baseSupplyAPY: formatRatio(item.baseSupplyAPY),
-    maxSupplyAPY: formatRatio(item.maxSupplyAPY),
-    baseBorrowAPY: formatRatio(item.baseBorrowAPY),
-    maxBorrowAPY: formatRatio(item.maxBorrowAPY),
-    utilization: formatRatio(item.utilization),
-    feesPaid: formatValue(item.feesPaid),
-    tvl: formatValue(item.tvl),
+    supplied: parseBigNumberToFloat(item.supplied),
+    suppliedValue: parseBigNumberToFloat(item.suppliedValue),
+    borrowed: parseBigNumberToFloat(item.borrowed),
+    borrowedValue: parseBigNumberToFloat(item.borrowedValue),
+    baseSupplyAPY: parseBigNumberToFloat(item.baseSupplyAPY),
+    maxSupplyAPY: parseBigNumberToFloat(item.maxSupplyAPY),
+    baseBorrowAPY: parseBigNumberToFloat(item.baseBorrowAPY),
+    maxBorrowAPY: parseBigNumberToFloat(item.maxBorrowAPY),
+    utilization: parseBigNumberToFloat(item.utilization),
+    feesPaid: parseBigNumberToFloat(item.feesPaid),
+    tvl: parseBigNumberToFloat(item.tvl),
     collaterals: mapCollateralsToTokens(item.collaterals, tokens),
   }));
 };
 
-function mapCollateralsToTokens(collaterals: string[], tokens: TokenConfig) {
+const mapCollateralsToTokens = (
+  collaterals: string[],
+  tokens: ITokenConfig
+): (IToken | null)[] => {
   return collaterals.map((collateralAddress: string) => {
     const token = tokens[collateralAddress];
-    if (token) {
-      return token;
-    }
-    return null;
+    return token || null;
   });
-}
+};
+
+export const getMarketInfoData = (aggregateStats?: IAggregateStats) => {
+  return [
+    {
+      title: "Total Supplied",
+      value: parseBigNumber(aggregateStats?.totalSuppliedValue),
+    },
+    {
+      title: "Total Borrowed",
+      value: parseBigNumber(aggregateStats?.totalBorrowedValue),
+    },
+    {
+      title: "Total Available",
+      value: parseBigNumber(aggregateStats?.totalAvailableValue),
+    },
+    {
+      title: "No. Of Vaults",
+      value: parseEther(aggregateStats?.numberOfVaults),
+    },
+    {
+      title: "Total Earned",
+      value: parseBigNumber(aggregateStats?.totalFeesPaid),
+    },
+    {
+      title: "TVL",
+      value: parseBigNumber(aggregateStats?.tvl),
+    },
+  ];
+};
+
+const parseBigNumber = (bigNumberValue?: BigNumber) => {
+  if (bigNumberValue instanceof BigNumber) {
+    return parseBigNumberToFloat(bigNumberValue);
+  }
+};
+
+const parseEther = (bigNumberValue?: BigNumber) => {
+  if (bigNumberValue instanceof BigNumber) {
+    return formatToValue(bigNumberValue);
+  }
+};
