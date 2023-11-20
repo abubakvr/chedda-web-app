@@ -1,4 +1,4 @@
-import { IAggregateStats, IPoolStats } from "chedda-sdk";
+import { IAggregateStats, IPoolStats } from "@/chedda-sdk";
 import { BigNumber } from "ethers";
 import { formatToValue, parseBigNumberToFloat } from "./formatters";
 import { IPoolStatsResponse, IToken, ITokenConfig } from "./types";
