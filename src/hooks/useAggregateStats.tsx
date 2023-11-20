@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Signer } from "ethers";
 import { IAggregateStats } from "chedda-sdk";
 import { useCheddaSdk } from "./useCheddaSdk";
-import { useEnvironment } from "./useEnviroment";
+import { useEnvironment } from "./useEnvironment";
 
 export const useAggregateStats = () => {
   const [aggregateStats, setAggregateStats] = useState<IAggregateStats>();

@@ -74,7 +74,7 @@ export interface IEnvironmentConfig {
 
 export interface IPoolStatsResponse {
   pool: string;
-  asset: IToken | null;
+  asset: IToken;
   characterization: string;
   supplied: string | number;
   suppliedValue: string | number;
@@ -87,5 +87,5 @@ export interface IPoolStatsResponse {
   utilization: string | number;
   feesPaid: string | number;
   tvl: string | number;
-  collaterals: (IToken | null)[];
+  collaterals: IToken[];
 }

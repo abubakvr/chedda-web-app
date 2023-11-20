@@ -1,14 +1,13 @@
 import React from "react";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { NetworkMenu } from "../NetworkMenu";
-import { Web3ReactProvider } from "@web3-react/core";
-import connectors from "@/connectors";
+import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 describe("NetworkMenu", () => {
   it("should open the network menu when the button is clicked", () => {
-    <Web3ReactProvider connectors={connectors}>
+    <MockAppProviders>
       <NetworkMenu />
-    </Web3ReactProvider>;
+    </MockAppProviders>;
 
     waitFor(() => {
       const networkButton = screen.getByTestId("network-menu-button");
@@ -23,9 +22,9 @@ describe("NetworkMenu", () => {
 
   it("should switch to the selected network when a network is clicked", () => {
     render(
-      <Web3ReactProvider connectors={connectors}>
+      <MockAppProviders>
         <NetworkMenu />
-      </Web3ReactProvider>
+      </MockAppProviders>
     );
 
     waitFor(() => {

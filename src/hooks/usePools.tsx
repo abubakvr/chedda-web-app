@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { Signer } from "ethers";
 import { useCheddaSdk } from "@/hooks/useCheddaSdk";
-import { useEnvironment } from "./useEnviroment";
+import { useEnvironment } from "./useEnvironment";
 import { IPoolStatsResponse } from "@/utils/types";
 import { formatPoolStats } from "@/utils/formatResponse";
 
 export const usePools = () => {
   const [poolStats, setPoolStats] = useState<IPoolStatsResponse[]>();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { currentEnvironment } = useEnvironment();
   const { chedda, signer } = useCheddaSdk();
 
@@ -32,7 +32,7 @@ export const usePools = () => {
       if (!currentEnvironment) return;
 
       try {
-        setLoading(true);
+        setIsLoading(true);
         const response = await getPoolStats();
         if (response) {
           const mappedObjects = formatPoolStats(
@@ -44,7 +44,7 @@ export const usePools = () => {
       } catch (error) {
         console.error("error getting pools", error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -52,5 +52,5 @@ export const usePools = () => {
     // eslint-disable-next-line
   }, [chedda]);
 
-  return { poolStats, loading };
+  return { poolStats, isLoading, getPoolStats };
 };

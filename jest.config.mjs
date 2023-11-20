@@ -15,6 +15,9 @@ const config = {
 
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["./jest.setup.ts"],
+  transform: {
+    "^.+\\.tsx?$": "babel-jest",
+  },
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

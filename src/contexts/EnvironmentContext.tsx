@@ -3,7 +3,6 @@ import {
   useCallback,
   useEffect,
   createContext,
-  useContext,
   ReactNode,
 } from "react";
 import { environmentConfig } from "@/data/environments";

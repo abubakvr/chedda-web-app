@@ -29,7 +29,7 @@ export const formatPoolStats = (
 const mapCollateralsToTokens = (
   collaterals: string[],
   tokens: ITokenConfig
-): (IToken | null)[] => {
+): IToken[] => {
   return collaterals.map((collateralAddress: string) => {
     const token = tokens[collateralAddress];
     return token || null;

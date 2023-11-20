@@ -4,7 +4,7 @@ import ArrowDown from "@/assets/icon/arrow-down.svg";
 import { useSwitchChain } from "@/hooks";
 import { supportedNetworksConfig as networkList } from "@/utils/constants";
 import { INetworkList } from "@/utils/types";
-import { useEnvironment } from "@/hooks/useEnviroment";
+import { useEnvironment } from "@/hooks/useEnvironment";
 
 export const NetworkMenu: React.FC = () => {
   const [isNetworkMenuOpen, setIsNetworkMenuOpen] = useState(false);

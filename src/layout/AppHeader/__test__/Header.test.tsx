@@ -1,15 +1,13 @@
-import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { HeaderComponent } from "../Header";
-import { Web3ReactProvider } from "@web3-react/core";
-import connectors from "@/connectors";
+import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 describe("HeaderComponent", () => {
   it("renders the component", () => {
     render(
-      <Web3ReactProvider connectors={connectors}>
+      <MockAppProviders>
         <HeaderComponent />
-      </Web3ReactProvider>
+      </MockAppProviders>
     );
 
     waitFor(() => {
@@ -20,9 +18,9 @@ describe("HeaderComponent", () => {
 
   it("displays the Chedda logo", () => {
     render(
-      <Web3ReactProvider connectors={connectors}>
+      <MockAppProviders>
         <HeaderComponent />
-      </Web3ReactProvider>
+      </MockAppProviders>
     );
 
     waitFor(() => {
@@ -33,9 +31,9 @@ describe("HeaderComponent", () => {
 
   it("displays menu items", () => {
     render(
-      <Web3ReactProvider connectors={connectors}>
+      <MockAppProviders>
         <HeaderComponent />
-      </Web3ReactProvider>
+      </MockAppProviders>
     );
 
     waitFor(() => {
@@ -46,9 +44,9 @@ describe("HeaderComponent", () => {
 
   it("displays the NetworkMenu component", () => {
     render(
-      <Web3ReactProvider connectors={connectors}>
+      <MockAppProviders>
         <HeaderComponent />
-      </Web3ReactProvider>
+      </MockAppProviders>
     );
 
     const networkMenu = screen.getByTestId("network-menu-container");
@@ -66,9 +64,9 @@ describe("HeaderComponent", () => {
       };
     });
     render(
-      <Web3ReactProvider connectors={connectors}>
+      <MockAppProviders>
         <HeaderComponent />
-      </Web3ReactProvider>
+      </MockAppProviders>
     );
 
     waitFor(() => {

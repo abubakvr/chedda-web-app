@@ -1,7 +1,7 @@
 import { Chedda } from "@/chedda-sdk/index.js";
 import { useWeb3React } from "@web3-react/core";
 import { useCallback, useEffect, useState } from "react";
-import { useEnvironment } from "./useEnviroment";
+import { useEnvironment } from "./useEnvironment";
 
 export const useCheddaSdk = () => {
   const [chedda, setChedda] = useState<Chedda>();
@@ -24,5 +24,5 @@ export const useCheddaSdk = () => {
     setupChedda();
   }, [currentEnvironment, setupChedda]);
 
-  return { chedda, signer };
+  return { chedda, signer, setupChedda };
 };
