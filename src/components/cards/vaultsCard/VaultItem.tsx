@@ -12,7 +12,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
         data-testid="vault-item"
         className="h-auto w-full py-5 hidden md:grid grid-cols-7 grid-row-bg justify-between text-white hover:opacity-80 cursor-pointer"
       >
-        <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-1">
+        <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-2">
           <div className="flex items-center">
             <Image
               src={pool.asset.logo}
