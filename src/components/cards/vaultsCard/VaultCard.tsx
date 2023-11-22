@@ -5,11 +5,27 @@ import { VaultItem } from "./VaultItem";
 import { usePools } from "@/hooks/usePools";
 import { LoadingSkeleton } from "@/components/ui/skeleton/LoadingSkeleton";
 import { vaultHeaderItems } from "@/utils/constants";
-import { IPoolStatsResponse } from "@/utils/types";
+import { IPoolStatsResponse, IToken } from "@/utils/types";
 
 export const VaultCard = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>();
   const { poolStats, isLoading } = usePools();
+
+  const matchSearchItem = (item: IPoolStatsResponse, searchKeyword: string) => {
+    const matchesAssetName = item.asset.name
+      .toLowerCase()
+      .includes(searchKeyword.toLowerCase());
+
+    const matchesAssetSymbol = item.asset.symbol
+      .toLowerCase()
+      .includes(searchKeyword.toLowerCase());
+
+    const matchesCollaterals = item.collaterals.some((collateral: IToken) =>
+      collateral.symbol.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
+
+    return matchesAssetName || matchesAssetSymbol || matchesCollaterals;
+  };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) =>
     setSearchKeyword(e.target.value);
@@ -17,12 +33,12 @@ export const VaultCard = () => {
   return (
     <div
       data-testid="vault-card"
-      className="rounded-lg vaults-card w-full p-3 sm:p-7"
+      className="rounded-lg vaults-card w-full p-3 pb-0 sm:p-7 sm:pb-0"
     >
-      <div className="flex justify-between pb-3 sm:pb-5">
+      <div className="flex justify-between">
         <div
           data-testid="vaults-title"
-          className="text-white font-open-sans text-xl sm:text-2xl xl:text-3xl font-semibold leading-9 tracking-wider"
+          className="text-white font-open-sans text-xl sm:text-2xl xl:text-3xl font-semibold leading-9 tracking-wider flex flex-col justify-center items-cente"
         >
           Vaults
         </div>
@@ -45,7 +61,7 @@ export const VaultCard = () => {
           </div>
         </div>
       </div>
-      <div className="mt-2 sm:mt-5 hidden md:grid grid-cols-7 ">
+      <div className="mt-2 pb-4 sm:mt-10 hidden md:grid grid-cols-7 border-b border-gray-500 border-opacity-20">
         {vaultHeaderItems.map((item: string, index: number) => (
           <div
             key={index}
@@ -75,12 +91,9 @@ export const VaultCard = () => {
                   : ""
               }`}
             >
-              {searchKeyword &&
-                item.asset.name
-                  .toLowerCase()
-                  .includes(searchKeyword.toLowerCase()) && (
-                  <VaultItem pool={item} />
-                )}
+              {searchKeyword && matchSearchItem(item, searchKeyword) && (
+                <VaultItem pool={item} />
+              )}
               {!searchKeyword && <VaultItem pool={item} />}
             </div>
           ))}

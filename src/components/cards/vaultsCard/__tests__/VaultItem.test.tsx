@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { VaultItem } from "../VaultItem";
-import { formatCurrency } from "@/utils/formatters";
+import { formatCurrency, formatLargeNumber } from "@/utils/formatters";
 import { mockPoolStats } from "@/utils/Mocks/MockTestData";
 
 jest.mock("ethers");
@@ -30,10 +30,10 @@ describe("VaultItem Component", () => {
 
     // Supplied information
     expect(screen.getByTestId("supplied")).toHaveTextContent(
-      formatCurrency(mockPool.supplied)
+      formatLargeNumber(mockPool.supplied) + " " + mockPool.asset.symbol
     );
     expect(screen.getByTestId("supplied-value")).toHaveTextContent(
-      formatCurrency(mockPool.suppliedValue) + " M"
+      formatCurrency(mockPool.suppliedValue)
     );
 
     // Max Supply APY information
@@ -43,10 +43,10 @@ describe("VaultItem Component", () => {
 
     // Borrowed information
     expect(screen.getByTestId("borrowed")).toHaveTextContent(
-      formatCurrency(mockPool.borrowed) + " USDC"
+      formatLargeNumber(mockPool.borrowed) + " " + mockPool.asset.symbol
     );
     expect(screen.getByTestId("borrowed-value")).toHaveTextContent(
-      formatCurrency(mockPool.borrowedValue) + " M"
+      formatCurrency(mockPool.borrowedValue)
     );
 
     // Max Borrow APY information

@@ -1,5 +1,4 @@
 import { BigNumber, ethers, utils } from "ethers";
-import { formatUnits } from "ethers/lib/utils";
 
 export const n6 = new Intl.NumberFormat("en-us", {
   style: "decimal",
@@ -48,43 +47,44 @@ export const tokenValueTxt = (
   symbol: string
 ) => `${n4.format(tokenValue(value, decimals))} ${symbol}`;
 
-export const parseBigNumberToFloat = (val: BigNumber): string => {
+export const parseBigNumberToFloat = (
+  val: BigNumber | undefined,
+  decimals?: number
+): string => {
   if (!val || !ethers.BigNumber.isBigNumber(val)) {
-    return ""; // Adjust this default value as needed
+    return "0.00";
   }
 
-  const formatted = utils.formatUnits(val._hex, "ether");
-  return parseFloat(formatted).toFixed(2);
+  const formatted = utils.formatUnits(val._hex, decimals ?? "ether");
+
+  // Add error handling for parseFloat
+  const parsedValue = parseFloat(formatted);
+  if (isNaN(parsedValue)) {
+    return "0.00";
+  }
+
+  return decimals === 0 ? `${parsedValue}` : parsedValue.toFixed(2);
 };
 
-export const formatToValue = (val: BigNumber): string => {
-  if (!val || !ethers.BigNumber.isBigNumber(val)) {
-    return ""; // Adjust this default value as needed
-  }
+export const formatCurrency = (number: string | number): string => {
+  const numericValue = typeof number === "string" ? parseFloat(number) : number;
 
-  return ethers.BigNumber.from(val._hex).toString();
+  return "$" + formatLargeNumber(numericValue);
 };
 
-export const formatCurrency = (number: string | number) => {
-  let numberr;
+export const formatLargeNumber = (value: string | number) => {
+  const largerNumber = typeof value === "string" ? parseInt(value) : value;
+  const absValue = Math.abs(largerNumber);
 
-  if (typeof number === "string") {
-    numberr = parseInt(number);
-    if (numberr >= 1000000) {
-      numberr = numberr / 1000000;
-    }
+  if (absValue >= 1e12) {
+    return (largerNumber / 1e12).toFixed(2) + "T";
+  } else if (absValue >= 1e9) {
+    return (largerNumber / 1e9).toFixed(2) + "B";
+  } else if (absValue >= 1e6) {
+    return (largerNumber / 1e6).toFixed(2) + "M";
+  } else if (absValue >= 1e3) {
+    return (largerNumber / 1e3).toFixed(2) + "K";
   } else {
-    numberr = number;
-  }
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  });
-
-  if (numberr >= 1000000) {
-    return formatter.format(numberr) + " M";
-  } else {
-    return formatter.format(numberr);
+    return largerNumber.toFixed(2);
   }
 };

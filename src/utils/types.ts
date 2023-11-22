@@ -76,7 +76,7 @@ export interface IPoolStatsResponse {
   pool: string;
   asset: IToken;
   characterization: string;
-  supplied: string | number;
+  supplied: string;
   suppliedValue: string | number;
   borrowed: string | number;
   borrowedValue: string | number;
