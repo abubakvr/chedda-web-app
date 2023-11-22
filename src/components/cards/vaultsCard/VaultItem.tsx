@@ -1,16 +1,41 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import InfoIcon from "@/assets/icon/info-icon.svg";
-import { formatCurrency } from "@/utils/formatters";
+import { formatCurrency, formatLargeNumber } from "@/utils/formatters";
 import { IPoolStatsResponse } from "@/utils/types";
 import { MobileVaultItem } from "./MobileVaultItem";
 
 export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
+  const elementRef = useRef<HTMLDivElement | null>(null);
+  const [showEllipses, setShowEllipses] = useState(false);
+
+  useEffect(() => {
+    const element = elementRef.current;
+
+    const handleShowEllipses = () => {
+      if (element) {
+        const hasVerticalOverflow = element.scrollHeight > element.clientHeight;
+
+        if (hasVerticalOverflow) {
+          setShowEllipses(true);
+        } else {
+          setShowEllipses(false);
+        }
+      }
+    };
+
+    handleShowEllipses();
+    window.addEventListener("resize", handleShowEllipses);
+
+    return () => {
+      window.removeEventListener("resize", handleShowEllipses);
+    };
+  }, []);
   return (
     <React.Fragment>
       <div
         data-testid="vault-item"
-        className="h-auto w-full py-5 hidden md:grid grid-cols-7 grid-row-bg justify-between text-white hover:opacity-80 cursor-pointer"
+        className="h-28 w-full py-5 hidden md:grid grid-cols-7 grid-row-bg justify-between text-white hover:opacity-80 cursor-pointer"
       >
         <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-2">
           <div className="flex items-center">
@@ -28,7 +53,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
             </div>
           </div>
           <button className="secondary-button uppercase h-6 w-24 mt-3 text-[10px]">
-            Defi Vault
+            {pool.characterization}
           </button>
         </div>
         <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-1">
@@ -45,23 +70,41 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
             ))}
           </div>
           <div
-            className=" w-max font-bold grid grid-cols-2 m-0 gap-x-1"
+            ref={elementRef}
+            className={`h-10 -w-fit font-bold flex flex-wrap m-0 gap-x-1 text-ellipsis overflow-hidden`}
             data-testid="collaterals-list"
           >
-            {pool.collaterals.map((collateral: any, i: number) => (
-              <div className="flex justify-start items-start" key={i}>
-                {collateral.symbol}
-                {i !== pool.collaterals.length - 1 && <span>,</span>}
-              </div>
-            ))}
+            {!showEllipses &&
+              pool.collaterals.map((collateral: any, i: number) => (
+                <div
+                  className="flex justify-start items-start text-ellipsis"
+                  key={i}
+                >
+                  {collateral.symbol}
+                  {i !== pool.collaterals.length - 1 && <span>,</span>}
+                </div>
+              ))}
+            {showEllipses &&
+              pool.collaterals.slice(0, 4).map((collateral: any, i: number) => (
+                <div
+                  className="flex justify-start items-start text-ellipsis"
+                  key={i}
+                >
+                  {collateral.symbol}
+                  {i !== pool.collaterals.length - 1 && <span>,</span>}
+                </div>
+              ))}
+            <div>{showEllipses && "..."}</div>
           </div>
         </div>
         <React.Fragment>
           <div className="flex justify-center items-center">
             <div className="text-sm flex flex-col font-semibold md:col-span-1 w-[100px]">
-              <div data-testid="supplied">{formatCurrency(pool.supplied)}</div>
+              <div data-testid="supplied">
+                {formatLargeNumber(pool.supplied)} {pool.asset.symbol}
+              </div>
               <div className="opacity-50" data-testid="supplied-value">
-                {formatCurrency(pool.suppliedValue)} M
+                {formatCurrency(pool.suppliedValue)}
               </div>
             </div>
           </div>
@@ -74,10 +117,10 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           <div className="flex justify-end items-center">
             <div className="text-sm flex flex-col font-semibold md:col-span-1 w-[100px]">
               <div data-testid="borrowed">
-                {formatCurrency(pool.borrowed)} USDC
+                {formatLargeNumber(pool.borrowed)} {pool.asset.symbol}
               </div>
               <div className="opacity-50" data-testid="borrowed-value">
-                {formatCurrency(pool.borrowedValue)} M
+                {formatCurrency(pool.borrowedValue)}
               </div>
             </div>
           </div>

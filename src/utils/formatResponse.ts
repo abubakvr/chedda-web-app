@@ -1,29 +1,33 @@
 import { IAggregateStats, IPoolStats } from "@/chedda-sdk";
-import { BigNumber } from "ethers";
-import { formatToValue, parseBigNumberToFloat } from "./formatters";
+import { parseBigNumberToFloat } from "./formatters";
 import { IPoolStatsResponse, IToken, ITokenConfig } from "./types";
 
 export const formatPoolStats = (
   response: IPoolStats[],
   tokens: ITokenConfig
 ): IPoolStatsResponse[] => {
-  return response.map((item: IPoolStats) => ({
-    pool: item.pool,
-    asset: tokens[item.asset],
-    characterization: item.characterization,
-    supplied: parseBigNumberToFloat(item.supplied),
-    suppliedValue: parseBigNumberToFloat(item.suppliedValue),
-    borrowed: parseBigNumberToFloat(item.borrowed),
-    borrowedValue: parseBigNumberToFloat(item.borrowedValue),
-    baseSupplyAPY: parseBigNumberToFloat(item.baseSupplyAPY),
-    maxSupplyAPY: parseBigNumberToFloat(item.maxSupplyAPY),
-    baseBorrowAPY: parseBigNumberToFloat(item.baseBorrowAPY),
-    maxBorrowAPY: parseBigNumberToFloat(item.maxBorrowAPY),
-    utilization: parseBigNumberToFloat(item.utilization),
-    feesPaid: parseBigNumberToFloat(item.feesPaid),
-    tvl: parseBigNumberToFloat(item.tvl),
-    collaterals: mapCollateralsToTokens(item.collaterals, tokens),
-  }));
+  const data = response.map((item: IPoolStats) => {
+    const decimals = tokens[item.asset]?.decimals;
+    return {
+      pool: item.pool,
+      asset: tokens[item.asset],
+      characterization: item.characterization,
+      supplied: parseBigNumberToFloat(item.supplied, decimals),
+      suppliedValue: parseBigNumberToFloat(item.suppliedValue),
+      borrowed: parseBigNumberToFloat(item.borrowed, decimals),
+      borrowedValue: parseBigNumberToFloat(item.borrowedValue),
+      baseSupplyAPY: parseBigNumberToFloat(item.baseSupplyAPY),
+      maxSupplyAPY: parseBigNumberToFloat(item.maxSupplyAPY),
+      baseBorrowAPY: parseBigNumberToFloat(item.baseBorrowAPY),
+      maxBorrowAPY: parseBigNumberToFloat(item.maxBorrowAPY),
+      utilization: parseBigNumberToFloat(item.utilization),
+      feesPaid: parseBigNumberToFloat(item.feesPaid),
+      tvl: parseBigNumberToFloat(item.tvl),
+      collaterals: mapCollateralsToTokens(item.collaterals, tokens),
+    };
+  });
+
+  return data;
 };
 
 const mapCollateralsToTokens = (
@@ -40,39 +44,27 @@ export const getMarketInfoData = (aggregateStats?: IAggregateStats) => {
   return [
     {
       title: "Total Supplied",
-      value: parseBigNumber(aggregateStats?.totalSuppliedValue),
+      value: parseBigNumberToFloat(aggregateStats?.totalSuppliedValue),
     },
     {
       title: "Total Borrowed",
-      value: parseBigNumber(aggregateStats?.totalBorrowedValue),
+      value: parseBigNumberToFloat(aggregateStats?.totalBorrowedValue),
     },
     {
       title: "Total Available",
-      value: parseBigNumber(aggregateStats?.totalAvailableValue),
+      value: parseBigNumberToFloat(aggregateStats?.totalAvailableValue),
     },
     {
       title: "No. Of Vaults",
-      value: parseEther(aggregateStats?.numberOfVaults),
+      value: parseBigNumberToFloat(aggregateStats?.numberOfVaults, 0),
     },
     {
       title: "Total Earned",
-      value: parseBigNumber(aggregateStats?.totalFeesPaid),
+      value: parseBigNumberToFloat(aggregateStats?.totalFeesPaid),
     },
     {
       title: "TVL",
-      value: parseBigNumber(aggregateStats?.tvl),
+      value: parseBigNumberToFloat(aggregateStats?.tvl),
     },
   ];
-};
-
-const parseBigNumber = (bigNumberValue?: BigNumber) => {
-  if (bigNumberValue instanceof BigNumber) {
-    return parseBigNumberToFloat(bigNumberValue);
-  }
-};
-
-const parseEther = (bigNumberValue?: BigNumber) => {
-  if (bigNumberValue instanceof BigNumber) {
-    return formatToValue(bigNumberValue);
-  }
 };

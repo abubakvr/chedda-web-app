@@ -32,7 +32,7 @@ export const environmentConfig: IEnvironmentConfig = {
     tokens: {
       "0x7079ef81bcFB2CfBE9699c79238b690a76848c73": {
         name: "USD Coin",
-        symbol: "USCD",
+        symbol: "USDC",
         address: "0x7079ef81bcFB2CfBE9699c79238b690a76848c73",
         logo: usdcLogo,
         decimals: 6,

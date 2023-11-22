@@ -5,11 +5,27 @@ import { VaultItem } from "./VaultItem";
 import { usePools } from "@/hooks/usePools";
 import { LoadingSkeleton } from "@/components/ui/skeleton/LoadingSkeleton";
 import { vaultHeaderItems } from "@/utils/constants";
-import { IPoolStatsResponse } from "@/utils/types";
+import { IPoolStatsResponse, IToken } from "@/utils/types";
 
 export const VaultCard = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>();
   const { poolStats, isLoading } = usePools();
+
+  const matchSearchItem = (item: IPoolStatsResponse, searchKeyword: string) => {
+    const matchesAssetName = item.asset.name
+      .toLowerCase()
+      .includes(searchKeyword.toLowerCase());
+
+    const matchesAssetSymbol = item.asset.symbol
+      .toLowerCase()
+      .includes(searchKeyword.toLowerCase());
+
+    const matchesCollaterals = item.collaterals.some((collateral: IToken) =>
+      collateral.symbol.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
+
+    return matchesAssetName || matchesAssetSymbol || matchesCollaterals;
+  };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) =>
     setSearchKeyword(e.target.value);
@@ -75,12 +91,9 @@ export const VaultCard = () => {
                   : ""
               }`}
             >
-              {searchKeyword &&
-                item.asset.name
-                  .toLowerCase()
-                  .includes(searchKeyword.toLowerCase()) && (
-                  <VaultItem pool={item} />
-                )}
+              {searchKeyword && matchSearchItem(item, searchKeyword) && (
+                <VaultItem pool={item} />
+              )}
               {!searchKeyword && <VaultItem pool={item} />}
             </div>
           ))}
