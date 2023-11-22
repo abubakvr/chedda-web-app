@@ -54,7 +54,7 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
     } else if (savedEnvironment) {
       setCurrentEnvironment(environmentConfig[parseInt(savedEnvironment)]);
     } else {
-      setCurrentEnvironment(environmentConfig[421613]);
+      setCurrentEnvironment(environmentConfig[421614]);
     }
   }, [chainId, setCurrentEnvironment, currentEnvironment]);
 

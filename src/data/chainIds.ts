@@ -1,5 +1,5 @@
 export const chainIds = {
   mainnet: "1",
-  goerli: "5",
-  arbitrumtest: "421613",
+  sepolia: "11155111",
+  abitrumSepoli: "421614",
 };

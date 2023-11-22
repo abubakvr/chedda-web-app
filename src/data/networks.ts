@@ -98,6 +98,28 @@ export const CHAINS: {
     nativeCurrency: ETH,
     blockExplorerUrls: ["https://testnet.arbiscan.io"],
   },
+  11155111: {
+    chainId: "11155111",
+    urls: [
+      infuraKey ? `https://sepolia.infura.io/v3/${infuraKey}` : "",
+      "https://sepolia.etherscan.io/",
+    ].filter(Boolean),
+    publicUrls: ["https://sepolia.etherscan.io/"].filter(Boolean),
+    name: "Sepolia",
+    nativeCurrency: ETH,
+    blockExplorerUrls: ["https://sepolia.etherscan.io/"],
+  },
+  421614: {
+    chainId: "421614",
+    urls: [
+      infuraKey ? `https://arbitrum-sepolia.infura.io/v3/${infuraKey}` : "",
+      "https://sepolia-explorer.arbitrum.io/",
+    ].filter(Boolean),
+    publicUrls: ["https://sepolia-explorer.arbitrum.io/"].filter(Boolean),
+    name: "Arbitrum Sepoli",
+    nativeCurrency: ETH,
+    blockExplorerUrls: ["https://sepolia.arbiscan.io/"],
+  },
 };
 
 export const URLS: { [chainId: number]: string[] } = Object.keys(

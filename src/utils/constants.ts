@@ -4,6 +4,7 @@ import Ethereum_Logo from "@/assets/logos/ethereum-logo.png";
 
 export const infuraKey = process.env.NEXT_PUBLIC_INFURA_KEY;
 export const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_KEY;
+export const alchemyKey2 = process.env.NEXT_PUBLIC_ALCHEMY_KEY_2;
 
 // localstorage constants
 export const connectorIdKey = "connectorId";
@@ -38,17 +39,17 @@ export const menuItems: IMenuItem[] = [
 
 export const supportedNetworksConfig: INetworkList[] = [
   {
-    name: "Goerli",
-    chainId: "5",
+    name: "Ethereum",
+    chainId: "11155111",
     faucetUrl: "https://goerlifaucet.com/",
-    txUrlPrefix: "https://goerli.arbiscan.io/tx/",
+    txUrlPrefix: "https://sepolia.etherscan.io/tx/",
     icon: Ethereum_Logo,
   },
   {
     name: "Arbitrum",
-    chainId: "421613",
+    chainId: "421614",
     faucetUrl: "https://goerlifaucet.com/",
-    txUrlPrefix: "https://goerli.etherscan.io/tx/",
+    txUrlPrefix: "https://sepolia.arbiscan.io/tx/",
     icon: Arbitrum_Logo,
   },
 ];
