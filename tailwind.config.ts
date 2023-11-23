@@ -5,7 +5,7 @@ const config: Config = {
   theme: {
     extend: {
       fontSize: {
-        lg: "1.0625rem", // Change this value to your desired size
+        lg: "1rem",
       },
       screens: {
         "3xl": "1920px",
@@ -14,8 +14,13 @@ const config: Config = {
         "lavendar-purple": "#BCC3E7",
         "turtoise-green": "#5DDEFA",
       },
+      letterSpacing: {
+        normal: "0",
+        wide: ".015em",
+        wider: ".0175em",
+        widest: "0.025em",
+      },
     },
   },
-  plugins: [],
 };
 export default config;

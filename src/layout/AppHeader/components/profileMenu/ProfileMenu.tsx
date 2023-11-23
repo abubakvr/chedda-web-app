@@ -94,7 +94,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
         >
           <button
             onClick={openProfileMenu}
-            className="h-9 w-32 sm:h-11 sm:w-40 px-2 rounded-lg text-sm account_button flex justify-evenly items-center hover:opacity-90 font-semibold"
+            className="h-10 sm:h-10 xl:h-12 w-40 sm:w-40 px-2 rounded-lg text-sm account_button flex justify-evenly items-center hover:opacity-90 font-semibold"
             data-testid="profile-menu-button"
           >
             <div>
@@ -109,7 +109,13 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
               {account?.substring(account?.length - 4)}
             </div>
             <div>
-              <Image src={ArrowDown} alt="Arrow" className="w-2.5 h-2.5" />
+              <Image
+                src={ArrowDown}
+                alt="Arrow"
+                className="w-2.5 h-2.5"
+                width={10}
+                height={10}
+              />
             </div>
           </button>
           {isOpenProfileMenu && (

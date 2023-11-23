@@ -1,14 +1,7 @@
-"use client";
+import { redirect } from "next/navigation";
 
-import { AppHeader } from "@/layout";
-import React from "react";
-
-const Home: React.FC = () => {
-  return (
-    <>
-      <AppHeader />
-    </>
-  );
+const Page = () => {
+  return redirect("/markets");
 };
 
-export default Home;
+export default Page;

@@ -1,12 +1,19 @@
 import "@/styles/globals.scss";
+import { Open_Sans } from "next/font/google";
 
 import type { Metadata } from "next";
 import { AppProviders } from "@/components/AppProviders/AppProviders";
+import { AppHeader } from "@/layout";
 
 export const metadata: Metadata = {
   title: "Chedda Markets",
   description: "Chedda Marketplace",
 };
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function RootLayout({
   children,
@@ -14,9 +21,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
-        <AppProviders>{children}</AppProviders>
+    <html lang="en" className="bg-black" suppressHydrationWarning={true}>
+      <body className={openSans.className} suppressHydrationWarning={true}>
+        <AppProviders>
+          <AppHeader />
+          {children}
+        </AppProviders>
       </body>
     </html>
   );

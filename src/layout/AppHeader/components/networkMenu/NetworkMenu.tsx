@@ -1,20 +1,19 @@
+import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import ArrowDown from "@/assets/icon/arrow-down.svg";
-import Image from "next/image";
 import { useSwitchChain } from "@/hooks";
-import { useWeb3React } from "@web3-react/core";
 import { supportedNetworksConfig as networkList } from "@/utils/constants";
 import { INetworkList } from "@/utils/types";
+import { useEnvironment } from "@/hooks/useEnvironment";
 
 export const NetworkMenu: React.FC = () => {
-  const [isOpenNetworkMenu, setIsOpenNetworkMenu] = useState(false);
-  const switchChain = useSwitchChain();
+  const [isNetworkMenuOpen, setIsNetworkMenuOpen] = useState(false);
   const [selected, setSelected] = useState<INetworkList>(networkList[0]);
-
-  const { chainId } = useWeb3React();
+  const { currentEnvironment } = useEnvironment();
+  const switchChain = useSwitchChain();
 
   const openNetworkMenu = () => {
-    setIsOpenNetworkMenu(!isOpenNetworkMenu);
+    setIsNetworkMenuOpen(!isNetworkMenuOpen);
   };
 
   const onClick = useCallback(
@@ -22,6 +21,7 @@ export const NetworkMenu: React.FC = () => {
       switchChain(Number(key)).catch((error) => {
         console.error(`Failed to switch chains: ${error}`);
       });
+      setIsNetworkMenuOpen(false);
     },
     [switchChain]
   );
@@ -29,7 +29,7 @@ export const NetworkMenu: React.FC = () => {
   const onDocumentClick = (event: MouseEvent) => {
     const targetElement = event.target as HTMLElement;
     if (!targetElement.closest(".network-menu-container")) {
-      setIsOpenNetworkMenu(false);
+      setIsNetworkMenuOpen(false);
     }
   };
 
@@ -42,23 +42,21 @@ export const NetworkMenu: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!chainId) return;
-
-    const selectedNetwork = networkList.find(
-      (item) => item.chainId === chainId.toString()
+    let selectedNetwork = networkList.find(
+      (item) => item.chainId === currentEnvironment?.chainId.toString()
     );
 
-    setSelected(selectedNetwork ? selectedNetwork : networkList[0]);
-  }, [chainId]);
+    setSelected(selectedNetwork || networkList[0]);
+  }, [currentEnvironment]);
 
   return (
     <div
-      className="relative network-menu-container"
+      className="hidden sm:block relative network-menu-container"
       data-testid="network-menu-container"
     >
       <button
         onClick={openNetworkMenu}
-        className="h-10 w-36 sm:h-11 lg:w-36 p-1 rounded sm:rounded-lg network_button flex justify-evenly items-center text-sm lg:text-[16px] font-semibold hover:opacity-90"
+        className="h-10 w-36 xl:h-12 lg:w-36 p-1 rounded-lg network_button flex justify-evenly items-center text-sm lg:text-[16px] font-semibold hover:opacity-90"
         data-testid="network-menu-button"
       >
         <div>
@@ -72,12 +70,18 @@ export const NetworkMenu: React.FC = () => {
         </div>
         <div data-testid="selected-network-label">{selected?.name}</div>
         <div>
-          <Image src={ArrowDown} alt="Arrow" className="w-2.5 h-2.5" />
+          <Image
+            src={ArrowDown}
+            alt="Arrow"
+            className="w-2.5 h-2.5"
+            width={10}
+            height={10}
+          />
         </div>
       </button>
       <div
         className={`absolute mt-1 w-full bg-[#13161F] text-white menu-bg rounded-[10px] shadow-lg z-10 ${
-          isOpenNetworkMenu ? "" : "hidden"
+          isNetworkMenuOpen ? "" : "hidden"
         }`}
         id="mySelectMenu"
         data-testid="network-menu-dropdown"

@@ -2,32 +2,37 @@ import { IMenuItem, INetworkList } from "./types";
 import Arbitrum_Logo from "@/assets/logos/arbitrum-logo.png";
 import Ethereum_Logo from "@/assets/logos/ethereum-logo.png";
 
-const infuraKey = process.env.REACT_APP_INFURA_KEY;
-const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
+export const infuraKey = process.env.NEXT_PUBLIC_INFURA_KEY;
+export const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_KEY;
 
 // localstorage constants
 export const connectorIdKey = "connectorId";
+export const savedChainId = "savedChainId";
 
 export const menuItems: IMenuItem[] = [
   {
-    name: "Lend",
-    path: "/lend",
-    icon: "briefcase",
+    name: "Dashboard",
+    path: "/dashboard",
   },
   {
-    name: "Borrow",
-    path: "/borrow",
-    icon: "cash",
+    name: "Market",
+    path: "/market",
   },
   {
-    name: "Grotto",
-    path: "/grotto",
-    icon: "storefront",
+    name: "$CHEDDA",
+    path: "/chedda",
   },
   {
-    name: "Vote",
-    path: "/vote",
-    icon: "checkbox",
+    name: "Lock",
+    path: "/lock",
+  },
+  {
+    name: "Rewards",
+    path: "/rewards",
+  },
+  {
+    name: "Bridge",
+    path: "/bridge",
   },
 ];
 
@@ -35,8 +40,6 @@ export const supportedNetworksConfig: INetworkList[] = [
   {
     name: "Goerli",
     chainId: "5",
-    jsonRpcUrl: `https://goerli.infura.io/v3/${infuraKey}`,
-    webSocketUrl: `wss://goerli.infura.io/ws/v3/${infuraKey}`,
     faucetUrl: "https://goerlifaucet.com/",
     txUrlPrefix: "https://goerli.arbiscan.io/tx/",
     icon: Ethereum_Logo,
@@ -44,10 +47,18 @@ export const supportedNetworksConfig: INetworkList[] = [
   {
     name: "Arbitrum",
     chainId: "421613",
-    jsonRpcUrl: `https://arb-goerli.g.alchemy.com/v2/${alchemyKey}`,
-    webSocketUrl: `wss://arb-goerli.g.alchemy.com/v2/${alchemyKey}`,
     faucetUrl: "https://goerlifaucet.com/",
     txUrlPrefix: "https://goerli.etherscan.io/tx/",
     icon: Arbitrum_Logo,
   },
+];
+
+export const vaultHeaderItems = [
+  "Asset",
+  "Collateral",
+  "Total Supply",
+  "Supply APY",
+  "Total Borrow",
+  "Borrow APY",
+  "Utilization",
 ];

@@ -2,10 +2,9 @@ import React from "react";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { ProfileMenu } from "../ProfileMenu"; // Adjust the import path as needed
 import { mockLocalStorage } from "@/utils/Mocks/MockLocalStorage";
-import { Web3ReactProvider } from "@web3-react/core";
-import connectors from "@/connectors";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { connectorIdKey } from "@/utils/constants";
+import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("../../../../..//utils/copyToClipboard", () => ({
   copyToClipboard: jest.fn(),
@@ -14,9 +13,9 @@ jest.mock("../../../../..//utils/copyToClipboard", () => ({
 describe("ProfileMenu", () => {
   it("should open the profile menu when the button is clicked", () => {
     render(
-      <Web3ReactProvider connectors={connectors}>
+      <MockAppProviders>
         <ProfileMenu account="0x12345" />
-      </Web3ReactProvider>
+      </MockAppProviders>
     );
     const profileMenu = screen.getByTestId("profile-menu-container");
     const profileMenuButton = screen.getByTestId("profile-menu-button");
@@ -35,9 +34,9 @@ describe("ProfileMenu", () => {
 
   it("should copy the address to the clipboard when the 'Copy' button is clicked", async () => {
     render(
-      <Web3ReactProvider connectors={connectors}>
+      <MockAppProviders>
         <ProfileMenu account="0x12345" />
-      </Web3ReactProvider>
+      </MockAppProviders>
     );
 
     const profileMenuButton = screen.getByTestId("profile-menu-button");
@@ -58,9 +57,9 @@ describe("ProfileMenu", () => {
 
   it("should disconnect the wallet when the 'Disconnect' button is clicked", () => {
     render(
-      <Web3ReactProvider connectors={connectors}>
+      <MockAppProviders>
         <ProfileMenu account="0x12345" />
-      </Web3ReactProvider>
+      </MockAppProviders>
     );
 
     const profileMenuButton = screen.getByTestId("profile-menu-button");
