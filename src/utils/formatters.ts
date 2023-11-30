@@ -105,7 +105,7 @@ export const formatLargeNumber = (value?: string | number) => {
  */
 export const formatAsPercentage = (value?: number | string) => {
   if (value === undefined) {
-    return undefined;
+    return "0.00";
   }
 
   const formattedPercentage = (Number(value) * 100).toFixed(2) + "%";

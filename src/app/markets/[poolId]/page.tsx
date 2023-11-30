@@ -28,7 +28,7 @@ const Page = () => {
         />
       ) : (
         <div className="mt-5 rounded animate-pulse">
-          <div className="h-10 bg-blue-100 rounded-md dark:bg-blue-100 opacity-10 w-40 mb-2.5"></div>
+          <div className="h-10 bg-blue-400 rounded-md dark:bg-blue-400 opacity-20 w-40 mb-2.5"></div>
         </div>
       )}
       <div
