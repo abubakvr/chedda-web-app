@@ -2,7 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import InfoIcon from "@/assets/icon/info-icon.svg";
-import { formatCurrency, formatLargeNumber } from "@/utils/formatters";
+import {
+  formatAsPercentage,
+  formatCurrency,
+  formatLargeNumber,
+} from "@/utils/formatters";
 import { IPoolStatsResponse } from "@/utils/types";
 import { MobileVaultItem } from "./MobileVaultItem";
 
@@ -112,7 +116,9 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           </div>
           <div className="flex justify-end ">
             <div className="text-sm flex items-center space-x-2 font-semibold md:col-span-1 w-[100px]">
-              <div data-testid="max-supply-apy">{pool.maxSupplyAPY}%</div>
+              <div data-testid="max-supply-apy">
+                {formatAsPercentage(pool.maxSupplyAPY)}
+              </div>
               <Image src={InfoIcon} alt="Info Icon" />
             </div>
           </div>
@@ -128,13 +134,17 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           </div>
           <div className="flex justify-end">
             <div className="text-sm flex items-center space-x-2 font-semibold md:col-span-1 w-[100px]">
-              <div data-testid="max-borrow-apy">{pool.maxBorrowAPY}%</div>
+              <div data-testid="max-borrow-apy">
+                {formatAsPercentage(pool.maxBorrowAPY)}
+              </div>
               <Image src={InfoIcon} alt="Info Icon" />
             </div>
           </div>
           <div className="flex justify-end">
             <div className="text-sm flex flex-col justify-center font-semibold md:col-span-1 w-[100px]">
-              <div data-testid="utilization">{pool.utilization}%</div>
+              <div data-testid="utilization">
+                {formatAsPercentage(pool.utilization)}%
+              </div>
             </div>
           </div>
         </React.Fragment>
