@@ -66,13 +66,20 @@ export const parseBigNumberToFloat = (
   return decimals === 0 ? `${parsedValue}` : parsedValue.toFixed(2);
 };
 
-export const formatCurrency = (number: string | number): string => {
+export const formatCurrency = (number?: string | number) => {
+  if (number === undefined) {
+    return "0.00";
+  }
+
   const numericValue = typeof number === "string" ? parseFloat(number) : number;
 
   return "$" + formatLargeNumber(numericValue);
 };
 
-export const formatLargeNumber = (value: string | number) => {
+export const formatLargeNumber = (value?: string | number) => {
+  if (value === undefined) {
+    return "0.00";
+  }
   const largerNumber = typeof value === "string" ? parseInt(value) : value;
   const absValue = Math.abs(largerNumber);
 
@@ -87,4 +94,20 @@ export const formatLargeNumber = (value: string | number) => {
   } else {
     return largerNumber.toFixed(2);
   }
+};
+
+/**
+ * Formats a given value as a percentage.
+ *
+ * @param {number|string} value - The value to be formatted as a percentage.
+ *
+ * @returns {string|null} The formatted percentage string, or null if the input value is null.
+ */
+export const formatAsPercentage = (value?: number | string) => {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  const formattedPercentage = (Number(value) * 100).toFixed(2) + "%";
+  return formattedPercentage;
 };

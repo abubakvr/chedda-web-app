@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import InfoIcon from "@/assets/icon/info-icon.svg";
 import { formatCurrency, formatLargeNumber } from "@/utils/formatters";
 import { IPoolStatsResponse } from "@/utils/types";
@@ -33,7 +34,8 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
   }, []);
   return (
     <React.Fragment>
-      <div
+      <Link
+        href={`/markets/${pool.pool}`}
         data-testid="vault-item"
         className="h-28 w-full py-5 hidden md:grid grid-cols-7 grid-row-bg justify-between text-white hover:opacity-80 cursor-pointer"
       >
@@ -136,7 +138,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
             </div>
           </div>
         </React.Fragment>
-      </div>
+      </Link>
       <MobileVaultItem pool={pool} />
     </React.Fragment>
   );

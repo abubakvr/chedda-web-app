@@ -1,18 +1,17 @@
 import { useState, useEffect, useCallback } from "react";
 import { Signer } from "ethers";
-import { useCheddaSdk } from "@/hooks/useCheddaSdk";
-import { useEnvironment } from "./useEnvironment";
+import { useCheddaSdk, useEnvironment } from "@/hooks";
 import { IPoolStatsResponse } from "@/utils/types";
-import { formatPoolStats } from "@/utils/formatResponse";
+import { formatPoolStats, formatPoolStatsList } from "@/utils/formatResponse";
 
-export const usePools = () => {
-  const [poolStats, setPoolStats] = useState<IPoolStatsResponse[]>();
+export const usePoolStatsList = () => {
+  const [poolStatsList, setPoolStatsList] = useState<IPoolStatsResponse[]>();
   const [isLoading, setIsLoading] = useState(false);
   const { currentEnvironment } = useEnvironment();
   const { chedda, signer } = useCheddaSdk();
 
-  const getPoolStats = useCallback(async () => {
-    if (!chedda || !currentEnvironment) return null;
+  const getPoolStatsList = async () => {
+    if (!chedda || !currentEnvironment) return;
 
     try {
       const lendingPoolLens = chedda.poolLens(
@@ -22,24 +21,24 @@ export const usePools = () => {
       const pools = await lendingPoolLens.activePools();
       return lendingPoolLens.getPoolStatsList(pools);
     } catch (error) {
-      console.error("Error in getPoolStats:", error);
+      console.error("Error in getPoolStatsList:", error);
       return null;
     }
-  }, [chedda, currentEnvironment, signer]);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPoolListData = async () => {
       if (!currentEnvironment) return;
 
       try {
         setIsLoading(true);
-        const response = await getPoolStats();
+        const response = await getPoolStatsList();
         if (response) {
-          const mappedObjects = formatPoolStats(
+          const mappedObjects = formatPoolStatsList(
             response,
             currentEnvironment.tokens
           );
-          setPoolStats(mappedObjects);
+          setPoolStatsList(mappedObjects);
         }
       } catch (error) {
         console.error("error getting pools", error);
@@ -48,9 +47,64 @@ export const usePools = () => {
       }
     };
 
-    fetchData();
-    // eslint-disable-next-line
+    fetchPoolListData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chedda]);
 
-  return { poolStats, isLoading, getPoolStats };
+  return {
+    poolStatsList,
+    getPoolStatsList,
+    isLoading,
+  };
+};
+
+export const usePoolStats = (poolId: string) => {
+  const [poolStats, setPoolStats] = useState<IPoolStatsResponse>();
+  const [isLoading, setIsLoading] = useState(false);
+  const { currentEnvironment } = useEnvironment();
+  const { chedda, signer } = useCheddaSdk();
+
+  const getPoolStats = useCallback(async () => {
+    if (!chedda || !currentEnvironment) return null;
+    try {
+      const lendingPoolLens = chedda.poolLens(
+        currentEnvironment.contracts.LendingPoolLens,
+        signer as Signer
+      );
+      return await lendingPoolLens.getPoolStats(poolId);
+    } catch (error) {
+      console.error("Error in getPoolStats:", error);
+      return null;
+    }
+  }, [chedda, currentEnvironment, signer, poolId]);
+
+  const fetchPoolData = async () => {
+    if (!currentEnvironment) return;
+    try {
+      setIsLoading(true);
+      const response = await getPoolStats();
+      if (response) {
+        const mappedObjects = formatPoolStats(
+          response,
+          currentEnvironment.tokens
+        );
+        setPoolStats(mappedObjects);
+      }
+    } catch (error) {
+      console.error("error getting pools", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPoolData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chedda]);
+
+  return {
+    poolStats,
+    isLoading,
+    getPoolStats,
+  };
 };

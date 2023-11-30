@@ -2,14 +2,14 @@ import React, { ChangeEvent, useState } from "react";
 import Image from "next/image";
 import SearchIcon from "@/assets/icon/search-icon.svg";
 import { VaultItem } from "./VaultItem";
-import { usePools } from "@/hooks/usePools";
-import { LoadingSkeleton } from "@/components/ui/skeleton/LoadingSkeleton";
+import { usePoolStatsList } from "@/hooks";
+import { LoadingSkeleton } from "@/components/ui";
 import { vaultHeaderItems } from "@/utils/constants";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 
 export const VaultCard = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>();
-  const { poolStats, isLoading } = usePools();
+  const { poolStatsList, isLoading } = usePoolStatsList();
 
   const matchSearchItem = (item: IPoolStatsResponse, searchKeyword: string) => {
     const matchesAssetName = item.asset.name
@@ -82,11 +82,11 @@ export const VaultCard = () => {
       </div>
       <div>
         {!isLoading &&
-          poolStats?.map((item: IPoolStatsResponse, index: number) => (
+          poolStatsList?.map((item: IPoolStatsResponse, index: number) => (
             <div
               key={index}
               className={`vault-item ${
-                index !== poolStats.length - 1
+                index !== poolStatsList.length - 1
                   ? "border-b border-gray-500 border-opacity-20"
                   : ""
               }`}

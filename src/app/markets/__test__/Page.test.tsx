@@ -2,16 +2,17 @@ import React from "react";
 import Page from "../page";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { useAggregateStats } from "@/hooks/useAggregateStats";
-import { BigNumber, ethers } from "ethers";
-import { IAggregateStats } from "@/chedda-sdk";
+import { ethers } from "ethers";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 import { useCheddaSdk } from "@/hooks/useCheddaSdk";
-import { mockAggregateStats } from "@/utils/Mocks/MockTestData";
+import { mockAggregateStats, mockPoolStats } from "@/utils/Mocks/MockTestData";
+import { usePoolStatsList } from "@/hooks";
 
 // Mock the useAggregateStats hook
 jest.mock("ethers");
 jest.mock("../../../hooks/useAggregateStats");
 jest.mock("../../../hooks/useCheddaSdk");
+jest.mock("../../../hooks/usePools");
 
 const mockUseAggregateStats = useAggregateStats as jest.MockedFunction<
   typeof useAggregateStats
@@ -19,6 +20,10 @@ const mockUseAggregateStats = useAggregateStats as jest.MockedFunction<
 
 const mockUseCheddaSdk = useCheddaSdk as jest.MockedFunction<
   typeof useCheddaSdk
+>;
+
+const mockUsePools = usePoolStatsList as jest.MockedFunction<
+  typeof usePoolStatsList
 >;
 
 describe("Page Component", () => {
@@ -42,6 +47,12 @@ describe("Page Component", () => {
         signer: mockProvider.getSigner(),
         setupChedda: jest.fn(),
       });
+
+      (mockUsePools as jest.Mock).mockReturnValue({
+        poolStats: mockPoolStats,
+        isLoading: false,
+      });
+
       mockUseAggregateStats.mockReset();
     });
   });
