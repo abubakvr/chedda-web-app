@@ -80,27 +80,27 @@ export const VaultCard = () => {
         </div>
       </div>
       <div>
-        <div>
-          {!isLoading &&
-            poolStatsList?.map((item: IPoolStatsResponse, index: number) => (
-              <div
-                key={index}
-                className={`vault-item ${
-                  index !== poolStatsList.length - 1
-                    ? "border-b border-gray-500 border-opacity-20"
-                    : ""
-                }`}
-              >
+        {!isLoading &&
+          poolStatsList?.map((item: IPoolStatsResponse, index: number) => (
+            <div key={index}>
+              <div className="vault-item">
                 {searchKeyword && matchSearchItem(item, searchKeyword) && (
                   <VaultItem pool={item} />
                 )}
                 {!searchKeyword && <VaultItem pool={item} />}
               </div>
-            ))}
-          {isLoading && (
-            <LoadingSkeleton itemCount={4} data-testid="loading-skeleton" />
-          )}
-        </div>
+              <div
+                className={
+                  index !== poolStatsList.length - 1
+                    ? "w-5/4 mx-7 border-b border-gray-500 border-opacity-20"
+                    : ""
+                }
+              />
+            </div>
+          ))}
+        {isLoading && (
+          <LoadingSkeleton itemCount={4} data-testid="loading-skeleton" />
+        )}
       </div>
     </div>
   );
