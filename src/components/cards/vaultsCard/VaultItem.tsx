@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import InfoIcon from "@/assets/icon/info-icon.svg";
-import { formatCurrency, formatLargeNumber } from "@/utils/formatters";
+import {
+  formatAsPercentage,
+  formatCurrency,
+  formatLargeNumber,
+} from "@/utils/formatters";
 import { IPoolStatsResponse } from "@/utils/types";
 import { MobileVaultItem } from "./MobileVaultItem";
 
@@ -33,9 +38,10 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
   }, []);
   return (
     <React.Fragment>
-      <div
+      <Link
+        href={`/markets/${pool.pool}`}
         data-testid="vault-item"
-        className="h-28 w-full py-5 hidden md:grid grid-cols-7 grid-row-bg justify-between text-white hover:opacity-80 cursor-pointer"
+        className="h-28 w-full px-7 py-5 hidden md:grid grid-cols-7 grid-row-bg justify-between text-white hover:opacity-80 hover:bg-blue-200 hover:bg-opacity-10 cursor-pointer"
       >
         <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-2">
           <div className="flex items-center">
@@ -110,7 +116,9 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           </div>
           <div className="flex justify-end ">
             <div className="text-sm flex items-center space-x-2 font-semibold md:col-span-1 w-[100px]">
-              <div data-testid="max-supply-apy">{pool.maxSupplyAPY}%</div>
+              <div data-testid="max-supply-apy">
+                {formatAsPercentage(pool.maxSupplyAPY)}
+              </div>
               <Image src={InfoIcon} alt="Info Icon" />
             </div>
           </div>
@@ -126,17 +134,21 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           </div>
           <div className="flex justify-end">
             <div className="text-sm flex items-center space-x-2 font-semibold md:col-span-1 w-[100px]">
-              <div data-testid="max-borrow-apy">{pool.maxBorrowAPY}%</div>
+              <div data-testid="max-borrow-apy">
+                {formatAsPercentage(pool.maxBorrowAPY)}
+              </div>
               <Image src={InfoIcon} alt="Info Icon" />
             </div>
           </div>
           <div className="flex justify-end">
             <div className="text-sm flex flex-col justify-center font-semibold md:col-span-1 w-[100px]">
-              <div data-testid="utilization">{pool.utilization}%</div>
+              <div data-testid="utilization">
+                {formatAsPercentage(pool.utilization)}%
+              </div>
             </div>
           </div>
         </React.Fragment>
-      </div>
+      </Link>
       <MobileVaultItem pool={pool} />
     </React.Fragment>
   );

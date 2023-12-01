@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { VaultCard, MarketInfoCard } from "@/components/cards";
+import { VaultCard, SummaryCard } from "@/components/cards";
 import { useAggregateStats } from "@/hooks/useAggregateStats";
 import { getMarketInfoData } from "@/utils/formatResponse";
 
@@ -24,7 +24,7 @@ const Page = () => {
         data-testid="market-info-container"
       >
         {aggregateStatsInfo?.map((data, index) => (
-          <MarketInfoCard
+          <SummaryCard
             key={index}
             index={index}
             title={data.title}

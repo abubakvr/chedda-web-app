@@ -1,8 +1,12 @@
 import { IAggregateStats, IPoolStats } from "@/chedda-sdk";
-import { parseBigNumberToFloat } from "./formatters";
+import {
+  formatAsPercentage,
+  formatCurrency,
+  parseBigNumberToFloat,
+} from "./formatters";
 import { IPoolStatsResponse, IToken, ITokenConfig } from "./types";
 
-export const formatPoolStats = (
+export const formatPoolStatsList = (
   response: IPoolStats[],
   tokens: ITokenConfig
 ): IPoolStatsResponse[] => {
@@ -30,6 +34,30 @@ export const formatPoolStats = (
   return data;
 };
 
+export const formatPoolStats = (
+  response: IPoolStats,
+  tokens: ITokenConfig
+): IPoolStatsResponse => {
+  const decimals = tokens[response.asset]?.decimals;
+  return {
+    pool: response.pool,
+    asset: tokens[response.asset],
+    characterization: response.characterization,
+    supplied: parseBigNumberToFloat(response.supplied, decimals),
+    suppliedValue: parseBigNumberToFloat(response.suppliedValue),
+    borrowed: parseBigNumberToFloat(response.borrowed, decimals),
+    borrowedValue: parseBigNumberToFloat(response.borrowedValue),
+    baseSupplyAPY: parseBigNumberToFloat(response.baseSupplyAPY),
+    maxSupplyAPY: parseBigNumberToFloat(response.maxSupplyAPY),
+    baseBorrowAPY: parseBigNumberToFloat(response.baseBorrowAPY),
+    maxBorrowAPY: parseBigNumberToFloat(response.maxBorrowAPY),
+    utilization: parseBigNumberToFloat(response.utilization),
+    feesPaid: parseBigNumberToFloat(response.feesPaid),
+    tvl: parseBigNumberToFloat(response.tvl),
+    collaterals: mapCollateralsToTokens(response.collaterals, tokens),
+  };
+};
+
 const mapCollateralsToTokens = (
   collaterals: string[],
   tokens: ITokenConfig
@@ -44,15 +72,21 @@ export const getMarketInfoData = (aggregateStats?: IAggregateStats) => {
   return [
     {
       title: "Total Supplied",
-      value: parseBigNumberToFloat(aggregateStats?.totalSuppliedValue),
+      value: formatCurrency(
+        parseBigNumberToFloat(aggregateStats?.totalSuppliedValue)
+      ),
     },
     {
       title: "Total Borrowed",
-      value: parseBigNumberToFloat(aggregateStats?.totalBorrowedValue),
+      value: formatCurrency(
+        parseBigNumberToFloat(aggregateStats?.totalBorrowedValue)
+      ),
     },
     {
       title: "Total Available",
-      value: parseBigNumberToFloat(aggregateStats?.totalAvailableValue),
+      value: formatCurrency(
+        parseBigNumberToFloat(aggregateStats?.totalAvailableValue)
+      ),
     },
     {
       title: "No. Of Vaults",
@@ -60,11 +94,42 @@ export const getMarketInfoData = (aggregateStats?: IAggregateStats) => {
     },
     {
       title: "Total Earned",
-      value: parseBigNumberToFloat(aggregateStats?.totalFeesPaid),
+      value: formatCurrency(
+        parseBigNumberToFloat(aggregateStats?.totalFeesPaid)
+      ),
     },
     {
       title: "TVL",
-      value: parseBigNumberToFloat(aggregateStats?.tvl),
+      value: formatCurrency(parseBigNumberToFloat(aggregateStats?.tvl)),
+    },
+  ];
+};
+
+export const getPoolSummaryData = (poolSummary?: IPoolStatsResponse) => {
+  return [
+    {
+      title: "Total Supply",
+      value: formatCurrency(poolSummary?.supplied),
+    },
+    {
+      title: "Base Supply APY",
+      value: formatAsPercentage(poolSummary?.baseSupplyAPY),
+    },
+    {
+      title: "Total Borrowed",
+      value: formatCurrency(poolSummary?.borrowed),
+    },
+    {
+      title: "Base Borrow APR",
+      value: formatAsPercentage(poolSummary?.baseBorrowAPY),
+    },
+    {
+      title: "MAX Supply APR",
+      value: formatAsPercentage(poolSummary?.maxSupplyAPY),
+    },
+    {
+      title: "MAX Borrow APR",
+      value: formatAsPercentage(poolSummary?.maxBorrowAPY),
     },
   ];
 };

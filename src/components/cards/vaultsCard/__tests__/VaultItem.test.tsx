@@ -1,7 +1,11 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { VaultItem } from "../VaultItem";
-import { formatCurrency, formatLargeNumber } from "@/utils/formatters";
+import {
+  formatAsPercentage,
+  formatCurrency,
+  formatLargeNumber,
+} from "@/utils/formatters";
 import { mockPoolStats } from "@/utils/Mocks/MockTestData";
 
 jest.mock("ethers");
@@ -38,7 +42,7 @@ describe("VaultItem Component", () => {
 
     // Max Supply APY information
     expect(screen.getByTestId("max-supply-apy")).toHaveTextContent(
-      mockPool.maxSupplyAPY + "%"
+      formatAsPercentage(mockPool.maxSupplyAPY)
     );
 
     // Borrowed information
@@ -51,12 +55,12 @@ describe("VaultItem Component", () => {
 
     // Max Borrow APY information
     expect(screen.getByTestId("max-borrow-apy")).toHaveTextContent(
-      mockPool.maxBorrowAPY + "%"
+      formatAsPercentage(mockPool.maxBorrowAPY)
     );
 
     // Utilization information
     expect(screen.getByTestId("utilization")).toHaveTextContent(
-      mockPool.utilization + "%"
+      formatAsPercentage(mockPool.utilization)
     );
   });
 });
