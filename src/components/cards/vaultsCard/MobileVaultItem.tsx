@@ -7,7 +7,7 @@ export const MobileVaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
     <div
       onClick={() => {}}
       data-testid="mobile-vault-item"
-      className="h-auto w-full rounded-lg mt-2 px-8 py-5 vaults-card text-white hover:opacity-80 cursor-pointer md:hidden"
+      className="h-auto w-full rounded-lg mt-2 px-8 py-5 card-bg text-white hover:opacity-80 cursor-pointer md:hidden"
     >
       {/* First row */}
       <div className="flex justify-between">

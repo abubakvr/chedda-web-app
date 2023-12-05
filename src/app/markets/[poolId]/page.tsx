@@ -5,6 +5,7 @@ import { getPoolSummaryData } from "@/utils/formatResponse";
 import { useParams, useRouter } from "next/navigation";
 import { usePoolStats } from "@/hooks";
 import { SummaryHeader } from "@/components/ui";
+import { MyInformationCard } from "@/components/cards";
 
 const Page = () => {
   const { poolId } = useParams();
@@ -45,6 +46,17 @@ const Page = () => {
             data-testid={`market-info-card-${index}`}
           />
         ))}
+      </div>
+      <div className="mt-8 h-auto w-full flex space-x-5">
+        <div className="w-[67%] pool-card rounded-lg"></div>
+        <div className="w-[33%] pool-card rounded-lg text-white">
+          <MyInformationCard
+            poolStats={poolStats}
+            isLoading={isLoading}
+            onBorrowClick={() => {}}
+            onSupplyClick={() => {}}
+          />
+        </div>
       </div>
     </div>
   );

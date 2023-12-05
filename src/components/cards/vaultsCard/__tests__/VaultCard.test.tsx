@@ -47,7 +47,7 @@ describe("VaultCard Component", () => {
 
     await waitFor(() => {
       expect(getByTestId("vault-card")).toBeInTheDocument();
-      expect(getByTestId("loading-skeleton")).toBeInTheDocument();
+      expect(getByTestId("vault-skeleton")).toBeInTheDocument();
     });
   });
 });

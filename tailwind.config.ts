@@ -13,6 +13,7 @@ const config: Config = {
       colors: {
         "lavendar-purple": "#BCC3E7",
         "turtoise-green": "#5DDEFA",
+        "card-bg": "var(--card-bg)",
       },
       letterSpacing: {
         normal: "0",

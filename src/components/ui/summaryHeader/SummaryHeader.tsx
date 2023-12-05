@@ -19,7 +19,7 @@ export const SummaryHeader = ({
       data-testid="summary-header"
     >
       <button
-        className="text-white"
+        className="text-white hover:opacity-80"
         onClick={navigateBack}
         data-testid="back-button"
       >

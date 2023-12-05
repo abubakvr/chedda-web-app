@@ -65,7 +65,7 @@ export const usePoolStats = (poolId: string) => {
   const { chedda, signer } = useCheddaSdk();
 
   const getPoolStats = useCallback(async () => {
-    if (!chedda || !currentEnvironment) return null;
+    if (!chedda || !currentEnvironment || !poolId) return null;
     try {
       const lendingPoolLens = chedda.poolLens(
         currentEnvironment.contracts.LendingPoolLens,
@@ -79,7 +79,7 @@ export const usePoolStats = (poolId: string) => {
   }, [chedda, currentEnvironment, signer, poolId]);
 
   const fetchPoolData = async () => {
-    if (!currentEnvironment) return;
+    if (!currentEnvironment || !poolId) return;
     try {
       setIsLoading(true);
       const response = await getPoolStats();
