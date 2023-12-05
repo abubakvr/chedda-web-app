@@ -2,12 +2,13 @@ import React from "react";
 import Page from "../page";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { useParams } from "next/navigation";
-import { usePoolStats } from "@/hooks";
+import { usePoolStats, useAccountInfo } from "@/hooks";
 import { getPoolSummaryData } from "@/utils/formatResponse";
-import { mockPoolStats } from "@/utils/Mocks/MockTestData";
+import { mockAccountInfo, mockPoolStats } from "@/utils/Mocks/MockTestData";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks/usePools");
+jest.mock("../../../../hooks/useAccountInfo");
 
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),
@@ -19,6 +20,9 @@ jest.mock("../../../../utils/formatResponse", () => ({
 }));
 
 const mockUsePools = usePoolStats as jest.MockedFunction<typeof usePoolStats>;
+const mockUseAccountInfo = useAccountInfo as jest.MockedFunction<
+  typeof useAccountInfo
+>;
 
 describe("Page component", () => {
   const mockPoolId = "mockPoolId";
@@ -30,6 +34,10 @@ describe("Page component", () => {
   it("renders pool details when data is available", async () => {
     (mockUsePools as jest.Mock).mockReturnValue({
       poolStats: mockPoolStats[0],
+      isLoading: false,
+    });
+    (mockUseAccountInfo as jest.Mock).mockReturnValue({
+      accountInfo: mockAccountInfo,
       isLoading: false,
     });
     (getPoolSummaryData as jest.Mock).mockReturnValue([
@@ -49,6 +57,10 @@ describe("Page component", () => {
   it("renders loading state when data is still loading", async () => {
     (usePoolStats as jest.Mock).mockReturnValue({
       poolStats: null,
+      isLoading: true,
+    });
+    (useAccountInfo as jest.Mock).mockReturnValue({
+      accountInfo: null,
       isLoading: true,
     });
 

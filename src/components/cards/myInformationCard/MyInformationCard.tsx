@@ -1,12 +1,18 @@
 import React from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
-import { formatCurrency, formatLargeNumber } from "@/utils/formatters";
+import {
+  formatCurrency,
+  formatLargeNumber,
+  parseBigNumberToFloat,
+} from "@/utils/formatters";
 import { IPoolStatsResponse } from "@/utils/types";
 import { MyInformationSkeleton } from "@/components/ui/skeleton/MyInformationSkeleton";
+import { IAccountInfo } from "@/chedda-sdk";
 
 interface MyInformationCardProps {
   poolStats: IPoolStatsResponse | undefined;
+  accountInfo: IAccountInfo | undefined;
   isLoading: boolean;
   onSupplyClick: () => void;
   onBorrowClick: () => void;
@@ -14,6 +20,7 @@ interface MyInformationCardProps {
 
 export const MyInformationCard: React.FC<MyInformationCardProps> = ({
   poolStats,
+  accountInfo,
   isLoading,
   onSupplyClick,
   onBorrowClick,
@@ -76,26 +83,34 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
         <div className="flex justify-between pb-4">
           <div className="opacity-50 text-sm">Available to Supply</div>
           <div className="text-sm font-bold">
-            {formatCurrency(poolStats?.suppliedValue)}
+            {formatCurrency(
+              parseBigNumberToFloat(accountInfo?.totalCollateralValue)
+            )}
           </div>
         </div>
         <div className="flex justify-between pb-4">
           <div className="opacity-50 text-sm">Total Supplied</div>
           <div className="text-sm font-bold">
-            {`${formatLargeNumber(poolStats?.supplied)} ${poolStats?.asset
-              .symbol}`}
+            {`${formatLargeNumber(
+              parseBigNumberToFloat(accountInfo?.supplied)
+            )} ${poolStats?.asset.symbol}`}
           </div>
         </div>
         <div className="flex justify-between pb-4">
           <div className="opacity-50 text-sm">Total Borrowed</div>
           <div className="text-sm font-bold">
-            {`${formatLargeNumber(poolStats?.borrowed)} ${poolStats?.asset
-              .symbol}`}
+            {`${formatLargeNumber(
+              parseBigNumberToFloat(accountInfo?.borrowed)
+            )} ${poolStats?.asset.symbol}`}
           </div>
         </div>
         <div className="flex justify-between">
           <div className="opacity-50 text-sm">Health Factor</div>
-          <div className="text-sm font-bold">{poolStats?.feesPaid}</div>
+          <div className="text-sm font-bold">
+            {formatLargeNumber(
+              parseBigNumberToFloat(accountInfo?.healthFactor)
+            )}
+          </div>
         </div>
       </div>
 

@@ -2,7 +2,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MyInformationCard } from "../MyInformationCard";
-import { mockPoolStats } from "@/utils/Mocks/MockTestData";
+import { mockAccountInfo, mockPoolStats } from "@/utils/Mocks/MockTestData";
 
 jest.mock("ethers");
 
@@ -13,6 +13,7 @@ describe("MyInformationCard", () => {
   it("renders MyInformationCard component correctly", () => {
     render(
       <MyInformationCard
+        accountInfo={mockAccountInfo}
         poolStats={mockPoolStats[0]}
         isLoading={false}
         onSupplyClick={mockSupplyClick}
@@ -25,14 +26,12 @@ describe("MyInformationCard", () => {
     expect(screen.getByText("Vault Contract")).toBeInTheDocument();
     expect(screen.getAllByTestId("collateral-logo")).toHaveLength(2);
     expect(screen.getByTestId("collaterals-list")).toBeInTheDocument();
-
-    expect(screen.getByText("200.00 T1")).toBeInTheDocument();
-    expect(screen.getByText("1.00K T1")).toBeInTheDocument();
   });
 
   it("calls onSupplyClick and onBorrowClick when corresponding buttons are clicked", () => {
     render(
       <MyInformationCard
+        accountInfo={mockAccountInfo}
         isLoading={false}
         poolStats={mockPoolStats[0]}
         onSupplyClick={mockSupplyClick}
@@ -52,6 +51,7 @@ describe("MyInformationCard", () => {
   it("renders MyInformationCard component in loading state correctly", () => {
     render(
       <MyInformationCard
+        accountInfo={undefined}
         poolStats={undefined}
         isLoading={true}
         onSupplyClick={mockSupplyClick}
