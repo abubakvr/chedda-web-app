@@ -51,3 +51,51 @@ export const useAccountInfo = (poolId: string) => {
     getAccountInfo,
   };
 };
+
+export const useMarketInfo = (poolId: string) => {
+  const [marketInfo, setMarketInfo] = useState<IMarket>();
+  const [isLoading, setIsLoading] = useState(false);
+  const { currentEnvironment } = useEnvironment();
+  const { chedda, signer } = useCheddaSdk();
+  const { account } = useWeb3React();
+
+  const getAccountInfo = useCallback(async () => {
+    if (!chedda || !currentEnvironment || !poolId || !account) return null;
+    try {
+      const lendingPoolLens = chedda.poolLens(
+        currentEnvironment.contracts.LendingPoolLens,
+        signer as Signer
+      );
+      return await lendingPoolLens.getPoolAccountInfo(poolId, account);
+    } catch (error) {
+      console.error("Error in getAccountInfo:", error);
+      return null;
+    }
+  }, [chedda, currentEnvironment, signer, poolId, account]);
+
+  const fetchAccountData = async () => {
+    if (!currentEnvironment || !poolId) return;
+    try {
+      setIsLoading(true);
+      const response = await getAccountInfo();
+      if (response) {
+        setAccountInfo(response);
+      }
+    } catch (error) {
+      console.error("error getting pools", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAccountData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chedda]);
+
+  return {
+    marketInfo,
+    isLoading,
+    getAccountInfo,
+  };
+};

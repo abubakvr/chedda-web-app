@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { SummaryCard } from "@/components/cards";
+import { MarketInfoCard, SummaryCard } from "@/components/cards";
 import { getPoolSummaryData } from "@/utils/formatResponse";
 import { useParams } from "next/navigation";
 import { usePoolStats, useAccountInfo } from "@/hooks";
@@ -16,7 +16,7 @@ const Page = () => {
 
   return (
     <div
-      className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto"
+      className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto pb-10"
       data-testid="pool-container"
     >
       {poolStats ? (
@@ -53,6 +53,16 @@ const Page = () => {
             isLoading={accountInfoLoading}
             onBorrowClick={() => {}}
             onSupplyClick={() => {}}
+          />
+        </div>
+      </div>
+      <div className="mt-8 h-auto w-full flex space-x-5">
+        <div className="w-[67%] pool-card rounded-lg"></div>
+        <div className="w-[33%] pool-card rounded-lg text-white">
+          <MarketInfoCard
+            poolStats={poolStats}
+            accountInfo={accountInfo}
+            isLoading={accountInfoLoading}
           />
         </div>
       </div>
