@@ -6,13 +6,12 @@ import {
   formatLargeNumber,
   parseBigNumberToFloat,
 } from "@/utils/formatters";
-import { IPoolStatsResponse } from "@/utils/types";
+import { IAccountInfoData, IPoolStatsResponse } from "@/utils/types";
 import { MyInformationSkeleton } from "@/components/ui/skeleton/MyInformationSkeleton";
-import { IAccountInfo } from "@/chedda-sdk";
 
 interface MyInformationCardProps {
   poolStats: IPoolStatsResponse | undefined;
-  accountInfo: IAccountInfo | undefined;
+  accountInfo: IAccountInfoData | undefined;
   isLoading: boolean;
   onSupplyClick: () => void;
   onBorrowClick: () => void;
@@ -92,7 +91,10 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           <div className="opacity-50 text-sm">Total Supplied</div>
           <div className="text-sm font-bold">
             {`${formatLargeNumber(
-              parseBigNumberToFloat(accountInfo?.supplied)
+              parseBigNumberToFloat(
+                accountInfo?.supplied,
+                accountInfo?.decimals
+              )
             )} ${poolStats?.asset.symbol}`}
           </div>
         </div>
@@ -100,7 +102,10 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           <div className="opacity-50 text-sm">Total Borrowed</div>
           <div className="text-sm font-bold">
             {`${formatLargeNumber(
-              parseBigNumberToFloat(accountInfo?.borrowed)
+              parseBigNumberToFloat(
+                accountInfo?.borrowed,
+                accountInfo?.decimals
+              )
             )} ${poolStats?.asset.symbol}`}
           </div>
         </div>

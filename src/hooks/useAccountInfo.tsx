@@ -2,10 +2,10 @@ import { useState, useEffect, useCallback } from "react";
 import { Signer } from "ethers";
 import { useCheddaSdk, useEnvironment } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
-import { IAccountInfo } from "@/chedda-sdk";
+import { IAccountInfoData } from "@/utils/types";
 
 export const useAccountInfo = (poolId: string) => {
-  const [accountInfo, setAccountInfo] = useState<IAccountInfo>();
+  const [accountInfo, setAccountInfo] = useState<IAccountInfoData>();
   const [isLoading, setIsLoading] = useState(false);
   const { currentEnvironment } = useEnvironment();
   const { chedda, signer } = useCheddaSdk();
@@ -34,7 +34,7 @@ export const useAccountInfo = (poolId: string) => {
         setAccountInfo(response);
       }
     } catch (error) {
-      console.error("error getting pools", error);
+      console.error("error fetching account data", error);
     } finally {
       setIsLoading(false);
     }
@@ -43,7 +43,7 @@ export const useAccountInfo = (poolId: string) => {
   useEffect(() => {
     fetchAccountData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chedda]);
+  }, [chedda, account]);
 
   return {
     accountInfo,
