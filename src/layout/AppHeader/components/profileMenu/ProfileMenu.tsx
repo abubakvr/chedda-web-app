@@ -3,7 +3,6 @@ import React, { useEffect, useState, MouseEvent, useCallback } from "react";
 import ArrowDown from "@/assets/icon/arrow-down.svg";
 import CopyIcon from "@/assets/icon/copy-icon.svg";
 import AccountIcon from "@/assets/logos/account-img.svg";
-
 import { metaMask } from "@/connectors/metaMask";
 import { walletConnect } from "@/connectors/walletConnect";
 import { coinbaseWallet } from "@/connectors/coinbaseWallet";
@@ -168,7 +167,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
                 <li className="py-4 px-5 rounded-b-md cursor-pointer flex items-center">
                   <button
                     onClick={disconnectWallet}
-                    className="h-8 primary-button-bg w-full rounded-lg font-bold uppercase text-md hover:opacity-90"
+                    className="h-8 primary-button w-full rounded-lg font-bold uppercase text-md hover:opacity-90"
                     data-testid="disconnect-button"
                   >
                     Disconnect

@@ -2,9 +2,14 @@ import React from "react";
 import backIcon from "@/assets/icon/back-icon.svg";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { SummaryHeader } from "../SummaryHeader"; // Assuming ReusableComponentProps is in the same file as SummaryHeader
+import { useRouter } from "next/navigation";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks");
+
+jest.mock("next/navigation", () => ({
+  useRouter: jest.fn(),
+}));
 
 describe("SummaryHeader component", () => {
   const mockNavigateBack = jest.fn();
@@ -12,6 +17,10 @@ describe("SummaryHeader component", () => {
   const mockAssetName = "Mock Asset";
 
   beforeEach(() => {
+    (useRouter as jest.Mock).mockReturnValue({
+      push: mockNavigateBack,
+    });
+
     const props = {
       navigateBack: mockNavigateBack,
       logoSrc: mockIcon,

@@ -1,11 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
-import {
-  formatCurrency,
-  formatLargeNumber,
-  parseBigNumberToFloat,
-} from "@/utils/formatters";
+import { useTokenBalance } from "@/hooks";
+import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { IAccountInfoData, IPoolStatsResponse } from "@/utils/types";
 import { MyInformationSkeleton } from "@/components/ui/skeleton/MyInformationSkeleton";
 
@@ -24,6 +21,13 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
   onSupplyClick,
   onBorrowClick,
 }) => {
+  const { fetchTokenBalance, tokenBalance } = useTokenBalance();
+
+  useEffect(() => {
+    if (!poolStats) return;
+    fetchTokenBalance(poolStats?.asset.address);
+  }, [poolStats, fetchTokenBalance]);
+
   if (isLoading || !poolStats) {
     // Render loading placeholder if poolStats is undefined
     return <MyInformationSkeleton />;
@@ -35,8 +39,10 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
         <div className="text-white text-opacity-50 font-bold text-lg">
           My Information
         </div>
-        <button className="flex gap-x-1 text-white border-2 text-opacity-100-2 border-opacity-5 rounded text-[10px] py-[5px] px-3 opacity-50 hover:opacity-70">
-          Vault Contract
+        <button className="flex gap-x-1 border-2 rounded-md text-[10px] py-[6px] px-3 border-[#ffffff60] hover:opacity-70">
+          <div className="relative opacity-100 text-[#D9D9D9]  uppercase">
+            Vault Contract
+          </div>
           <Image src={LinkOut} alt="link out" />
         </button>
       </div>
@@ -82,9 +88,9 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
         <div className="flex justify-between pb-4">
           <div className="opacity-50 text-sm">Available to Supply</div>
           <div className="text-sm font-bold">
-            {formatCurrency(
-              parseBigNumberToFloat(accountInfo?.totalCollateralValue)
-            )}
+            {`${formatLargeNumber(
+              parseBigNumberToFloat(tokenBalance, accountInfo?.decimals)
+            )} ${poolStats?.asset.symbol}`}
           </div>
         </div>
         <div className="flex justify-between pb-4">
@@ -112,9 +118,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
         <div className="flex justify-between">
           <div className="opacity-50 text-sm">Health Factor</div>
           <div className="text-sm font-bold">
-            {formatLargeNumber(
-              parseBigNumberToFloat(accountInfo?.healthFactor)
-            )}
+            {parseBigNumberToFloat(accountInfo?.healthFactor)}
           </div>
         </div>
       </div>

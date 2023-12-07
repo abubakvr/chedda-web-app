@@ -34,7 +34,7 @@ export const useAccountInfo = (poolId: string) => {
         setAccountInfo(response);
       }
     } catch (error) {
-      console.error("error fetching account data", error);
+      console.error("error getting account data", error);
     } finally {
       setIsLoading(false);
     }

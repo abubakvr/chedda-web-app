@@ -10,13 +10,12 @@ export const MyInformationSkeleton = () => {
         <div className="text-white text-opacity-50 font-bold text-lg">
           My Information
         </div>
-        <div className="flex gap-x-1 bg-blue-100 opacity-10 animate-pulse rounded w-32 h-7"></div>
+        <div className="flex gap-x-1 card-header-bg opacity-100 animate-pulse rounded w-32 h-8"></div>
       </div>
 
       <div className="placeholder-content flex justify-between items-center animate-pulse p-8 border-b border-gray-500">
         <div className="h-fit mb-4">
           <div className="flex">
-            {/* Collateral logo placeholders */}
             <div
               className="logo-cascade round-image"
               data-testid="collateral-logo"

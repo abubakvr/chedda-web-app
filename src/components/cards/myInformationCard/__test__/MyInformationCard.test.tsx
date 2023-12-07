@@ -3,14 +3,21 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MyInformationCard } from "../MyInformationCard";
 import { mockAccountInfo, mockPoolStats } from "@/utils/Mocks/MockTestData";
+import { useTokenBalance } from "@/hooks";
 
 jest.mock("ethers");
+jest.mock("../../../../hooks/useTokenBalance");
 
 const mockSupplyClick = jest.fn();
 const mockBorrowClick = jest.fn();
 
 describe("MyInformationCard", () => {
   it("renders MyInformationCard component correctly", () => {
+    (useTokenBalance as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+
     render(
       <MyInformationCard
         accountInfo={mockAccountInfo}
@@ -29,6 +36,11 @@ describe("MyInformationCard", () => {
   });
 
   it("calls onSupplyClick and onBorrowClick when corresponding buttons are clicked", () => {
+    (useTokenBalance as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+
     render(
       <MyInformationCard
         accountInfo={mockAccountInfo}
@@ -49,6 +61,11 @@ describe("MyInformationCard", () => {
   });
 
   it("renders MyInformationCard component in loading state correctly", () => {
+    (useTokenBalance as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+
     render(
       <MyInformationCard
         accountInfo={undefined}

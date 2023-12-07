@@ -2,7 +2,7 @@
 import React from "react";
 import { SummaryCard } from "@/components/cards";
 import { getPoolSummaryData } from "@/utils/formatResponse";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { usePoolStats, useAccountInfo } from "@/hooks";
 import { SummaryHeader } from "@/components/ui";
 import { MyInformationCard } from "@/components/cards";
@@ -13,11 +13,6 @@ const Page = () => {
   const { accountInfo, isLoading: accountInfoLoading } = useAccountInfo(
     poolId.toString()
   );
-  const router = useRouter();
-
-  const navigateToMarkets = () => {
-    router.push("/markets");
-  };
 
   return (
     <div
@@ -26,7 +21,6 @@ const Page = () => {
     >
       {poolStats ? (
         <SummaryHeader
-          navigateBack={navigateToMarkets}
           logoSrc={poolStats.asset.logo}
           assetName={poolStats.asset.name}
         />

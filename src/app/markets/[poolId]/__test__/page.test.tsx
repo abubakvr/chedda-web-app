@@ -2,13 +2,14 @@ import React from "react";
 import Page from "../page";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { useParams } from "next/navigation";
-import { usePoolStats, useAccountInfo } from "@/hooks";
+import { usePoolStats, useAccountInfo, useTokenBalance } from "@/hooks";
 import { getPoolSummaryData } from "@/utils/formatResponse";
 import { mockAccountInfo, mockPoolStats } from "@/utils/Mocks/MockTestData";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks/usePools");
 jest.mock("../../../../hooks/useAccountInfo");
+jest.mock("../../../../hooks/useTokenBalance");
 
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),
@@ -43,6 +44,10 @@ describe("Page component", () => {
     (getPoolSummaryData as jest.Mock).mockReturnValue([
       { title: "Mock Title", value: "Mock Value" },
     ]);
+    (useTokenBalance as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
 
     render(<Page />);
 
@@ -63,6 +68,10 @@ describe("Page component", () => {
       accountInfo: null,
       isLoading: true,
     });
+    (useTokenBalance as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
 
     render(<Page />);
 

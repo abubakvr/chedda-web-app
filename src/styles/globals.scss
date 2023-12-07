@@ -32,6 +32,7 @@
     #f28e05 10.34%,
     #c63de5 86.26%
   );
+  --defi-box-gradient: linear-gradient(100deg, #f3943d 10.34%, #fde34d 86.26%);
 }
 
 body {
@@ -162,4 +163,23 @@ div.vault-item:last-child {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.defi-box {
+  position: relative;
+  color: #ffffff;
+}
+
+.defi-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  padding: 1px;
+  background: var(--defi-box-gradient);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
 }
