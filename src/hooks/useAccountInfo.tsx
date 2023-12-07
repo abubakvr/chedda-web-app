@@ -2,10 +2,10 @@ import { useState, useEffect, useCallback } from "react";
 import { Signer } from "ethers";
 import { useCheddaSdk, useEnvironment } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
-import { IAccountInfoData } from "@/utils/types";
+import { IAccountInfo, IMarketInfo } from "@/chedda-sdk";
 
 export const useAccountInfo = (poolId: string) => {
-  const [accountInfo, setAccountInfo] = useState<IAccountInfoData>();
+  const [accountInfo, setAccountInfo] = useState<IAccountInfo>();
   const [isLoading, setIsLoading] = useState(false);
   const { currentEnvironment } = useEnvironment();
   const { chedda, signer } = useCheddaSdk();
@@ -18,7 +18,10 @@ export const useAccountInfo = (poolId: string) => {
         currentEnvironment.contracts.LendingPoolLens,
         signer as Signer
       );
-      return await lendingPoolLens.getPoolAccountInfo(poolId, account);
+      return await lendingPoolLens.getPoolAccountInfo(
+        poolId,
+        "0x3382Bb7214c109f12Ffe8aA9C39BAf7eDB991427"
+      );
     } catch (error) {
       console.error("Error in getAccountInfo:", error);
       return null;
@@ -31,6 +34,7 @@ export const useAccountInfo = (poolId: string) => {
       setIsLoading(true);
       const response = await getAccountInfo();
       if (response) {
+        console.log("account info", response);
         setAccountInfo(response);
       }
     } catch (error) {
@@ -53,33 +57,33 @@ export const useAccountInfo = (poolId: string) => {
 };
 
 export const useMarketInfo = (poolId: string) => {
-  const [marketInfo, setMarketInfo] = useState<IMarket>();
+  const [marketInfo, setMarketInfo] = useState<IMarketInfo>();
   const [isLoading, setIsLoading] = useState(false);
   const { currentEnvironment } = useEnvironment();
   const { chedda, signer } = useCheddaSdk();
-  const { account } = useWeb3React();
 
-  const getAccountInfo = useCallback(async () => {
-    if (!chedda || !currentEnvironment || !poolId || !account) return null;
+  const getMarketInfo = useCallback(async () => {
+    if (!chedda || !currentEnvironment || !poolId) return null;
     try {
       const lendingPoolLens = chedda.poolLens(
         currentEnvironment.contracts.LendingPoolLens,
         signer as Signer
       );
-      return await lendingPoolLens.getPoolAccountInfo(poolId, account);
+      return await lendingPoolLens.getMarketInfo(poolId);
     } catch (error) {
-      console.error("Error in getAccountInfo:", error);
+      console.error("Error in getMarketInfo:", error);
       return null;
     }
-  }, [chedda, currentEnvironment, signer, poolId, account]);
+  }, [chedda, currentEnvironment, signer, poolId]);
 
-  const fetchAccountData = async () => {
+  const fetchMarketData = async () => {
     if (!currentEnvironment || !poolId) return;
     try {
       setIsLoading(true);
-      const response = await getAccountInfo();
+      const response = await getMarketInfo();
       if (response) {
-        setAccountInfo(response);
+        console.log(response);
+        setMarketInfo(response);
       }
     } catch (error) {
       console.error("error getting pools", error);
@@ -89,13 +93,13 @@ export const useMarketInfo = (poolId: string) => {
   };
 
   useEffect(() => {
-    fetchAccountData();
+    fetchMarketData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chedda]);
 
   return {
     marketInfo,
     isLoading,
-    getAccountInfo,
+    getMarketInfo,
   };
 };

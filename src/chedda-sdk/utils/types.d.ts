@@ -42,6 +42,7 @@ export interface ICollateralDeposited {
 }
 export interface IAccountCollateralDeposited {
     token: string;
+    decimals: number;
     amount: BigNumber;
     value: BigNumber;
     tokenIds: BigNumber[];
@@ -49,6 +50,7 @@ export interface IAccountCollateralDeposited {
 export interface IAccountInfo {
     supplied: BigNumber;
     borrowed: BigNumber;
+    decimals: number;
     healthFactor: BigNumber;
     totalCollateralValue: BigNumber;
     collateralDeposited: IAccountCollateralDeposited[];
@@ -61,5 +63,13 @@ export interface ICollateralInfo {
 export interface IInterestRates {
     supplyRate: BigNumber;
     borrowRate: BigNumber;
+}
+export interface IMarketInfo {
+    oraclePrice: BigNumber;
+    oraclePriceDecimals: BigNumber;
+    interestFee: BigNumber;
+    supplyCap: BigNumber;
+    liquidationThreshold: BigNumber;
+    liquidationPenalty: BigNumber;
 }
 export {};

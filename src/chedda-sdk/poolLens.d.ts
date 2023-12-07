@@ -1,5 +1,5 @@
 import { Contract, ethers, Signer } from 'ethers';
-import { IAccountInfo, IAggregateStats, IPoolCollateralInfo, IPoolStats } from './utils/types';
+import { IAccountInfo, IAggregateStats, IMarketInfo, IPoolCollateralInfo, IPoolStats } from './utils/types';
 export declare class PoolLens {
     private provider;
     private address;
@@ -9,6 +9,7 @@ export declare class PoolLens {
     private initiateContract;
     activePools(): Promise<string[]>;
     getAggregateStats(): Promise<IAggregateStats>;
+    getMarketInfo(poolAddress: string): Promise<IMarketInfo>;
     getPoolAccountInfo(poolAddress: string, account: string): Promise<IAccountInfo>;
     getPoolCollateral(poolAddress: string): Promise<IPoolCollateralInfo[]>;
     getPoolStats(poolAddress: string): Promise<IPoolStats>;

@@ -1,7 +1,7 @@
 import { StaticImageData } from "next/image";
 import { IPoolStatsResponse } from "../types";
 import { BigNumber, ethers } from "ethers";
-import { IPoolStats } from "@/chedda-sdk";
+import { IAccountInfo, IPoolStats } from "@/chedda-sdk";
 
 export const mockPoolStats: IPoolStatsResponse[] = [
   {
@@ -181,20 +181,23 @@ export const mockAggregateStats = {
   tvl: BigNumber.from(5000),
 };
 
-export const mockAccountInfo = {
+export const mockAccountInfo: IAccountInfo = {
   supplied: BigNumber.from(1000),
   borrowed: BigNumber.from(500),
+  decimals: 2,
   healthFactor: BigNumber.from(2.5),
   totalCollateralValue: BigNumber.from(20000),
   collateralDeposited: [
     {
       token: "0x00",
+      decimals: 2,
       amount: BigNumber.from(10),
       value: BigNumber.from(5000),
       tokenIds: [1, 2, 3].map((id) => BigNumber.from(id)),
     },
     {
       token: "0x00",
+      decimals: 2,
       amount: BigNumber.from(15),
       value: BigNumber.from(8000),
       tokenIds: [4, 5, 6].map((id) => BigNumber.from(id)),

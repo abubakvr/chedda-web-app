@@ -90,7 +90,3 @@ export interface IPoolStatsResponse {
   tvl: string | number;
   collaterals: IToken[];
 }
-
-export interface IAccountInfoData extends IAccountInfo {
-  decimals?: number;
-}

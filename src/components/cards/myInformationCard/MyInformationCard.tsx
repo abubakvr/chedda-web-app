@@ -3,12 +3,13 @@ import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
 import { useTokenBalance } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
-import { IAccountInfoData, IPoolStatsResponse } from "@/utils/types";
+import { IPoolStatsResponse } from "@/utils/types";
 import { MyInformationSkeleton } from "@/components/ui/skeleton/MyInformationSkeleton";
+import { IAccountInfo } from "@/chedda-sdk";
 
 interface MyInformationCardProps {
   poolStats: IPoolStatsResponse | undefined;
-  accountInfo: IAccountInfoData | undefined;
+  accountInfo: IAccountInfo | undefined;
   isLoading: boolean;
   onSupplyClick: () => void;
   onBorrowClick: () => void;

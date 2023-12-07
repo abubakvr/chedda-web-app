@@ -2,8 +2,8 @@
 import React from "react";
 import { MarketInfoCard, SummaryCard } from "@/components/cards";
 import { getPoolSummaryData } from "@/utils/formatResponse";
-import { useParams } from "next/navigation";
-import { usePoolStats, useAccountInfo } from "@/hooks";
+import { useParams, useRouter } from "next/navigation";
+import { usePoolStats, useAccountInfo, useMarketInfo } from "@/hooks";
 import { SummaryHeader } from "@/components/ui";
 import { MyInformationCard } from "@/components/cards";
 
@@ -13,6 +13,14 @@ const Page = () => {
   const { accountInfo, isLoading: accountInfoLoading } = useAccountInfo(
     poolId.toString()
   );
+  const { marketInfo, isLoading: marketInfoLoading } = useMarketInfo(
+    poolId.toString()
+  );
+  const router = useRouter();
+
+  const navigateToMarkets = () => {
+    router.push("/markets");
+  };
 
   return (
     <div
@@ -60,9 +68,9 @@ const Page = () => {
         <div className="w-[67%] pool-card rounded-lg"></div>
         <div className="w-[33%] pool-card rounded-lg text-white">
           <MarketInfoCard
-            poolStats={poolStats}
-            accountInfo={accountInfo}
-            isLoading={accountInfoLoading}
+            asset={poolStats?.asset}
+            marketInfo={marketInfo}
+            isLoading={marketInfoLoading}
           />
         </div>
       </div>

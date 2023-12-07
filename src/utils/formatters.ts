@@ -47,9 +47,18 @@ export const tokenValueTxt = (
   symbol: string
 ) => `${n4.format(tokenValue(value, decimals))} ${symbol}`;
 
+/**
+ * Converts a BigNumber to a formatted float string, considering optional decimals and float point precision.
+ *
+ * @param {BigNumber | undefined} val - The BigNumber value to be converted.
+ * @param {number | string | undefined} decimals - Optional: The number of decimals to consider in the conversion.
+ * @param {number | undefined} floatPoint - Optional: The precision of the resulting float value.
+ * @returns {string} The formatted float string.
+ */
 export const parseBigNumberToFloat = (
   val: BigNumber | undefined,
-  decimals?: number
+  decimals?: number | string,
+  floatPoint?: number
 ): string => {
   if (!val || !ethers.BigNumber.isBigNumber(val)) {
     return "0.00";
@@ -63,9 +72,15 @@ export const parseBigNumberToFloat = (
     return "0.00";
   }
 
-  return decimals === 0 ? `${parsedValue}` : parsedValue.toFixed(2);
+  return floatPoint ? parsedValue.toFixed(floatPoint) : parsedValue.toFixed(2);
 };
 
+/**
+ * Formats a numeric value as a currency string with a leading "$".
+ *
+ * @param {string | number | undefined} number - The numeric value to be formatted as currency.
+ * @returns {string} The formatted currency string.
+ */
 export const formatCurrency = (number?: string | number) => {
   if (number === undefined) {
     return "0.00";
@@ -76,6 +91,12 @@ export const formatCurrency = (number?: string | number) => {
   return "$" + formatLargeNumber(numericValue);
 };
 
+/**
+ * Formats a large numeric value with suffixes (K, M, B, T) based on magnitude.
+ *
+ * @param {string | number | undefined} value - The numeric value to be formatted.
+ * @returns {string} The formatted string with suffixes (K, M, B, T).
+ */
 export const formatLargeNumber = (value?: string | number) => {
   if (value === undefined) {
     return "0.00";
