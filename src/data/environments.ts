@@ -87,7 +87,7 @@ export const environmentConfig: IEnvironmentConfig = {
       "0x311F0DD563582f7a94ED605429446dCc6bA68bBF": {
         name: "USD Coin",
         symbol: "USDC",
-        address: "0x7079ef81bcFB2CfBE9699c79238b690a76848c73",
+        address: "0x311F0DD563582f7a94ED605429446dCc6bA68bBF",
         logo: usdcLogo,
         decimals: 6,
       },

@@ -1,2 +1,2 @@
-export * from "./skeleton/LoadingSkeleton";
+export * from "./skeleton/VaultSkeleton";
 export * from "./summaryHeader/SummaryHeader";

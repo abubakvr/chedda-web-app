@@ -1,26 +1,28 @@
 import React from "react";
 import backIcon from "@/assets/icon/back-icon.svg";
 import Image, { StaticImageData } from "next/image";
+import { useRouter } from "next/navigation";
 
-interface ReusableComponentProps {
-  navigateBack: () => void;
+interface SummaryProps {
   logoSrc: StaticImageData;
   assetName: string;
 }
 
-export const SummaryHeader = ({
-  navigateBack,
-  logoSrc,
-  assetName,
-}: ReusableComponentProps) => {
+export const SummaryHeader = ({ logoSrc, assetName }: SummaryProps) => {
+  const router = useRouter();
+
+  const navigateToMarkets = () => {
+    router.push("/markets");
+  };
+
   return (
     <div
       className="flex space-x-3 mt-5 items-center"
       data-testid="summary-header"
     >
       <button
-        className="text-white"
-        onClick={navigateBack}
+        className="text-white hover:opacity-80"
+        onClick={navigateToMarkets}
         data-testid="back-button"
       >
         <Image

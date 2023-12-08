@@ -2,6 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --card-bg: linear-gradient(
+    104deg,
+    rgba(98, 87, 242, 0.17) 18.94%,
+    rgba(93, 222, 250, 0.17) 94.84%
+  );
+  --card-header-bg: linear-gradient(137deg, #5ddefa, #6257f2, 90%);
+  --header-bg: radial-gradient(
+    123.22% 129.67% at 100.89% -5.6%,
+    #201d47 0%,
+    #17153a 100%
+  );
+  --header-button-bg: linear-gradient(137deg, #4fd7fa 8.34%, #c438ef 95.26%);
+  --primary-button: linear-gradient(86.02deg, #f3943d -8.86%, #fde34d 129.9%);
+  --secondary-button-bg: linear-gradient(
+    90.02deg,
+    #f28e05 -8.86%,
+    #c43aef 100.9%
+  );
+  --card-gradient-text: linear-gradient(137deg, #51d5fa 8.34%, #b74af1 95.26%);
+  --button-gradient-text: linear-gradient(
+    100deg,
+    #f28e05 30.34%,
+    #c63de5 60.26%
+  );
+  --manage-gradient-text: linear-gradient(
+    100deg,
+    #f28e05 10.34%,
+    #c63de5 86.26%
+  );
+  --defi-box-gradient: linear-gradient(100deg, #f3943d 10.34%, #fde34d 86.26%);
+}
+
 body {
   background-color: black;
   background: radial-gradient(
@@ -14,39 +47,14 @@ body {
   min-height: 100vh;
 }
 
-.app-header {
-  background: radial-gradient(
-    123.22% 129.67% at 100.89% -5.6%,
-    #201d47 0%,
-    #17153a 100%
-  );
-}
-
-.remove-header {
-  background: radial-gradient(
-    123.22% 129.67% at 100.89% 100%,
-    #201d47 100%,
-    #17153a 100%
-  );
-  background-color: black;
-  opacity: 1;
-  z-index: 999999;
-}
-
-.network_button {
-  background: linear-gradient(137deg, #4fd7fa 8.34%, #c438ef 95.26%);
-}
-
-.account_button {
-  background: linear-gradient(137deg, #4fd7fa 8.34%, #c438ef 95.26%);
-}
-
+.app-header,
 .menu-bg {
-  background: radial-gradient(
-    48.98% 14130.72% at 51.02% 50%,
-    rgb(40, 25, 80) 45.83%,
-    rgb(18, 9, 37) 100%
-  );
+  background: var(--header-bg);
+}
+
+.network_button,
+.account_button {
+  background: var(--header-button-bg);
 }
 
 .tooltip {
@@ -68,22 +76,29 @@ body {
   opacity: 1;
 }
 
-.market-info-card {
+.summary-card,
+.pool-card,
+.card-bg {
   position: relative;
+  background: var(--card-bg);
+}
+
+.card-header-bg {
   background: linear-gradient(
-    104deg,
-    rgba(98, 87, 242, 0.17) 18.94%,
-    rgba(93, 222, 250, 0.17) 94.84%
+    137deg,
+    rgba(93, 222, 250, 0.15),
+    rgba(98, 87, 242, 0.15)
   );
 }
 
-.market-info-card::before {
+.pool-card::before,
+.summary-card::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 8px;
   padding: 1px;
-  background: linear-gradient(40.02deg, #54d0fa10 40%, #c03ef0 74%);
+  background: linear-gradient(68.02deg, #54d0fa10 40%, #b854dd 84%);
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -91,20 +106,14 @@ body {
   mask-composite: exclude;
 }
 
-.primary-button-bg {
-  background: linear-gradient(86.02deg, #f3943d -8.86%, #fde34d 129.9%);
+.primary-button {
+  position: relative;
+  background: linear-gradient(168.02deg, #f28e05 -8.86%, #c438ef 100.9%);
 }
 
-.primary-button-bg:hover {
-  background: linear-gradient(86.02deg, #dc802a -8.86%, #dfc94c 129.9%);
-}
-
-.vaults-card {
-  background: linear-gradient(
-    104deg,
-    rgba(98, 87, 242, 0.17) 18.94%,
-    rgba(93, 222, 250, 0.17) 94.84%
-  );
+.primary-button:hover {
+  background: linear-gradient(86.02deg, #c438ef -8.86%, #f28e05 129.9%);
+  opacity: 50;
 }
 
 .logo-cascade {
@@ -121,9 +130,9 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 4px;
-  padding: 1px;
-  background: linear-gradient(86.02deg, #f3943d -8.86%, #fde34d 129.9%);
+  border-radius: 8px;
+  padding: 2px;
+  background: var(--secondary-button-bg);
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -135,9 +144,42 @@ div.vault-item:last-child {
   border-bottom: none;
 }
 
-.market-gradient-text {
-  background: linear-gradient(137deg, #51d5fa 8.34%, #b74af1 95.26%);
+.card-gradient-text {
+  background: var(--card-gradient-text);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.button-gradient-text {
+  background: var(--button-gradient-text);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.manage-gradient-text {
+  background: var(--manage-gradient-text);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.defi-box {
+  position: relative;
+  color: #ffffff;
+}
+
+.defi-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  padding: 1px;
+  background: var(--defi-box-gradient);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
 }

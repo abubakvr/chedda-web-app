@@ -2,18 +2,17 @@
 import React from "react";
 import { SummaryCard } from "@/components/cards";
 import { getPoolSummaryData } from "@/utils/formatResponse";
-import { useParams, useRouter } from "next/navigation";
-import { usePoolStats } from "@/hooks";
+import { useParams } from "next/navigation";
+import { usePoolStats, useAccountInfo } from "@/hooks";
 import { SummaryHeader } from "@/components/ui";
+import { MyInformationCard } from "@/components/cards";
 
 const Page = () => {
   const { poolId } = useParams();
   const { poolStats, isLoading } = usePoolStats(poolId.toString());
-  const router = useRouter();
-
-  const navigateToMarkets = () => {
-    router.push("/markets");
-  };
+  const { accountInfo, isLoading: accountInfoLoading } = useAccountInfo(
+    poolId.toString()
+  );
 
   return (
     <div
@@ -22,7 +21,6 @@ const Page = () => {
     >
       {poolStats ? (
         <SummaryHeader
-          navigateBack={navigateToMarkets}
           logoSrc={poolStats.asset.logo}
           assetName={poolStats.asset.name}
         />
@@ -45,6 +43,18 @@ const Page = () => {
             data-testid={`market-info-card-${index}`}
           />
         ))}
+      </div>
+      <div className="mt-8 h-auto w-full flex space-x-5">
+        <div className="w-[67%] pool-card rounded-lg"></div>
+        <div className="w-[33%] pool-card rounded-lg text-white">
+          <MyInformationCard
+            poolStats={poolStats}
+            accountInfo={accountInfo}
+            isLoading={accountInfoLoading}
+            onBorrowClick={() => {}}
+            onSupplyClick={() => {}}
+          />
+        </div>
       </div>
     </div>
   );

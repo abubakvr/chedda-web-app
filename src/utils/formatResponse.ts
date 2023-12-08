@@ -2,6 +2,7 @@ import { IAggregateStats, IPoolStats } from "@/chedda-sdk";
 import {
   formatAsPercentage,
   formatCurrency,
+  formatLargeNumber,
   parseBigNumberToFloat,
 } from "./formatters";
 import { IPoolStatsResponse, IToken, ITokenConfig } from "./types";
@@ -117,7 +118,7 @@ export const getPoolSummaryData = (poolSummary?: IPoolStatsResponse) => {
     },
     {
       title: "Total Borrowed",
-      value: formatCurrency(poolSummary?.borrowed),
+      value: formatLargeNumber(poolSummary?.borrowed),
     },
     {
       title: "Base Borrow APR",

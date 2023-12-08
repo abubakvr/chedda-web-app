@@ -180,3 +180,24 @@ export const mockAggregateStats = {
   numberOfVaults: BigNumber.from(5000),
   tvl: BigNumber.from(5000),
 };
+
+export const mockAccountInfo = {
+  supplied: BigNumber.from(1000),
+  borrowed: BigNumber.from(500),
+  healthFactor: BigNumber.from(2.5),
+  totalCollateralValue: BigNumber.from(20000),
+  collateralDeposited: [
+    {
+      token: "0x00",
+      amount: BigNumber.from(10),
+      value: BigNumber.from(5000),
+      tokenIds: [1, 2, 3].map((id) => BigNumber.from(id)),
+    },
+    {
+      token: "0x00",
+      amount: BigNumber.from(15),
+      value: BigNumber.from(8000),
+      tokenIds: [4, 5, 6].map((id) => BigNumber.from(id)),
+    },
+  ],
+};

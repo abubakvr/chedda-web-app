@@ -3,7 +3,7 @@ import Image from "next/image";
 import SearchIcon from "@/assets/icon/search-icon.svg";
 import { VaultItem } from "./VaultItem";
 import { usePoolStatsList } from "@/hooks";
-import { LoadingSkeleton } from "@/components/ui";
+import { VaultSkeleton } from "@/components/ui";
 import { vaultHeaderItems } from "@/utils/constants";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 
@@ -31,7 +31,7 @@ export const VaultCard = () => {
     setSearchKeyword(e.target.value);
 
   return (
-    <div className="vaults-card rounded-lg">
+    <div className="card-bg rounded-lg">
       <div data-testid="vault-card" className="w-full p-3 pb-0 sm:p-7 sm:pb-0">
         <div className="flex justify-between">
           <div
@@ -99,7 +99,7 @@ export const VaultCard = () => {
             </div>
           ))}
         {isLoading && (
-          <LoadingSkeleton itemCount={4} data-testid="loading-skeleton" />
+          <VaultSkeleton itemCount={4} data-testid="loading-skeleton" />
         )}
       </div>
     </div>
