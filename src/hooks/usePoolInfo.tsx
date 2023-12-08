@@ -4,7 +4,13 @@ import { useCheddaSdk, useEnvironment } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
 import { IAccountInfo, IMarketInfo } from "@/chedda-sdk";
 
-export const useAccountInfo = (poolId: string) => {
+interface AccountInfoHookResult {
+  accountInfo?: IAccountInfo;
+  isLoading: boolean;
+  getAccountInfo: () => Promise<IAccountInfo | null>;
+}
+
+export const useAccountInfo = (poolId: string): AccountInfoHookResult => {
   const [accountInfo, setAccountInfo] = useState<IAccountInfo>();
   const [isLoading, setIsLoading] = useState(false);
   const { currentEnvironment } = useEnvironment();
@@ -18,10 +24,7 @@ export const useAccountInfo = (poolId: string) => {
         currentEnvironment.contracts.LendingPoolLens,
         signer as Signer
       );
-      return await lendingPoolLens.getPoolAccountInfo(
-        poolId,
-        "0x3382Bb7214c109f12Ffe8aA9C39BAf7eDB991427"
-      );
+      return await lendingPoolLens.getPoolAccountInfo(poolId, account);
     } catch (error) {
       console.error("Error in getAccountInfo:", error);
       return null;
@@ -34,7 +37,6 @@ export const useAccountInfo = (poolId: string) => {
       setIsLoading(true);
       const response = await getAccountInfo();
       if (response) {
-        console.log("account info", response);
         setAccountInfo(response);
       }
     } catch (error) {
@@ -56,7 +58,13 @@ export const useAccountInfo = (poolId: string) => {
   };
 };
 
-export const useMarketInfo = (poolId: string) => {
+interface MarketInfoHookResult {
+  marketInfo?: IMarketInfo;
+  isLoading: boolean;
+  getMarketInfo: () => Promise<IMarketInfo | null>;
+}
+
+export const useMarketInfo = (poolId: string): MarketInfoHookResult => {
   const [marketInfo, setMarketInfo] = useState<IMarketInfo>();
   const [isLoading, setIsLoading] = useState(false);
   const { currentEnvironment } = useEnvironment();
@@ -82,7 +90,6 @@ export const useMarketInfo = (poolId: string) => {
       setIsLoading(true);
       const response = await getMarketInfo();
       if (response) {
-        console.log(response);
         setMarketInfo(response);
       }
     } catch (error) {

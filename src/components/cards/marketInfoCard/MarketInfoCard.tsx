@@ -7,7 +7,7 @@ import {
 } from "@/utils/formatters";
 import { IMarketInfo } from "@/chedda-sdk";
 import { IToken } from "@/utils/types";
-import { MyInformationSkeleton } from "@/components/ui/skeleton/MyInformationSkeleton";
+import { InfoCardSkeleton } from "@/components/ui";
 import { BigNumber } from "ethers";
 
 interface MarketInfoCardProps {
@@ -22,7 +22,7 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
   isLoading,
 }) => {
   if (isLoading || !marketInfo) {
-    return <MyInformationSkeleton />;
+    return <InfoCardSkeleton title="Market Information" />;
   }
 
   const formatValue = (value: BigNumber | undefined, decimals?: BigNumber) => {

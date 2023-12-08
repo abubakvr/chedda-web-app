@@ -204,3 +204,12 @@ export const mockAccountInfo: IAccountInfo = {
     },
   ],
 };
+
+export const mockMarketInfo = {
+  oraclePrice: BigNumber.from("1000000000000000000"),
+  oraclePriceDecimals: BigNumber.from("18"),
+  interestFee: BigNumber.from("500"),
+  supplyCap: BigNumber.from("100000000000000000000"),
+  liquidationThreshold: BigNumber.from("7500"),
+  liquidationPenalty: BigNumber.from("1500"),
+};

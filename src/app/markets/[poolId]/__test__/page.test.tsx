@@ -1,14 +1,23 @@
 import React from "react";
 import Page from "../page";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { useParams } from "next/navigation";
-import { usePoolStats, useAccountInfo, useTokenBalance } from "@/hooks";
+import {
+  usePoolStats,
+  useAccountInfo,
+  useTokenBalance,
+  useMarketInfo,
+} from "@/hooks";
 import { getPoolSummaryData } from "@/utils/formatResponse";
-import { mockAccountInfo, mockPoolStats } from "@/utils/Mocks/MockTestData";
+import {
+  mockAccountInfo,
+  mockMarketInfo,
+  mockPoolStats,
+} from "@/utils/Mocks/MockTestData";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks/usePools");
-jest.mock("../../../../hooks/useAccountInfo");
+jest.mock("../../../../hooks/usePoolInfo");
 jest.mock("../../../../hooks/useTokenBalance");
 
 jest.mock("next/navigation", () => ({
@@ -48,6 +57,10 @@ describe("Page component", () => {
       fetchTokenBalance: jest.fn(),
       tokenBalance: "1000",
     }));
+    (useMarketInfo as jest.Mock).mockImplementation(() => ({
+      marketInfo: mockMarketInfo,
+      isLoading: false,
+    }));
 
     render(<Page />);
 
@@ -71,6 +84,10 @@ describe("Page component", () => {
     (useTokenBalance as jest.Mock).mockImplementation(() => ({
       fetchTokenBalance: jest.fn(),
       tokenBalance: "1000",
+    }));
+    (useMarketInfo as jest.Mock).mockImplementation(() => ({
+      marketInfo: null,
+      isLoading: false,
     }));
 
     render(<Page />);
