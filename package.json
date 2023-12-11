@@ -27,6 +27,7 @@
     "@web3-react/url": "^8.2.3",
     "@web3-react/walletconnect-v2": "^8.5.1",
     "autoprefixer": "10.4.15",
+    "chedda-sdk": "git+ssh://git@github.com:chedda-tech/chedda-sdk#fix/fix_build",
     "encoding": "^0.1.13",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",

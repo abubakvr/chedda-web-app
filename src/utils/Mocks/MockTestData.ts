@@ -1,7 +1,7 @@
 import { StaticImageData } from "next/image";
 import { IPoolStatsResponse } from "../types";
 import { BigNumber, ethers } from "ethers";
-import { IAccountInfo, IPoolStats } from "@/chedda-sdk";
+import { IAccountInfo, IPoolStats } from "chedda-sdk";
 
 export const mockPoolStats: IPoolStatsResponse[] = [
   {

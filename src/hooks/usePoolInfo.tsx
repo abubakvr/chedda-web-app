@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Signer } from "ethers";
 import { useCheddaSdk, useEnvironment } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
-import { IAccountInfo, IMarketInfo } from "@/chedda-sdk";
+import { IAccountInfo, IMarketInfo } from "chedda-sdk";
 
 interface AccountInfoHookResult {
   accountInfo?: IAccountInfo;

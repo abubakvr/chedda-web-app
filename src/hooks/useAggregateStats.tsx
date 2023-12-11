@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Signer } from "ethers";
-import { IAggregateStats } from "@/chedda-sdk";
+import { IAggregateStats } from "chedda-sdk";
 import { useCheddaSdk } from "./useCheddaSdk";
 import { useEnvironment } from "./useEnvironment";
 

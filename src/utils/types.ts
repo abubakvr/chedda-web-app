@@ -1,4 +1,4 @@
-import { IAccountInfo } from "@/chedda-sdk";
+import { IAccountInfo } from "chedda-sdk";
 import { StaticImageData } from "next/image";
 import React from "react";
 

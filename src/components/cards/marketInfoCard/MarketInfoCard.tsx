@@ -5,7 +5,7 @@ import {
   formatLargeNumber,
   parseBigNumberToFloat,
 } from "@/utils/formatters";
-import { IMarketInfo } from "@/chedda-sdk";
+import { IMarketInfo } from "chedda-sdk";
 import { IToken } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
 import { BigNumber } from "ethers";

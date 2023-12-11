@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
-import { IAccountInfo } from "@/chedda-sdk";
+import { IAccountInfo } from "chedda-sdk";
 import { useTokenBalance } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { IPoolStatsResponse } from "@/utils/types";
@@ -31,7 +31,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
 
   if (isLoading || !poolStats) {
     // Render loading placeholder if poolStats is undefined
-    return <InfoCardSkeleton title="My Information" />;
+    return <InfoCardSkeleton title="My Information" itemCount={5} />;
   }
 
   return (

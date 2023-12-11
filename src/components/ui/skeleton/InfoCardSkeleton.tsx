@@ -2,9 +2,13 @@ import React from "react";
 
 interface InfoCardSkeleton {
   title: string;
+  itemCount?: number;
 }
 
-export const InfoCardSkeleton = ({ title }: InfoCardSkeleton) => {
+export const InfoCardSkeleton = ({
+  title,
+  itemCount = 3,
+}: InfoCardSkeleton) => {
   return (
     <div
       className="flex flex-col justify-between"
@@ -18,45 +22,24 @@ export const InfoCardSkeleton = ({ title }: InfoCardSkeleton) => {
           {title}
         </div>
       </div>
-
-      <div className="placeholder-footer p-8">
-        {/* Placeholder values for loading state */}
-        <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-8 mb-5">
-          <div className="flex flex-col">
-            <div
-              data-testid={`skeleton-item-element-1`}
-              className="h-6 bg-gray-300 rounded-md dark:bg-blue-200 opacity-20 w-full mb-2.5"
-            ></div>
-            <div
-              data-testid={`skeleton-item-element-2`}
-              className="h-4 bg-gray-300 rounded-md dark:bg-blue-200 opacity-10 w-2/3"
-            ></div>
+      <div className="placeholder-footer p-8 pb-3">
+        {[...Array(itemCount)].map((_, index) => (
+          <div
+            key={index}
+            className="flex flex-col justify-center text-sm md:col-span-1 space-y-8 mb-5 animate-pulse"
+          >
+            <div className="flex flex-col">
+              <div
+                data-testid={`skeleton-item-element-1`}
+                className="h-6 bg-gray-300 rounded-md dark:bg-blue-200 opacity-20 w-full mb-2.5"
+              ></div>
+              <div
+                data-testid={`skeleton-item-element-2`}
+                className="h-4 bg-gray-300 rounded-md dark:bg-blue-200 opacity-10 w-2/3"
+              ></div>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-8 mb-5">
-          <div className="flex flex-col">
-            <div
-              data-testid={`skeleton-item-element-1`}
-              className="h-6 bg-gray-300 rounded-md dark:bg-blue-200 opacity-20 w-full mb-2.5"
-            ></div>
-            <div
-              data-testid={`skeleton-item-element-2`}
-              className="h-4 bg-gray-300 rounded-md dark:bg-blue-200 opacity-10 w-2/3"
-            ></div>
-          </div>
-        </div>
-        <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-8">
-          <div className="flex flex-col">
-            <div
-              data-testid={`skeleton-item-element-1`}
-              className="h-6 bg-gray-300 rounded-md dark:bg-blue-200 opacity-20 w-full mb-2.5"
-            ></div>
-            <div
-              data-testid={`skeleton-item-element-2`}
-              className="h-4 bg-gray-300 rounded-md dark:bg-blue-200 opacity-10 w-2/3"
-            ></div>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
