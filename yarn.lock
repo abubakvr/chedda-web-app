@@ -2545,9 +2545,9 @@ char-regex@^1.0.2:
   resolved "https://registry.yarnpkg.com/char-regex/-/char-regex-1.0.2.tgz#d744358226217f981ed58f479b1d6bcc29545dcf"
   integrity sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==
 
-"chedda-sdk@https://github.com/chedda-tech/chedda-sdk#fix/fix_build":
+"chedda-sdk@https://github.com/chedda-tech/chedda-sdk.git#fix/fix_build":
   version "1.0.0"
-  resolved "https://github.com/chedda-tech/chedda-sdk#ebf03e8276429b3947631b4819ec40dd491e4293"
+  resolved "https://github.com/chedda-tech/chedda-sdk.git#ebf03e8276429b3947631b4819ec40dd491e4293"
   dependencies:
     ethers "^5.4.7"
 
