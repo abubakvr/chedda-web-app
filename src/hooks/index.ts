@@ -5,5 +5,5 @@ export * from "./useCheddaSdk";
 export * from "./useSignerOrProvider";
 export * from "./useNativeBalance";
 export * from "./useSwitchChain";
-export * from "./useAccountInfo";
+export * from "./usePoolInfo";
 export * from "./useTokenBalance";

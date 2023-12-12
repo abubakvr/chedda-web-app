@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
+import { IAccountInfo } from "chedda-sdk";
 import { useTokenBalance } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
-import { IAccountInfoData, IPoolStatsResponse } from "@/utils/types";
-import { MyInformationSkeleton } from "@/components/ui/skeleton/MyInformationSkeleton";
+import { IPoolStatsResponse } from "@/utils/types";
+import { InfoCardSkeleton } from "@/components/ui";
 
 interface MyInformationCardProps {
   poolStats: IPoolStatsResponse | undefined;
-  accountInfo: IAccountInfoData | undefined;
+  accountInfo: IAccountInfo | undefined;
   isLoading: boolean;
   onSupplyClick: () => void;
   onBorrowClick: () => void;
@@ -26,11 +27,11 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
   useEffect(() => {
     if (!poolStats) return;
     fetchTokenBalance(poolStats?.asset.address);
-  }, [poolStats, fetchTokenBalance]);
+  }, [poolStats]);
 
   if (isLoading || !poolStats) {
     // Render loading placeholder if poolStats is undefined
-    return <MyInformationSkeleton />;
+    return <InfoCardSkeleton title="My Information" itemCount={5} />;
   }
 
   return (

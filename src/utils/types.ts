@@ -1,4 +1,4 @@
-import { IAccountInfo } from "@/chedda-sdk";
+import { IAccountInfo } from "chedda-sdk";
 import { StaticImageData } from "next/image";
 import React from "react";
 
@@ -89,8 +89,4 @@ export interface IPoolStatsResponse {
   feesPaid: string | number;
   tvl: string | number;
   collaterals: IToken[];
-}
-
-export interface IAccountInfoData extends IAccountInfo {
-  decimals?: number;
 }

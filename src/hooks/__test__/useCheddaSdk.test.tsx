@@ -2,7 +2,7 @@ import { act, renderHook } from "@testing-library/react";
 import { useCheddaSdk } from "../useCheddaSdk";
 import { useWeb3React } from "@web3-react/core";
 import { useEnvironment } from "../useEnvironment";
-import { Chedda } from "@/chedda-sdk";
+import { Chedda } from "chedda-sdk";
 import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 import { CoinbaseWallet } from "@web3-react/coinbase-wallet";
 

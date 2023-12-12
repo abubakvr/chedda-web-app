@@ -77,8 +77,6 @@ describe("MyInformationCard", () => {
     );
 
     // Test the rendering of components and elements when in loading state
-    expect(
-      screen.getByTestId("myinformation-loading-element")
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("info-loading-element")).toBeInTheDocument();
   });
 });

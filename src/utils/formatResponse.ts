@@ -1,4 +1,4 @@
-import { IAggregateStats, IPoolStats } from "@/chedda-sdk";
+import { IAggregateStats, IPoolStats } from "chedda-sdk";
 import {
   formatAsPercentage,
   formatCurrency,
