@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.cdnfonts.com/css/satoshi");
 
 :root {
   --card-bg: linear-gradient(
@@ -45,6 +46,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 100vh;
+  font-family: "Satoshi", sans-serif;
 }
 
 .app-header,

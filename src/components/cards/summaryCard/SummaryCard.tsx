@@ -18,10 +18,10 @@ export const SummaryCard = ({
       data-testid="summary-card"
       className="w-full summary-card rounded-lg text-white p-4 sm:p-6 xl:px-8 xl:py-7 flex flex-col justify-center"
     >
-      <div>
+      <div className="flex flex-col gap-y-1">
         <div
           data-testid="summary-title"
-          className="text-white opacity-50 font-open-sans text-xs font-semibold leading-6 tracking-wide "
+          className="text-white opacity-50 font-open-sans text-xs font-semibold leading-6 tracking-wide"
         >
           {title}
         </div>

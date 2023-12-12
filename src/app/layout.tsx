@@ -1,5 +1,4 @@
 import "@/styles/globals.scss";
-import { Open_Sans } from "next/font/google";
 
 import type { Metadata } from "next";
 import { AppProviders } from "@/components/AppProviders/AppProviders";
@@ -10,11 +9,6 @@ export const metadata: Metadata = {
   description: "Chedda Marketplace",
 };
 
-const openSans = Open_Sans({
-  subsets: ["latin"],
-  display: "swap",
-});
-
 export default function RootLayout({
   children,
 }: {
@@ -22,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="bg-black" suppressHydrationWarning={true}>
-      <body className={openSans.className} suppressHydrationWarning={true}>
+      <body suppressHydrationWarning={true}>
         <AppProviders>
           <AppHeader />
           {children}
