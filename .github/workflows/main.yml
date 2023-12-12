@@ -1,4 +1,4 @@
-name: Test and Build
+name: Test, build and format
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  test:
+  Basic check:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,23 +24,12 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
+
+      - name: Check code formatting with Prettier
+        run: yarn prettier-check
 
       - name: Run tests
         run: yarn test
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
-
-      - name: Install dependencies
-        run: yarn install
 
       - name: Build the application
         run: yarn build
