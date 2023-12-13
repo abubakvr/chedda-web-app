@@ -1,4 +1,4 @@
-name: Prettier Format Check
+name: Test, build and format
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  prettier:
+  Test_Build_Format:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +23,13 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install
 
       - name: Check code formatting with Prettier
-        run: yarn prettier-check
+        run: npm run prettier-check
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Build the application
+        run: npm run build
