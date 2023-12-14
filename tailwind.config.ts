@@ -7,6 +7,10 @@ const config: Config = {
       fontSize: {
         lg: "1rem",
       },
+      fontWeight: {
+        bold: "500",
+        semibold: "500",
+      },
       screens: {
         "3xl": "1920px",
       },

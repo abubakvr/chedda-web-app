@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { usePoolStats, useAccountInfo, useMarketInfo } from "@/hooks";
 import { SummaryHeader } from "@/components/ui";
 import { MyInformationCard } from "@/components/cards";
+import { CollateralInfoCard } from "@/components/cards/collateralInfoCard/CollateralInfoCard";
 
 const Page = () => {
   const { poolId } = useParams();
@@ -16,11 +17,6 @@ const Page = () => {
   const { marketInfo, isLoading: marketInfoLoading } = useMarketInfo(
     poolId.toString()
   );
-  const router = useRouter();
-
-  const navigateToMarkets = () => {
-    router.push("/markets");
-  };
 
   return (
     <div
@@ -52,26 +48,31 @@ const Page = () => {
           />
         ))}
       </div>
-      <div className="mt-8 h-auto w-full flex space-x-5">
-        <div className="w-[67%] pool-card rounded-lg"></div>
-        <div className="w-[33%] pool-card rounded-lg text-white">
-          <MyInformationCard
-            poolStats={poolStats}
-            accountInfo={accountInfo}
-            isLoading={accountInfoLoading}
-            onBorrowClick={() => {}}
-            onSupplyClick={() => {}}
-          />
-        </div>
-      </div>
-      <div className="mt-8 h-auto w-full flex space-x-5">
-        <div className="w-[67%] pool-card rounded-lg"></div>
-        <div className="w-[33%] pool-card rounded-lg text-white">
-          <MarketInfoCard
+      <div className="mt-8 w-full flex space-x-5">
+        <div className="w-[67%] h-fit pool-card rounded-lg">
+          <CollateralInfoCard
             asset={poolStats?.asset}
             marketInfo={marketInfo}
             isLoading={marketInfoLoading}
           />
+        </div>
+        <div className="w-[33%] text-white flex flex-col gap-y-6">
+          <div className="pool-card rounded-lg">
+            <MyInformationCard
+              poolStats={poolStats}
+              accountInfo={accountInfo}
+              isLoading={accountInfoLoading}
+              onBorrowClick={() => {}}
+              onSupplyClick={() => {}}
+            />
+          </div>
+          <div className="pool-card rounded-lg">
+            <MarketInfoCard
+              asset={poolStats?.asset}
+              marketInfo={marketInfo}
+              isLoading={marketInfoLoading}
+            />
+          </div>
         </div>
       </div>
     </div>
