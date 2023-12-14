@@ -93,7 +93,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
         >
           <button
             onClick={openProfileMenu}
-            className="h-10 sm:h-10 xl:h-12 w-40 sm:w-40 px-2 rounded-lg text-sm account_button flex justify-evenly items-center hover:opacity-90 font-semibold"
+            className="h-10 sm:h-10 xl:h-12 w-40 sm:w-40 px-2 rounded-lg text-sm account_button flex justify-evenly items-center hover:opacity-90 font-bold"
             data-testid="profile-menu-button"
           >
             <div>

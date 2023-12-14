@@ -56,7 +56,7 @@ export const NetworkMenu: React.FC = () => {
     >
       <button
         onClick={openNetworkMenu}
-        className="h-10 w-36 xl:h-12 lg:w-36 p-1 rounded-lg network_button flex justify-evenly items-center text-sm lg:text-[16px] font-semibold hover:opacity-90"
+        className="h-10 w-36 xl:h-12 lg:w-36 p-1 rounded-lg network_button flex justify-evenly items-center text-sm lg:text-lg font-bold hover:opacity-90"
         data-testid="network-menu-button"
       >
         <div>

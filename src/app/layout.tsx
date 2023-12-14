@@ -19,7 +19,7 @@ export default function RootLayout({
       <body suppressHydrationWarning={true}>
         <AppProviders>
           <AppHeader />
-          {children}
+          <div className="py-20 xl:pt-24 pb-10 ">{children}</div>
         </AppProviders>
       </body>
     </html>

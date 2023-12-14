@@ -27,16 +27,10 @@ const Page = () => {
       className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto pb-10"
       data-testid="pool-container"
     >
-      {poolStats ? (
-        <SummaryHeader
-          logoSrc={poolStats.asset.logo}
-          assetName={poolStats.asset.name}
-        />
-      ) : (
-        <div className="mt-5 rounded animate-pulse">
-          <div className="h-10 bg-blue-400 rounded-md dark:bg-blue-400 opacity-20 w-40 mb-2.5"></div>
-        </div>
-      )}
+      <SummaryHeader
+        logoSrc={poolStats?.asset.logo}
+        assetName={poolStats?.asset.name}
+      />
       <div
         className="grid grid-cols-2 gap-x-2 gap-y-2 lg:flex lg:gap-x-0 mt-5 lg:space-x-3 xl:space-x-5 flex-wrap lg:flex-nowrap"
         data-testid="summary-card-container"
