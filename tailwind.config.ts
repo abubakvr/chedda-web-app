@@ -9,7 +9,7 @@ const config: Config = {
       },
       fontWeight: {
         bold: "500",
-        semibold: "500",
+        semibold: "400",
       },
       screens: {
         "3xl": "1920px",

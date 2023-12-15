@@ -16,7 +16,7 @@ export const SummaryCard = ({
   return (
     <div
       data-testid="summary-card"
-      className="w-full summary-card rounded-lg text-white p-4 sm:p-6 xl:px-8 xl:py-7 flex flex-col justify-center"
+      className="w-full summary-card rounded-lg text-white p-4 sm:p-6 xl:p-8 flex flex-col justify-center"
     >
       <div className="flex flex-col gap-y-1">
         <div
@@ -29,7 +29,7 @@ export const SummaryCard = ({
           <div
             data-testid="summary-value"
             className={`${
-              index >= 4 && "carda-gradient-text"
+              index >= 4 && "card-gradient-text font-bold"
             } text-white font-open-sans text-2xl font-bold leading-7 tracking-wide`}
           >
             {value}
