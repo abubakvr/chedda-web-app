@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Signer } from "ethers";
 import { useCheddaSdk, useEnvironment } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
-import { IAccountInfo, IMarketInfo } from "chedda-sdk";
+import { IAccountInfo, IMarketInfo, IPoolCollateralInfo } from "chedda-sdk";
 
 interface AccountInfoHookResult {
   accountInfo?: IAccountInfo;
@@ -24,7 +24,10 @@ export const useAccountInfo = (poolId: string): AccountInfoHookResult => {
         currentEnvironment.contracts.LendingPoolLens,
         signer as Signer
       );
-      return await lendingPoolLens.getPoolAccountInfo(poolId, account);
+      return await lendingPoolLens.getPoolAccountInfo(
+        poolId,
+        "0x3382Bb7214c109f12Ffe8aA9C39BAf7eDB991427"
+      );
     } catch (error) {
       console.error("Error in getAccountInfo:", error);
       return null;
@@ -108,5 +111,60 @@ export const useMarketInfo = (poolId: string): MarketInfoHookResult => {
     marketInfo,
     isLoading,
     getMarketInfo,
+  };
+};
+
+interface CollateralInfoHookResult {
+  collateralInfo?: IPoolCollateralInfo[];
+  isLoading: boolean;
+  getCollateralInfo: () => Promise<IPoolCollateralInfo[] | null>;
+}
+
+export const useColdlateralInfo = (
+  poolId: string
+): CollateralInfoHookResult => {
+  const [collateralInfo, setCollateralInfo] = useState<IPoolCollateralInfo[]>();
+  const [isLoading, setIsLoading] = useState(false);
+  const { currentEnvironment } = useEnvironment();
+  const { chedda, signer } = useCheddaSdk();
+
+  const getCollateralInfo = useCallback(async () => {
+    if (!chedda || !currentEnvironment || !poolId) return null;
+    try {
+      const lendingPoolLens = chedda.poolLens(
+        currentEnvironment.contracts.LendingPoolLens,
+        signer as Signer
+      );
+      return await lendingPoolLens.getPoolCollateral(poolId);
+    } catch (error) {
+      console.error("Error in getCollateralInfo:", error);
+      return null;
+    }
+  }, [chedda, currentEnvironment, signer, poolId]);
+
+  const fetchMarketData = async () => {
+    if (!currentEnvironment || !poolId) return;
+    try {
+      setIsLoading(true);
+      const response = await getCollateralInfo();
+      if (response) {
+        setCollateralInfo(response);
+      }
+    } catch (error) {
+      console.error("error getting pools", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMarketData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chedda]);
+
+  return {
+    collateralInfo,
+    isLoading,
+    getCollateralInfo,
   };
 };

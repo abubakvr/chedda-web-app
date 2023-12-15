@@ -1,28 +1,31 @@
 import React from "react";
+import Image from "next/image";
+import InfoIcon from "@/assets/icon/gradient-info-icon.svg";
 import {
   formatAsPercentage,
   formatCurrency,
-  formatLargeNumber,
   parseBigNumberToFloat,
 } from "@/utils/formatters";
-import { IMarketInfo } from "chedda-sdk";
-import { IToken } from "@/utils/types";
+import { IAccountInfo, IMarketInfo } from "chedda-sdk";
 import { InfoCardSkeleton } from "@/components/ui";
-import { BigNumber } from "ethers";
+import { IFormattedCollateral } from "@/utils/types";
+import { CollateralInfoChart } from "@/components/charts";
 
 interface CollateralInfoCardProps {
-  asset: IToken | undefined;
+  collateralInfo: IFormattedCollateral[];
+  accountInfo: IAccountInfo | undefined;
   marketInfo: IMarketInfo | undefined;
   isLoading: boolean;
 }
 
 export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
-  asset,
+  collateralInfo,
+  accountInfo,
   marketInfo,
   isLoading,
 }) => {
   if (isLoading || !marketInfo) {
-    return <InfoCardSkeleton title="Collateral Information" />;
+    return <InfoCardSkeleton title="Collateral Information" itemCount={7} />;
   }
 
   const collateralHeaderItems = [
@@ -40,40 +43,64 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
         </div>
       </div>
       <div className="p-8 pt-4">
-        <div className="w-full flex h-52 border rounded-lg  text-[#ffffff70] border-[#ffffff19] bg-[#ffffff02]">
-          <div className="w-1/3 h-full flex items-center justify-center">
-            <div className="rounded-full w-32 h-32 bg-[#ffffff20] flex self-center col-span-1"></div>
+        <div className="w-full flex pb-4 border rounded-lg  text-[#ffffff70] border-[#ffffff19] bg-[#ffffff02]">
+          <div className="w-2/5 flex items-center justify-center">
+            <CollateralInfoChart collateralInfo={collateralInfo} />
           </div>
-          <div className="w-2/3">
-            <div className="mt-4 flex space-x-4 font-bold text-lg ">
-              <div>USDC</div>
-              <div>DAI</div>
-              <div>WETH</div>
-              <div>FRAX</div>
-              <div>WBTC</div>
+          <div className="w-3/5">
+            <div className="mt-4 flex space-x-4 font-bold text-lg">
+              {collateralInfo?.map((item, index) => {
+                return (
+                  <div className="flex items-center gap-x-1" key={index}>
+                    <div
+                      className="w-[5px] h-[15px] rounded"
+                      style={{ background: `${item.asset.color}` }}
+                    ></div>
+                    <div>{item.asset.symbol}</div>
+                  </div>
+                );
+              })}
             </div>
             <div className="mt-8 flex gap-x-16 text-xs font-[400]">
               <div>
-                <div>Liquidation threshold</div>
-                <div>40%</div>
+                <div className="flex gap-x-2">
+                  <div className="font-bold">Liquidation threshold</div>
+                  <Image src={InfoIcon} alt="Info Icon" />
+                </div>
+                <div className="mt-2">
+                  {formatAsPercentage(
+                    parseBigNumberToFloat(marketInfo.liquidationThreshold)
+                  )}
+                </div>
               </div>
               <div>
-                <div>Liquidation Penalty</div>
-                <div>5.00%</div>
+                <div className="flex gap-x-2">
+                  <div className="font-bold">Liquidation Penalty</div>
+                  <Image src={InfoIcon} alt="Info Icon" />
+                </div>
+                <div className="mt-2">
+                  {formatAsPercentage(
+                    parseBigNumberToFloat(marketInfo.liquidationPenalty)
+                  )}
+                </div>
               </div>
             </div>
             <div className="mt-8">
               <div className="text-white text-sm font-bold">MY COLLATERAL</div>
-              <div className="button-gradient-text">$1.24 M</div>
+              <div className="card-gradient-text font-bold text-2xl w-fit mt-2">
+                {formatCurrency(
+                  parseBigNumberToFloat(accountInfo?.totalCollateralValue)
+                )}
+              </div>
             </div>
           </div>
         </div>
-        <div className="w-full h-10 rounded mt-4 bg-[#ffffff05] px-8 grid grid-cols-4 text-white items-center">
+        <div className="w-full h-10 rounded mt-4 bg-[#ffffff05] px-8 flex justify-between text-white items-center">
           {collateralHeaderItems.map((item, index) => {
             return (
               <div
                 key={index}
-                className="text-[#ffffff60] text-xs font-semibold col-span-1"
+                className="text-[#ffffff60] text-xs font-semibold w-28"
               >
                 {item}
               </div>
@@ -81,76 +108,42 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
           })}
         </div>
         <div className="px-8 mt-4">
-          <div className="grid grid-cols-4 text-white text-sm font-bold justify-end">
-            <div className="rounded-full w-8 h-8 bg-[#ffffff20] flex self-center col-span-1"></div>
-            <div className="flex flex-col col-span-1">
-              <span>201K USDC</span>
-              <span className="text-[#ffffff50] mt-1">$201K</span>
+          {collateralInfo?.map((item, index) => (
+            <div
+              className="flex justify-between text-white text-sm font-bold mt-3"
+              key={index}
+            >
+              <div className="w-28">
+                <div className="flex items-center gap-x-2">
+                  <Image
+                    src={item.asset.logo}
+                    alt={item.asset.name}
+                    className="w-6 h-6"
+                  />
+                  <div className="font-bold text-sm">{item.asset.symbol}</div>
+                </div>
+              </div>
+              <div className="flex flex-col w-28">
+                <span>
+                  {item.amountDeposited} {item.asset.symbol}
+                </span>
+                <span className="text-[#ffffff50] mt-1">
+                  {formatCurrency(item.value)}
+                </span>
+              </div>
+              <div className="flex flex-col w-28">
+                <span>
+                  {item.myCollateralAmount} {item.asset.symbol}
+                </span>
+                <span className="text-[#ffffff50] mt-1">
+                  {item.myCollateralValue}
+                </span>
+              </div>
+              <div className="w-28 pl-1">
+                <span>{item.collateralFactor}</span>
+              </div>
             </div>
-            <div className="flex flex-col col-span-1">
-              <span>126.35 USDC</span>
-              <span className="text-[#ffffff50] mt-1">$126.26</span>
-            </div>
-            <div className="flex items-center col-span-1">
-              <span>75.00%</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-4 text-white text-sm font-bold justify-end mt-3">
-            <div className="rounded-full w-8 h-8 bg-[#ffffff20] flex self-center col-span-1"></div>
-            <div className="flex flex-col col-span-1">
-              <span>201K USDC</span>
-              <span className="text-[#ffffff50] mt-1">$201K</span>
-            </div>
-            <div className="flex flex-col col-span-1">
-              <span>126.35 USDC</span>
-              <span className="text-[#ffffff50] mt-1">$126.26</span>
-            </div>
-            <div className="flex items-center col-span-1">
-              <span>75.00%</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-4 text-white text-sm font-bold justify-end mt-3">
-            <div className="rounded-full w-8 h-8 bg-[#ffffff20] flex self-center col-span-1"></div>
-            <div className="flex flex-col col-span-1">
-              <span>201K USDC</span>
-              <span className="text-[#ffffff50] mt-1">$201K</span>
-            </div>
-            <div className="flex flex-col col-span-1">
-              <span>126.35 USDC</span>
-              <span className="text-[#ffffff50] mt-1">$126.26</span>
-            </div>
-            <div className="flex items-center col-span-1">
-              <span>75.00%</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-4 text-white text-sm font-bold justify-end mt-3">
-            <div className="rounded-full w-8 h-8 bg-[#ffffff20] flex self-center col-span-1"></div>
-            <div className="flex flex-col col-span-1">
-              <span>201K USDC</span>
-              <span className="text-[#ffffff50] mt-1">$201K</span>
-            </div>
-            <div className="flex flex-col col-span-1">
-              <span>126.35 USDC</span>
-              <span className="text-[#ffffff50] mt-1">$126.26</span>
-            </div>
-            <div className="flex items-center col-span-1">
-              <span>75.00%</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-4 text-white text-sm font-bold justify-end mt-3">
-            <div className="rounded-full w-8 h-8 bg-[#ffffff20] flex self-center col-span-1"></div>
-            <div className="flex flex-col col-span-1">
-              <span>201K USDC</span>
-              <span className="text-[#ffffff50] mt-1">$201K</span>
-            </div>
-            <div className="flex flex-col col-span-1">
-              <span>126.35 USDC</span>
-              <span className="text-[#ffffff50] mt-1">$126.26</span>
-            </div>
-            <div className="flex items-center col-span-1">
-              <span>75.00%</span>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>

@@ -36,6 +36,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0xeC7D6a60d7367681e42b1c153d38cBCde55f786D",
         logo: usdcLogo,
         decimals: 6,
+        color: "#3498db",
       },
       "0x99759489e8F7f42a72204f1e516Fab7ea39B8e42": {
         name: "Tether USD",
@@ -43,13 +44,15 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0x99759489e8F7f42a72204f1e516Fab7ea39B8e42",
         logo: usdtLogo,
         decimals: 6,
+        color: "#1abc9c",
       },
       "0xFcA37314E6E1e399e7054C14B2746f3BC9F33fEB": {
-        name: "DAI Stable coin",
+        name: "DAI Stablecoin",
         symbol: "DAI",
         address: "0xFcA37314E6E1e399e7054C14B2746f3BC9F33fEB",
         logo: daiLogo,
         decimals: 18,
+        color: "#e74c3c",
       },
       "0xc1e5599f1ac90995762302D946AF619bD9824813": {
         name: "Wrapped ETH",
@@ -57,6 +60,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0xc1e5599f1ac90995762302D946AF619bD9824813",
         logo: etheruemLogo,
         decimals: 18,
+        color: "#2ecc71",
       },
       "0xFe09e4d727Eda07D5C0e961EbE04c7c0f0B0C2C6": {
         name: "Wrapped Bitcoin",
@@ -64,6 +68,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0xFe09e4d727Eda07D5C0e961EbE04c7c0f0B0C2C6",
         logo: bitcoinLogo,
         decimals: 8,
+        color: "#9b59b6",
       },
     },
   },
@@ -90,13 +95,15 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0x311F0DD563582f7a94ED605429446dCc6bA68bBF",
         logo: usdcLogo,
         decimals: 6,
+        color: "#3498db",
       },
       "0x0dbb7d305434d01cd9E408b0ddc5A227d563a921": {
         name: "Tether USD",
         symbol: "USDT",
-        address: "0x0dbb7d305434d01cd9E408b0ddc5A227d563a921",
+        address: "0x0dbb7d305434d01cd9e408b0ddc5a227d563a921",
         logo: usdtLogo,
         decimals: 6,
+        color: "#2ecc71",
       },
       "0xCBfa283cCc60CF5151AAf5f73F9513e7321c8483": {
         name: "DAI Stablecoin",
@@ -104,6 +111,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0xCBfa283cCc60CF5151AAf5f73F9513e7321c8483",
         logo: daiLogo,
         decimals: 18,
+        color: "#e74c3c",
       },
       "0x94562B7899fdFd58fDD3a7cc98Ec928568e19aD6": {
         name: "Wrapped ETH",
@@ -111,6 +119,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0x94562B7899fdFd58fDD3a7cc98Ec928568e19aD6",
         logo: etheruemLogo,
         decimals: 18,
+        color: "#f39c12",
       },
       "0x3266275A2D62BE0634146DF767E8505A2173708E": {
         name: "Wrapped Bitcoin",
@@ -118,6 +127,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0x3266275A2D62BE0634146DF767E8505A2173708E",
         logo: bitcoinLogo,
         decimals: 8,
+        color: "#9b59b6",
       },
       "0x513a37DfC7D17Bb285FF771D9b60853c55aD0C65": {
         name: "Arbitrum",
@@ -125,38 +135,39 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0x513a37DfC7D17Bb285FF771D9b60853c55aD0C65",
         logo: arbtrumLogo,
         decimals: 18,
+        color: "#1abc9c",
       },
-
       "0xd81c875c667f3930A4edC67776f3C0C5CC777AE9": {
         name: "GMX",
         symbol: "GMX",
         address: "0xd81c875c667f3930A4edC67776f3C0C5CC777AE9",
         logo: gmxLogo,
         decimals: 18,
+        color: "#bfbf2b",
       },
-
       "0xaEea70F81C41A2Af80DE86467eeBB51A2DAB6fb3": {
         name: "Radiant",
         symbol: "RDNT",
         address: "0xaEea70F81C41A2Af80DE86467eeBB51A2DAB6fb3",
         logo: radiantLogo,
         decimals: 18,
+        color: "#e67e22",
       },
-
       "0x2243C1F4FbB5F67bE6D349cB4b744c3CcEDB38cA": {
         name: "Uniswap",
         symbol: "UNI",
         address: "0x2243C1F4FbB5F67bE6D349cB4b744c3CcEDB38cA",
         logo: uniswapLogo,
         decimals: 18,
+        color: "#3498db",
       },
-
       "0x6a13988035609CbBa58894144DBF83c9dACA2f83": {
         name: "AAVE",
         symbol: "AAVE",
         address: "0x6a13988035609CbBa58894144DBF83c9dACA2f83",
         logo: aaveLogo,
         decimals: 18,
+        color: "#c0392b",
       },
     },
   },

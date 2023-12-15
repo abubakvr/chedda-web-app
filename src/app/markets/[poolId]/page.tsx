@@ -1,21 +1,39 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { MarketInfoCard, SummaryCard } from "@/components/cards";
-import { getPoolSummaryData } from "@/utils/formatResponse";
+import {
+  formatCollateralInfo,
+  getPoolSummaryData,
+} from "@/utils/formatResponse";
 import { useParams, useRouter } from "next/navigation";
-import { usePoolStats, useAccountInfo, useMarketInfo } from "@/hooks";
+import {
+  usePoolStats,
+  useAccountInfo,
+  useMarketInfo,
+  useCollateralInfo,
+  useEnvironment,
+} from "@/hooks";
 import { SummaryHeader } from "@/components/ui";
 import { MyInformationCard } from "@/components/cards";
 import { CollateralInfoCard } from "@/components/cards/collateralInfoCard/CollateralInfoCard";
 
 const Page = () => {
   const { poolId } = useParams();
+  const { currentEnvironment } = useEnvironment();
   const { poolStats, isLoading } = usePoolStats(poolId.toString());
   const { accountInfo, isLoading: accountInfoLoading } = useAccountInfo(
     poolId.toString()
   );
   const { marketInfo, isLoading: marketInfoLoading } = useMarketInfo(
     poolId.toString()
+  );
+  const { data, isLoading: collateralInfoLoading } = useCollateralInfo(
+    poolId.toString()
+  );
+  const collateralInfo = formatCollateralInfo(
+    data,
+    currentEnvironment?.tokens ?? {},
+    accountInfo?.collateralDeposited
   );
 
   return (
@@ -51,9 +69,12 @@ const Page = () => {
       <div className="mt-8 w-full flex space-x-5">
         <div className="w-[67%] h-fit pool-card rounded-lg">
           <CollateralInfoCard
-            asset={poolStats?.asset}
+            collateralInfo={collateralInfo ?? []}
+            accountInfo={accountInfo}
             marketInfo={marketInfo}
-            isLoading={marketInfoLoading}
+            isLoading={
+              collateralInfoLoading || marketInfoLoading || accountInfoLoading
+            }
           />
         </div>
         <div className="w-[33%] text-white flex flex-col gap-y-6">
