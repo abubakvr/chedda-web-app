@@ -14,13 +14,13 @@ const Page = () => {
       data-testid="page-container"
     >
       <div
-        className="text-white mt-5 font-open-sans text-2xl xl:text-3xl font-semibold tracking-normal uppercase"
+        className="text-white py-8 font-open-sans text-2xl xl:text-3xl font-bold tracking-normal uppercase"
         data-testid="markets-heading"
       >
         MARKETS
       </div>
       <div
-        className="grid grid-cols-2 gap-x-2 gap-y-2 lg:flex lg:gap-x-0 mt-5 lg:space-x-3 xl:space-x-5 flex-wrap lg:flex-nowrap"
+        className="grid grid-cols-2 gap-x-2 gap-y-2 lg:flex lg:gap-x-0 lg:space-x-3 xl:space-x-5 flex-wrap lg:flex-nowrap"
         data-testid="market-info-container"
       >
         {aggregateStatsInfo?.map((data, index) => (

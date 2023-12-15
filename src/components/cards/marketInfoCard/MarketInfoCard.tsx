@@ -34,12 +34,12 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
 
   return (
     <div className="flex flex-col justify-between">
-      <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center uppercase font-bold">
-        <div className="text-white text-opacity-50 font-bold text-lg">
+      <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">
+        <div className="text-white text-opacity-50 font-bold text-sm uppercase">
           Market Information
         </div>
       </div>
-      <div className="p-8">
+      <div className="p-8 pb-3">
         {[
           {
             label: "Oracle Price",
@@ -73,7 +73,7 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
             ),
           },
         ].map(({ label, value }, index) => (
-          <div key={index} className="flex justify-between pb-4">
+          <div key={index} className="flex justify-between pb-5">
             <div className="opacity-50 text-sm">{label}</div>
             <div className="text-sm font-bold">{value}</div>
           </div>

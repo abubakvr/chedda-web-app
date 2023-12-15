@@ -54,8 +54,8 @@ export const HeaderComponent: React.FC = () => {
 
   return (
     <div
-      className={`h-20 xl:h-24 flex app-header items-center w-full border-b border-gray-800 ${
-        isScrolled && " w-full fixed -mt-5 opacity-100 z-50"
+      className={` w-full h-20 xl:h-24 fixed opacity-100 flex z-50 app-header items-center ${
+        isScrolled && "border-b  border-gray-800"
       }`}
       data-testid="header-component"
     >
@@ -78,7 +78,7 @@ export const HeaderComponent: React.FC = () => {
             data-testid="chedda-logo"
           />
         </div>
-        <div className="hidden lg:flex flex-row text-white space-x-10 mt-2 text-sm sm:text-lg font-normal">
+        <div className="hidden lg:flex flex-row text-white space-x-10 mt-2 text-lg sm:text-lg font-normal">
           {menuItems.map((item, index) => (
             <Link
               key={index}

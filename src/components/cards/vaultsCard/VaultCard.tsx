@@ -36,18 +36,18 @@ export const VaultCard = () => {
         <div className="flex justify-between">
           <div
             data-testid="vaults-title"
-            className="text-white font-open-sans text-xl sm:text-2xl xl:text-3xl font-semibold leading-9 tracking-wider flex flex-col justify-center items-cente"
+            className="text-white font-open-sans text-xl sm:text-2xl xl:text-3xl font-bold leading-9 tracking-wider flex flex-col justify-center items-cente"
           >
-            Vaults
+            Lending Pools
           </div>
           <div
             data-testid="search-input"
-            className="flex flex-col justify-center items-center gap-4 h-8 sm:h-11 rounded-md border border-white border-opacity-60 bg-transparent focus:border-blue mt-1"
+            className="flex flex-col justify-center items-center gap-4 h-8 sm:h-11 rounded-md border border-white border-opacity-50 bg-transparent focus:border-blue mt-1"
           >
             <div className="relative">
               <input
                 type="text"
-                className="w-48 sm:w-72 h-full bg-transparent focus:outline-none  text-white pl-3 pr-10"
+                className="w-48 sm:w-64 h-full bg-transparent focus:outline-none  text-white pl-3 pr-10"
                 placeholder="Search"
                 onChange={handleSearch}
               />

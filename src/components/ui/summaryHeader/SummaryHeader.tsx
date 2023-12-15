@@ -4,8 +4,8 @@ import Image, { StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
 
 interface SummaryProps {
-  logoSrc: StaticImageData;
-  assetName: string;
+  logoSrc?: StaticImageData;
+  assetName?: string;
 }
 
 export const SummaryHeader = ({ logoSrc, assetName }: SummaryProps) => {
@@ -16,12 +16,9 @@ export const SummaryHeader = ({ logoSrc, assetName }: SummaryProps) => {
   };
 
   return (
-    <div
-      className="flex space-x-3 mt-5 items-center"
-      data-testid="summary-header"
-    >
+    <div className="flex my-7 items-center" data-testid="summary-header">
       <button
-        className="text-white hover:opacity-80"
+        className="text-white hover:opacity-80 mr-5"
         onClick={navigateToMarkets}
         data-testid="back-button"
       >
@@ -33,20 +30,28 @@ export const SummaryHeader = ({ logoSrc, assetName }: SummaryProps) => {
           priority={true}
         />
       </button>
-      <Image
-        src={logoSrc}
-        width={30}
-        className="h-10 w-10 hidden lg:flex"
-        alt="coin Logo"
-        data-testid="coin-logo"
-        priority={true}
-      />
-      <div
-        className="text-white text-2xl tracking-normal uppercase font-semibold"
-        data-testid="asset-name"
-      >
-        {assetName}
-      </div>
+      {assetName && logoSrc ? (
+        <div className="gap-x-2 flex items-center">
+          <Image
+            src={logoSrc}
+            width={30}
+            className="h-10 w-10 hidden lg:flex"
+            alt="coin Logo"
+            data-testid="coin-logo"
+            priority={true}
+          />
+          <div
+            className="text-white text-2xl font-bold"
+            data-testid="asset-name"
+          >
+            {assetName}
+          </div>
+        </div>
+      ) : (
+        <div className="flex mt-3 rounded animate-pulse">
+          <div className="h-10 bg-blue-400 rounded-md dark:bg-blue-400 opacity-20 w-48 mb-2.5"></div>
+        </div>
+      )}
     </div>
   );
 };

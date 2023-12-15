@@ -52,13 +52,13 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
               data-testid="asset-name"
             />
             <div
-              className="font-bold ml-2 tracking-widest"
+              className="ml-2 tracking-widest text-lg font-bold"
               data-testid="asset-symbol"
             >
               {pool.asset.symbol}
             </div>
           </div>
-          <div className="defi-box uppercase h-6 w-20 mt-3 flex items-center justify-center text-[10px] font-semibold">
+          <div className="defi-box uppercase h-6 w-20 mt-3 flex items-center justify-center text-[10px] font-bold">
             {pool.characterization}
           </div>
         </div>
@@ -77,13 +77,13 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           </div>
           <div
             ref={elementRef}
-            className={`h-10 -w-fit font-bold flex flex-wrap m-0 gap-x-1 text-ellipsis overflow-hidden`}
+            className={`max-h-10 w-fit font-bold flex flex-wrap m-0 gap-x-1 text-ellipsis overflow-hidden`}
             data-testid="collaterals-list"
           >
             {!showEllipses &&
               pool.collaterals.map((collateral: any, i: number) => (
                 <div
-                  className="flex justify-start items-start text-ellipsis"
+                  className="flex text-sm font-bold justify-start items-start text-ellipsis"
                   key={i}
                 >
                   {collateral.symbol}
@@ -109,7 +109,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
               <div data-testid="supplied">
                 {formatLargeNumber(pool.supplied)} {pool.asset.symbol}
               </div>
-              <div className="opacity-50" data-testid="supplied-value">
+              <div className="opacity-50 mt-1.5" data-testid="supplied-value">
                 {formatCurrency(pool.suppliedValue)}
               </div>
             </div>
@@ -127,7 +127,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
               <div data-testid="borrowed">
                 {formatLargeNumber(pool.borrowed)} {pool.asset.symbol}
               </div>
-              <div className="opacity-50" data-testid="borrowed-value">
+              <div className="opacity-50 mt-1.5" data-testid="borrowed-value">
                 {formatCurrency(pool.borrowedValue)}
               </div>
             </div>
