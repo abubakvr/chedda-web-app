@@ -7,18 +7,24 @@ import {
   useAccountInfo,
   useTokenBalance,
   useMarketInfo,
+  useCollateralInfo,
+  useEnvironment,
 } from "@/hooks";
 import { getPoolSummaryData } from "@/utils/formatResponse";
 import {
   mockAccountInfo,
+  mockCollateralInfo,
+  mockCurrentEnvironment,
   mockMarketInfo,
   mockPoolStats,
 } from "@/utils/Mocks/MockTestData";
 
 jest.mock("ethers");
+jest.mock("chart.js");
 jest.mock("../../../../hooks/usePools");
-jest.mock("../../../../hooks/usePoolInfo");
+jest.mock("../../../../hooks/useCheddaInfo");
 jest.mock("../../../../hooks/useTokenBalance");
+jest.mock("../../../../hooks/useEnvironment");
 
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),
@@ -27,27 +33,29 @@ jest.mock("next/navigation", () => ({
 
 jest.mock("../../../../utils/formatResponse", () => ({
   getPoolSummaryData: jest.fn(),
+  formatCollateralInfo: jest.fn(),
 }));
 
-const mockUsePools = usePoolStats as jest.MockedFunction<typeof usePoolStats>;
-const mockUseAccountInfo = useAccountInfo as jest.MockedFunction<
-  typeof useAccountInfo
+const mockUseEnvironment = useEnvironment as jest.MockedFunction<
+  typeof useEnvironment
 >;
 
-describe("Page component", () => {
+const mockUsePools = usePoolStats as jest.MockedFunction<typeof usePoolStats>;
+
+describe("Pool details component", () => {
   const mockPoolId = "mockPoolId";
 
   beforeEach(() => {
     (useParams as jest.Mock).mockReturnValue({ poolId: mockPoolId });
+    (mockUseEnvironment as jest.Mock).mockReturnValue({
+      currentEnvironment: mockCurrentEnvironment,
+      switchEnvironment: jest.fn(),
+    });
   });
 
   it("renders pool details when data is available", async () => {
     (mockUsePools as jest.Mock).mockReturnValue({
       poolStats: mockPoolStats[0],
-      isLoading: false,
-    });
-    (mockUseAccountInfo as jest.Mock).mockReturnValue({
-      accountInfo: mockAccountInfo,
       isLoading: false,
     });
     (getPoolSummaryData as jest.Mock).mockReturnValue([
@@ -58,7 +66,15 @@ describe("Page component", () => {
       tokenBalance: "1000",
     }));
     (useMarketInfo as jest.Mock).mockImplementation(() => ({
-      marketInfo: mockMarketInfo,
+      data: mockMarketInfo,
+      isLoading: false,
+    }));
+    (useCollateralInfo as jest.Mock).mockImplementation(() => ({
+      data: mockCollateralInfo,
+      isLoading: false,
+    }));
+    (useAccountInfo as jest.Mock).mockImplementation(() => ({
+      data: mockAccountInfo,
       isLoading: false,
     }));
 
@@ -67,18 +83,20 @@ describe("Page component", () => {
     // Wait for the pool details to be rendered
     await waitFor(() => {
       expect(screen.getByTestId("pool-container")).toBeInTheDocument();
-      expect(screen.getByTestId("summary-card-container")).toBeInTheDocument();
       expect(screen.getByTestId("summary-card")).toBeInTheDocument();
+      expect(screen.getByTestId("my-information-card")).toBeInTheDocument();
+      expect(screen.getByTestId("market-info-card")).toBeInTheDocument();
+      expect(screen.getByTestId("collateral-info-card")).toBeInTheDocument();
     });
   });
 
   it("renders loading state when data is still loading", async () => {
     (usePoolStats as jest.Mock).mockReturnValue({
-      poolStats: null,
+      data: null,
       isLoading: true,
     });
     (useAccountInfo as jest.Mock).mockReturnValue({
-      accountInfo: null,
+      data: null,
       isLoading: true,
     });
     (useTokenBalance as jest.Mock).mockImplementation(() => ({
@@ -86,7 +104,11 @@ describe("Page component", () => {
       tokenBalance: "1000",
     }));
     (useMarketInfo as jest.Mock).mockImplementation(() => ({
-      marketInfo: null,
+      data: null,
+      isLoading: false,
+    }));
+    (useCollateralInfo as jest.Mock).mockImplementation(() => ({
+      data: null,
       isLoading: false,
     }));
 
@@ -97,6 +119,9 @@ describe("Page component", () => {
       expect(screen.getByTestId("pool-container")).toBeInTheDocument();
       expect(screen.getByTestId("summary-card")).toBeInTheDocument();
       expect(screen.getByTestId("loading-element")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("collateral-info-skeleton")
+      ).toBeInTheDocument();
     });
   });
 });

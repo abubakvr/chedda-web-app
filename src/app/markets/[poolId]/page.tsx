@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { MarketInfoCard, SummaryCard } from "@/components/cards";
+import { useParams } from "next/navigation";
 import {
   formatCollateralInfo,
   getPoolSummaryData,
 } from "@/utils/formatResponse";
-import { useParams, useRouter } from "next/navigation";
 import {
   usePoolStats,
   useAccountInfo,
@@ -20,16 +20,15 @@ import { CollateralInfoCard } from "@/components/cards/collateralInfoCard/Collat
 const Page = () => {
   const { poolId } = useParams();
   const { currentEnvironment } = useEnvironment();
-  const { poolStats, isLoading } = usePoolStats(poolId.toString());
-  const { accountInfo, isLoading: accountInfoLoading } = useAccountInfo(
-    poolId.toString()
-  );
-  const { marketInfo, isLoading: marketInfoLoading } = useMarketInfo(
-    poolId.toString()
-  );
-  const { data, isLoading: collateralInfoLoading } = useCollateralInfo(
-    poolId.toString()
-  );
+  const strPoolId = poolId.toString();
+  const { poolStats, isLoading } = usePoolStats(strPoolId);
+  const { data: accountInfo, isLoading: accountInfoLoading } =
+    useAccountInfo(strPoolId);
+  const { data: marketInfo, isLoading: marketInfoLoading } =
+    useMarketInfo(strPoolId);
+  const { data, isLoading: collateralInfoLoading } =
+    useCollateralInfo(strPoolId);
+
   const collateralInfo = formatCollateralInfo(
     data,
     currentEnvironment?.tokens ?? {},

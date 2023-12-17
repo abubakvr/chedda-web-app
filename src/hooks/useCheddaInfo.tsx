@@ -79,7 +79,10 @@ export const getAccountInfo: GetDataFunction<IAccountInfo> = async (
   poolId,
   account
 ) => {
-  return await lens.getPoolAccountInfo(poolId, account);
+  return await lens.getPoolAccountInfo(
+    poolId,
+    "0x3382Bb7214c109f12Ffe8aA9C39BAf7eDB991427"
+  );
 };
 
 export const getMarketInfo: GetDataFunction<IMarketInfo> = async (
@@ -95,6 +98,12 @@ export const getCollateralInfo: GetDataFunction<ICollateralInfo[]> = async (
 ) => {
   return await lens.getPoolCollateral(poolId);
 };
+
+export const useAccountInfo = (poolId: string): HookResult<IAccountInfo> =>
+  useCheddaData<IAccountInfo>(poolId, getAccountInfo);
+
+export const useMarketInfo = (poolId: string): HookResult<IMarketInfo> =>
+  useCheddaData<IMarketInfo>(poolId, getMarketInfo);
 
 export const useCollateralInfo = (
   poolId: string
