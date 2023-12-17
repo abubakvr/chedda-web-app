@@ -79,10 +79,7 @@ export const getAccountInfo: GetDataFunction<IAccountInfo> = async (
   poolId,
   account
 ) => {
-  return await lens.getPoolAccountInfo(
-    poolId,
-    "0x3382Bb7214c109f12Ffe8aA9C39BAf7eDB991427"
-  );
+  return await lens.getPoolAccountInfo(poolId, account);
 };
 
 export const getMarketInfo: GetDataFunction<IMarketInfo> = async (
