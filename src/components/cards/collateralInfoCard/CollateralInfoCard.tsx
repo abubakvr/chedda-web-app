@@ -24,7 +24,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
   marketInfo,
   isLoading,
 }) => {
-  if (isLoading || !marketInfo || !collateralInfo || !accountInfo) {
+  if (isLoading || !marketInfo) {
     return <CollateralInfoSkeleton />;
   }
 
