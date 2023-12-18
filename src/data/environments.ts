@@ -52,7 +52,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0xFcA37314E6E1e399e7054C14B2746f3BC9F33fEB",
         logo: daiLogo,
         decimals: 18,
-        color: "#e74c3c",
+        color: "#FFC26F",
       },
       "0xc1e5599f1ac90995762302D946AF619bD9824813": {
         name: "Wrapped ETH",
@@ -60,7 +60,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0xc1e5599f1ac90995762302D946AF619bD9824813",
         logo: etheruemLogo,
         decimals: 18,
-        color: "#2ecc71",
+        color: "#687EFF",
       },
       "0xFe09e4d727Eda07D5C0e961EbE04c7c0f0B0C2C6": {
         name: "Wrapped Bitcoin",
@@ -68,7 +68,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0xFe09e4d727Eda07D5C0e961EbE04c7c0f0B0C2C6",
         logo: bitcoinLogo,
         decimals: 8,
-        color: "#9b59b6",
+        color: "#FFC436",
       },
     },
   },
@@ -111,7 +111,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0xCBfa283cCc60CF5151AAf5f73F9513e7321c8483",
         logo: daiLogo,
         decimals: 18,
-        color: "#e74c3c",
+        color: "#FFC26F",
       },
       "0x94562B7899fdFd58fDD3a7cc98Ec928568e19aD6": {
         name: "Wrapped ETH",
@@ -119,7 +119,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0x94562B7899fdFd58fDD3a7cc98Ec928568e19aD6",
         logo: etheruemLogo,
         decimals: 18,
-        color: "#f39c12",
+        color: "#687EFF",
       },
       "0x3266275A2D62BE0634146DF767E8505A2173708E": {
         name: "Wrapped Bitcoin",
@@ -127,7 +127,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0x3266275A2D62BE0634146DF767E8505A2173708E",
         logo: bitcoinLogo,
         decimals: 8,
-        color: "#9b59b6",
+        color: "#FFC436",
       },
       "0x513a37DfC7D17Bb285FF771D9b60853c55aD0C65": {
         name: "Arbitrum",
@@ -135,7 +135,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0x513a37DfC7D17Bb285FF771D9b60853c55aD0C65",
         logo: arbtrumLogo,
         decimals: 18,
-        color: "#1abc9c",
+        color: "#D8D8D8",
       },
       "0xd81c875c667f3930A4edC67776f3C0C5CC777AE9": {
         name: "GMX",
@@ -143,7 +143,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0xd81c875c667f3930A4edC67776f3C0C5CC777AE9",
         logo: gmxLogo,
         decimals: 18,
-        color: "#bfbf2b",
+        color: "#85CDFD",
       },
       "0xaEea70F81C41A2Af80DE86467eeBB51A2DAB6fb3": {
         name: "Radiant",
@@ -151,7 +151,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0xaEea70F81C41A2Af80DE86467eeBB51A2DAB6fb3",
         logo: radiantLogo,
         decimals: 18,
-        color: "#e67e22",
+        color: "#0E8388",
       },
       "0x2243C1F4FbB5F67bE6D349cB4b744c3CcEDB38cA": {
         name: "Uniswap",
@@ -159,7 +159,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0x2243C1F4FbB5F67bE6D349cB4b744c3CcEDB38cA",
         logo: uniswapLogo,
         decimals: 18,
-        color: "#3498db",
+        color: "#E26EE5",
       },
       "0x6a13988035609CbBa58894144DBF83c9dACA2f83": {
         name: "AAVE",
@@ -167,7 +167,7 @@ export const environmentConfig: IEnvironmentConfig = {
         address: "0x6a13988035609CbBa58894144DBF83c9dACA2f83",
         logo: aaveLogo,
         decimals: 18,
-        color: "#c0392b",
+        color: "#DDE6ED",
       },
     },
   },
