@@ -1,4 +1,4 @@
-import { IAccountInfo } from "chedda-sdk";
+import { IPoolCollateralInfo } from "chedda-sdk";
 import { StaticImageData } from "next/image";
 import React from "react";
 
@@ -26,6 +26,7 @@ export interface IToken {
   address: string;
   logo: StaticImageData;
   decimals: number;
+  color: string;
 }
 
 export interface ITokenConfig {
@@ -89,4 +90,18 @@ export interface IPoolStatsResponse {
   feesPaid: string | number;
   tvl: string | number;
   collaterals: IToken[];
+}
+
+export interface ICollateralInfo extends IPoolCollateralInfo {
+  decimals: number;
+}
+
+export interface IFormattedCollateral {
+  asset: IToken;
+  decimals: number;
+  value: string;
+  amountDeposited: string;
+  myCollateralValue: string;
+  myCollateralAmount: string;
+  collateralFactor: string;
 }

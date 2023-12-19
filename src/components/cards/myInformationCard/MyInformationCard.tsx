@@ -35,7 +35,10 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
   }
 
   return (
-    <div className="flex flex-col justify-between">
+    <div
+      className="flex flex-col justify-between"
+      data-testid="my-information-card"
+    >
       <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">
         <div className="text-white text-opacity-50 font-bold text-sm uppercase">
           My Information

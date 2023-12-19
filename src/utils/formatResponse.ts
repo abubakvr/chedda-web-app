@@ -1,11 +1,21 @@
-import { IAggregateStats, IPoolStats } from "chedda-sdk";
+import {
+  IAccountCollateralDeposited,
+  IAggregateStats,
+  IPoolStats,
+} from "chedda-sdk";
 import {
   formatAsPercentage,
   formatCurrency,
   formatLargeNumber,
   parseBigNumberToFloat,
 } from "./formatters";
-import { IPoolStatsResponse, IToken, ITokenConfig } from "./types";
+import {
+  ICollateralInfo,
+  IFormattedCollateral,
+  IPoolStatsResponse,
+  IToken,
+  ITokenConfig,
+} from "./types";
 
 export const formatPoolStatsList = (
   response: IPoolStats[],
@@ -133,4 +143,35 @@ export const getPoolSummaryData = (poolSummary?: IPoolStatsResponse) => {
       value: formatAsPercentage(poolSummary?.maxBorrowAPY),
     },
   ];
+};
+
+export const formatCollateralInfo = (
+  collateralInfo: ICollateralInfo[] | undefined,
+  tokens: ITokenConfig,
+  collateralDeposited: IAccountCollateralDeposited[] | undefined
+): IFormattedCollateral[] | undefined => {
+  const data = collateralInfo?.map((item) => {
+    const myCollateral = collateralDeposited?.find(
+      (collateral) => collateral.token === item.collateral
+    );
+    return {
+      asset: tokens[item.collateral],
+      decimals: item.decimals,
+      value: parseBigNumberToFloat(item.value),
+      amountDeposited: formatLargeNumber(
+        parseBigNumberToFloat(item.amountDeposited, item.decimals)
+      ),
+      myCollateralValue: formatCurrency(
+        parseBigNumberToFloat(myCollateral?.value)
+      ),
+      myCollateralAmount: formatLargeNumber(
+        parseBigNumberToFloat(myCollateral?.amount, myCollateral?.decimals)
+      ),
+      collateralFactor: formatAsPercentage(
+        parseBigNumberToFloat(item.collateralFactor)
+      ),
+    };
+  });
+
+  return data;
 };

@@ -1,5 +1,5 @@
 import { StaticImageData } from "next/image";
-import { IPoolStatsResponse } from "../types";
+import { IFormattedCollateral, IPoolStatsResponse } from "../types";
 import { BigNumber, ethers } from "ethers";
 import { IAccountInfo, IPoolStats } from "chedda-sdk";
 
@@ -12,6 +12,7 @@ export const mockPoolStats: IPoolStatsResponse[] = [
       address: "0x123abc",
       logo: {} as StaticImageData,
       decimals: 18,
+      color: "#ffffff",
     },
     characterization: "Characterization1",
     supplied: "1000",
@@ -32,6 +33,7 @@ export const mockPoolStats: IPoolStatsResponse[] = [
         address: "0x456def",
         logo: {} as StaticImageData,
         decimals: 18,
+        color: "#ffffff",
       },
       {
         name: "CollateralToken2",
@@ -39,6 +41,7 @@ export const mockPoolStats: IPoolStatsResponse[] = [
         address: "0x789ghi",
         logo: {} as StaticImageData,
         decimals: 18,
+        color: "#ffffff",
       },
     ],
   },
@@ -50,6 +53,7 @@ export const mockPoolStats: IPoolStatsResponse[] = [
       address: "0xfed321",
       logo: {} as StaticImageData,
       decimals: 18,
+      color: "#ffffff",
     },
     characterization: "Characterization3",
     supplied: "1200",
@@ -70,6 +74,7 @@ export const mockPoolStats: IPoolStatsResponse[] = [
         address: "0x321fed",
         logo: {} as StaticImageData,
         decimals: 18,
+        color: "#ffffff",
       },
       {
         name: "CollateralToken6",
@@ -77,6 +82,7 @@ export const mockPoolStats: IPoolStatsResponse[] = [
         address: "0x987cba",
         logo: {} as StaticImageData,
         decimals: 18,
+        color: "#ffffff",
       },
     ],
   },
@@ -142,6 +148,7 @@ export const mockCurrentEnvironment = {
       address: "0x321fed",
       logo: {} as StaticImageData,
       decimals: 18,
+      color: "#FFFFFF",
     },
     35234: {
       name: "CollateralToken6",
@@ -149,6 +156,7 @@ export const mockCurrentEnvironment = {
       address: "0x987cba",
       logo: {} as StaticImageData,
       decimals: 18,
+      color: "#FFFFFF",
     },
   },
 };
@@ -185,7 +193,7 @@ export const mockAccountInfo: IAccountInfo = {
   supplied: BigNumber.from(1000),
   borrowed: BigNumber.from(500),
   decimals: 2,
-  healthFactor: BigNumber.from(2.5),
+  healthFactor: BigNumber.from(250),
   totalCollateralValue: BigNumber.from(20000),
   collateralDeposited: [
     {
@@ -213,3 +221,38 @@ export const mockMarketInfo = {
   liquidationThreshold: BigNumber.from("7500"),
   liquidationPenalty: BigNumber.from("1500"),
 };
+
+export const mockCollateralInfo: IFormattedCollateral[] = [
+  {
+    asset: {
+      name: "Token1",
+      symbol: "T1",
+      address: "0xabcdef",
+      logo: {} as StaticImageData, // Replace with your actual image mock
+      decimals: 18,
+      color: "#FFAABB", // Replace with your actual color
+    },
+    decimals: 18,
+    value: "1000",
+    amountDeposited: "500",
+    myCollateralValue: "250",
+    myCollateralAmount: "50",
+    collateralFactor: "1.5",
+  },
+  {
+    asset: {
+      name: "Token2",
+      symbol: "T2",
+      address: "0xfedcba",
+      logo: {} as StaticImageData, // Replace with your actual image mock
+      decimals: 18,
+      color: "#112233", // Replace with another color
+    },
+    decimals: 18,
+    value: "2000",
+    amountDeposited: "1000",
+    myCollateralValue: "500",
+    myCollateralAmount: "100",
+    collateralFactor: "2.0",
+  },
+];

@@ -1,26 +1,39 @@
 "use client";
 import React from "react";
 import { MarketInfoCard, SummaryCard } from "@/components/cards";
-import { getPoolSummaryData } from "@/utils/formatResponse";
-import { useParams, useRouter } from "next/navigation";
-import { usePoolStats, useAccountInfo, useMarketInfo } from "@/hooks";
+import { useParams } from "next/navigation";
+import {
+  formatCollateralInfo,
+  getPoolSummaryData,
+} from "@/utils/formatResponse";
+import {
+  usePoolStats,
+  useAccountInfo,
+  useMarketInfo,
+  useCollateralInfo,
+  useEnvironment,
+} from "@/hooks";
 import { SummaryHeader } from "@/components/ui";
 import { MyInformationCard } from "@/components/cards";
+import { CollateralInfoCard } from "@/components/cards/collateralInfoCard/CollateralInfoCard";
 
 const Page = () => {
   const { poolId } = useParams();
-  const { poolStats, isLoading } = usePoolStats(poolId.toString());
-  const { accountInfo, isLoading: accountInfoLoading } = useAccountInfo(
-    poolId.toString()
-  );
-  const { marketInfo, isLoading: marketInfoLoading } = useMarketInfo(
-    poolId.toString()
-  );
-  const router = useRouter();
+  const { currentEnvironment } = useEnvironment();
+  const strPoolId = poolId.toString();
+  const { poolStats, isLoading } = usePoolStats(strPoolId);
+  const { data: accountInfo, isLoading: accountInfoLoading } =
+    useAccountInfo(strPoolId);
+  const { data: marketInfo, isLoading: marketInfoLoading } =
+    useMarketInfo(strPoolId);
+  const { data, isLoading: collateralInfoLoading } =
+    useCollateralInfo(strPoolId);
 
-  const navigateToMarkets = () => {
-    router.push("/markets");
-  };
+  const collateralInfo = formatCollateralInfo(
+    data,
+    currentEnvironment?.tokens ?? {},
+    accountInfo?.collateralDeposited
+  );
 
   return (
     <div
@@ -46,26 +59,34 @@ const Page = () => {
           />
         ))}
       </div>
-      <div className="mt-8 h-auto w-full flex space-x-5">
-        <div className="w-[67%] pool-card rounded-lg"></div>
-        <div className="w-[33%] pool-card rounded-lg text-white">
-          <MyInformationCard
-            poolStats={poolStats}
+      <div className="mt-8 w-full flex space-x-5">
+        <div className="w-[67%] h-fit pool-card rounded-lg">
+          <CollateralInfoCard
+            collateralInfo={collateralInfo ?? []}
             accountInfo={accountInfo}
-            isLoading={accountInfoLoading}
-            onBorrowClick={() => {}}
-            onSupplyClick={() => {}}
+            marketInfo={marketInfo}
+            isLoading={
+              collateralInfoLoading || marketInfoLoading || accountInfoLoading
+            }
           />
         </div>
-      </div>
-      <div className="mt-8 h-auto w-full flex space-x-5">
-        <div className="w-[67%] pool-card rounded-lg"></div>
-        <div className="w-[33%] pool-card rounded-lg text-white">
-          <MarketInfoCard
-            asset={poolStats?.asset}
-            marketInfo={marketInfo}
-            isLoading={marketInfoLoading}
-          />
+        <div className="w-[33%] text-white flex flex-col gap-y-6">
+          <div className="pool-card rounded-lg">
+            <MyInformationCard
+              poolStats={poolStats}
+              accountInfo={accountInfo}
+              isLoading={accountInfoLoading}
+              onBorrowClick={() => {}}
+              onSupplyClick={() => {}}
+            />
+          </div>
+          <div className="pool-card rounded-lg">
+            <MarketInfoCard
+              asset={poolStats?.asset}
+              marketInfo={marketInfo}
+              isLoading={marketInfoLoading}
+            />
+          </div>
         </div>
       </div>
     </div>
