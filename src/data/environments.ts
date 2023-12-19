@@ -137,18 +137,18 @@ export const environmentConfig: IEnvironmentConfig = {
         decimals: 18,
         color: "#D8D8D8",
       },
-      "0xd81c875c667f3930A4edC67776f3C0C5CC777AE9": {
+      "0x4240266f97359B94B9762B23BE747a82fe2F1EbC": {
         name: "GMX",
         symbol: "GMX",
-        address: "0xd81c875c667f3930A4edC67776f3C0C5CC777AE9",
+        address: "0x4240266f97359B94B9762B23BE747a82fe2F1EbC",
         logo: gmxLogo,
         decimals: 18,
         color: "#85CDFD",
       },
-      "0xaEea70F81C41A2Af80DE86467eeBB51A2DAB6fb3": {
+      "0xc2d6F66b50b961b0392Fd35772dA2a55f5A2B101": {
         name: "Radiant",
         symbol: "RDNT",
-        address: "0xaEea70F81C41A2Af80DE86467eeBB51A2DAB6fb3",
+        address: "0xc2d6F66b50b961b0392Fd35772dA2a55f5A2B101",
         logo: radiantLogo,
         decimals: 18,
         color: "#0E8388",
