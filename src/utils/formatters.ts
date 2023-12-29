@@ -95,26 +95,39 @@ export const formatCurrency = (number?: string | number) => {
  * Formats a large numeric value with suffixes (K, M, B, T) based on magnitude.
  *
  * @param {string | number | undefined} value - The numeric value to be formatted.
+ * @param {boolean} isFloat - Add a floating point.
  * @returns {string} The formatted string with suffixes (K, M, B, T).
  */
-export const formatLargeNumber = (value?: string | number) => {
+export const formatLargeNumber = (
+  value?: string | number,
+  isFloat: boolean = true
+): string => {
   if (value === undefined) {
     return "0.00";
   }
-  const largerNumber = typeof value === "string" ? parseInt(value) : value;
+
+  const largerNumber = typeof value === "string" ? parseInt(value, 10) : value;
   const absValue = Math.abs(largerNumber);
 
-  if (absValue >= 1e12) {
-    return (largerNumber / 1e12).toFixed(2) + "T";
-  } else if (absValue >= 1e9) {
-    return (largerNumber / 1e9).toFixed(2) + "B";
-  } else if (absValue >= 1e6) {
-    return (largerNumber / 1e6).toFixed(2) + "M";
-  } else if (absValue >= 1e3) {
-    return (largerNumber / 1e3).toFixed(2) + "K";
-  } else {
-    return largerNumber.toFixed(2);
+  const units = ["T", "B", "M", "K", ""];
+  let divisor = 1;
+
+  for (let i = units.length - 1; i >= 1; i--) {
+    const limit = Math.pow(10, i * 3);
+    if (absValue >= limit) {
+      divisor = Math.pow(10, i * 3);
+      break;
+    }
   }
+
+  const formattedNumber = isFloat
+    ? (largerNumber / divisor).toFixed(2)
+    : (largerNumber / divisor).toString();
+
+  return (
+    formattedNumber +
+    units[units.length - 1 - Math.floor(Math.log10(divisor) / 3)]
+  );
 };
 
 /**

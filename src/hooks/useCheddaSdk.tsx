@@ -1,4 +1,4 @@
-import { Chedda } from "chedda-sdk";
+import { Chedda } from "@/chedda-sdk";
 import { useWeb3React } from "@web3-react/core";
 import { useCallback, useEffect, useState } from "react";
 import { useEnvironment } from "./useEnvironment";
