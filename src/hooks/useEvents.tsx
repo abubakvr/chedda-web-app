@@ -34,8 +34,16 @@ export const useEventHistory = (poolId: string) => {
 
         const newEventsToGraph = graphTimes.map((timestamp) => {
           const index = findNearestIndex(sortedNumbers, timestamp);
-          return index !== -1 ? events?.[index] : null;
+          const event = index !== -1 ? events?.[index] : null;
+
+          // Create a new object with the additional property
+          const eventWithTimePoint = event
+            ? { ...event, timePoint: timestamp }
+            : null;
+
+          return eventWithTimePoint;
         });
+        console.log(newEventsToGraph);
 
         setEventsToGraph(newEventsToGraph);
         setLoading(false);

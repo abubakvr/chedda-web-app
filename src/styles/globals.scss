@@ -34,6 +34,11 @@
     #c63de5 86.26%
   );
   --defi-box-gradient: linear-gradient(100deg, #f3943d 10.34%, #fde34d 86.26%);
+  --tooltip-bg: linear-gradient(
+    104deg,
+    rgba(60, 55, 142, 0.9) 18.94%,
+    rgba(39, 86, 152, 0.9) 94.84%
+  );
 }
 
 body {
@@ -94,6 +99,7 @@ body {
 }
 
 .pool-card::before,
+.tooltip-bg::before,
 .summary-card::before {
   content: "";
   position: absolute;
@@ -184,4 +190,27 @@ div.vault-item:last-child {
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
+}
+
+.tooltip-bg {
+  position: relative;
+  background: var(--tooltip-bg);
+}
+
+.borrow-gradient-text {
+  background: linear-gradient(180deg, #d974ff 0%, #c142f0 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.supply-gradient-text {
+  background: linear-gradient(180deg, #75caff 0%, #42adf0 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.recharts-bar-rectangles:hover {
+  fill: none !important;
 }

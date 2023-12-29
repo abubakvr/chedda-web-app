@@ -1,9 +1,18 @@
-import React, { useEffect, useRef } from "react";
-import Chart from "chart.js/auto";
+import React from "react";
+import {
+  BarChart,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Bar,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+} from "recharts";
 import { IFormattedCollateral } from "@/utils/types";
 import { useEventHistory } from "@/hooks";
 import { BigNumber, ethers, utils } from "ethers";
-import { formatLargeNumber } from "@/utils/formatters";
+import { formatAsPercentage, formatLargeNumber } from "@/utils/formatters";
 
 export const parseBigNumberToFloat = (
   val: BigNumber | undefined,
@@ -17,8 +26,71 @@ export const parseBigNumberToFloat = (
   return parseFloat(formatted);
 };
 
+const CustomTooltip = (props: any) => {
+  const firstDataPoint = props?.payload?.[0];
+
+  const formattedDate = (() => {
+    if (firstDataPoint) {
+      const date = new Date(firstDataPoint?.payload?.timePoint * 1000);
+      const monthName = date.toLocaleString("en-US", { month: "short" });
+      const time = date.toLocaleString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: false,
+      });
+      return `${monthName} ${date.getDate()}, ${time}`;
+    }
+    return "";
+  })();
+
+  return (
+    <div className="tooltip-bg rounded-lg p-4 w-44">
+      <div className="text-[#ffffff50] text-xs pb-4 font-bold">
+        {formattedDate && <div>{formattedDate}</div>}
+      </div>
+      <div className="flex justify-between mb-2 text-xs font-bold">
+        <div className="text-[#ffffff60] ">Supplied:</div>
+        <div className="supply-gradient-text">
+          {formatLargeNumber(
+            parseBigNumberToFloat(
+              firstDataPoint?.payload.supplied,
+              props.decimals
+            )
+          )}
+        </div>
+      </div>
+      <div className="flex justify-between mb-2 text-xs font-bold">
+        <div className="text-[#ffffff60] ">Supply APR:</div>
+        <div className="supply-gradient-text">
+          {formatAsPercentage(
+            parseBigNumberToFloat(firstDataPoint?.payload.supplyRate, 18)
+          )}
+        </div>
+      </div>
+      <div className="flex justify-between mb-2 text-xs font-bold">
+        <div className="text-[#ffffff60] ">Borrowed:</div>
+        <div className="borrow-gradient-text">
+          {formatLargeNumber(
+            parseBigNumberToFloat(
+              firstDataPoint?.payload.borrowed,
+              props.decimals
+            )
+          )}
+        </div>
+      </div>
+      <div className="flex justify-between mb-2 text-xs font-bold">
+        <div className="text-[#ffffff60] ">Borrow APR:</div>
+        <div className="borrow-gradient-text">
+          {formatAsPercentage(
+            parseBigNumberToFloat(firstDataPoint?.payload.borrowRate, 18)
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const SuppyAndBorrowChart = ({
-  collateralInfo,
   poolId,
   decimals,
 }: {
@@ -26,222 +98,7 @@ export const SuppyAndBorrowChart = ({
   poolId: string;
   decimals?: number;
 }) => {
-  const lineChartContainer = useRef<HTMLCanvasElement | null>(null);
-  const barChartContainer = useRef<HTMLCanvasElement | null>(null);
-  const lineChartInstance = useRef<any | null>(null);
-  const barChartInstance = useRef<any | null>(null);
-  const { graphTimes, eventsToGraph } = useEventHistory(poolId);
-
-  useEffect(() => {
-    if (
-      lineChartContainer.current &&
-      barChartContainer.current &&
-      collateralInfo.length > 0
-    ) {
-      // Destroy the existing chart instances before creating new ones
-      if (lineChartInstance.current) {
-        lineChartInstance.current.destroy();
-      }
-      if (barChartInstance.current) {
-        barChartInstance.current.destroy();
-      }
-
-      // Line chart data
-      const lineChartData = {
-        labels: graphTimes.map((item) => {
-          const date = new Date(item * 1000);
-          return date.getFullYear();
-        }),
-        datasets: [
-          {
-            label: "Supply Rate",
-            data: eventsToGraph.map(
-              (value) => parseBigNumberToFloat(value?.supplyRate, 18) * 100
-            ),
-            borderColor: "#75CAFF",
-            borderCapStyle: "round" as "round",
-            backgroundColor: "transparent",
-            fill: false,
-            pointRadius: 0,
-            pointHoverRadius: 0,
-          },
-          {
-            label: "Borrow Rate",
-            data: eventsToGraph.map(
-              (value) => parseBigNumberToFloat(value?.borrowRate, 18) * 100
-            ),
-            borderColor: "#C142F0",
-            borderWidth: 4,
-            borderCapStyle: "round" as "round",
-            backgroundColor: "transparent",
-            fill: true,
-            pointRadius: 0,
-            pointHoverRadius: 0,
-          },
-        ],
-      };
-
-      // Bar chart data
-      const barChartData = {
-        labels: graphTimes.map((item) => {
-          const date = new Date(item * 1000);
-          return `${date.getDate()} / ${date.getMonth()}`;
-        }),
-        datasets: [
-          {
-            label: "Borrow",
-            data: eventsToGraph.map((value) =>
-              parseBigNumberToFloat(value?.borrowed, decimals)
-            ),
-            backgroundColor: "#C142F0",
-            borderRadius: 8,
-            borderWidth: 0,
-            stack: "Stack 1",
-          },
-          {
-            label: "Supply",
-            data: eventsToGraph.map(
-              (value) =>
-                parseBigNumberToFloat(value?.supplied, decimals) -
-                parseBigNumberToFloat(value?.borrowed, decimals)
-            ),
-            backgroundColor: "#75CAFF",
-            borderRadius: 8,
-            borderWidth: 0,
-            stack: "Stack 1",
-          },
-        ],
-      };
-
-      // Chart options can be customized here if needed
-      const chartOptions = {
-        maintainAspectRatio: false,
-        plugins: {
-          grid: {
-            display: false,
-          },
-          legend: {
-            display: false,
-          },
-        },
-        scales: {
-          x: {
-            display: false,
-          },
-          y: {
-            grid: {
-              display: false,
-            },
-            ticks: {
-              callback: function (value: any) {
-                return `${value}%`;
-              },
-              maxTicksLimit: 4,
-              font: {
-                size: 8,
-              },
-            },
-          },
-        },
-        tooltips: {
-          mode: "index",
-          intersect: false,
-          callbacks: {
-            label: function (tooltipItem: any) {
-              return `${tooltipItem.yLabel}%`;
-            },
-          },
-        },
-      };
-
-      // Chart options can be customized here if needed
-      const barChartOptions = {
-        maintainAspectRatio: false,
-        barPercentage: 1.05,
-        plugins: {
-          grid: {
-            display: false,
-          },
-          legend: {
-            display: false,
-          },
-        },
-        tooltips: {
-          mode: "index",
-          intersect: false,
-          callbacks: {
-            custom: function (tooltipModel: any) {
-              // Tooltip content customization logic
-              const datasetIndex = tooltipModel.datasetIndex;
-              const dataIndex = tooltipModel.dataIndex;
-              const datasetLabel =
-                barChartData.datasets[datasetIndex].label || "";
-              const value = barChartData.datasets[datasetIndex].data[dataIndex];
-
-              // Customize the tooltip content based on your data
-              return `ffff: ${value}`;
-            },
-          },
-        },
-        scales: {
-          x: {
-            grid: {
-              display: false,
-            },
-            ticks: {
-              autoSkip: false,
-              stepSize: 2,
-              callback: function (value: any, index: any, values: any) {
-                return index % 3 === 0 ? barChartData.labels[index] : "";
-              },
-              font: {
-                size: 8,
-              },
-            },
-          },
-          y: {
-            beginAtZero: true,
-            position: "right" as "right",
-            grid: {
-              display: false,
-            },
-            ticks: {
-              callback: function (value: any) {
-                return `${formatLargeNumber(value, false)}`;
-              },
-              maxTicksLimit: 5,
-              font: {
-                size: 8,
-              },
-            },
-          },
-        },
-      };
-
-      // Create line chart
-      lineChartInstance.current = new Chart(lineChartContainer.current, {
-        type: "line",
-        data: lineChartData,
-        options: chartOptions,
-      });
-
-      // Create bar chart
-      barChartInstance.current = new Chart(barChartContainer.current, {
-        type: "bar",
-        data: barChartData,
-        options: barChartOptions,
-      });
-    }
-
-    return () => {
-      if (lineChartInstance.current) {
-        lineChartInstance.current.destroy();
-      }
-      if (barChartInstance.current) {
-        barChartInstance.current.destroy();
-      }
-    };
-  }, [collateralInfo]);
+  const { eventsToGraph } = useEventHistory(poolId);
 
   return (
     <div>
@@ -250,28 +107,99 @@ export const SuppyAndBorrowChart = ({
           Total Supply and Borrow
         </div>
       </div>
-      <div
-        className="w-full h-fit relative pl-2 pt-7 pr-10"
-        data-testid="chart-container"
-        style={{ height: "170px" }}
-      >
-        <canvas
-          ref={lineChartContainer}
-          data-testid="line-chart"
-          height="200px"
-        ></canvas>
+      <div className="mt-5 pr-5" style={{ height: "170px" }}>
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+          style={{ marginLeft: -30, padding: 0 }}
+        >
+          <LineChart data={eventsToGraph}>
+            <YAxis
+              tickFormatter={(value) => `${value * 100}%`}
+              interval={0}
+              tick={{ fontSize: 8 }}
+              tickCount={3}
+              tickLine={false}
+              axisLine={false}
+            />
+            <Tooltip content={<CustomTooltip decimals={decimals} />} />
+            <Line
+              name="Supply rate"
+              type="monotone"
+              dataKey={(value) => parseBigNumberToFloat(value?.supplyRate, 18)}
+              stroke="#6FBFF7"
+              strokeWidth={4}
+              radius={8}
+              dot={false}
+              activeDot={{ r: 2 }}
+            />
+            <Line
+              name="Borrow rate"
+              type="monotone"
+              dataKey={(value) => parseBigNumberToFloat(value?.borrowRate, 18)}
+              stroke="#D058F5"
+              strokeWidth={4}
+              radius={8}
+              dot={false}
+              activeDot={{ r: 2 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
-      <div
-        className="relative pl-10 pt-1 pr-3 pb-4"
-        data-testid="chart-container"
-        style={{ height: "170px" }}
-      >
-        <canvas
-          ref={barChartContainer}
-          data-testid="bar-chart"
-          className="mt-3"
-        ></canvas>
+      <div className="mt-2" style={{ height: "140px" }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={eventsToGraph}
+            margin={{ left: 30, right: -20, top: 0, bottom: 0 }}
+          >
+            <XAxis
+              interval={3}
+              dataKey="timePoint"
+              tickFormatter={(data) => {
+                const date = new Date(data * 1000);
+                return `${date.getDate()} / ${date.getMonth() + 1}`;
+              }}
+              tick={{ fontSize: 8 }}
+              tickLine={false}
+              axisLine={false}
+            />
+            <YAxis
+              tickFormatter={(value) => formatLargeNumber(value, false)}
+              interval="preserveStartEnd"
+              tick={{ fontSize: 8 }}
+              orientation="right"
+              tickCount={4}
+              tickLine={false}
+              axisLine={false}
+            />
+            <Tooltip
+              content={<CustomTooltip decimals={decimals} />}
+              cursor={{ fill: "transparent" }}
+            />
+            <Bar
+              dataKey={(value) =>
+                parseBigNumberToFloat(value?.borrowed, decimals)
+              }
+              name="Borrow"
+              fill="#D058F5"
+              radius={[0, 0, 8, 8]}
+              stackId="stack"
+            />
+            <Bar
+              dataKey={(value) =>
+                parseBigNumberToFloat(value?.supplied, decimals) -
+                parseBigNumberToFloat(value?.borrowed, decimals)
+              }
+              name="Supply"
+              fill="#6FBFF7"
+              radius={[8, 8, 0, 0]}
+              stackId="stack"
+            />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
 };
+
+export default SuppyAndBorrowChart;
