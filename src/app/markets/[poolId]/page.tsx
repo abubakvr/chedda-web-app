@@ -14,9 +14,8 @@ import {
   useEnvironment,
 } from "@/hooks";
 import { SummaryHeader } from "@/components/ui";
-import { MyInformationCard } from "@/components/cards";
-import { CollateralInfoCard } from "@/components/cards/collateralInfoCard/CollateralInfoCard";
-import { SuppyAndBorrowChart } from "@/components/charts/SuppyAndBorrowChart/SupplyAndBorrowChart";
+import { MyInformationCard, CollateralInfoCard } from "@/components/cards";
+import { SuppyAndBorrowChart } from "@/components/charts";
 
 const Page = () => {
   const { poolId } = useParams();

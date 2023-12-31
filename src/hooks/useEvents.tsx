@@ -2,59 +2,60 @@ import { useState, useEffect } from "react";
 import { ethers, Signer } from "ethers";
 import { IPoolState } from "chedda-sdk";
 import { useCheddaSdk } from "@/hooks";
-import { createTimestamps, findNearestIndex } from "@/utils/findNearestIndex";
+import { createTimestamps, findNearestIndex } from "@/utils/createTimestamps";
 
-export const useEventHistory = (poolId: string) => {
-  const [loading, setLoading] = useState(true);
-  const [eventsToGraph, setEventsToGraph] = useState<
+export const usePoolState = (poolId: string) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [poolStateEvents, setPoolStateEvents] = useState<
     (IPoolState | null | undefined)[]
   >([]);
   const { chedda, signer } = useCheddaSdk();
   const graphTimes = createTimestamps(new Date(), 0.3, 25);
 
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-      if (!chedda || !poolId) return null;
-      console.log(poolId);
-      try {
-        const lendingPool = chedda.lendingPool(poolId, signer as Signer);
-        console.log(lendingPool);
-        const events = await lendingPool.getEventLogs<IPoolState>(
-          "PoolState",
-          0,
-          "latest"
-        );
+  async function fetchData() {
+    setIsLoading(true);
 
-        const sortedNumbers =
-          events?.map((item: IPoolState) => {
-            const numsa = ethers.utils.formatUnits(item.timestamp, 0);
-            return parseInt(numsa);
-          }) || [];
-
-        const newEventsToGraph = graphTimes.map((timestamp) => {
-          const index = findNearestIndex(sortedNumbers, timestamp);
-          const event = index !== -1 ? events?.[index] : null;
-
-          // Create a new object with the additional property
-          const eventWithTimePoint = event
-            ? { ...event, timePoint: timestamp }
-            : null;
-
-          return eventWithTimePoint;
-        });
-        console.log(newEventsToGraph);
-
-        setEventsToGraph(newEventsToGraph);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error in useEventHistory:", error);
-        setLoading(false);
+    try {
+      if (!chedda || !poolId) {
+        return;
       }
-    }
 
+      const lendingPool = chedda.lendingPool(poolId, signer as Signer);
+      const events = await lendingPool.getEventLogs<IPoolState>(
+        "PoolState",
+        0,
+        "latest"
+      );
+
+      const eventTimestamps =
+        events?.map((item: IPoolState) => {
+          const timeStamp = ethers.utils.formatUnits(item.timestamp, 0);
+          return parseInt(timeStamp);
+        }) || [];
+
+      const eventsToGraph = graphTimes.map((timestamp) => {
+        const index = findNearestIndex(eventTimestamps, timestamp);
+        const event = index !== -1 ? events?.[index] : null;
+
+        // Create a new object with the additional property
+        const eventWithTimePoint = event
+          ? { ...event, timePoint: timestamp }
+          : null;
+
+        return eventWithTimePoint;
+      });
+
+      setPoolStateEvents(eventsToGraph);
+      setIsLoading(false);
+    } catch (error: any) {
+      setIsLoading(false);
+      throw new Error("Error in usePoolState: " + error.message);
+    }
+  }
+
+  useEffect(() => {
     fetchData();
   }, [chedda, poolId]);
 
-  return { loading, graphTimes, eventsToGraph };
+  return { isLoading, graphTimes, poolStateEvents, fetchData };
 };

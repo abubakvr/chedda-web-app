@@ -50,7 +50,6 @@ export const CollateralInfoChart = ({
       });
     }
 
-    // Cleanup on component unmount or when the chart needs to be re-rendered
     return () => {
       if (chartInstance.current) {
         chartInstance.current.destroy();

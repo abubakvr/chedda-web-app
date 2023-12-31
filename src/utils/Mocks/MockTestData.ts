@@ -1,7 +1,7 @@
 import { StaticImageData } from "next/image";
 import { IFormattedCollateral, IPoolStatsResponse } from "../types";
 import { BigNumber, ethers } from "ethers";
-import { IAccountInfo, IPoolStats } from "chedda-sdk";
+import { IAccountInfo, IPoolState, IPoolStats } from "chedda-sdk";
 
 export const mockPoolStats: IPoolStatsResponse[] = [
   {
@@ -228,9 +228,9 @@ export const mockCollateralInfo: IFormattedCollateral[] = [
       name: "Token1",
       symbol: "T1",
       address: "0xabcdef",
-      logo: {} as StaticImageData, // Replace with your actual image mock
+      logo: {} as StaticImageData,
       decimals: 18,
-      color: "#FFAABB", // Replace with your actual color
+      color: "#FFAABB",
     },
     decimals: 18,
     value: "1000",
@@ -244,9 +244,9 @@ export const mockCollateralInfo: IFormattedCollateral[] = [
       name: "Token2",
       symbol: "T2",
       address: "0xfedcba",
-      logo: {} as StaticImageData, // Replace with your actual image mock
+      logo: {} as StaticImageData,
       decimals: 18,
-      color: "#112233", // Replace with another color
+      color: "#112233",
     },
     decimals: 18,
     value: "2000",
@@ -254,5 +254,24 @@ export const mockCollateralInfo: IFormattedCollateral[] = [
     myCollateralValue: "500",
     myCollateralAmount: "100",
     collateralFactor: "2.0",
+  },
+];
+
+export const mockPoolStateEvents: IPoolState[] = [
+  {
+    pool: "MockPool1",
+    timestamp: BigNumber.from(1640995200),
+    supplied: BigNumber.from("1000000000000000000"),
+    borrowed: BigNumber.from("500000000000000000"),
+    supplyRate: BigNumber.from("1000000000000000"),
+    borrowRate: BigNumber.from("500000000000000"),
+  },
+  {
+    pool: "MockPool2",
+    timestamp: BigNumber.from(1641081600),
+    supplied: BigNumber.from("1500000000000000000"),
+    borrowed: BigNumber.from("750000000000000000"),
+    supplyRate: BigNumber.from("1500000000000000"),
+    borrowRate: BigNumber.from("750000000000000"),
   },
 ];

@@ -9,6 +9,7 @@ import {
   useMarketInfo,
   useCollateralInfo,
   useEnvironment,
+  usePoolState,
 } from "@/hooks";
 import { getPoolSummaryData } from "@/utils/formatResponse";
 import {
@@ -25,6 +26,7 @@ jest.mock("../../../../hooks/usePools");
 jest.mock("../../../../hooks/useCheddaInfo");
 jest.mock("../../../../hooks/useTokenBalance");
 jest.mock("../../../../hooks/useEnvironment");
+jest.mock("../../../../hooks/useEvents");
 
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),
@@ -50,6 +52,10 @@ describe("Pool details component", () => {
     (mockUseEnvironment as jest.Mock).mockReturnValue({
       currentEnvironment: mockCurrentEnvironment,
       switchEnvironment: jest.fn(),
+    });
+    (usePoolState as jest.Mock).mockReturnValue({
+      isLoading: true,
+      poolStateEvents: [],
     });
   });
 

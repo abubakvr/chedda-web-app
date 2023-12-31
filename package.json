@@ -27,7 +27,7 @@
     "@web3-react/walletconnect-v2": "^8.5.1",
     "autoprefixer": "10.4.15",
     "chart.js": "^4.4.1",
-    "chedda-sdk": "github:chedda-tech/chedda-sdk#feat/event_logs",
+    "chedda-sdk": "https://github.com/chedda-tech/chedda-sdk.git",
     "encoding": "^0.1.13",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
