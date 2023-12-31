@@ -59,7 +59,7 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
           {
             label: "Interest Fee",
             value: formatAsPercentage(
-              parseBigNumberToFloat(marketInfo?.interestFee, 18, 5)
+              parseBigNumberToFloat(marketInfo?.interestFee, 18)
             ),
           },
           {

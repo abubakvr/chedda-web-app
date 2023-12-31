@@ -15,6 +15,7 @@ import {
   formatAsPercentage,
   formatLargeNumber,
   parseBigNumberToFloat,
+  toFixedTrunc,
 } from "@/utils/formatters";
 
 const CustomTooltip = (props: any) => {
@@ -46,33 +47,25 @@ const CustomTooltip = (props: any) => {
         <div className="text-[#ffffff60] col-span-2 ">Supplied:</div>
         <div className="supply-gradient-text col-span-1">
           {formatLargeNumber(
-            parseBigNumberToFloat(
-              dataPoint?.payload.supplied,
-              props.decimals,
-              0
-            )
+            parseBigNumberToFloat(dataPoint?.payload.supplied, props.decimals)
           )}
         </div>
         <div className="text-[#ffffff60] col-span-2">Supply APR:</div>
         <div className="supply-gradient-text col-span-1">
           {formatAsPercentage(
-            parseBigNumberToFloat(dataPoint?.payload.supplyRate, 18, 0)
+            parseBigNumberToFloat(dataPoint?.payload.supplyRate, 18, 3)
           )}
         </div>
         <div className="text-[#ffffff60] col-span-2">Borrowed:</div>
         <div className="borrow-gradient-text col-span-1">
           {formatLargeNumber(
-            parseBigNumberToFloat(
-              dataPoint?.payload.borrowed,
-              props.decimals,
-              0
-            )
+            parseBigNumberToFloat(dataPoint?.payload.borrowed, props.decimals)
           )}
         </div>
         <div className="text-[#ffffff60] col-span-2">Borrow APR:</div>
         <div className="borrow-gradient-text col-span-1">
           {formatAsPercentage(
-            parseBigNumberToFloat(dataPoint?.payload.borrowRate, 18, 0)
+            parseBigNumberToFloat(dataPoint?.payload.borrowRate, 18, 3)
           )}
         </div>
       </div>
@@ -122,11 +115,11 @@ export const SuppyAndBorrowChart = ({
         <ResponsiveContainer
           width="100%"
           height="100%"
-          style={{ marginLeft: -30, padding: 0 }}
+          style={{ marginLeft: -20, padding: 0 }}
         >
           <LineChart data={poolStateEvents}>
             <YAxis
-              tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+              tickFormatter={(value) => `${toFixedTrunc(value * 100, 2)}%`}
               interval={0}
               tick={{ fontSize: 8 }}
               tickCount={3}
@@ -137,9 +130,7 @@ export const SuppyAndBorrowChart = ({
             <Line
               name="Supply rate"
               type="monotone"
-              dataKey={(value) =>
-                parseBigNumberToFloat(value?.supplyRate, 18, 0)
-              }
+              dataKey={(value) => parseBigNumberToFloat(value?.supplyRate, 18)}
               stroke="#6FBFF7"
               strokeWidth={4}
               radius={8}
@@ -149,9 +140,7 @@ export const SuppyAndBorrowChart = ({
             <Line
               name="Borrow rate"
               type="monotone"
-              dataKey={(value) =>
-                parseBigNumberToFloat(value?.borrowRate, 18, 0)
-              }
+              dataKey={(value) => parseBigNumberToFloat(value?.borrowRate, 18)}
               stroke="#D058F5"
               strokeWidth={4}
               radius={8}
@@ -165,7 +154,7 @@ export const SuppyAndBorrowChart = ({
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={poolStateEvents}
-            margin={{ left: 30, right: -20, top: 0, bottom: 0 }}
+            margin={{ left: 40, right: -20, top: 0, bottom: 0 }}
           >
             <XAxis
               interval={3}
@@ -193,7 +182,7 @@ export const SuppyAndBorrowChart = ({
             />
             <Bar
               dataKey={(value) =>
-                parseBigNumberToFloat(value?.borrowed, decimals, 0)
+                parseBigNumberToFloat(value?.borrowed, decimals)
               }
               name="Borrow"
               fill="#D058F5"
@@ -202,10 +191,8 @@ export const SuppyAndBorrowChart = ({
             />
             <Bar
               dataKey={(value) =>
-                parseFloat(
-                  parseBigNumberToFloat(value?.supplied, decimals, 0)
-                ) -
-                parseFloat(parseBigNumberToFloat(value?.borrowed, decimals, 0))
+                parseFloat(parseBigNumberToFloat(value?.supplied, decimals)) -
+                parseFloat(parseBigNumberToFloat(value?.borrowed, decimals))
               }
               name="Supply"
               fill="#6FBFF7"
