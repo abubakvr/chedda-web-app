@@ -26,10 +26,21 @@ export function findNearestIndex(sortedArray: number[], targetNumber: number) {
   return nearestIndex;
 }
 
-export function createTimestamps(end: Date, interval: number, stamps: number) {
+export function createTimestamps(interval: number, stamps: number) {
   const timestamps = [];
   const intervalInSeconds = interval * 24 * 60 * 60;
-  const endTimestamp = Math.floor(new Date(end).getTime() / 1000);
+
+  // Get the current date and time in local time
+  const currentDate = new Date();
+
+  // Determine the closest 12-hour clock time
+  const currentHour = currentDate.getHours();
+  const closest12HourTime = Math.floor(currentHour / 6) * 6;
+
+  // Set the time to the closest 12-hour clock time
+  currentDate.setHours(closest12HourTime, 0, 0, 0);
+
+  const endTimestamp = Math.floor(currentDate.getTime() / 1000);
 
   for (let i = stamps - 1; i >= 0; i--) {
     const timestamp = endTimestamp - i * intervalInSeconds;
