@@ -57,22 +57,25 @@ export const tokenValueTxt = (
  */
 export const parseBigNumberToFloat = (
   val: BigNumber | undefined,
-  decimals?: number | string,
+  decimals: number | string = "ether",
   floatPoint?: number
 ): string => {
   if (!val || !ethers.BigNumber.isBigNumber(val)) {
     return "0.00";
   }
 
-  const formatted = utils.formatUnits(val._hex, decimals ?? "ether");
+  const formatted = utils.formatUnits(val, decimals);
 
-  // Add error handling for parseFloat
+  // Use parseFloat directly and add error handling
   const parsedValue = parseFloat(formatted);
   if (isNaN(parsedValue)) {
     return "0.00";
   }
 
-  return floatPoint ? parsedValue.toFixed(floatPoint) : parsedValue.toFixed(2);
+  // Check if floatPoint is a valid number, otherwise default to 2
+  const validFloatPoint = Number.isInteger(floatPoint) ? floatPoint : 2;
+
+  return toFixedTrunc(parsedValue, validFloatPoint ?? 0);
 };
 
 /**
@@ -95,26 +98,39 @@ export const formatCurrency = (number?: string | number) => {
  * Formats a large numeric value with suffixes (K, M, B, T) based on magnitude.
  *
  * @param {string | number | undefined} value - The numeric value to be formatted.
+ * @param {boolean} isFloat - Add a floating point.
  * @returns {string} The formatted string with suffixes (K, M, B, T).
  */
-export const formatLargeNumber = (value?: string | number) => {
+export const formatLargeNumber = (
+  value?: string | number,
+  isFloat: boolean = true
+): string => {
   if (value === undefined) {
     return "0.00";
   }
-  const largerNumber = typeof value === "string" ? parseInt(value) : value;
+
+  const largerNumber = typeof value === "string" ? parseFloat(value) : value;
   const absValue = Math.abs(largerNumber);
 
-  if (absValue >= 1e12) {
-    return (largerNumber / 1e12).toFixed(2) + "T";
-  } else if (absValue >= 1e9) {
-    return (largerNumber / 1e9).toFixed(2) + "B";
-  } else if (absValue >= 1e6) {
-    return (largerNumber / 1e6).toFixed(2) + "M";
-  } else if (absValue >= 1e3) {
-    return (largerNumber / 1e3).toFixed(2) + "K";
-  } else {
-    return largerNumber.toFixed(2);
+  const units = ["T", "B", "M", "K", ""];
+  let divisor = 1;
+
+  for (let i = units.length - 1; i >= 1; i--) {
+    const limit = Math.pow(10, i * 3);
+    if (absValue >= limit) {
+      divisor = Math.pow(10, i * 3);
+      break;
+    }
   }
+
+  const num = largerNumber / divisor;
+
+  const formattedNumber = isFloat ? toFixedTrunc(num, 2) : num.toString();
+
+  return (
+    formattedNumber +
+    units[units.length - 1 - Math.floor(Math.log10(divisor) / 3)]
+  );
 };
 
 /**
@@ -129,6 +145,35 @@ export const formatAsPercentage = (value?: number | string) => {
     return "0.00";
   }
 
-  const formattedPercentage = (Number(value) * 100).toFixed(2) + "%";
-  return formattedPercentage;
+  return toFixedTrunc(Number(value) * 100, 2) + "%";
 };
+
+export function toFixedTrunc(x: number, n: number) {
+  x = toFixed(x);
+
+  // From here on the code is the same than the original answer
+  const v = (typeof x === "string" ? x : x.toString()).split(".");
+  if (n <= 0) return v[0];
+  let f = v[1] || "";
+  if (f.length > n) return `${v[0]}.${f.substring(0, n)}`;
+  while (f.length < n) f += "0";
+  return `${v[0]}.${f}`;
+}
+
+function toFixed(x: number): number {
+  if (Math.abs(x) < 1.0) {
+    let e = parseInt(x.toString().split("e-")[1]);
+    if (e) {
+      x *= Math.pow(10, e - 1);
+      x = parseFloat("0." + new Array(e).join("0") + x.toString().substring(2));
+    }
+  } else {
+    let e = parseInt(x.toString().split("+")[1]);
+    if (e > 20) {
+      e -= 20;
+      x /= Math.pow(10, e);
+      x += parseFloat(new Array(e + 1).join("0"));
+    }
+  }
+  return x;
+}

@@ -14,8 +14,8 @@ import {
   useEnvironment,
 } from "@/hooks";
 import { SummaryHeader } from "@/components/ui";
-import { MyInformationCard } from "@/components/cards";
-import { CollateralInfoCard } from "@/components/cards/collateralInfoCard/CollateralInfoCard";
+import { MyInformationCard, CollateralInfoCard } from "@/components/cards";
+import { SuppyAndBorrowChart } from "@/components/charts";
 
 const Page = () => {
   const { poolId } = useParams();
@@ -60,15 +60,24 @@ const Page = () => {
         ))}
       </div>
       <div className="mt-8 w-full flex space-x-5">
-        <div className="w-[67%] h-fit pool-card rounded-lg">
-          <CollateralInfoCard
-            collateralInfo={collateralInfo ?? []}
-            accountInfo={accountInfo}
-            marketInfo={marketInfo}
-            isLoading={
-              collateralInfoLoading || marketInfoLoading || accountInfoLoading
-            }
-          />
+        <div className="w-[67%] h-fit flex flex-col gap-y-6">
+          <div className="pool-card rounded-lg">
+            <CollateralInfoCard
+              collateralInfo={collateralInfo ?? []}
+              accountInfo={accountInfo}
+              marketInfo={marketInfo}
+              isLoading={
+                collateralInfoLoading || marketInfoLoading || accountInfoLoading
+              }
+            />
+          </div>
+          <div className="pool-card rounded-lg">
+            <SuppyAndBorrowChart
+              collateralInfo={collateralInfo ?? []}
+              poolId={strPoolId}
+              decimals={poolStats?.asset.decimals}
+            />
+          </div>
         </div>
         <div className="w-[33%] text-white flex flex-col gap-y-6">
           <div className="pool-card rounded-lg">

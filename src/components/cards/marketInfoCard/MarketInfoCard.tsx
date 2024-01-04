@@ -31,7 +31,7 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
   }
 
   const formatValue = (value: BigNumber | undefined, decimals?: BigNumber) => {
-    const decimalValue = parseBigNumberToFloat(decimals);
+    const decimalValue = parseBigNumberToFloat(decimals, 0);
     return value !== undefined && decimals !== undefined
       ? formatCurrency(parseBigNumberToFloat(value, parseInt(decimalValue)))
       : "";
@@ -59,7 +59,7 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
           {
             label: "Interest Fee",
             value: formatAsPercentage(
-              parseBigNumberToFloat(marketInfo?.interestFee, 18, 5)
+              parseBigNumberToFloat(marketInfo?.interestFee, 18)
             ),
           },
           {

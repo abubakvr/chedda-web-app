@@ -143,7 +143,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           <div className="flex justify-end">
             <div className="text-sm flex flex-col justify-center font-semibold md:col-span-1 w-[100px]">
               <div data-testid="utilization">
-                {formatAsPercentage(pool.utilization)}%
+                {formatAsPercentage(pool.utilization)}
               </div>
             </div>
           </div>

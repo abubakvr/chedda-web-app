@@ -16,8 +16,7 @@
   "dependencies": {
     "@coinbase/wallet-sdk": "^3.7.2",
     "@types/node": "20.6.0",
-    "@types/react": "18.2.21",
-    "@types/react-dom": "18.2.7",
+    "@types/recharts": "^1.8.29",
     "@walletconnect/ethereum-provider": "^2.10.2",
     "@web3-react/coinbase-wallet": "^8.2.3",
     "@web3-react/core": "^8.2.3",
@@ -40,6 +39,7 @@
     "postcss": "8.4.29",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "recharts": "^2.10.3",
     "sass": "^1.69.1",
     "tailwindcss": "3.3.3",
     "typescript": "5.2.2"
@@ -48,6 +48,8 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.5.5",
+    "@types/react": "^18.2.46",
+    "@types/react-dom": "^18.2.18",
     "jest": "^29.7.0",
     "jsdom": "^22.1.0",
     "prettier": "^3.0.3"

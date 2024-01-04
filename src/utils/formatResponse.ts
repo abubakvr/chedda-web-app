@@ -101,7 +101,7 @@ export const getMarketInfoData = (aggregateStats?: IAggregateStats) => {
     },
     {
       title: "No. Of Vaults",
-      value: parseBigNumberToFloat(aggregateStats?.numberOfVaults, 0),
+      value: parseBigNumberToFloat(aggregateStats?.numberOfVaults, 0, 0),
     },
     {
       title: "Total Earned",
@@ -120,7 +120,7 @@ export const getPoolSummaryData = (poolSummary?: IPoolStatsResponse) => {
   return [
     {
       title: "Total Supply",
-      value: formatCurrency(poolSummary?.supplied),
+      value: formatLargeNumber(poolSummary?.supplied),
     },
     {
       title: "Base Supply APY",
