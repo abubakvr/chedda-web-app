@@ -10,7 +10,7 @@ export const usePoolState = (poolId: string) => {
     (IPoolState | null | undefined)[]
   >([]);
   const { chedda, signer } = useCheddaSdk();
-  const graphTimes = createTimestamps(0.25, 25);
+  const graphTimes = createTimestamps(0.5, 25);
 
   async function fetchData() {
     setIsLoading(true);
