@@ -1,3 +1,5 @@
+import { ethers } from "ethers";
+
 export function findNearestIndex(sortedArray: number[], targetNumber: number) {
   // Check if the array is empty
   if (sortedArray.length === 0) {
@@ -48,4 +50,12 @@ export function createTimestamps(interval: number, stamps: number) {
   }
 
   return timestamps;
+}
+
+export function generateInterestRateUtilizations() {
+  const utilizations = [];
+  for (let percentage = 0; percentage <= 100; percentage += 2) {
+    utilizations.push(ethers.utils.parseUnits(percentage.toString(), 18));
+  }
+  return utilizations;
 }

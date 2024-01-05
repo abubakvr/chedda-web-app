@@ -8,3 +8,4 @@ export * from "./useSwitchChain";
 export * from "./useTokenBalance";
 export * from "./useCheddaInfo";
 export * from "./useEvents";
+export * from "./useRatesProjector";

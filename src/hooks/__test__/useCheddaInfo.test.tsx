@@ -70,6 +70,7 @@ describe("useAccountInfo Hook", () => {
         poolLens: jest.fn().mockReturnValue({
           getPoolAccountInfo: mockGetAccounInfo,
         }),
+        interestRateProjector: jest.fn(),
         lendingPool: jest.fn(),
         erc20token: jest.fn(),
         priceOracle: jest.fn(),
@@ -161,6 +162,7 @@ describe("useAccountInfo Hook", () => {
         poolLens: jest.fn().mockReturnValue({
           getMarketInfo: mockGetMarketInfo,
         }),
+        interestRateProjector: jest.fn(),
         lendingPool: jest.fn(),
         erc20token: jest.fn(),
         priceOracle: jest.fn(),
@@ -258,6 +260,7 @@ describe("useAccountInfo Hook", () => {
         lendingPool: jest.fn(),
         erc20token: jest.fn(),
         priceOracle: jest.fn(),
+        interestRateProjector: jest.fn(),
         closeProvider: jest.fn(),
       },
       signer: mockProvider.getSigner(),

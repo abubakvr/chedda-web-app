@@ -39,7 +39,7 @@ describe("usePoolStatsList Hook", () => {
           activePools: jest.fn().mockResolvedValue(["pool1", "pool2"]),
           getPoolStatsList: mockPoolStats,
         }),
-
+        interestRateProjector: jest.fn(),
         lendingPool: jest.fn(),
         erc20token: jest.fn(),
         priceOracle: jest.fn(),
@@ -89,7 +89,7 @@ describe("usePoolStatsList Hook", () => {
         poolLens: jest.fn().mockReturnValue({
           getPoolStats: mockPoolStats,
         }),
-
+        interestRateProjector: jest.fn(),
         lendingPool: jest.fn(),
         erc20token: jest.fn(),
         priceOracle: jest.fn(),

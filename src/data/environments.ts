@@ -22,6 +22,7 @@ export const environmentConfig: IEnvironmentConfig = {
     contracts: {
       LendingPool: "0x7de1c0bf2d5a810b98ce9373e8195353ff4dbed1",
       LendingPoolLens: "0x8b2eAF4193EB3c0345739dfAb1FF56EdeD3A15E8",
+      InterestRatesProjector: "0xf9383FfCf943460496D09f5458b1f9ff96559177",
       PriceFeed: "0xdc33C1aFD2060c8D5C14476F4802F2FD850f85C3",
       Chedda: "0xC58bb755381C43FC8A9505fFa7C44d8737203300",
       xChedda: "0xB362b1Da2814400740FDF221964631f10Cd34255",
@@ -81,6 +82,7 @@ export const environmentConfig: IEnvironmentConfig = {
     contracts: {
       LendingPool: "0x7de1c0bf2d5a810b98ce9373e8195353ff4dbed1",
       LendingPoolLens: "0xcd7AbFd6Cb848A5397A29fCC8Cb5D4CE9C993814",
+      InterestRatesProjector: "0xf9383FfCf943460496D09f5458b1f9ff96559177",
       PriceFeed: "0x5D0d03A506F2df4Bcf8fa022027FCcEd7fF639d1",
       Chedda: "0xAdBCD031E337453a2451f336194F9912Ff3D0893",
       xChedda: "0x5c35eD563029a9D7B37a60EC2C964fC7d37672E5",

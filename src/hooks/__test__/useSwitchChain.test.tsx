@@ -2,10 +2,8 @@ import { renderHook, act } from "@testing-library/react";
 import { useWeb3React } from "@web3-react/core";
 import { useSwitchChain } from "../useSwitchChain";
 import { WalletConnect } from "@web3-react/walletconnect-v2";
-import { getAddChainParameters } from "@/data/networks";
 import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 import { useEnvironment } from "../useEnvironment";
-import { MetaMask } from "@web3-react/metamask";
 
 jest.mock("ethers");
 jest.mock("@web3-react/core");

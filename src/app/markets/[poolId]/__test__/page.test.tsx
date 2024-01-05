@@ -10,13 +10,16 @@ import {
   useCollateralInfo,
   useEnvironment,
   usePoolState,
+  useRatesProjector,
 } from "@/hooks";
 import { getPoolSummaryData } from "@/utils/formatResponse";
 import {
   mockAccountInfo,
   mockCollateralInfo,
   mockCurrentEnvironment,
+  mockInterestRates,
   mockMarketInfo,
+  mockPoolStateEvents,
   mockPoolStats,
 } from "@/utils/Mocks/MockTestData";
 
@@ -27,6 +30,7 @@ jest.mock("../../../../hooks/useCheddaInfo");
 jest.mock("../../../../hooks/useTokenBalance");
 jest.mock("../../../../hooks/useEnvironment");
 jest.mock("../../../../hooks/useEvents");
+jest.mock("../../../../hooks/useRatesProjector");
 
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),
@@ -55,7 +59,11 @@ describe("Pool details component", () => {
     });
     (usePoolState as jest.Mock).mockReturnValue({
       isLoading: true,
-      poolStateEvents: [],
+      poolStateEvents: mockPoolStateEvents,
+    });
+    (useRatesProjector as jest.Mock).mockReturnValue({
+      isLoading: true,
+      interestRates: mockInterestRates,
     });
   });
 
