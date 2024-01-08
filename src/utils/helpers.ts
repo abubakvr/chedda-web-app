@@ -54,7 +54,7 @@ export function createTimestamps(interval: number, stamps: number) {
 
 export function generateInterestRateUtilizations() {
   const utilizations = [];
-  for (let percentage = 0; percentage <= 100; percentage += 2) {
+  for (let percentage = 0; percentage <= 1.02; percentage += 0.02) {
     utilizations.push(ethers.utils.parseUnits(percentage.toString(), 18));
   }
   return utilizations;

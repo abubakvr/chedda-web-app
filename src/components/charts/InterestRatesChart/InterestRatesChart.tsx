@@ -10,7 +10,7 @@ import {
 } from "recharts";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
-import { parseBigNumberToFloat } from "@/utils/formatters";
+import { formatAsPercentage, parseBigNumberToFloat } from "@/utils/formatters";
 import { useRatesProjector } from "@/hooks";
 
 const CustomTooltip = (props: any) => {
@@ -24,15 +24,21 @@ const CustomTooltip = (props: any) => {
       <div className="grid grid-cols-3 justify-between gap-y-2 gap-x-2 mb-2 text-xs">
         <div className="text-[#ffffff60] col-span-2 ">Utilization:</div>
         <div className="text-white col-span-1 font-bold">
-          {parseBigNumberToFloat(dataPoint?.payload.utilization, 18)}%
+          {formatAsPercentage(
+            parseBigNumberToFloat(dataPoint?.payload.utilization, 18)
+          )}
         </div>
         <div className="text-[#ffffff60] col-span-2">Supply APR:</div>
         <div className="supply-gradient-text col-span-1 font-bold">
-          {parseBigNumberToFloat(dataPoint?.payload.supplyRate, 18, 2)}%
+          {formatAsPercentage(
+            parseBigNumberToFloat(dataPoint?.payload.supplyRate, 18, 2)
+          )}
         </div>
         <div className="text-[#ffffff60] col-span-2">Borrow APR:</div>
         <div className="borrow-gradient-text col-span-1 font-bold">
-          {parseBigNumberToFloat(dataPoint?.payload.borrowRate, 18, 2)}%
+          {formatAsPercentage(
+            parseBigNumberToFloat(dataPoint?.payload.borrowRate, 18, 2)
+          )}
         </div>
       </div>
     </div>
@@ -98,7 +104,7 @@ export const InterestRatesChart = ({ poolId }: { poolId: string }) => {
           <LineChart data={interestRates}>
             <YAxis
               tick={{ fontSize: 8, fill: "#FFFFFF50" }}
-              tickFormatter={(data) => `${data}%`}
+              tickFormatter={(data) => `${data * 100}%`}
               tickCount={4}
               tickLine={false}
               axisLine={false}
@@ -114,7 +120,7 @@ export const InterestRatesChart = ({ poolId }: { poolId: string }) => {
                 fill: "#FFFFFF50",
                 width: 50,
               }}
-              tickFormatter={(data) => `${data}%`}
+              tickFormatter={(data) => `${data * 100}%`}
               tickLine={false}
               axisLine={false}
               tickMargin={12}
