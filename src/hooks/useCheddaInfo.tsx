@@ -10,7 +10,7 @@ import {
 import { useCheddaSdk, useEnvironment } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
 import {
-  IAggregateStatsResponse,
+  ISummaryStats,
   ICollateralInfo,
   IEnvironment,
   IPoolStateResponse,
@@ -54,7 +54,7 @@ const useCheddaData = <T = any,>(
   getData: GetDataFunction<T>
 ): HookResult<T> => {
   const [data, setData] = useState<T | undefined>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { currentEnvironment } = useEnvironment();
   const { chedda, signer } = useCheddaSdk();
   const { account } = useWeb3React();
@@ -133,7 +133,7 @@ export const getCollateralInfo: GetDataFunction<ICollateralInfo[]> = async ({
   return await lens.getPoolCollateral(poolId);
 };
 
-const getAggregateStats: GetDataFunction<IAggregateStatsResponse[]> = async ({
+const getAggregateStats: GetDataFunction<ISummaryStats[]> = async ({
   lens,
 }) => {
   const aggregateStats = await lens.getAggregateStats();
@@ -222,8 +222,8 @@ export const useCollateralInfo = (
 ): HookResult<ICollateralInfo[]> =>
   useCheddaData<ICollateralInfo[]>(poolId, getCollateralInfo);
 
-export const useAggregateStats = (): HookResult<IAggregateStatsResponse[]> =>
-  useCheddaData<IAggregateStatsResponse[]>("", getAggregateStats);
+export const useAggregateStats = (): HookResult<ISummaryStats[]> =>
+  useCheddaData<ISummaryStats[]>("", getAggregateStats);
 
 export const usePoolState = (
   poolId: string

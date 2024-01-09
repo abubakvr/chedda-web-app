@@ -111,7 +111,7 @@ export interface IPoolStateResponse extends IPoolState {
   timePoint: number;
 }
 
-export interface IAggregateStatsResponse {
+export interface ISummaryStats {
   title: string;
   value: string | number;
 }

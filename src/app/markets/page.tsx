@@ -18,7 +18,7 @@ const Page = () => {
         MARKETS
       </div>
       <SummaryCard
-        aggregateStats={aggregateStats}
+        stats={aggregateStats}
         isLoading={isLoading}
         data-testid="market-info-card"
       />

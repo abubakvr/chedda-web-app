@@ -10,10 +10,10 @@ import {
   parseBigNumberToFloat,
 } from "./formatters";
 import {
-  IAggregateStatsResponse,
   ICollateralInfo,
   IFormattedCollateral,
   IPoolStatsResponse,
+  ISummaryStats,
   IToken,
   ITokenConfig,
 } from "./types";
@@ -82,7 +82,7 @@ const mapCollateralsToTokens = (
 
 export const getAggregateInfo = (
   aggregateStats?: IAggregateStats
-): IAggregateStatsResponse[] => {
+): ISummaryStats[] => {
   return [
     {
       title: "Total Supplied",
@@ -119,7 +119,9 @@ export const getAggregateInfo = (
   ];
 };
 
-export const getPoolSummaryData = (poolSummary?: IPoolStatsResponse) => {
+export const getPoolSummaryData = (
+  poolSummary?: IPoolStatsResponse
+): ISummaryStats[] => {
   return [
     {
       title: "Total Supply",
