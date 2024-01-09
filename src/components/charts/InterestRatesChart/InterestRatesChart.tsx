@@ -46,7 +46,7 @@ const CustomTooltip = (props: any) => {
 };
 
 export const InterestRatesChart = ({ poolId }: { poolId: string }) => {
-  const { isLoading, interestRates } = useRatesProjector(poolId);
+  const { data: interestRates, isLoading } = useRatesProjector(poolId);
 
   if (isLoading) {
     return (

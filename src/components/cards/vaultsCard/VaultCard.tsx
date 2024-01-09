@@ -9,7 +9,7 @@ import { IPoolStatsResponse, IToken } from "@/utils/types";
 
 export const VaultCard = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>();
-  const { poolStatsList, isLoading } = usePoolStatsList();
+  const { data: poolStatsList, isLoading } = usePoolStatsList();
 
   const matchSearchItem = (item: IPoolStatsResponse, searchKeyword: string) => {
     const matchesAssetName = item.asset.name

@@ -1,9 +1,31 @@
 import { useState, useEffect, useCallback } from "react";
-import { BigNumber, Signer } from "ethers";
+import { ethers, Signer } from "ethers";
+import {
+  Chedda,
+  IAccountInfo,
+  IInterestRatesProjection,
+  IMarketInfo,
+  IPoolState,
+} from "chedda-sdk";
 import { useCheddaSdk, useEnvironment } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
-import { IAccountInfo, IMarketInfo } from "chedda-sdk";
-import { ICollateralInfo } from "@/utils/types";
+import {
+  IAggregateStatsResponse,
+  ICollateralInfo,
+  IEnvironment,
+  IPoolStateResponse,
+  IPoolStatsResponse,
+} from "@/utils/types";
+import {
+  createTimestamps,
+  findNearestIndex,
+  utilizationsArray,
+} from "@/utils/helpers";
+import {
+  formatPoolStats,
+  formatPoolStatsList,
+  getAggregateInfo,
+} from "@/utils/formatResponse";
 
 interface HookResult<T> {
   data?: T;
@@ -13,14 +35,18 @@ interface HookResult<T> {
 
 type GetDataFunction<T> = ({
   lens,
-  pool,
   poolId,
   account,
+  chedda,
+  signer,
+  environment,
 }: {
   lens: any;
-  pool: any;
   poolId: string;
   account?: string;
+  chedda: Chedda;
+  signer?: Signer;
+  environment: IEnvironment;
 }) => Promise<T | null>;
 
 const useCheddaData = <T = any,>(
@@ -37,7 +63,6 @@ const useCheddaData = <T = any,>(
     if (
       !chedda ||
       !currentEnvironment ||
-      !poolId ||
       (!account && getData === getAccountInfo)
     )
       return null;
@@ -46,8 +71,14 @@ const useCheddaData = <T = any,>(
         currentEnvironment.contracts.LendingPoolLens,
         signer as Signer
       );
-      const pool = chedda.lendingPool(poolId, signer as Signer);
-      return await getData({ lens, pool, poolId, account });
+      return await getData({
+        lens,
+        poolId,
+        account,
+        chedda,
+        signer,
+        environment: currentEnvironment,
+      });
     } catch (error) {
       console.error(`Error in fetchData for ${getData.name}:`, error);
       return null;
@@ -55,7 +86,6 @@ const useCheddaData = <T = any,>(
   }, [chedda, currentEnvironment, signer, poolId, account, getData]);
 
   const fetchCheddaData = async () => {
-    if (!currentEnvironment || !poolId) return;
     try {
       setIsLoading(true);
       const response = await fetchData();
@@ -103,10 +133,82 @@ export const getCollateralInfo: GetDataFunction<ICollateralInfo[]> = async ({
   return await lens.getPoolCollateral(poolId);
 };
 
-export const getAvailableLiquidity: GetDataFunction<BigNumber> = async ({
-  pool,
+const getAggregateStats: GetDataFunction<IAggregateStatsResponse[]> = async ({
+  lens,
 }) => {
-  return await pool.available();
+  const aggregateStats = await lens.getAggregateStats();
+  return getAggregateInfo(aggregateStats);
+};
+
+const getPoolState: GetDataFunction<IPoolStateResponse[]> = async ({
+  poolId,
+  chedda,
+  signer,
+}) => {
+  const graphTimes = createTimestamps(0.5, 25);
+  const lendingPool = chedda.lendingPool(poolId, signer as Signer);
+  const events = await lendingPool.getEventLogs<IPoolState>(
+    "PoolState",
+    0,
+    "latest"
+  );
+
+  const eventTimestamps =
+    events?.map((item: IPoolState) => {
+      const timeStamp = ethers.utils.formatUnits(item.timestamp, 0);
+      return parseInt(timeStamp);
+    }) || [];
+
+  const eventsToGraph = graphTimes.map((timestamp) => {
+    const index = findNearestIndex(eventTimestamps, timestamp);
+    const event = index !== -1 ? events?.[index] : null;
+
+    // Create a new object with the additional property
+    const eventWithTimePoint = event
+      ? { ...event, timePoint: timestamp }
+      : null;
+
+    return eventWithTimePoint;
+  });
+
+  return eventsToGraph as IPoolStateResponse[];
+};
+
+const getPoolStatsList: GetDataFunction<IPoolStatsResponse[]> = async ({
+  lens,
+  environment,
+}) => {
+  const pools = await lens.activePools();
+  const statsList = await lens.getPoolStatsList(pools);
+  console.log("statsList", statsList);
+  return formatPoolStatsList(statsList, environment.tokens);
+};
+
+const getPoolStats: GetDataFunction<IPoolStatsResponse> = async ({
+  lens,
+  poolId,
+  environment,
+}) => {
+  const poolStats = await lens.getPoolStats(poolId);
+  return formatPoolStats(poolStats, environment.tokens);
+};
+
+const getRatesProjectorData: GetDataFunction<
+  IInterestRatesProjection[]
+> = async ({ poolId, chedda, signer, environment }) => {
+  const lendingPool = chedda.lendingPool(poolId, signer as Signer);
+  const ratesProjector = chedda.interestRateProjector(
+    environment.contracts.InterestRatesProjector,
+    signer as Signer
+  );
+
+  const interestRateModel = await lendingPool.interestRatesModel();
+  const interestRatesProjection = await ratesProjector.projection(
+    interestRateModel,
+    utilizationsArray
+  );
+
+  return interestRatesProjection;
 };
 
 export const useAccountInfo = (poolId: string): HookResult<IAccountInfo> =>
@@ -120,5 +222,21 @@ export const useCollateralInfo = (
 ): HookResult<ICollateralInfo[]> =>
   useCheddaData<ICollateralInfo[]>(poolId, getCollateralInfo);
 
-export const useAvailableLiquidity = (poolId: string): HookResult<BigNumber> =>
-  useCheddaData<BigNumber>(poolId, getAvailableLiquidity);
+export const useAggregateStats = (): HookResult<IAggregateStatsResponse[]> =>
+  useCheddaData<IAggregateStatsResponse[]>("", getAggregateStats);
+
+export const usePoolState = (
+  poolId: string
+): HookResult<IPoolStateResponse[]> =>
+  useCheddaData<IPoolStateResponse[]>(poolId, getPoolState);
+
+export const usePoolStatsList = (): HookResult<IPoolStatsResponse[]> =>
+  useCheddaData<IPoolStatsResponse[]>("", getPoolStatsList);
+
+export const usePoolStats = (poolId: string): HookResult<IPoolStatsResponse> =>
+  useCheddaData<IPoolStatsResponse>(poolId, getPoolStats);
+
+export const useRatesProjector = (
+  poolId: string
+): HookResult<IInterestRatesProjection[]> =>
+  useCheddaData<IInterestRatesProjection[]>(poolId, getRatesProjectorData);

@@ -10,6 +10,7 @@ import {
   parseBigNumberToFloat,
 } from "./formatters";
 import {
+  IAggregateStatsResponse,
   ICollateralInfo,
   IFormattedCollateral,
   IPoolStatsResponse,
@@ -79,7 +80,9 @@ const mapCollateralsToTokens = (
   });
 };
 
-export const getMarketInfoData = (aggregateStats?: IAggregateStats) => {
+export const getAggregateInfo = (
+  aggregateStats?: IAggregateStats
+): IAggregateStatsResponse[] => {
   return [
     {
       title: "Total Supplied",

@@ -82,7 +82,7 @@ export const SuppyAndBorrowChart = ({
   poolId: string;
   decimals?: number;
 }) => {
-  const { isLoading, poolStateEvents } = usePoolState(poolId);
+  const { isLoading, data } = usePoolState(poolId);
 
   if (isLoading) {
     return (
@@ -114,7 +114,7 @@ export const SuppyAndBorrowChart = ({
       </div>
       <div className="mt-6 pl-7 pr-8" style={{ height: "170px" }}>
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={poolStateEvents}>
+          <LineChart data={data}>
             <YAxis
               tickFormatter={(value) => `${toFixedTrunc(value * 100, 0)}%`}
               interval={0}
@@ -150,10 +150,7 @@ export const SuppyAndBorrowChart = ({
       </div>
       <div className="mt-3" style={{ height: "140px" }}>
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={poolStateEvents}
-            margin={{ left: 50, top: 0, bottom: 0 }}
-          >
+          <BarChart data={data} margin={{ left: 50, top: 0, bottom: 0 }}>
             <XAxis
               interval={3}
               dataKey="timePoint"

@@ -1,4 +1,4 @@
-import { IPoolCollateralInfo } from "chedda-sdk";
+import { IPoolCollateralInfo, IPoolState } from "chedda-sdk";
 import { StaticImageData } from "next/image";
 import React from "react";
 
@@ -105,4 +105,13 @@ export interface IFormattedCollateral {
   myCollateralValue: string;
   myCollateralAmount: string;
   collateralFactor: string;
+}
+
+export interface IPoolStateResponse extends IPoolState {
+  timePoint: number;
+}
+
+export interface IAggregateStatsResponse {
+  title: string;
+  value: string | number;
 }

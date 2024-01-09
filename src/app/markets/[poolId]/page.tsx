@@ -22,18 +22,18 @@ const Page = () => {
   const { poolId } = useParams();
   const { currentEnvironment } = useEnvironment();
   const strPoolId = poolId.toString();
-  const { poolStats, isLoading } = usePoolStats(strPoolId);
+  const { data: poolStats, isLoading } = usePoolStats(strPoolId);
   const { data: accountInfo, isLoading: accountInfoLoading } =
     useAccountInfo(strPoolId);
   const { data: marketInfo, isLoading: marketInfoLoading } =
     useMarketInfo(strPoolId);
-  const { data, isLoading: collateralInfoLoading } =
+  const { data: collateralData, isLoading: collateralInfoLoading } =
     useCollateralInfo(strPoolId);
   const { data: available, isLoading: availableLoading } =
     useAvailableLiquidity(strPoolId);
 
   const collateralInfo = formatCollateralInfo(
-    data,
+    collateralData,
     currentEnvironment?.tokens ?? {},
     accountInfo?.collateralDeposited
   );
