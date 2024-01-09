@@ -134,6 +134,7 @@ export const mockCurrentEnvironment = {
   contracts: {
     LendingPool: "mockLendingPoolAddress",
     LendingPoolLens: "mockLendingPoolLensAddress",
+    InterestRatesProjector: "mockLendingPoolLensAddress",
     PriceFeed: "mockPriceFeedAddress",
     Chedda: "mockCheddaAddress",
     xChedda: "mockXCheddaAddress",
@@ -273,5 +274,23 @@ export const mockPoolStateEvents: IPoolState[] = [
     borrowed: BigNumber.from("750000000000000000"),
     supplyRate: BigNumber.from("1500000000000000"),
     borrowRate: BigNumber.from("750000000000000"),
+  },
+];
+
+export const mockInterestRates = [
+  {
+    utilization: BigNumber.from("750000000000000000"),
+    supplyRate: BigNumber.from("50000000000000000"),
+    borrowRate: BigNumber.from("150000000000000000"),
+  },
+  {
+    utilization: BigNumber.from("510000000000000000"),
+    supplyRate: BigNumber.from("50000000000000000"),
+    borrowRate: BigNumber.from("750000000000000000"),
+  },
+  {
+    utilization: BigNumber.from("40000000000000000"),
+    supplyRate: BigNumber.from("650000000000000000"),
+    borrowRate: BigNumber.from("7000000000000000"), // 6%
   },
 ];

@@ -15,7 +15,7 @@ import {
 } from "@/hooks";
 import { SummaryHeader } from "@/components/ui";
 import { MyInformationCard, CollateralInfoCard } from "@/components/cards";
-import { SuppyAndBorrowChart } from "@/components/charts";
+import { InterestRatesChart, SuppyAndBorrowChart } from "@/components/charts";
 
 const Page = () => {
   const { poolId } = useParams();
@@ -77,6 +77,9 @@ const Page = () => {
               poolId={strPoolId}
               decimals={poolStats?.asset.decimals}
             />
+          </div>
+          <div className="pool-card rounded-lg">
+            <InterestRatesChart poolId={strPoolId} />
           </div>
         </div>
         <div className="w-[33%] text-white flex flex-col gap-y-6">

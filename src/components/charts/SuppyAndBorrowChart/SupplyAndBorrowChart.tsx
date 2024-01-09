@@ -112,20 +112,17 @@ export const SuppyAndBorrowChart = ({
           Total Supply and Borrow
         </div>
       </div>
-      <div className="mt-5 pr-5" style={{ height: "170px" }}>
-        <ResponsiveContainer
-          width="100%"
-          height="100%"
-          style={{ marginLeft: -20, padding: 0 }}
-        >
+      <div className="mt-6 pl-7 pr-8" style={{ height: "170px" }}>
+        <ResponsiveContainer width="100%" height="100%">
           <LineChart data={poolStateEvents}>
             <YAxis
-              tickFormatter={(value) => `${toFixedTrunc(value * 100, 2)}%`}
+              tickFormatter={(value) => `${toFixedTrunc(value * 100, 0)}%`}
               interval={0}
-              tick={{ fontSize: 8 }}
+              tick={{ fontSize: 8, fill: "#FFFFFF50" }}
               tickCount={3}
               tickLine={false}
               axisLine={false}
+              width={20}
             />
             <Tooltip content={<CustomTooltip decimals={decimals} />} />
             <Line
@@ -155,7 +152,7 @@ export const SuppyAndBorrowChart = ({
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={poolStateEvents}
-            margin={{ left: 40, right: -20, top: 0, bottom: 0 }}
+            margin={{ left: 50, top: 0, bottom: 0 }}
           >
             <XAxis
               interval={3}
@@ -164,18 +161,22 @@ export const SuppyAndBorrowChart = ({
                 const date = new Date(data * 1000);
                 return `${date.getDate()} / ${date.getMonth() + 1}`;
               }}
-              tick={{ fontSize: 8 }}
+              tick={{
+                fontSize: 8,
+                fill: "#FFFFFF50",
+              }}
               tickLine={false}
               axisLine={false}
             />
             <YAxis
               tickFormatter={(value) => formatLargeNumber(value, false)}
               interval="preserveStartEnd"
-              tick={{ fontSize: 8 }}
+              tick={{ fontSize: 8, fill: "#FFFFFF50" }}
               orientation="right"
               tickCount={4}
               tickLine={false}
               axisLine={false}
+              width={40}
             />
             <Tooltip
               content={<CustomTooltip decimals={decimals} />}

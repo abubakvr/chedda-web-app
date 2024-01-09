@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ethers, Signer } from "ethers";
 import { IPoolState } from "chedda-sdk";
 import { useCheddaSdk } from "@/hooks";
-import { createTimestamps, findNearestIndex } from "@/utils/createTimestamps";
+import { createTimestamps, findNearestIndex } from "@/utils/helpers";
 
 export const usePoolState = (poolId: string) => {
   const [isLoading, setIsLoading] = useState(true);
