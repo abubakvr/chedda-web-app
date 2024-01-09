@@ -1,4 +1,4 @@
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
 
 export function findNearestIndex(sortedArray: number[], targetNumber: number) {
   // Check if the array is empty
@@ -53,6 +53,6 @@ export function createTimestamps(interval: number, stamps: number) {
 }
 
 export const utilizationsArray: BigNumber[] = Array.from(
-  { length: 51 },
-  (_, index) => BigNumber.from(BigInt(index) * BigInt(20000000000000000))
+  { length: 101 },
+  (_, index) => BigNumber.from(BigInt(index) * BigInt(10000000000000000))
 );

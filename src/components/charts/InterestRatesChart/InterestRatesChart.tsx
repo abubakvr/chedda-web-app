@@ -31,13 +31,13 @@ const CustomTooltip = (props: any) => {
         <div className="text-[#ffffff60] col-span-2">Supply APR:</div>
         <div className="supply-gradient-text col-span-1 font-bold">
           {formatAsPercentage(
-            parseBigNumberToFloat(dataPoint?.payload.supplyRate, 18, 2)
+            parseBigNumberToFloat(dataPoint?.payload.supplyRate, 18, 5)
           )}
         </div>
         <div className="text-[#ffffff60] col-span-2">Borrow APR:</div>
         <div className="borrow-gradient-text col-span-1 font-bold">
           {formatAsPercentage(
-            parseBigNumberToFloat(dataPoint?.payload.borrowRate, 18, 2)
+            parseBigNumberToFloat(dataPoint?.payload.borrowRate, 18, 5)
           )}
         </div>
       </div>
@@ -133,7 +133,9 @@ export const InterestRatesChart = ({ poolId }: { poolId: string }) => {
             <Line
               name="Supply rate"
               type="monotone"
-              dataKey={(value) => parseBigNumberToFloat(value?.supplyRate, 18)}
+              dataKey={(value) =>
+                parseBigNumberToFloat(value?.supplyRate, 18, 10)
+              }
               stroke="#6FBFF7"
               strokeWidth={4}
               radius={8}
@@ -143,7 +145,9 @@ export const InterestRatesChart = ({ poolId }: { poolId: string }) => {
             <Line
               name="Borrow rate"
               type="monotone"
-              dataKey={(value) => parseBigNumberToFloat(value?.borrowRate, 18)}
+              dataKey={(value) =>
+                parseBigNumberToFloat(value?.borrowRate, 18, 10)
+              }
               stroke="#D058F5"
               strokeWidth={4}
               radius={8}
