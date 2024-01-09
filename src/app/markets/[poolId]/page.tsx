@@ -42,7 +42,7 @@ const Page = () => {
     >
       <SummaryHeader
         logoSrc={poolStats?.asset.logo}
-        assetName={poolStats?.asset.name}
+        assetName={poolStats?.characterization}
       />
       <div
         className="grid grid-cols-2 gap-x-2 gap-y-2 lg:flex lg:gap-x-0 mt-5 lg:space-x-3 xl:space-x-5 flex-wrap lg:flex-nowrap"

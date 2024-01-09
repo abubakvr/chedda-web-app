@@ -31,9 +31,12 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
   }
 
   const formatValue = (value: BigNumber | undefined, decimals?: BigNumber) => {
-    const decimalValue = parseBigNumberToFloat(decimals, 0);
+    const decimalValue = parseBigNumberToFloat(decimals, 0, 5);
     return value !== undefined && decimals !== undefined
-      ? formatCurrency(parseBigNumberToFloat(value, parseInt(decimalValue)))
+      ? formatCurrency(
+          parseBigNumberToFloat(value, parseInt(decimalValue), 2),
+          true
+        )
       : "";
   };
 
@@ -50,7 +53,7 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
       <div className="p-8 pb-3">
         {[
           {
-            label: "Oracle Price",
+            label: "Asset Price",
             value: formatValue(
               marketInfo?.oraclePrice,
               marketInfo?.oraclePriceDecimals
@@ -59,7 +62,7 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
           {
             label: "Interest Fee",
             value: formatAsPercentage(
-              parseBigNumberToFloat(marketInfo?.interestFee, 18)
+              parseBigNumberToFloat(marketInfo?.interestFee, 18, 10)
             ),
           },
           {
@@ -69,15 +72,15 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
             )} ${asset?.symbol}`,
           },
           {
-            label: "Liquidation Threshold",
+            label: "Available Liquidity",
             value: formatAsPercentage(
-              parseBigNumberToFloat(marketInfo?.liquidationThreshold)
+              parseBigNumberToFloat(marketInfo?.liquidationThreshold, 18, 10)
             ),
           },
           {
-            label: "Liquidation Penalty",
+            label: "Utilization",
             value: formatAsPercentage(
-              parseBigNumberToFloat(marketInfo?.liquidationPenalty)
+              parseBigNumberToFloat(marketInfo?.liquidationPenalty, 18, 10)
             ),
           },
         ].map(({ label, value }, index) => (

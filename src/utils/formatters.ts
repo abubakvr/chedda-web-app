@@ -82,16 +82,21 @@ export const parseBigNumberToFloat = (
  * Formats a numeric value as a currency string with a leading "$".
  *
  * @param {string | number | undefined} number - The numeric value to be formatted as currency.
+ * @param {boolean} plain - Specifies whether the should be formatted
  * @returns {string} The formatted currency string.
  */
-export const formatCurrency = (number?: string | number) => {
+export const formatCurrency = (number?: string | number, plain?: boolean) => {
   if (number === undefined) {
     return "0.00";
   }
 
   const numericValue = typeof number === "string" ? parseFloat(number) : number;
 
-  return "$" + formatLargeNumber(numericValue);
+  return `${
+    plain
+      ? "$" + toFixedTrunc(numericValue, 2)
+      : "$" + formatLargeNumber(numericValue)
+  }`;
 };
 
 /**
