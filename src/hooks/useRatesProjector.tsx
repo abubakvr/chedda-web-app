@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Signer } from "ethers";
 import { useCheddaSdk, useEnvironment } from "@/hooks";
-import { generateInterestRateUtilizations } from "@/utils/helpers";
+import { utilizationsArray } from "@/utils/helpers";
 import { IInterestRatesProjection } from "chedda-sdk";
 
 export const useRatesProjector = (poolId: string) => {
@@ -27,11 +27,10 @@ export const useRatesProjector = (poolId: string) => {
       );
 
       const interestRateModel = await lendingPool.interestRatesModel();
-      const utlizations = generateInterestRateUtilizations();
 
       const interestRatesProjection = await ratesProjector.projection(
         interestRateModel,
-        utlizations
+        utilizationsArray
       );
 
       setInterestRates(interestRatesProjection);

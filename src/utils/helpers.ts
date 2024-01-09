@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 
 export function findNearestIndex(sortedArray: number[], targetNumber: number) {
   // Check if the array is empty
@@ -52,10 +52,7 @@ export function createTimestamps(interval: number, stamps: number) {
   return timestamps;
 }
 
-export function generateInterestRateUtilizations() {
-  const utilizations = [];
-  for (let percentage = 0; percentage <= 1.02; percentage += 0.02) {
-    utilizations.push(ethers.utils.parseUnits(percentage.toString(), 18));
-  }
-  return utilizations;
-}
+export const utilizationsArray: BigNumber[] = Array.from(
+  { length: 51 },
+  (_, index) => BigNumber.from(BigInt(index) * BigInt(20000000000000000))
+);

@@ -112,9 +112,7 @@ export const InterestRatesChart = ({ poolId }: { poolId: string }) => {
             />
             <XAxis
               interval={9}
-              dataKey={(value) =>
-                parseFloat(parseBigNumberToFloat(value?.utilization, 18))
-              }
+              dataKey={(value) => parseBigNumberToFloat(value?.utilization, 18)}
               tick={{
                 fontSize: 8,
                 fill: "#FFFFFF50",
@@ -135,9 +133,7 @@ export const InterestRatesChart = ({ poolId }: { poolId: string }) => {
             <Line
               name="Supply rate"
               type="monotone"
-              dataKey={(value) =>
-                parseFloat(parseBigNumberToFloat(value?.supplyRate, 18))
-              }
+              dataKey={(value) => parseBigNumberToFloat(value?.supplyRate, 18)}
               stroke="#6FBFF7"
               strokeWidth={4}
               radius={8}
@@ -147,9 +143,7 @@ export const InterestRatesChart = ({ poolId }: { poolId: string }) => {
             <Line
               name="Borrow rate"
               type="monotone"
-              dataKey={(value) =>
-                parseFloat(parseBigNumberToFloat(value?.borrowRate, 18))
-              }
+              dataKey={(value) => parseBigNumberToFloat(value?.borrowRate, 18)}
               stroke="#D058F5"
               strokeWidth={4}
               radius={8}
