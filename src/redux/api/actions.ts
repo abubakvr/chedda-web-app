@@ -41,6 +41,7 @@ export const getAccountInfo: GetDataFunction<IAccountInfo> = async ({
   poolId,
   account,
 }) => {
+  if (!account) return null;
   return await lens.getPoolAccountInfo(poolId, account);
 };
 
