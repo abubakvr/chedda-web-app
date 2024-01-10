@@ -12,6 +12,7 @@ import {
   useMarketInfo,
   useCollateralInfo,
   useEnvironment,
+  useAvailableLiquidity,
 } from "@/hooks";
 import { SummaryHeader } from "@/components/ui";
 import { MyInformationCard, CollateralInfoCard } from "@/components/cards";
@@ -28,6 +29,8 @@ const Page = () => {
     useMarketInfo(strPoolId);
   const { data, isLoading: collateralInfoLoading } =
     useCollateralInfo(strPoolId);
+  const { data: available, isLoading: availableLoading } =
+    useAvailableLiquidity(strPoolId);
 
   const collateralInfo = formatCollateralInfo(
     data,
@@ -94,9 +97,10 @@ const Page = () => {
           </div>
           <div className="pool-card rounded-lg">
             <MarketInfoCard
-              asset={poolStats?.asset}
+              available={available}
+              poolStats={poolStats}
               marketInfo={marketInfo}
-              isLoading={marketInfoLoading}
+              isLoading={marketInfoLoading || availableLoading}
             />
           </div>
         </div>

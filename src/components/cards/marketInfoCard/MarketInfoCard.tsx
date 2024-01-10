@@ -6,19 +6,21 @@ import {
   parseBigNumberToFloat,
 } from "@/utils/formatters";
 import { IMarketInfo } from "chedda-sdk";
-import { IToken } from "@/utils/types";
+import { IPoolStatsResponse } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
 import { BigNumber } from "ethers";
 
 interface MarketInfoCardProps {
-  asset: IToken | undefined;
+  available: BigNumber | undefined;
   marketInfo: IMarketInfo | undefined;
+  poolStats: IPoolStatsResponse | undefined;
   isLoading: boolean;
 }
 
 export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
-  asset,
+  available,
   marketInfo,
+  poolStats,
   isLoading,
 }) => {
   if (isLoading || !marketInfo) {
@@ -69,19 +71,17 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
             label: "Supply Cap",
             value: `${formatLargeNumber(
               parseBigNumberToFloat(marketInfo?.supplyCap)
-            )} ${asset?.symbol}`,
+            )} ${poolStats?.asset?.symbol}`,
           },
           {
             label: "Available Liquidity",
-            value: formatAsPercentage(
-              parseBigNumberToFloat(marketInfo?.liquidationThreshold, 18, 10)
-            ),
+            value: `${formatCurrency(
+              parseBigNumberToFloat(available, poolStats?.asset.decimals)
+            )}`,
           },
           {
             label: "Utilization",
-            value: formatAsPercentage(
-              parseBigNumberToFloat(marketInfo?.liquidationPenalty, 18, 10)
-            ),
+            value: formatAsPercentage(poolStats?.utilization),
           },
         ].map(({ label, value }, index) => (
           <div
