@@ -1,18 +1,16 @@
+import { ethers } from "ethers";
 import React from "react";
 import Page from "../page";
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { useAggregateStats } from "@/hooks/useAggregateStats";
-import { ethers } from "ethers";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 import { useCheddaSdk } from "@/hooks/useCheddaSdk";
 import { mockAggregateStats, mockPoolStats } from "@/utils/Mocks/MockTestData";
-import { usePoolStatsList } from "@/hooks";
+import { usePoolStatsList, useAggregateStats } from "@/hooks";
 
 // Mock the useAggregateStats hook
 jest.mock("ethers");
-jest.mock("../../../hooks/useAggregateStats");
 jest.mock("../../../hooks/useCheddaSdk");
-jest.mock("../../../hooks/usePools");
+jest.mock("../../../hooks/useCheddaInfo");
 
 const mockUseAggregateStats = useAggregateStats as jest.MockedFunction<
   typeof useAggregateStats
@@ -40,6 +38,7 @@ describe("Page Component", () => {
           ),
           lendingPool: jest.fn(),
           erc20token: jest.fn(),
+          interestRateProjector: jest.fn(),
           poolLens: jest.fn(),
           priceOracle: jest.fn(),
           closeProvider: jest.fn(),
@@ -49,8 +48,9 @@ describe("Page Component", () => {
       });
 
       (mockUsePools as jest.Mock).mockReturnValue({
-        poolStats: mockPoolStats,
+        data: mockPoolStats,
         isLoading: false,
+        fetchData: jest.fn(),
       });
 
       mockUseAggregateStats.mockReset();
@@ -59,9 +59,9 @@ describe("Page Component", () => {
 
   it("renders the Page component with market information and VaultCard", async () => {
     mockUseAggregateStats.mockReturnValue({
-      aggregateStats: mockAggregateStats,
+      data: mockAggregateStats,
       isLoading: false,
-      getAggregateStats: jest.fn(),
+      fetchData: jest.fn(),
     });
 
     render(
@@ -79,9 +79,9 @@ describe("Page Component", () => {
   it("renders loading state when aggregate stats are loading", async () => {
     // Mock loading state
     mockUseAggregateStats.mockReturnValue({
-      aggregateStats: undefined,
+      data: [],
       isLoading: true,
-      getAggregateStats: jest.fn(),
+      fetchData: jest.fn(),
     });
 
     render(

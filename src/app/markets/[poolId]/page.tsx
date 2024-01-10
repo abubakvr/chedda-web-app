@@ -45,20 +45,17 @@ const Page = () => {
       className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto pb-10"
       data-testid="pool-container"
     >
-      <SummaryHeader
-        logoSrc={poolStats?.asset.logo}
-        assetName={poolStats?.characterization}
-      />
-      <div
-        className="grid grid-cols-2 gap-x-2 gap-y-2 lg:flex lg:gap-x-0 mt-5 lg:space-x-3 xl:space-x-5 flex-wrap lg:flex-nowrap"
-        data-testid="summary-card-container"
-      >
-        <SummaryCard
-          stats={poolSummary}
-          isLoading={isLoading}
-          data-testid={"market-info-card"}
+      <div className="my-7">
+        <SummaryHeader
+          logoSrc={poolStats?.asset.logo}
+          assetName={poolStats?.asset.name}
         />
       </div>
+      <SummaryCard
+        stats={poolSummary}
+        isLoading={isLoading}
+        data-testid={"market-info-card"}
+      />
       <div className="mt-8 w-full flex space-x-5">
         <div className="w-[67%] h-fit flex flex-col gap-y-6">
           <div className="pool-card rounded-lg">

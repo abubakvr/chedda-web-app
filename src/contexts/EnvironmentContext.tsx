@@ -47,6 +47,7 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
   );
 
   useEffect(() => {
+    console.log("Setting environment");
     const savedEnvironment = localStorage.getItem(savedChainId);
 
     if (chainId && chainId in environmentConfig) {
@@ -56,7 +57,7 @@ export const EnvironmentProvider: React.FC<EnvironmentProviderProps> = ({
     } else {
       setCurrentEnvironment(environmentConfig[421614]);
     }
-  }, [chainId, setCurrentEnvironment, currentEnvironment]);
+  }, [chainId, setCurrentEnvironment]);
 
   // Provide the context values to the components
   const contextValues: EnvironmentContextProps = {

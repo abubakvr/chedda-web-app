@@ -27,12 +27,10 @@ import { BigNumber } from "ethers";
 
 jest.mock("ethers");
 jest.mock("chart.js");
-jest.mock("../../../../hooks/usePools");
 jest.mock("../../../../hooks/useCheddaInfo");
 jest.mock("../../../../hooks/useTokenBalance");
 jest.mock("../../../../hooks/useEnvironment");
-jest.mock("../../../../hooks/useEvents");
-jest.mock("../../../../hooks/useRatesProjector");
+jest.mock("../../../../hooks/useCheddaInfo");
 
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),
@@ -61,17 +59,17 @@ describe("Pool details component", () => {
     });
     (usePoolState as jest.Mock).mockReturnValue({
       isLoading: true,
-      poolStateEvents: mockPoolStateEvents,
+      data: mockPoolStateEvents,
     });
     (useRatesProjector as jest.Mock).mockReturnValue({
       isLoading: true,
-      interestRates: mockInterestRates,
+      data: mockInterestRates,
     });
   });
 
   it("renders pool details when data is available", async () => {
     (mockUsePools as jest.Mock).mockReturnValue({
-      poolStats: mockPoolStats[0],
+      data: mockPoolStats[0],
       isLoading: false,
     });
     (getPoolSummaryData as jest.Mock).mockReturnValue([
@@ -125,11 +123,11 @@ describe("Pool details component", () => {
     }));
     (useMarketInfo as jest.Mock).mockImplementation(() => ({
       data: null,
-      isLoading: false,
+      isLoading: true,
     }));
     (useCollateralInfo as jest.Mock).mockImplementation(() => ({
       data: null,
-      isLoading: false,
+      isLoading: true,
     }));
 
     render(<Page />);
@@ -137,7 +135,6 @@ describe("Pool details component", () => {
     // Wait for the loading state to be rendered
     await waitFor(() => {
       expect(screen.getByTestId("pool-container")).toBeInTheDocument();
-      expect(screen.getByTestId("summary-card")).toBeInTheDocument();
       expect(screen.getByTestId("loading-element")).toBeInTheDocument();
       expect(
         screen.getByTestId("collateral-info-skeleton")

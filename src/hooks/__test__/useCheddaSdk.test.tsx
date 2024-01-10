@@ -88,6 +88,6 @@ describe("useCheddaSdk Hook", () => {
     expect(result.current.signer).toEqual(mockProvider.getSigner());
 
     expect(mockUseWeb3React).toHaveBeenCalled();
-    expect(mockUseEnvironment).toHaveBeenCalled();
+    expect(mockUseEnvironment).toHaveBeenCalledTimes(2);
   });
 });

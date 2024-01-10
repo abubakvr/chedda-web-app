@@ -1,4 +1,87 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+// import { ethers } from "ethers";
+// import { act, renderHook } from "@testing-library/react";
+// import { useCheddaSdk, useEnvironment, useRatesProjector } from "@/hooks";
+// import {
+//   mockCurrentEnvironment,
+//   mockInterestRates,
+// } from "@/utils/Mocks/MockTestData";
+
+// jest.mock("ethers");
+// jest.mock("../useCheddaSdk");
+// jest.mock("../useEnvironment");
+
+// const mockUseCheddaSdk = useCheddaSdk as jest.MockedFunction<
+//   typeof useCheddaSdk
+// >;
+// const mockProvider = {
+//   getSigner: jest.fn(),
+// };
+
+// describe("useRatesProjector", () => {
+//   beforeEach(() => {
+//     mockUseCheddaSdk.mockReset();
+//     (useEnvironment as jest.Mock).mockReturnValue({
+//       currentEnvironment: mockCurrentEnvironment,
+//       switchEnvironment: jest.fn(),
+//     });
+//   });
+
+//   it("fetches and updates interestRates correctly", async () => {
+//     mockUseCheddaSdk.mockReturnValue({
+//       chedda: {
+//         provider: new ethers.providers.WebSocketProvider("wss://testgoerliurl"),
+//         poolLens: jest.fn(),
+//         lendingPool: jest.fn().mockReturnValue({
+//           interestRatesModel: jest.fn().mockResolvedValue("0x00"),
+//         }),
+//         erc20token: jest.fn(),
+//         priceOracle: jest.fn(),
+//         interestRateProjector: jest.fn().mockReturnValue({
+//           projection: jest.fn().mockResolvedValue(mockInterestRates),
+//         }),
+//         closeProvider: jest.fn(),
+//       },
+//       signer: mockProvider.getSigner(),
+//       setupChedda: jest.fn(),
+//     });
+
+//     const { result } = renderHook(() => useRatesProjector("yourPoolId"));
+
+//     // Ensure that the initial state is correct
+//     expect(result.current.isLoading).toBe(true);
+//     expect(result.current.interestRates).toEqual([]);
+//     expect(mockProvider.getSigner).toHaveBeenCalled();
+
+//     // Wait for the hook to fetch and update state
+//     await act(async () => {
+//       await expect(result.current.fetchData()).resolves.not.toThrow();
+//     });
+
+//     expect(result.current.isLoading).toBe(false);
+//     expect(result.current.interestRates).toHaveLength(3);
+//   });
+
+//   it("Throws an error when hook fails", async () => {
+//     const setup = () => {
+//       const mockedFunctions = {
+//         isLoading: true,
+//         poolStateEvents: [],
+//         fetchData: jest.fn().mockRejectedValue(new Error("Test error")),
+//       };
+//       jest.doMock("../useRatesProjector", () => mockedFunctions);
+//       return {
+//         mockedModule: require("../useRatesProjector"),
+//       };
+//     };
+//     const { mockedModule } = setup();
+
+//     await expect(mockedModule.fetchData()).rejects.toThrow(
+//       new Error("Test error")
+//     );
+//   });
+// });
+
+import { useState, useEffect, useCallback } from "react";
 import { ethers, Signer } from "ethers";
 import {
   Chedda,
@@ -27,14 +110,12 @@ import {
   getAggregateInfo,
 } from "@/utils/formatResponse";
 
-// Common hook result type
 interface HookResult<T> {
   data?: T;
   isLoading: boolean;
   fetchData: () => Promise<T | null>;
 }
 
-// Common data fetching function type
 type GetDataFunction<T> = ({
   lens,
   poolId,
@@ -50,6 +131,7 @@ type GetDataFunction<T> = ({
   signer?: Signer;
   environment: IEnvironment;
 }) => Promise<T | null>;
+
 const useCheddaData = <T = any,>(
   poolId: string,
   getData: GetDataFunction<T>
@@ -60,32 +142,19 @@ const useCheddaData = <T = any,>(
   const { chedda, signer } = useCheddaSdk();
   const { account } = useWeb3React();
 
-  // Memoized data fetching function name
-  const getDataName = useCallback(() => getData.name, [getData]);
-
-  // Memoized data fetching function
   const fetchData = useCallback(async () => {
     if (
       !chedda ||
       !currentEnvironment ||
       (!account && getData === getAccountInfo)
-    ) {
+    )
       return null;
-    }
-
     try {
-      // Memoized lens
-      const lens = useMemo(() => {
-        if (chedda && currentEnvironment) {
-          return chedda.poolLens(
-            currentEnvironment.contracts.LendingPoolLens,
-            signer as Signer
-          );
-        }
-        return null;
-      }, [chedda, currentEnvironment, signer]);
-
-      return await getData?.({
+      const lens = chedda.poolLens(
+        currentEnvironment.contracts.LendingPoolLens,
+        signer as Signer
+      );
+      return await getData({
         lens,
         poolId,
         account,
@@ -94,37 +163,28 @@ const useCheddaData = <T = any,>(
         environment: currentEnvironment,
       });
     } catch (error) {
-      console.error(`Error in fetchData for ${getDataName()}:`, error);
+      console.error(`Error in fetchData for ${getData.name}:`, error);
       return null;
     }
-  }, [
-    chedda,
-    currentEnvironment,
-    account,
-    getData,
-    getAccountInfo,
-    signer,
-    getDataName,
-    poolId,
-  ]);
+  }, [chedda, currentEnvironment, signer, poolId, account, getData]);
 
-  // Fetch data on component mount
-  useEffect(() => {
-    const fetchCheddaData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetchData();
-        if (response !== null && response !== undefined) {
-          setData(response);
-        }
-      } catch (error) {
-        console.error(`Error getting ${getDataName()} data`, error);
-      } finally {
-        setIsLoading(false);
+  const fetchCheddaData = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetchData();
+      if (response) {
+        setData(response);
       }
-    };
+    } catch (error) {
+      console.error(`Error getting ${getData.name} data`, error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCheddaData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chedda, account]);
 
   return {
@@ -134,7 +194,6 @@ const useCheddaData = <T = any,>(
   };
 };
 
-// Data fetching functions
 export const getAccountInfo: GetDataFunction<IAccountInfo> = async ({
   lens,
   poolId,
@@ -178,14 +237,21 @@ const getPoolState: GetDataFunction<IPoolStateResponse[]> = async ({
   );
 
   const eventTimestamps =
-    events?.map((item: IPoolState) =>
-      parseInt(ethers.utils.formatUnits(item.timestamp, 0))
-    ) || [];
+    events?.map((item: IPoolState) => {
+      const timeStamp = ethers.utils.formatUnits(item.timestamp, 0);
+      return parseInt(timeStamp);
+    }) || [];
+
   const eventsToGraph = graphTimes.map((timestamp) => {
     const index = findNearestIndex(eventTimestamps, timestamp);
     const event = index !== -1 ? events?.[index] : null;
 
-    return event ? { ...event, timePoint: timestamp } : null;
+    // Create a new object with the additional property
+    const eventWithTimePoint = event
+      ? { ...event, timePoint: timestamp }
+      : null;
+
+    return eventWithTimePoint;
   });
 
   return eventsToGraph as IPoolStateResponse[];
@@ -197,6 +263,7 @@ const getPoolStatsList: GetDataFunction<IPoolStatsResponse[]> = async ({
 }) => {
   const pools = await lens.activePools();
   const statsList = await lens.getPoolStatsList(pools);
+  console.log("statsList", statsList);
   return formatPoolStatsList(statsList, environment.tokens);
 };
 
@@ -219,10 +286,14 @@ const getRatesProjectorData: GetDataFunction<
   );
 
   const interestRateModel = await lendingPool.interestRatesModel();
-  return await ratesProjector.projection(interestRateModel, utilizationsArray);
+  const interestRatesProjection = await ratesProjector.projection(
+    interestRateModel,
+    utilizationsArray
+  );
+
+  return interestRatesProjection;
 };
 
-// Exported custom hooks
 export const useAccountInfo = (poolId: string): HookResult<IAccountInfo> =>
   useCheddaData<IAccountInfo>(poolId, getAccountInfo);
 

@@ -4,17 +4,17 @@ import { useCallback, useEffect, useState } from "react";
 import { useEnvironment } from "./useEnvironment";
 
 export const useCheddaSdk = () => {
-  const [chedda, setChedda] = useState<Chedda>();
+  const [chedda, setChedda] = useState<Chedda | null>();
   const { provider } = useWeb3React();
   const { currentEnvironment } = useEnvironment();
   const signer = provider?.getSigner?.();
 
   const setupChedda = useCallback(() => {
+    if (!currentEnvironment) return;
+
     try {
-      if (currentEnvironment) {
-        const cheddaInstance = new Chedda(currentEnvironment.webSocketUrl);
-        setChedda(cheddaInstance);
-      }
+      const cheddaInstance = new Chedda(currentEnvironment.webSocketUrl);
+      setChedda(cheddaInstance);
     } catch (error) {
       console.error("Error in setupChedda:", error);
     }
