@@ -3,4 +3,4 @@ export * from "./useCheddaSdk";
 export * from "./useSignerOrProvider";
 export * from "./useSwitchChain";
 export * from "./useTokenBalance";
-export * from "./useCheddaInfo";
+export * from "./useCheddaHooks";

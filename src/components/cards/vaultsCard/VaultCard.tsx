@@ -12,16 +12,18 @@ export const VaultCard = () => {
   const { data: poolStatsList, isLoading } = usePoolStatsList();
 
   const matchSearchItem = (item: IPoolStatsResponse, searchKeyword: string) => {
+    const normalizedSearchKeyword = searchKeyword?.toLowerCase() || "";
+
     const matchesAssetName = item.asset.name
       .toLowerCase()
-      .includes(searchKeyword.toLowerCase());
+      .includes(normalizedSearchKeyword);
 
     const matchesAssetSymbol = item.asset.symbol
       .toLowerCase()
-      .includes(searchKeyword.toLowerCase());
+      .includes(normalizedSearchKeyword);
 
     const matchesCollaterals = item.collaterals.some((collateral: IToken) =>
-      collateral.symbol.toLowerCase().includes(searchKeyword.toLowerCase())
+      collateral.symbol.toLowerCase().includes(normalizedSearchKeyword)
     );
 
     return matchesAssetName || matchesAssetSymbol || matchesCollaterals;
