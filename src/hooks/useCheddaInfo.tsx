@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Signer } from "ethers";
+import { BigNumber, Signer } from "ethers";
 import { useCheddaSdk, useEnvironment } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
 import { IAccountInfo, IMarketInfo } from "chedda-sdk";
@@ -11,11 +11,17 @@ interface HookResult<T> {
   fetchData: () => Promise<T | null>;
 }
 
-type GetDataFunction<T> = (
-  lens: any,
-  poolId: string,
-  account?: string
-) => Promise<T | null>;
+type GetDataFunction<T> = ({
+  lens,
+  pool,
+  poolId,
+  account,
+}: {
+  lens: any;
+  pool: any;
+  poolId: string;
+  account?: string;
+}) => Promise<T | null>;
 
 const useCheddaData = <T = any,>(
   poolId: string,
@@ -36,11 +42,12 @@ const useCheddaData = <T = any,>(
     )
       return null;
     try {
-      const lendingPoolLens = chedda.poolLens(
+      const lens = chedda.poolLens(
         currentEnvironment.contracts.LendingPoolLens,
         signer as Signer
       );
-      return await getData(lendingPoolLens, poolId, account);
+      const pool = chedda.lendingPool(poolId, signer as Signer);
+      return await getData({ lens, pool, poolId, account });
     } catch (error) {
       console.error(`Error in fetchData for ${getData.name}:`, error);
       return null;
@@ -74,26 +81,32 @@ const useCheddaData = <T = any,>(
   };
 };
 
-export const getAccountInfo: GetDataFunction<IAccountInfo> = async (
+export const getAccountInfo: GetDataFunction<IAccountInfo> = async ({
   lens,
   poolId,
-  account
-) => {
+  account,
+}) => {
   return await lens.getPoolAccountInfo(poolId, account);
 };
 
-export const getMarketInfo: GetDataFunction<IMarketInfo> = async (
+export const getMarketInfo: GetDataFunction<IMarketInfo> = async ({
   lens,
-  poolId
-) => {
+  poolId,
+}) => {
   return await lens.getMarketInfo(poolId);
 };
 
-export const getCollateralInfo: GetDataFunction<ICollateralInfo[]> = async (
+export const getCollateralInfo: GetDataFunction<ICollateralInfo[]> = async ({
   lens,
-  poolId
-) => {
+  poolId,
+}) => {
   return await lens.getPoolCollateral(poolId);
+};
+
+export const getAvailableLiquidity: GetDataFunction<BigNumber> = async ({
+  pool,
+}) => {
+  return await pool.available();
 };
 
 export const useAccountInfo = (poolId: string): HookResult<IAccountInfo> =>
@@ -106,3 +119,6 @@ export const useCollateralInfo = (
   poolId: string
 ): HookResult<ICollateralInfo[]> =>
   useCheddaData<ICollateralInfo[]>(poolId, getCollateralInfo);
+
+export const useAvailableLiquidity = (poolId: string): HookResult<BigNumber> =>
+  useCheddaData<BigNumber>(poolId, getAvailableLiquidity);

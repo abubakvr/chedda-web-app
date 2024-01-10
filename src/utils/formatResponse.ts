@@ -31,11 +31,11 @@ export const formatPoolStatsList = (
       suppliedValue: parseBigNumberToFloat(item.suppliedValue),
       borrowed: parseBigNumberToFloat(item.borrowed, decimals),
       borrowedValue: parseBigNumberToFloat(item.borrowedValue),
-      baseSupplyAPY: parseBigNumberToFloat(item.baseSupplyAPY),
-      maxSupplyAPY: parseBigNumberToFloat(item.maxSupplyAPY),
-      baseBorrowAPY: parseBigNumberToFloat(item.baseBorrowAPY),
-      maxBorrowAPY: parseBigNumberToFloat(item.maxBorrowAPY),
-      utilization: parseBigNumberToFloat(item.utilization),
+      baseSupplyAPY: parseBigNumberToFloat(item.baseSupplyAPY, 18, 10),
+      maxSupplyAPY: parseBigNumberToFloat(item.maxSupplyAPY, 18, 10),
+      baseBorrowAPY: parseBigNumberToFloat(item.baseBorrowAPY, 18, 10),
+      maxBorrowAPY: parseBigNumberToFloat(item.maxBorrowAPY, 18, 10),
+      utilization: parseBigNumberToFloat(item.utilization, 18, 10),
       feesPaid: parseBigNumberToFloat(item.feesPaid),
       tvl: parseBigNumberToFloat(item.tvl),
       collaterals: mapCollateralsToTokens(item.collaterals, tokens),
@@ -58,11 +58,11 @@ export const formatPoolStats = (
     suppliedValue: parseBigNumberToFloat(response.suppliedValue),
     borrowed: parseBigNumberToFloat(response.borrowed, decimals),
     borrowedValue: parseBigNumberToFloat(response.borrowedValue),
-    baseSupplyAPY: parseBigNumberToFloat(response.baseSupplyAPY),
-    maxSupplyAPY: parseBigNumberToFloat(response.maxSupplyAPY),
-    baseBorrowAPY: parseBigNumberToFloat(response.baseBorrowAPY),
-    maxBorrowAPY: parseBigNumberToFloat(response.maxBorrowAPY),
-    utilization: parseBigNumberToFloat(response.utilization),
+    baseSupplyAPY: parseBigNumberToFloat(response.baseSupplyAPY, 18, 10),
+    maxSupplyAPY: parseBigNumberToFloat(response.maxSupplyAPY, 18, 10),
+    baseBorrowAPY: parseBigNumberToFloat(response.baseBorrowAPY, 18, 10),
+    maxBorrowAPY: parseBigNumberToFloat(response.maxBorrowAPY, 18, 10),
+    utilization: parseBigNumberToFloat(response.utilization, 18, 10),
     feesPaid: parseBigNumberToFloat(response.feesPaid),
     tvl: parseBigNumberToFloat(response.tvl),
     collaterals: mapCollateralsToTokens(response.collaterals, tokens),
@@ -168,7 +168,7 @@ export const formatCollateralInfo = (
         parseBigNumberToFloat(myCollateral?.amount, myCollateral?.decimals)
       ),
       collateralFactor: formatAsPercentage(
-        parseBigNumberToFloat(item.collateralFactor)
+        parseBigNumberToFloat(item.collateralFactor, 18, 10)
       ),
     };
   });

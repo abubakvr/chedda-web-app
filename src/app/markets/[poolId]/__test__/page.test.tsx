@@ -11,6 +11,7 @@ import {
   useEnvironment,
   usePoolState,
   useRatesProjector,
+  useAvailableLiquidity,
 } from "@/hooks";
 import { getPoolSummaryData } from "@/utils/formatResponse";
 import {
@@ -22,6 +23,7 @@ import {
   mockPoolStateEvents,
   mockPoolStats,
 } from "@/utils/Mocks/MockTestData";
+import { BigNumber } from "ethers";
 
 jest.mock("ethers");
 jest.mock("chart.js");
@@ -91,6 +93,10 @@ describe("Pool details component", () => {
       data: mockAccountInfo,
       isLoading: false,
     }));
+    (useAvailableLiquidity as jest.Mock).mockReturnValue({
+      isLoading: false,
+      data: BigNumber.from("1000"),
+    });
 
     render(<Page />);
 

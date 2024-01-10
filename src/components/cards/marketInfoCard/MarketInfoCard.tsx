@@ -6,19 +6,21 @@ import {
   parseBigNumberToFloat,
 } from "@/utils/formatters";
 import { IMarketInfo } from "chedda-sdk";
-import { IToken } from "@/utils/types";
+import { IPoolStatsResponse } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
 import { BigNumber } from "ethers";
 
 interface MarketInfoCardProps {
-  asset: IToken | undefined;
+  available: BigNumber | undefined;
   marketInfo: IMarketInfo | undefined;
+  poolStats: IPoolStatsResponse | undefined;
   isLoading: boolean;
 }
 
 export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
-  asset,
+  available,
   marketInfo,
+  poolStats,
   isLoading,
 }) => {
   if (isLoading || !marketInfo) {
@@ -31,9 +33,12 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
   }
 
   const formatValue = (value: BigNumber | undefined, decimals?: BigNumber) => {
-    const decimalValue = parseBigNumberToFloat(decimals, 0);
+    const decimalValue = parseBigNumberToFloat(decimals, 0, 5);
     return value !== undefined && decimals !== undefined
-      ? formatCurrency(parseBigNumberToFloat(value, parseInt(decimalValue)))
+      ? formatCurrency(
+          parseBigNumberToFloat(value, parseInt(decimalValue), 2),
+          true
+        )
       : "";
   };
 
@@ -50,7 +55,7 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
       <div className="p-8 pb-3">
         {[
           {
-            label: "Oracle Price",
+            label: "Asset Price",
             value: formatValue(
               marketInfo?.oraclePrice,
               marketInfo?.oraclePriceDecimals
@@ -59,26 +64,24 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
           {
             label: "Interest Fee",
             value: formatAsPercentage(
-              parseBigNumberToFloat(marketInfo?.interestFee, 18)
+              parseBigNumberToFloat(marketInfo?.interestFee, 18, 10)
             ),
           },
           {
             label: "Supply Cap",
             value: `${formatLargeNumber(
               parseBigNumberToFloat(marketInfo?.supplyCap)
-            )} ${asset?.symbol}`,
+            )} ${poolStats?.asset?.symbol}`,
           },
           {
-            label: "Liquidation Threshold",
-            value: formatAsPercentage(
-              parseBigNumberToFloat(marketInfo?.liquidationThreshold)
-            ),
+            label: "Available Liquidity",
+            value: `${formatCurrency(
+              parseBigNumberToFloat(available, poolStats?.asset.decimals)
+            )}`,
           },
           {
-            label: "Liquidation Penalty",
-            value: formatAsPercentage(
-              parseBigNumberToFloat(marketInfo?.liquidationPenalty)
-            ),
+            label: "Utilization",
+            value: formatAsPercentage(poolStats?.utilization),
           },
         ].map(({ label, value }, index) => (
           <div
