@@ -3,16 +3,18 @@ import { useCheddaSdk } from "./useCheddaSdk";
 import { useEnvironment } from "./useEnvironment";
 import { useWeb3React } from "@web3-react/core";
 import { Signer } from "ethers";
+import { Chedda } from "chedda-sdk";
+import { IEnvironment, IPoolLens } from "@/utils/types";
 
-export const useFetcher = <T = any,>(
+export const useFetcher = <T = unknown,>(
   poolId: string,
   getData: (params: {
     lens: any;
     poolId: string;
     account?: string;
-    chedda: any;
+    chedda: Chedda;
     signer?: Signer;
-    environment: any;
+    environment: IEnvironment;
   }) => Promise<T | null>
 ) => {
   const { currentEnvironment } = useEnvironment();

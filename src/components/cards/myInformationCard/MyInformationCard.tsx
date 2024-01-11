@@ -4,7 +4,7 @@ import LinkOut from "@/assets/icon/link-out.svg";
 import { IAccountInfo } from "chedda-sdk";
 import { useTokenBalance } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
-import { IPoolStatsResponse } from "@/utils/types";
+import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
 
 interface MyInformationCardProps {
@@ -49,12 +49,12 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
       <div className="flex justify-between items-center p-8 border-b border-gray-500">
         <div className="h-fit">
           <div className="flex">
-            {poolStats?.collaterals.map((collateral: any, i) => (
+            {poolStats?.collaterals.map((collateral: IToken, i) => (
               <div key={i} className="logo-cascade round-image">
                 <Image
                   src={collateral.logo}
                   className="cascade-img h-10 w-10 round-image"
-                  alt={collateral.logo}
+                  alt={collateral.symbol}
                   data-testid="collateral-logo"
                 />
               </div>

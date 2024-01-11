@@ -9,7 +9,11 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import { IFormattedCollateral } from "@/utils/types";
+import {
+  CustomTooltipProps,
+  IFormattedCollateral,
+  IPoolStateResponse,
+} from "@/utils/types";
 import { usePoolState } from "@/hooks";
 import {
   formatAsPercentage,
@@ -18,7 +22,11 @@ import {
   toFixedTrunc,
 } from "@/utils/formatters";
 
-const CustomTooltip = (props: any) => {
+interface Payload {
+  payload: IPoolStateResponse;
+}
+
+const CustomTooltip: React.FC<CustomTooltipProps<Payload>> = (props) => {
   const dataPoint = props?.payload?.[0];
 
   const formattedDate = () => {

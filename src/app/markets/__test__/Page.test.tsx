@@ -10,7 +10,7 @@ import { usePoolStatsList, useAggregateStats } from "@/hooks";
 // Mock the useAggregateStats hook
 jest.mock("ethers");
 jest.mock("../../../hooks/useCheddaSdk");
-jest.mock("../../../hooks/useContract");
+jest.mock("../../../hooks/useContracts");
 
 const mockUseAggregateStats = useAggregateStats as jest.MockedFunction<
   typeof useAggregateStats

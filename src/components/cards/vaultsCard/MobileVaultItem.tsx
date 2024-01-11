@@ -1,4 +1,4 @@
-import { IPoolStatsResponse } from "@/utils/types";
+import { IPoolStatsResponse, IToken } from "@/utils/types";
 import Image from "next/image";
 import React from "react";
 
@@ -38,7 +38,7 @@ export const MobileVaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
             Collateral
           </div>
           <div className="flex mr-4 mt-2">
-            {pool.collaterals?.map((collateral: any, i: number) => (
+            {pool.collaterals?.map((collateral: IToken, i: number) => (
               <div key={i} className="logo-cascade round-image">
                 <Image
                   src={collateral.logo}
@@ -55,7 +55,7 @@ export const MobileVaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
             } grid-cols-2 mt-2 text-sm gap-x-1 justify-end items-end`}
             data-testid="mobile-collateral-symbols"
           >
-            {pool.collaterals?.map((collateral: any, i: number) => (
+            {pool.collaterals?.map((collateral: IToken, i: number) => (
               <div className="flex justify-end items-end" key={i}>
                 {collateral.symbol}
                 {i !== pool.collaterals?.length - 1 && <span>,</span>}

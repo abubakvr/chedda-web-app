@@ -1,9 +1,9 @@
 import React, { FC } from "react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 interface ConnectButtonProps {
   label: string;
-  image: any;
+  image: StaticImageData;
   onClick: () => void;
   loading: boolean;
 }

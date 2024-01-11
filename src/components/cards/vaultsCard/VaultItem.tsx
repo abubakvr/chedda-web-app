@@ -7,7 +7,7 @@ import {
   formatCurrency,
   formatLargeNumber,
 } from "@/utils/formatters";
-import { IPoolStatsResponse } from "@/utils/types";
+import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { MobileVaultItem } from "./MobileVaultItem";
 
 export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
@@ -65,7 +65,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           </div>
           <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-1">
             <div className="flex ml-1">
-              {pool.collaterals?.map((collateral: any, i: number) => (
+              {pool.collaterals?.map((collateral: IToken, i: number) => (
                 <div key={i} className="logo-cascade round-image">
                   <Image
                     src={collateral?.logo}
@@ -82,7 +82,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
               data-testid="collaterals-list"
             >
               {!showEllipses &&
-                pool.collaterals?.map((collateral: any, i: number) => (
+                pool.collaterals?.map((collateral: IToken, i: number) => (
                   <div
                     className="flex text-sm font-bold justify-start items-start text-ellipsis"
                     key={i}
@@ -94,7 +94,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
               {showEllipses &&
                 pool?.collaterals
                   .slice(0, 4)
-                  .map((collateral: any, i: number) => (
+                  .map((collateral: IToken, i: number) => (
                     <div
                       className="flex justify-start items-start text-ellipsis"
                       key={i}

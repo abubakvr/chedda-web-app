@@ -12,8 +12,14 @@ import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
 import { formatAsPercentage, parseBigNumberToFloat } from "@/utils/formatters";
 import { useRatesProjector } from "@/hooks";
+import { IInterestRates, IInterestRatesProjection } from "chedda-sdk";
+import { CustomTooltipProps } from "@/utils/types";
 
-const CustomTooltip = (props: any) => {
+interface Payload {
+  payload: IInterestRatesProjection;
+}
+
+const CustomTooltip: React.FC<CustomTooltipProps<Payload>> = (props) => {
   const dataPoint = props?.payload?.[0];
 
   return (

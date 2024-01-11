@@ -3,9 +3,7 @@ import { renderHook, act, waitFor } from "@testing-library/react";
 import { ethers } from "ethers";
 import { useCheddaSdk } from "../useCheddaSdk";
 import { useFetcher } from "../useFetcher";
-import { GetDataFunction } from "@/utils/types";
 
-const mockGetData: jest.Mock<Promise<string | null>, any[]> = jest.fn();
 jest.mock("ethers");
 jest.mock("@web3-react/core");
 jest.mock("../useCheddaSdk");
@@ -33,23 +31,6 @@ export const mockConsoleError = (): void => {
 
 export const restoreConsoleError = (): void => {
   jest.spyOn(console, "error").mockRestore();
-};
-
-export const catchHookError = <P extends any, R extends any>(
-  hookFn: (props?: P) => R,
-  options?: { initialProps?: P }
-): Error | undefined => {
-  let error: Error | undefined;
-  mockConsoleError();
-
-  try {
-    renderHook(() => hookFn(options?.initialProps));
-  } catch (e: any) {
-    error = e;
-  }
-
-  restoreConsoleError();
-  return error;
 };
 
 const mockUseCheddaSdk = useCheddaSdk as jest.MockedFunction<
