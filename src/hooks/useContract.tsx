@@ -1,20 +1,17 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
 import { ethers, Signer } from "ethers";
 import {
-  Chedda,
   IAccountInfo,
   IInterestRatesProjection,
   IMarketInfo,
   IPoolState,
 } from "chedda-sdk";
-import { useCheddaSdk, useEnvironment } from "@/hooks";
-import { useWeb3React } from "@web3-react/core";
 import {
   ISummaryStats,
   ICollateralInfo,
-  IEnvironment,
   IPoolStateResponse,
   IPoolStatsResponse,
+  GetDataFunction,
+  HookResult,
 } from "@/utils/types";
 import {
   createTimestamps,
@@ -26,120 +23,14 @@ import {
   formatPoolStatsList,
   getAggregateInfo,
 } from "@/utils/formatResponse";
+import { useFetcher } from "./useFetcher";
 
-// Common hook result type
-interface HookResult<T> {
-  data?: T;
-  isLoading: boolean;
-  fetchData: () => Promise<T | null>;
-}
-
-// Common data fetching function type
-type GetDataFunction<T> = ({
-  lens,
-  poolId,
-  account,
-  chedda,
-  signer,
-  environment,
-}: {
-  lens: any;
-  poolId: string;
-  account?: string;
-  chedda: Chedda;
-  signer?: Signer;
-  environment: IEnvironment;
-}) => Promise<T | null>;
-const useCheddaData = <T = any,>(
-  poolId: string,
-  getData: GetDataFunction<T>
-): HookResult<T> => {
-  const [data, setData] = useState<T | undefined>();
-  const [isLoading, setIsLoading] = useState(true);
-  const { currentEnvironment } = useEnvironment();
-  const { chedda, signer } = useCheddaSdk();
-  const { account } = useWeb3React();
-
-  // Memoized data fetching function name
-  const getDataName = useCallback(() => getData.name, [getData]);
-
-  // Memoized data fetching function
-  const fetchData = useCallback(async () => {
-    if (
-      !chedda ||
-      !currentEnvironment ||
-      (!account && getData === getAccountInfo)
-    ) {
-      return null;
-    }
-
-    try {
-      // Memoized lens
-      const lens = useMemo(() => {
-        if (chedda && currentEnvironment) {
-          return chedda.poolLens(
-            currentEnvironment.contracts.LendingPoolLens,
-            signer as Signer
-          );
-        }
-        return null;
-      }, [chedda, currentEnvironment, signer]);
-
-      return await getData?.({
-        lens,
-        poolId,
-        account,
-        chedda,
-        signer,
-        environment: currentEnvironment,
-      });
-    } catch (error) {
-      console.error(`Error in fetchData for ${getDataName()}:`, error);
-      return null;
-    }
-  }, [
-    chedda,
-    currentEnvironment,
-    account,
-    getData,
-    getAccountInfo,
-    signer,
-    getDataName,
-    poolId,
-  ]);
-
-  // Fetch data on component mount
-  useEffect(() => {
-    const fetchCheddaData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetchData();
-        if (response !== null && response !== undefined) {
-          setData(response);
-        }
-      } catch (error) {
-        console.error(`Error getting ${getDataName()} data`, error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchCheddaData();
-  }, [chedda, account]);
-
-  return {
-    data,
-    isLoading,
-    fetchData,
-  };
-};
-
-// Data fetching functions
 export const getAccountInfo: GetDataFunction<IAccountInfo> = async ({
   lens,
   poolId,
   account,
 }) => {
+  if (!account) return null;
   return await lens.getPoolAccountInfo(poolId, account);
 };
 
@@ -224,31 +115,31 @@ const getRatesProjectorData: GetDataFunction<
 
 // Exported custom hooks
 export const useAccountInfo = (poolId: string): HookResult<IAccountInfo> =>
-  useCheddaData<IAccountInfo>(poolId, getAccountInfo);
+  useFetcher<IAccountInfo>(poolId, getAccountInfo);
 
 export const useMarketInfo = (poolId: string): HookResult<IMarketInfo> =>
-  useCheddaData<IMarketInfo>(poolId, getMarketInfo);
+  useFetcher<IMarketInfo>(poolId, getMarketInfo);
 
 export const useCollateralInfo = (
   poolId: string
 ): HookResult<ICollateralInfo[]> =>
-  useCheddaData<ICollateralInfo[]>(poolId, getCollateralInfo);
+  useFetcher<ICollateralInfo[]>(poolId, getCollateralInfo);
 
 export const useAggregateStats = (): HookResult<ISummaryStats[]> =>
-  useCheddaData<ISummaryStats[]>("", getAggregateStats);
+  useFetcher<ISummaryStats[]>("", getAggregateStats);
 
 export const usePoolState = (
   poolId: string
 ): HookResult<IPoolStateResponse[]> =>
-  useCheddaData<IPoolStateResponse[]>(poolId, getPoolState);
+  useFetcher<IPoolStateResponse[]>(poolId, getPoolState);
 
 export const usePoolStatsList = (): HookResult<IPoolStatsResponse[]> =>
-  useCheddaData<IPoolStatsResponse[]>("", getPoolStatsList);
+  useFetcher<IPoolStatsResponse[]>("", getPoolStatsList);
 
 export const usePoolStats = (poolId: string): HookResult<IPoolStatsResponse> =>
-  useCheddaData<IPoolStatsResponse>(poolId, getPoolStats);
+  useFetcher<IPoolStatsResponse>(poolId, getPoolStats);
 
 export const useRatesProjector = (
   poolId: string
 ): HookResult<IInterestRatesProjection[]> =>
-  useCheddaData<IInterestRatesProjection[]>(poolId, getRatesProjectorData);
+  useFetcher<IInterestRatesProjection[]>(poolId, getRatesProjectorData);

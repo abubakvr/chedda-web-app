@@ -27,10 +27,10 @@ import { BigNumber } from "ethers";
 
 jest.mock("ethers");
 jest.mock("chart.js");
-jest.mock("../../../../hooks/useCheddaInfo");
+jest.mock("../../../../hooks/useContract");
 jest.mock("../../../../hooks/useTokenBalance");
 jest.mock("../../../../hooks/useEnvironment");
-jest.mock("../../../../hooks/useCheddaInfo");
+jest.mock("../../../../hooks/useContract");
 
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),

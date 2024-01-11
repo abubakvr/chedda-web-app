@@ -187,28 +187,28 @@ export const mockUseCheddaReturnValue = {
 
 export const mockAggregateStats: ISummaryStats[] = [
   {
-    title: "Mock Total Supplied",
-    value: "Mock Total Supplied Value",
+    title: "Total Supplied",
+    value: "$0.00",
   },
   {
-    title: "Mock Total Borrowed",
-    value: "Mock Total Borrowed Value",
+    title: "Total Borrowed",
+    value: "$0.00",
   },
   {
-    title: "Mock Total Available",
-    value: "Mock Total Available Value",
+    title: "Total Available",
+    value: "$0.00",
   },
   {
-    title: "Mock No. Of Vaults",
-    value: 5, // Mocked number of vaults
+    title: "No. Of Vaults",
+    value: "0.00",
   },
   {
-    title: "Mock Total Earned",
-    value: "Mock Total Earned Value",
+    title: "Total Earned",
+    value: "$0.00",
   },
   {
-    title: "Mock TVL",
-    value: "Mock TVL Value",
+    title: "TVL",
+    value: "$0.00",
   },
 ];
 

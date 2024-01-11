@@ -6,7 +6,7 @@ import { usePoolStatsList } from "@/hooks";
 import { mockPoolStats } from "@/utils/Mocks/MockTestData";
 
 jest.mock("ethers");
-jest.mock("../../../../hooks/useCheddaInfo");
+jest.mock("../../../../hooks/useContract");
 
 describe("VaultCard Component", () => {
   it("renders pools with data when not loading", () => {

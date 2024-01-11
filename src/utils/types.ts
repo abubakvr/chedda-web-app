@@ -1,4 +1,5 @@
-import { IPoolCollateralInfo, IPoolState } from "chedda-sdk";
+import { Chedda, IPoolCollateralInfo, IPoolState } from "chedda-sdk";
+import { Signer } from "ethers";
 import { StaticImageData } from "next/image";
 import React from "react";
 
@@ -115,3 +116,26 @@ export interface ISummaryStats {
   title: string;
   value: string | number;
 }
+
+export interface HookResult<T> {
+  data?: T;
+  isLoading: boolean;
+  fetchData: () => Promise<T | null>;
+}
+
+// Common data fetching function type
+export type GetDataFunction<T> = ({
+  lens,
+  poolId,
+  account,
+  chedda,
+  signer,
+  environment,
+}: {
+  lens: any;
+  poolId: string;
+  account?: string;
+  chedda: Chedda;
+  signer?: Signer;
+  environment: IEnvironment;
+}) => Promise<T | null>;
