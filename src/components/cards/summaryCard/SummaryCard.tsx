@@ -21,12 +21,12 @@ export const SummaryCard = ({ stats, isLoading }: SummaryCardProps) => {
               >
                 <div className="flex flex-col justify-center text-sm md:col-span-1 animate-pulse">
                   <div className="flex flex-col">
-                    <div className="h-6 bg-gray-400 rounded-md dark:bg-blue-200 opacity-10 w-24"></div>
+                    <div className="h-5 bg-gray-400 rounded-md dark:bg-blue-200 opacity-10 w-2/3"></div>
                   </div>
                 </div>
-                <div className="flex flex-col justify-center text-sm md:col-span-1 animate-pulse mt-2">
+                <div className="flex flex-col justify-center text-sm md:col-span-1 animate-pulse mt-2.5">
                   <div className="flex flex-col">
-                    <div className="h-6 bg-gray-300 rounded-md dark:bg-blue-200 opacity-10 w-32"></div>
+                    <div className="h-7 bg-gray-300 rounded-md dark:bg-blue-200 opacity-10 w-4/5"></div>
                   </div>
                 </div>
               </div>
