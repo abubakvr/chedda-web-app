@@ -48,14 +48,10 @@ const Page = () => {
       <div className="my-7">
         <SummaryHeader
           logoSrc={poolStats?.asset.logo}
-          assetName={poolStats?.asset.name}
+          assetName={poolStats?.characterization}
         />
       </div>
-      <SummaryCard
-        stats={poolSummary}
-        isLoading={isLoading}
-        data-testid={"market-info-card"}
-      />
+      <SummaryCard stats={poolSummary} isLoading={!poolStats || isLoading} />
       <div className="mt-8 w-full flex space-x-5">
         <div className="w-[67%] h-fit flex flex-col gap-y-6">
           <div className="pool-card rounded-lg">

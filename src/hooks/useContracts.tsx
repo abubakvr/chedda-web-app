@@ -1,4 +1,4 @@
-import { ethers, Signer } from "ethers";
+import { BigNumber, ethers, Signer } from "ethers";
 import {
   IAccountInfo,
   IInterestRatesProjection,
@@ -113,6 +113,15 @@ const getRatesProjectorData: GetDataFunction<
   return await ratesProjector.projection(interestRateModel, utilizationsArray);
 };
 
+export const getAvailableLiquidity: GetDataFunction<BigNumber> = async ({
+  chedda,
+  signer,
+  poolId,
+}) => {
+  const pool = chedda.lendingPool(poolId, signer as Signer);
+  return await pool.available();
+};
+
 // Exported custom hooks
 export const useAccountInfo = (poolId: string): HookResult<IAccountInfo> =>
   useFetcher<IAccountInfo>(poolId, getAccountInfo);
@@ -143,3 +152,6 @@ export const useRatesProjector = (
   poolId: string
 ): HookResult<IInterestRatesProjection[]> =>
   useFetcher<IInterestRatesProjection[]>(poolId, getRatesProjectorData);
+
+export const useAvailableLiquidity = (poolId: string): HookResult<BigNumber> =>
+  useFetcher<BigNumber>(poolId, getAvailableLiquidity);

@@ -22,12 +22,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
   onSupplyClick,
   onBorrowClick,
 }) => {
-  const { fetchTokenBalance, tokenBalance } = useTokenBalance();
-
-  useEffect(() => {
-    if (!poolStats) return;
-    fetchTokenBalance(poolStats?.asset.address);
-  }, [fetchTokenBalance, poolStats]);
+  const { tokenBalance } = useTokenBalance(poolStats?.asset.address ?? "");
 
   if (isLoading || !poolStats) {
     // Render loading placeholder if poolStats is undefined

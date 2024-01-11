@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BigNumber, Contract } from "ethers";
 import { useWeb3React } from "@web3-react/core";
 import ERC20 from "@/data/erc20.json";
@@ -9,12 +9,14 @@ interface TokenBalanceHookResult {
   fetchTokenBalance: (token: string) => void;
 }
 
-export const useTokenBalance = (): TokenBalanceHookResult => {
+export const useTokenBalance = (
+  tokenAddress: string
+): TokenBalanceHookResult => {
   const [tokenBalance, setTokenBalance] = useState<BigNumber>();
   const [error, setError] = useState<Error | null>(null);
   const { account, provider } = useWeb3React();
 
-  const fetchTokenBalance = async (tokenAddress: string) => {
+  const fetchTokenBalance = useCallback(async () => {
     try {
       if (!provider || !account) {
         throw new Error("Ethereum provider or account not available");
@@ -27,7 +29,12 @@ export const useTokenBalance = (): TokenBalanceHookResult => {
     } catch (error: any) {
       setError(error);
     }
-  };
+  }, [provider, account, tokenAddress, setTokenBalance, setError]);
+
+  useEffect(() => {
+    if (!account) return;
+    fetchTokenBalance();
+  }, [fetchTokenBalance, account]);
 
   return { tokenBalance, error, fetchTokenBalance };
 };
