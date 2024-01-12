@@ -1,4 +1,4 @@
-import { IPoolStatsResponse } from "@/utils/types";
+import { IPoolStatsResponse, IToken } from "@/utils/types";
 import Image from "next/image";
 import React from "react";
 
@@ -20,16 +20,16 @@ export const MobileVaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           </div>
           <div className="flex flex-col items-center mt-2">
             <Image
-              src={pool.asset.logo}
+              src={pool.asset?.logo}
               className="h-8 w-8"
-              alt={pool.asset.symbol}
+              alt={pool.asset?.symbol}
               data-testid="mobile-asset-logo"
             />
             <div
               className="font-bold mt-2 text-sm"
               data-testid="mobile-asset-symbol"
             >
-              {pool.asset.symbol}
+              {pool.asset?.symbol}
             </div>
           </div>
         </div>
@@ -38,7 +38,7 @@ export const MobileVaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
             Collateral
           </div>
           <div className="flex mr-4 mt-2">
-            {pool.collaterals.map((collateral: any, i: number) => (
+            {pool.collaterals?.map((collateral: IToken, i: number) => (
               <div key={i} className="logo-cascade round-image">
                 <Image
                   src={collateral.logo}
@@ -51,14 +51,14 @@ export const MobileVaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           </div>
           <div
             className={`w-max font-bold ${
-              pool.collaterals.length > 1 && "grid"
+              pool.collaterals?.length > 1 && "grid"
             } grid-cols-2 mt-2 text-sm gap-x-1 justify-end items-end`}
             data-testid="mobile-collateral-symbols"
           >
-            {pool.collaterals.map((collateral: any, i: number) => (
+            {pool.collaterals?.map((collateral: IToken, i: number) => (
               <div className="flex justify-end items-end" key={i}>
                 {collateral.symbol}
-                {i !== pool.collaterals.length - 1 && <span>,</span>}
+                {i !== pool.collaterals?.length - 1 && <span>,</span>}
               </div>
             ))}
           </div>

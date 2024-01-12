@@ -1,0 +1,157 @@
+import { BigNumber, ethers, Signer } from "ethers";
+import {
+  IAccountInfo,
+  IInterestRatesProjection,
+  IMarketInfo,
+  IPoolState,
+} from "chedda-sdk";
+import {
+  ISummaryStats,
+  ICollateralInfo,
+  IPoolStateResponse,
+  IPoolStatsResponse,
+  GetDataFunction,
+  HookResult,
+} from "@/utils/types";
+import {
+  createTimestamps,
+  findNearestIndex,
+  utilizationsArray,
+} from "@/utils/helpers";
+import {
+  formatPoolStats,
+  formatPoolStatsList,
+  getAggregateInfo,
+} from "@/utils/formatResponse";
+import { useFetcher } from "./useFetcher";
+
+export const getAccountInfo: GetDataFunction<IAccountInfo> = async ({
+  lens,
+  poolId,
+  account,
+}) => {
+  if (!account) return null;
+  return await lens.getPoolAccountInfo(poolId, account);
+};
+
+export const getMarketInfo: GetDataFunction<IMarketInfo> = async ({
+  lens,
+  poolId,
+}) => {
+  return await lens.getMarketInfo(poolId);
+};
+
+export const getCollateralInfo: GetDataFunction<ICollateralInfo[]> = async ({
+  lens,
+  poolId,
+}) => {
+  return await lens.getPoolCollateral(poolId);
+};
+
+const getAggregateStats: GetDataFunction<ISummaryStats[]> = async ({
+  lens,
+}) => {
+  const aggregateStats = await lens.getAggregateStats();
+  return getAggregateInfo(aggregateStats);
+};
+
+const getPoolState: GetDataFunction<IPoolStateResponse[]> = async ({
+  poolId,
+  chedda,
+  signer,
+}) => {
+  const graphTimes = createTimestamps(0.5, 25);
+  const lendingPool = chedda.lendingPool(poolId, signer as Signer);
+  const events = await lendingPool.getEventLogs<IPoolState>(
+    "PoolState",
+    0,
+    "latest"
+  );
+
+  const eventTimestamps =
+    events?.map((item: IPoolState) =>
+      parseInt(ethers.utils.formatUnits(item.timestamp, 0))
+    ) || [];
+  const eventsToGraph = graphTimes.map((timestamp) => {
+    const index = findNearestIndex(eventTimestamps, timestamp);
+    const event = index !== -1 ? events?.[index] : null;
+
+    return event ? { ...event, timePoint: timestamp } : null;
+  });
+
+  return eventsToGraph as IPoolStateResponse[];
+};
+
+const getPoolStatsList: GetDataFunction<IPoolStatsResponse[]> = async ({
+  lens,
+  environment,
+}) => {
+  const pools = await lens.activePools();
+  const statsList = await lens.getPoolStatsList(pools);
+  return formatPoolStatsList(statsList, environment.tokens);
+};
+
+const getPoolStats: GetDataFunction<IPoolStatsResponse> = async ({
+  lens,
+  poolId,
+  environment,
+}) => {
+  const poolStats = await lens.getPoolStats(poolId);
+  return formatPoolStats(poolStats, environment.tokens);
+};
+
+const getRatesProjectorData: GetDataFunction<
+  IInterestRatesProjection[]
+> = async ({ poolId, chedda, signer, environment }) => {
+  const lendingPool = chedda.lendingPool(poolId, signer as Signer);
+  const ratesProjector = chedda.interestRateProjector(
+    environment.contracts.InterestRatesProjector,
+    signer as Signer
+  );
+
+  const interestRateModel = await lendingPool.interestRatesModel();
+  return await ratesProjector.projection(interestRateModel, utilizationsArray);
+};
+
+export const getAvailableLiquidity: GetDataFunction<BigNumber> = async ({
+  chedda,
+  signer,
+  poolId,
+}) => {
+  const pool = chedda.lendingPool(poolId, signer as Signer);
+  return await pool.available();
+};
+
+// Exported custom hooks
+export const useAccountInfo = (poolId: string): HookResult<IAccountInfo> =>
+  useFetcher<IAccountInfo>(poolId, getAccountInfo);
+
+export const useMarketInfo = (poolId: string): HookResult<IMarketInfo> =>
+  useFetcher<IMarketInfo>(poolId, getMarketInfo);
+
+export const useCollateralInfo = (
+  poolId: string
+): HookResult<ICollateralInfo[]> =>
+  useFetcher<ICollateralInfo[]>(poolId, getCollateralInfo);
+
+export const useAggregateStats = (): HookResult<ISummaryStats[]> =>
+  useFetcher<ISummaryStats[]>("", getAggregateStats);
+
+export const usePoolState = (
+  poolId: string
+): HookResult<IPoolStateResponse[]> =>
+  useFetcher<IPoolStateResponse[]>(poolId, getPoolState);
+
+export const usePoolStatsList = (): HookResult<IPoolStatsResponse[]> =>
+  useFetcher<IPoolStatsResponse[]>("", getPoolStatsList);
+
+export const usePoolStats = (poolId: string): HookResult<IPoolStatsResponse> =>
+  useFetcher<IPoolStatsResponse>(poolId, getPoolStats);
+
+export const useRatesProjector = (
+  poolId: string
+): HookResult<IInterestRatesProjection[]> =>
+  useFetcher<IInterestRatesProjection[]>(poolId, getRatesProjectorData);
+
+export const useAvailableLiquidity = (poolId: string): HookResult<BigNumber> =>
+  useFetcher<BigNumber>(poolId, getAvailableLiquidity);

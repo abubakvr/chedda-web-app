@@ -13,6 +13,7 @@ import {
   ICollateralInfo,
   IFormattedCollateral,
   IPoolStatsResponse,
+  ISummaryStats,
   IToken,
   ITokenConfig,
 } from "./types";
@@ -79,7 +80,9 @@ const mapCollateralsToTokens = (
   });
 };
 
-export const getMarketInfoData = (aggregateStats?: IAggregateStats) => {
+export const getAggregateInfo = (
+  aggregateStats?: IAggregateStats
+): ISummaryStats[] => {
   return [
     {
       title: "Total Supplied",
@@ -116,7 +119,9 @@ export const getMarketInfoData = (aggregateStats?: IAggregateStats) => {
   ];
 };
 
-export const getPoolSummaryData = (poolSummary?: IPoolStatsResponse) => {
+export const getPoolSummaryData = (
+  poolSummary?: IPoolStatsResponse
+): ISummaryStats[] => {
   return [
     {
       title: "Total Supply",

@@ -2,16 +2,16 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { render, fireEvent, waitFor, act } from "@testing-library/react";
 import { VaultCard } from "../VaultCard";
-import { usePoolStatsList } from "../../../../hooks/usePools";
+import { usePoolStatsList } from "@/hooks";
 import { mockPoolStats } from "@/utils/Mocks/MockTestData";
 
 jest.mock("ethers");
-jest.mock("../../../../hooks/usePools");
+jest.mock("../../../../hooks/useContracts");
 
 describe("VaultCard Component", () => {
   it("renders pools with data when not loading", () => {
     (usePoolStatsList as jest.Mock).mockImplementation(() => ({
-      poolStatsList: mockPoolStats,
+      data: mockPoolStats,
       isLoading: false,
     }));
     const { getByTestId, getAllByTestId } = render(<VaultCard />);
@@ -24,7 +24,7 @@ describe("VaultCard Component", () => {
   it("renders VaultCard item when market is searched", () => {
     // Mock usePoolStatsList hook to simulate loading state
     (usePoolStatsList as jest.Mock).mockImplementation(() => ({
-      poolStatsList: mockPoolStats,
+      data: mockPoolStats,
       isLoading: false,
     }));
     const { getByTestId } = render(<VaultCard />);
@@ -40,7 +40,7 @@ describe("VaultCard Component", () => {
 
   it("renders VaultCard with loading state when loading", async () => {
     (usePoolStatsList as jest.Mock).mockImplementation(() => ({
-      poolStatsList: null,
+      data: null,
       isLoading: true,
     }));
     const { getByTestId } = render(<VaultCard />);

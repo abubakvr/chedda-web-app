@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import connectors from "@/connectors";
 import { Web3ReactProvider } from "@web3-react/core";

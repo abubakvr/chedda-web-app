@@ -16,7 +16,7 @@ export const SummaryHeader = ({ logoSrc, assetName }: SummaryProps) => {
   };
 
   return (
-    <div className="flex my-7 items-center" data-testid="summary-header">
+    <div className="flex items-center" data-testid="summary-header">
       <button
         className="text-white hover:opacity-80 mr-5"
         onClick={navigateToMarkets}
@@ -48,8 +48,8 @@ export const SummaryHeader = ({ logoSrc, assetName }: SummaryProps) => {
           </div>
         </div>
       ) : (
-        <div className="flex mt-3 rounded animate-pulse">
-          <div className="h-10 bg-blue-400 rounded-md dark:bg-blue-400 opacity-20 w-48 mb-2.5"></div>
+        <div className="flex rounded animate-pulse">
+          <div className="h-10 bg-blue-400 rounded-md dark:bg-blue-400 opacity-20 w-48"></div>
         </div>
       )}
     </div>

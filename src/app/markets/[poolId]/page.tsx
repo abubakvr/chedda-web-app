@@ -22,46 +22,36 @@ const Page = () => {
   const { poolId } = useParams();
   const { currentEnvironment } = useEnvironment();
   const strPoolId = poolId.toString();
-  const { poolStats, isLoading } = usePoolStats(strPoolId);
+  const { data: poolStats, isLoading } = usePoolStats(strPoolId);
   const { data: accountInfo, isLoading: accountInfoLoading } =
     useAccountInfo(strPoolId);
   const { data: marketInfo, isLoading: marketInfoLoading } =
     useMarketInfo(strPoolId);
-  const { data, isLoading: collateralInfoLoading } =
+  const { data: collateralData, isLoading: collateralInfoLoading } =
     useCollateralInfo(strPoolId);
   const { data: available, isLoading: availableLoading } =
     useAvailableLiquidity(strPoolId);
 
   const collateralInfo = formatCollateralInfo(
-    data,
+    collateralData,
     currentEnvironment?.tokens ?? {},
     accountInfo?.collateralDeposited
   );
+
+  const poolSummary = getPoolSummaryData(poolStats);
 
   return (
     <div
       className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto pb-10"
       data-testid="pool-container"
     >
-      <SummaryHeader
-        logoSrc={poolStats?.asset.logo}
-        assetName={poolStats?.characterization}
-      />
-      <div
-        className="grid grid-cols-2 gap-x-2 gap-y-2 lg:flex lg:gap-x-0 mt-5 lg:space-x-3 xl:space-x-5 flex-wrap lg:flex-nowrap"
-        data-testid="summary-card-container"
-      >
-        {getPoolSummaryData(poolStats).map((data, index) => (
-          <SummaryCard
-            key={index}
-            index={index}
-            title={data.title}
-            value={data.value}
-            isLoading={isLoading}
-            data-testid={`market-info-card-${index}`}
-          />
-        ))}
+      <div className="my-7">
+        <SummaryHeader
+          logoSrc={poolStats?.asset.logo}
+          assetName={poolStats?.characterization}
+        />
       </div>
+      <SummaryCard stats={poolSummary} isLoading={!poolStats || isLoading} />
       <div className="mt-8 w-full flex space-x-5">
         <div className="w-[67%] h-fit flex flex-col gap-y-6">
           <div className="pool-card rounded-lg">

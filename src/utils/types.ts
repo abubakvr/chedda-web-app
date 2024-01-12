@@ -1,4 +1,13 @@
-import { IPoolCollateralInfo } from "chedda-sdk";
+import {
+  Chedda,
+  IAccountInfo,
+  IAggregateStats,
+  IMarketInfo,
+  IPoolCollateralInfo,
+  IPoolState,
+  IPoolStats,
+} from "chedda-sdk";
+import { ethers, Signer } from "ethers";
 import { StaticImageData } from "next/image";
 import React from "react";
 
@@ -55,7 +64,7 @@ export interface IEnvironment {
 
 export interface IConvertedPoolStats {
   pool: string;
-  asset: any;
+  asset: IToken;
   characterization: string;
   supplied: number;
   suppliedValue: number;
@@ -105,4 +114,61 @@ export interface IFormattedCollateral {
   myCollateralValue: string;
   myCollateralAmount: string;
   collateralFactor: string;
+}
+
+export interface IPoolStateResponse extends IPoolState {
+  timePoint: number;
+}
+
+export interface ISummaryStats {
+  title: string;
+  value: string | number;
+}
+
+export interface HookResult<T> {
+  data?: T;
+  isLoading: boolean;
+  fetchData: () => Promise<T | null>;
+}
+
+// Common data fetching function type
+export type GetDataFunction<T> = ({
+  lens,
+  poolId,
+  account,
+  chedda,
+  signer,
+  environment,
+}: {
+  lens: any;
+  poolId: string;
+  account?: string;
+  chedda: Chedda;
+  signer?: Signer;
+  environment: IEnvironment;
+}) => Promise<T | null>;
+
+export interface CustomTooltipProps<T> {
+  payload?: T[];
+  decimals?: string | number;
+}
+
+export interface IPoolLens {
+  activePools(): Promise<string[]>;
+  getAggregateStats(): Promise<IAggregateStats>;
+  getMarketInfo(poolAddress: string): Promise<IMarketInfo>;
+  getPoolAccountInfo(
+    poolAddress: string,
+    account: string
+  ): Promise<IAccountInfo>;
+  getPoolCollateral(poolAddress: string): Promise<IPoolCollateralInfo[]>;
+  getPoolStats(poolAddress: string): Promise<IPoolStats>;
+  getPoolStatsList(pools: string[]): Promise<IPoolStats[]>;
+  owner(): Promise<string>;
+  registeredPools(): Promise<string[]>;
+  registerPool(pool: string, isActive: boolean): Promise<void>;
+  renounceOwnership(): Promise<void>;
+  setActive(pool: string, isActive: boolean): Promise<void>;
+  transferOwnership(newOwner: string): Promise<void>;
+  unregisterPool(pool: string): Promise<void>;
 }

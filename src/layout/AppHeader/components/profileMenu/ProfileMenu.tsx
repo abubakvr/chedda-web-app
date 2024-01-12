@@ -24,13 +24,13 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
 
   const copyAddress = () => {
     copyToClipboard(account ?? "")
-      .then((res: any) => {
+      .then(() => {
         setCopyLabel("Copied");
         setTimeout(() => {
           setCopyLabel("Copy Address");
         }, 1500);
       })
-      .catch((error: any) => {
+      .catch((error) => {
         console.log("error copying text", error);
       });
   };

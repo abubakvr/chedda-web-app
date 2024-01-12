@@ -1,12 +1,10 @@
 "use client";
 import React from "react";
 import { VaultCard, SummaryCard } from "@/components/cards";
-import { useAggregateStats } from "@/hooks/useAggregateStats";
-import { getMarketInfoData } from "@/utils/formatResponse";
+import { useAggregateStats } from "@/hooks";
 
 const Page = () => {
-  const { aggregateStats, isLoading } = useAggregateStats();
-  const aggregateStatsInfo = getMarketInfoData(aggregateStats);
+  const { data: aggregateStats, isLoading } = useAggregateStats();
 
   return (
     <div
@@ -19,21 +17,11 @@ const Page = () => {
       >
         MARKETS
       </div>
-      <div
-        className="grid grid-cols-2 gap-x-2 gap-y-2 lg:flex lg:gap-x-0 lg:space-x-3 xl:space-x-5 flex-wrap lg:flex-nowrap"
-        data-testid="market-info-container"
-      >
-        {aggregateStatsInfo?.map((data, index) => (
-          <SummaryCard
-            key={index}
-            index={index}
-            title={data.title}
-            value={data.value}
-            isLoading={isLoading}
-            data-testid={`market-info-card-${index}`}
-          />
-        ))}
-      </div>
+      <SummaryCard
+        stats={aggregateStats}
+        isLoading={isLoading}
+        data-testid="market-info-card"
+      />
       <div className="mt-8" data-testid="vault-card-container">
         <VaultCard data-testid="vault-card" />
       </div>

@@ -1,5 +1,9 @@
 import { StaticImageData } from "next/image";
-import { IFormattedCollateral, IPoolStatsResponse } from "../types";
+import {
+  IFormattedCollateral,
+  IPoolStatsResponse,
+  ISummaryStats,
+} from "../types";
 import { BigNumber, ethers } from "ethers";
 import { IAccountInfo, IPoolState, IPoolStats } from "chedda-sdk";
 
@@ -181,14 +185,32 @@ export const mockUseCheddaReturnValue = {
   signer: mockProvider.getSigner(),
 };
 
-export const mockAggregateStats = {
-  totalSuppliedValue: BigNumber.from(5000),
-  totalBorrowedValue: BigNumber.from(5000),
-  totalAvailableValue: BigNumber.from(5000),
-  totalFeesPaid: BigNumber.from(5000),
-  numberOfVaults: BigNumber.from(5000),
-  tvl: BigNumber.from(5000),
-};
+export const mockAggregateStats: ISummaryStats[] = [
+  {
+    title: "Total Supplied",
+    value: "$0.00",
+  },
+  {
+    title: "Total Borrowed",
+    value: "$0.00",
+  },
+  {
+    title: "Total Available",
+    value: "$0.00",
+  },
+  {
+    title: "No. Of Vaults",
+    value: "0.00",
+  },
+  {
+    title: "Total Earned",
+    value: "$0.00",
+  },
+  {
+    title: "TVL",
+    value: "$0.00",
+  },
+];
 
 export const mockAccountInfo: IAccountInfo = {
   supplied: BigNumber.from(1000),
