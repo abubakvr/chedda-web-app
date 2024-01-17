@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
 import { IAccountInfo } from "chedda-sdk";
@@ -6,23 +6,34 @@ import { useTokenBalance } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
+import { SupplyModal } from "@/components/modals/supplyModal/SupplyModal";
+import { BigNumber } from "ethers";
 
 interface MyInformationCardProps {
   poolStats: IPoolStatsResponse | undefined;
   accountInfo: IAccountInfo | undefined;
   isLoading: boolean;
-  onSupplyClick: () => void;
-  onBorrowClick: () => void;
+  fetchAccountInfo: () => void;
 }
 
 export const MyInformationCard: React.FC<MyInformationCardProps> = ({
   poolStats,
   accountInfo,
   isLoading,
-  onSupplyClick,
-  onBorrowClick,
+  fetchAccountInfo,
 }) => {
-  const { tokenBalance } = useTokenBalance(poolStats?.asset.address ?? "");
+  const { data: tokenBalance } = useTokenBalance(
+    poolStats?.asset.address ?? ""
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   if (isLoading || !poolStats) {
     // Render loading placeholder if poolStats is undefined
@@ -34,6 +45,14 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
       className="flex flex-col justify-between"
       data-testid="my-information-card"
     >
+      <SupplyModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        asset={poolStats?.asset}
+        supplied={accountInfo?.supplied}
+        baseSupplyAPY={poolStats.baseBorrowAPY}
+        fetchAccountInfo={fetchAccountInfo}
+      />
       <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">
         <div className="text-white text-opacity-50 font-bold text-sm uppercase">
           My Information
@@ -76,8 +95,8 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           </div>
         </div>
         <button
-          className="secondary-button manage-gradient-text flex gap-x-1 h-10 items-center text-white text-opacity-100-2 uppercase font-bold text-xs py-[5px] px-4  hover:opacity-80"
-          onClick={onSupplyClick}
+          className="secondary-button manage-gradient-text flex gap-x-1 h-10 items-center text-white text-opacity-100-2 uppercase font-bold text-xs py-[5px] px-4 hover:opacity-80"
+          onClick={() => {}}
         >
           Manage Collateral
         </button>
@@ -125,13 +144,13 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
       <div className="flex flex-col justify-center p-8 space-y-5">
         <button
           className="primary-button text-center h-11 items-center rounded-lg text-white text-opacity-100-2 uppercase font-bold text-lg hover:opacity-80"
-          onClick={onSupplyClick}
+          onClick={openModal}
         >
           Supply
         </button>
         <button
           className="secondary-button button-gradient-text text-center h-11 items-center text-white text-opacity-100-2 uppercase font-bold text-lg hover:opacity-80"
-          onClick={onBorrowClick}
+          onClick={() => {}}
         >
           Borrow
         </button>

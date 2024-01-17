@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@coinbase/wallet-sdk": "^3.7.2",
+    "@reduxjs/toolkit": "^2.0.1",
     "@types/node": "20.6.0",
     "@types/recharts": "^1.8.29",
     "@walletconnect/ethereum-provider": "^2.10.2",
@@ -39,6 +40,7 @@
     "postcss": "8.4.29",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-redux": "^9.1.0",
     "recharts": "^2.10.3",
     "sass": "^1.69.1",
     "tailwindcss": "3.3.3",

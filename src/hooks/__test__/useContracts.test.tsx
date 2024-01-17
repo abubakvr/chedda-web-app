@@ -80,13 +80,12 @@ describe("useAccountInfo Hook", () => {
 
     (mockUseWeb3React as jest.Mock).mockReturnValue(mockUseWeb3ReactData);
 
-    const { result } = renderHook(() => useAccountInfo("0x00"));
+    const { result } = renderHook(() => useAccountInfo());
 
     expect(result.current.isLoading).toBe(true);
     expect(result.current.data).toBeUndefined();
 
     await act(async () => {
-      // Call the function that triggers useEffect
       await expect(result.current.fetchData()).resolves.not.toThrow();
     });
     expect(result.current.isLoading).toBe(false);
@@ -117,13 +116,12 @@ describe("useAccountInfo Hook", () => {
 
     (mockUseWeb3React as jest.Mock).mockReturnValue(mockUseWeb3ReactData);
 
-    const { result } = renderHook(() => useMarketInfo("0x00"));
+    const { result } = renderHook(() => useMarketInfo());
 
     expect(result.current.isLoading).toBe(true);
     expect(result.current.data).toBeUndefined();
 
     await act(async () => {
-      // Call the function that triggers useEffect
       await expect(result.current.fetchData()).resolves.not.toThrow();
     });
 
@@ -157,13 +155,12 @@ describe("useAccountInfo Hook", () => {
 
     (mockUseWeb3React as jest.Mock).mockReturnValue(mockUseWeb3ReactData);
 
-    const { result } = renderHook(() => useCollateralInfo("0x00"));
+    const { result } = renderHook(() => useCollateralInfo());
 
     expect(result.current.isLoading).toBe(true);
     expect(result.current.data).toBeUndefined();
 
     await act(async () => {
-      // Call the function that triggers useEffect
       await expect(result.current.fetchData()).resolves.not.toThrow();
     });
 
@@ -203,7 +200,6 @@ describe("useAccountInfo Hook", () => {
 
     // Wait for the hook to fetch and update the values
     await act(async () => {
-      // Call the function that triggers useEffect
       await expect(result.current.fetchData()).resolves.not.toThrow();
     });
 
@@ -237,7 +233,7 @@ describe("useAccountInfo Hook", () => {
     });
 
     // Render the hook using renderHook
-    const { result } = renderHook(() => usePoolStats("0x00"));
+    const { result } = renderHook(() => usePoolStats());
 
     // Ensure that the hook initializes with the correct values
     expect(result.current.isLoading).toBe(true);
@@ -245,7 +241,6 @@ describe("useAccountInfo Hook", () => {
 
     // Wait for the hook to fetch and update the values
     await act(async () => {
-      // Call the function that triggers useEffect
       await expect(result.current.fetchData()).resolves.not.toThrow();
     });
 
@@ -278,7 +273,7 @@ describe("useAccountInfo Hook", () => {
       setupChedda: jest.fn(),
     });
 
-    const { result } = renderHook(() => useRatesProjector("yourPoolId"));
+    const { result } = renderHook(() => useRatesProjector());
 
     // Ensure that the initial state is correct
     expect(result.current.isLoading).toBe(true);
@@ -311,7 +306,7 @@ describe("useAccountInfo Hook", () => {
       setupChedda: jest.fn(),
     });
 
-    const { result } = renderHook(() => usePoolState("yourPoolId"));
+    const { result } = renderHook(() => usePoolState());
 
     // Ensure that the initial state is correct
     expect(result.current.isLoading).toBe(true);
@@ -365,7 +360,6 @@ describe("useAccountInfo Hook", () => {
 
     // Wait for the hook to fetch and update the values
     await act(async () => {
-      // Call the function that triggers useEffect
       await expect(result.current.fetchData()).resolves.not.toThrow();
     });
 
@@ -416,7 +410,6 @@ describe("useAccountInfo Hook", () => {
 
     // Wait for the hook to fetch and update the values
     await act(async () => {
-      // Call the function that triggers useEffect
       await expect(result.current.fetchData()).resolves.not.toThrow();
     });
 
@@ -457,7 +450,7 @@ describe("useAccountInfo Hook", () => {
       switchEnvironment: jest.fn(),
     });
 
-    const { result } = renderHook(() => useAvailableLiquidity("0x00"));
+    const { result } = renderHook(() => useAvailableLiquidity());
 
     expect(result.current.isLoading).toBe(true);
     expect(result.current.data).toBeUndefined();

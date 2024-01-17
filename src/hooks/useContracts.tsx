@@ -23,7 +23,7 @@ import {
   formatPoolStatsList,
   getAggregateInfo,
 } from "@/utils/formatResponse";
-import { useFetcher } from "./useFetcher";
+import { useCheddaSlice } from "./useCheddaSlice";
 
 export const getAccountInfo: GetDataFunction<IAccountInfo> = async ({
   lens,
@@ -122,36 +122,72 @@ export const getAvailableLiquidity: GetDataFunction<BigNumber> = async ({
   return await pool.available();
 };
 
+export const getAllowance: GetDataFunction<BigNumber> = async ({
+  chedda,
+  signer,
+  poolId,
+  account,
+  asset,
+}) => {
+  if (!asset || !account) return null;
+  const token = chedda.erc20token(asset, signer as Signer);
+  return await token.allowance(account, poolId);
+};
+
+export const approveAsset: GetDataFunction<BigNumber> = async ({
+  chedda,
+  signer,
+  account,
+  asset,
+}) => {
+  if (!asset || !account) return null;
+  const token = chedda.erc20token(asset, signer as Signer);
+  return await token.allowance(account, asset);
+};
+
+export const getTokenBalance: GetDataFunction<BigNumber> = async ({
+  chedda,
+  signer,
+  account,
+  asset,
+}) => {
+  if (!asset || !account) return null;
+  const token = chedda.erc20token(asset, signer as Signer);
+  return await token.balanceOf(account);
+};
+
 // Exported custom hooks
-export const useAccountInfo = (poolId: string): HookResult<IAccountInfo> =>
-  useFetcher<IAccountInfo>(poolId, getAccountInfo);
+export const useAccountInfo = (): HookResult<IAccountInfo> =>
+  useCheddaSlice<IAccountInfo>(getAccountInfo);
 
-export const useMarketInfo = (poolId: string): HookResult<IMarketInfo> =>
-  useFetcher<IMarketInfo>(poolId, getMarketInfo);
+export const useMarketInfo = (): HookResult<IMarketInfo> =>
+  useCheddaSlice<IMarketInfo>(getMarketInfo);
 
-export const useCollateralInfo = (
-  poolId: string
-): HookResult<ICollateralInfo[]> =>
-  useFetcher<ICollateralInfo[]>(poolId, getCollateralInfo);
+export const useCollateralInfo = (): HookResult<ICollateralInfo[]> =>
+  useCheddaSlice<ICollateralInfo[]>(getCollateralInfo);
 
 export const useAggregateStats = (): HookResult<ISummaryStats[]> =>
-  useFetcher<ISummaryStats[]>("", getAggregateStats);
+  useCheddaSlice<ISummaryStats[]>(getAggregateStats);
 
-export const usePoolState = (
-  poolId: string
-): HookResult<IPoolStateResponse[]> =>
-  useFetcher<IPoolStateResponse[]>(poolId, getPoolState);
+export const usePoolState = (): HookResult<IPoolStateResponse[]> =>
+  useCheddaSlice<IPoolStateResponse[]>(getPoolState);
 
 export const usePoolStatsList = (): HookResult<IPoolStatsResponse[]> =>
-  useFetcher<IPoolStatsResponse[]>("", getPoolStatsList);
+  useCheddaSlice<IPoolStatsResponse[]>(getPoolStatsList);
 
-export const usePoolStats = (poolId: string): HookResult<IPoolStatsResponse> =>
-  useFetcher<IPoolStatsResponse>(poolId, getPoolStats);
+export const usePoolStats = (): HookResult<IPoolStatsResponse> =>
+  useCheddaSlice<IPoolStatsResponse>(getPoolStats);
 
-export const useRatesProjector = (
-  poolId: string
-): HookResult<IInterestRatesProjection[]> =>
-  useFetcher<IInterestRatesProjection[]>(poolId, getRatesProjectorData);
+export const useRatesProjector = (): HookResult<IInterestRatesProjection[]> =>
+  useCheddaSlice<IInterestRatesProjection[]>(getRatesProjectorData);
 
-export const useAvailableLiquidity = (poolId: string): HookResult<BigNumber> =>
-  useFetcher<BigNumber>(poolId, getAvailableLiquidity);
+export const useAvailableLiquidity = (): HookResult<BigNumber> =>
+  useCheddaSlice<BigNumber>(getAvailableLiquidity);
+
+export const useAllowance = (asset: string): HookResult<BigNumber> => {
+  return useCheddaSlice<BigNumber>(getAllowance, asset);
+};
+
+export const useTokenBalance = (asset: string): HookResult<BigNumber> => {
+  return useCheddaSlice<BigNumber>(getTokenBalance, asset);
+};

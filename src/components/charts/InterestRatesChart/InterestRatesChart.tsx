@@ -12,7 +12,7 @@ import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
 import { formatAsPercentage, parseBigNumberToFloat } from "@/utils/formatters";
 import { useRatesProjector } from "@/hooks";
-import { IInterestRates, IInterestRatesProjection } from "chedda-sdk";
+import { IInterestRatesProjection } from "chedda-sdk";
 import { CustomTooltipProps } from "@/utils/types";
 
 interface Payload {
@@ -51,8 +51,8 @@ const CustomTooltip: React.FC<CustomTooltipProps<Payload>> = (props) => {
   );
 };
 
-export const InterestRatesChart = ({ poolId }: { poolId: string }) => {
-  const { data: interestRates, isLoading } = useRatesProjector(poolId);
+export const InterestRatesChart = () => {
+  const { data: interestRates, isLoading } = useRatesProjector();
 
   if (isLoading) {
     return (

@@ -54,7 +54,7 @@ export const HeaderComponent: React.FC = () => {
 
   return (
     <div
-      className={` w-full h-20 xl:h-24 fixed opacity-100 flex z-50 app-header items-center ${
+      className={` w-full h-20 xl:h-24 fixed opacity-100 flex z-10 app-header items-center ${
         isScrolled && "border-b  border-gray-800"
       }`}
       data-testid="header-component"
