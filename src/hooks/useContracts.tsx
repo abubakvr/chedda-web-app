@@ -23,7 +23,7 @@ import {
   formatPoolStatsList,
   getAggregateInfo,
 } from "@/utils/formatResponse";
-import { useCheddaSlice } from "./useCheddaSlice";
+import { useFetcher } from "./useFetcher";
 
 export const getAccountInfo: GetDataFunction<IAccountInfo> = async ({
   lens,
@@ -158,36 +158,36 @@ export const getTokenBalance: GetDataFunction<BigNumber> = async ({
 
 // Exported custom hooks
 export const useAccountInfo = (): HookResult<IAccountInfo> =>
-  useCheddaSlice<IAccountInfo>(getAccountInfo);
+  useFetcher<IAccountInfo>(getAccountInfo);
 
 export const useMarketInfo = (): HookResult<IMarketInfo> =>
-  useCheddaSlice<IMarketInfo>(getMarketInfo);
+  useFetcher<IMarketInfo>(getMarketInfo);
 
 export const useCollateralInfo = (): HookResult<ICollateralInfo[]> =>
-  useCheddaSlice<ICollateralInfo[]>(getCollateralInfo);
+  useFetcher<ICollateralInfo[]>(getCollateralInfo);
 
 export const useAggregateStats = (): HookResult<ISummaryStats[]> =>
-  useCheddaSlice<ISummaryStats[]>(getAggregateStats);
+  useFetcher<ISummaryStats[]>(getAggregateStats);
 
 export const usePoolState = (): HookResult<IPoolStateResponse[]> =>
-  useCheddaSlice<IPoolStateResponse[]>(getPoolState);
+  useFetcher<IPoolStateResponse[]>(getPoolState);
 
 export const usePoolStatsList = (): HookResult<IPoolStatsResponse[]> =>
-  useCheddaSlice<IPoolStatsResponse[]>(getPoolStatsList);
+  useFetcher<IPoolStatsResponse[]>(getPoolStatsList);
 
 export const usePoolStats = (): HookResult<IPoolStatsResponse> =>
-  useCheddaSlice<IPoolStatsResponse>(getPoolStats);
+  useFetcher<IPoolStatsResponse>(getPoolStats);
 
 export const useRatesProjector = (): HookResult<IInterestRatesProjection[]> =>
-  useCheddaSlice<IInterestRatesProjection[]>(getRatesProjectorData);
+  useFetcher<IInterestRatesProjection[]>(getRatesProjectorData);
 
 export const useAvailableLiquidity = (): HookResult<BigNumber> =>
-  useCheddaSlice<BigNumber>(getAvailableLiquidity);
+  useFetcher<BigNumber>(getAvailableLiquidity);
 
 export const useAllowance = (asset: string): HookResult<BigNumber> => {
-  return useCheddaSlice<BigNumber>(getAllowance, asset);
+  return useFetcher<BigNumber>(getAllowance, asset);
 };
 
 export const useTokenBalance = (asset: string): HookResult<BigNumber> => {
-  return useCheddaSlice<BigNumber>(getTokenBalance, asset);
+  return useFetcher<BigNumber>(getTokenBalance, asset);
 };

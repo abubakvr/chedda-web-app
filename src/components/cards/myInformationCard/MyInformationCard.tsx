@@ -6,13 +6,13 @@ import { useTokenBalance } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
-import { SupplyModal } from "@/components/modals/supplyModal/SupplyModal";
-import { BigNumber } from "ethers";
+import { SupplyModal } from "@/components/modals";
 
 interface MyInformationCardProps {
   poolStats: IPoolStatsResponse | undefined;
   accountInfo: IAccountInfo | undefined;
   isLoading: boolean;
+  assetPrice: number;
   fetchAccountInfo: () => void;
 }
 
@@ -20,6 +20,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
   poolStats,
   accountInfo,
   isLoading,
+  assetPrice,
   fetchAccountInfo,
 }) => {
   const { data: tokenBalance } = useTokenBalance(
@@ -49,6 +50,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
         isOpen={isModalOpen}
         onClose={closeModal}
         asset={poolStats?.asset}
+        assetPrice={assetPrice}
         supplied={accountInfo?.supplied}
         baseSupplyAPY={poolStats.baseBorrowAPY}
         fetchAccountInfo={fetchAccountInfo}

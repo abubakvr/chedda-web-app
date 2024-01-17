@@ -13,6 +13,7 @@ interface InputWithMaxButtonProps {
   onChange: (value: string) => void;
   maxValue: string;
   clearInputField: boolean;
+  assetPrice: number;
   setClearInputField: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -20,26 +21,26 @@ export const AmountField: FC<InputWithMaxButtonProps> = ({
   onChange,
   maxValue,
   clearInputField,
+  assetPrice,
   setClearInputField,
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
-  const { data: marketInfo } = useMarketInfo();
 
-  const calculateAssetPrice = (): number => {
-    const oraclePriceDecimals = parseBigNumberToFloat(
-      marketInfo?.oraclePriceDecimals,
-      0,
-      5
-    );
+  // const calculateAssetPrice = (): number => {
+  //   const oraclePriceDecimals = parseBigNumberToFloat(
+  //     marketInfo?.oraclePriceDecimals,
+  //     0,
+  //     5
+  //   );
 
-    const oraclePrice = parseBigNumberToFloat(
-      marketInfo?.oraclePrice,
-      parseFloat(oraclePriceDecimals),
-      2
-    );
+  //   const oraclePrice = parseBigNumberToFloat(
+  //     marketInfo?.oraclePrice,
+  //     parseFloat(oraclePriceDecimals),
+  //     2
+  //   );
 
-    return parseFloat(oraclePrice);
-  };
+  //   return parseFloat(oraclePrice);
+  // };
 
   useEffect(() => {
     if (clearInputField) {
@@ -73,9 +74,9 @@ export const AmountField: FC<InputWithMaxButtonProps> = ({
   const onMaxButtonClick = () => {
     setInputValue(maxValue);
     onChange(maxValue);
+    console.log(assetPrice);
   };
 
-  const assetPrice = calculateAssetPrice();
   const calculatedValue =
     inputValue && formatCurrency(assetPrice * parseFloat(inputValue));
   const maxActive = inputValue === maxValue;

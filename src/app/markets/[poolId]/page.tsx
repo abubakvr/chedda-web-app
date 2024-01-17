@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { MarketInfoCard, SummaryCard } from "@/components/cards";
 import {
+  calculateAssetPrice,
   formatCollateralInfo,
   getPoolSummaryData,
 } from "@/utils/formatResponse";
@@ -12,7 +13,6 @@ import {
   useCollateralInfo,
   useEnvironment,
   useAvailableLiquidity,
-  useTransaction,
 } from "@/hooks";
 import { SummaryHeader } from "@/components/ui";
 import { MyInformationCard, CollateralInfoCard } from "@/components/cards";
@@ -27,11 +27,6 @@ const Page = () => {
     useCollateralInfo();
   const { data: available, isLoading: availableLoading } =
     useAvailableLiquidity();
-  const { isSuccess } = useTransaction(poolStats?.asset.address ?? "");
-
-  useEffect(() => {
-    fetchAccountInfo();
-  }, [isSuccess]);
 
   const collateralInfo = formatCollateralInfo(
     collateralData,
@@ -40,6 +35,7 @@ const Page = () => {
   );
 
   const poolSummary = getPoolSummaryData(poolStats);
+  const assetPrice = calculateAssetPrice(marketInfo);
 
   return (
     <div
@@ -75,6 +71,7 @@ const Page = () => {
             <MyInformationCard
               poolStats={poolStats}
               accountInfo={accountInfo}
+              assetPrice={assetPrice}
               isLoading={availableLoading}
               fetchAccountInfo={fetchAccountInfo}
             />

@@ -6,21 +6,16 @@ import React, {
   useState,
 } from "react";
 import { formatLargeNumber } from "@/utils/formatters";
-import { IToken } from "@/utils/types";
-import { Button } from "../buttons/Button";
-import { AmountField } from "../input/AmountField";
-
-interface BottomArrayItem {
-  title: string;
-  value: string | number;
-}
+import { IToken, modalInfoItem } from "@/utils/types";
+import { AmountField, Button } from "@/components/common";
 
 interface DepositSectionProps {
   title: string;
   maxAmount: string;
   asset: IToken;
+  assetPrice: number;
   allowance: string | number;
-  bottomArrayData: BottomArrayItem[];
+  modalInfo: modalInfoItem[];
   buttonAction: (amount: number, useAsCollateral: boolean) => void;
   isTransactionLoading: boolean;
   clearInputField: boolean;
@@ -31,7 +26,8 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
   title,
   maxAmount,
   asset,
-  bottomArrayData,
+  assetPrice,
+  modalInfo,
   allowance,
   buttonAction,
   isTransactionLoading,
@@ -63,6 +59,7 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
         clearInputField={clearInputField}
         setClearInputField={setClearInputField}
         maxValue={maxAmount}
+        assetPrice={assetPrice}
       />
       {title === "Deposit" && (
         <div className="flex justify-between items-center mt-6 font-bold text-lg">
@@ -87,7 +84,7 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
         {title === "Deposit" ? buttonTitle : title} {asset.symbol}
       </Button>
       <div className="mt-6 pb-0">
-        {bottomArrayData?.map((item, index) => (
+        {modalInfo?.map((item, index) => (
           <div key={index} className="flex justify-between text-sm pb-5">
             <div className="opacity-50 font-semibold">{item.title}</div>
             <div className="font-bold">{item.value}</div>

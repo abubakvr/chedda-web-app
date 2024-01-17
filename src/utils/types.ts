@@ -174,7 +174,7 @@ export interface IPoolLens {
   unregisterPool(pool: string): Promise<void>;
 }
 
-export interface BottomArrayItem {
+export interface modalInfoItem {
   title: string;
   value: string | number;
 }

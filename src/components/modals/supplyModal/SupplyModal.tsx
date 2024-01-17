@@ -1,18 +1,18 @@
 import React, { FC, useEffect, useState } from "react";
-import { SupplyModalContent } from "@/components/common/modalContent/modalContent";
+import { BigNumber, ethers } from "ethers";
 import { useAllowance, useTokenBalance, useTransaction } from "@/hooks";
-import {} from "@/hooks/useTransactions";
 import {
   formatAsPercentage,
   formatNumber,
   parseBigNumberToFloat,
 } from "@/utils/formatters";
-import { BottomArrayItem, IToken } from "@/utils/types";
-import { BigNumber, ethers } from "ethers";
-import { SuccessModal } from "./SuccessModal";
+import { modalInfoItem, IToken } from "@/utils/types";
+import { SuccessModal } from "@/components/modals";
+import { SupplyModalContent } from "@/components/common";
 
 interface SupplyModalProps {
   asset: IToken;
+  assetPrice: number;
   isOpen: boolean;
   baseSupplyAPY: string | number;
   supplied: BigNumber | undefined;
@@ -37,6 +37,7 @@ const Tab: FC<{ label: string; isActive: boolean; onClick: () => void }> = ({
 
 export const SupplyModal: FC<SupplyModalProps> = ({
   asset,
+  assetPrice,
   isOpen,
   baseSupplyAPY,
   supplied,
@@ -81,6 +82,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
       await depositAsset(parsedAmount, useAsCollateral);
       const modalMessage = `You supplied ${amount} ${asset.symbol}`;
       setModalMessage(modalMessage);
+      fetchAllowance();
       fetchAccountInfo();
     } else {
       await approveAsset(parsedAmount);
@@ -88,7 +90,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     }
   };
 
-  const bottomArrayData: BottomArrayItem[] = [
+  const modalInfo: modalInfoItem[] = [
     {
       title: `Allowance `,
       value: `${formatNumber(parsedAllowance)} ${asset.symbol}`,
@@ -153,10 +155,11 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                 title="Deposit"
                 maxAmount={parsedMaxAmount}
                 asset={asset}
+                assetPrice={assetPrice}
                 setClearInputField={setClearInputField}
                 clearInputField={clearInputField}
                 allowance={parsedAllowance}
-                bottomArrayData={bottomArrayData}
+                modalInfo={modalInfo}
                 buttonAction={handleDeposit}
                 isTransactionLoading={isLoading}
               />
@@ -165,8 +168,9 @@ export const SupplyModal: FC<SupplyModalProps> = ({
               <SupplyModalContent
                 title="Withdraw"
                 asset={asset}
+                assetPrice={assetPrice}
                 allowance={parsedAllowance}
-                bottomArrayData={bottomArrayData}
+                modalInfo={modalInfo}
                 maxAmount={parsedMaxAmount}
                 setClearInputField={setClearInputField}
                 clearInputField={clearInputField}
