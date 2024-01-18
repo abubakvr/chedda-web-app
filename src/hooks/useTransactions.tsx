@@ -29,7 +29,6 @@ export const useTransaction = (asset: string) => {
       setIsLoading(true);
       setIsSuccess(false);
       await transaction({ chedda, amount });
-      setIsSuccess(true);
     } catch (error: any) {
       alert("An error occurred: " + error.message);
     } finally {
@@ -49,7 +48,14 @@ export const useTransaction = (asset: string) => {
     executeTransaction(async ({ chedda }) => {
       if (!account) return;
       const lendingPool = chedda?.lendingPool(strPoolId, signer as Signer);
-      await lendingPool?.supply(amount, account, useAsCollateral);
+      lendingPool
+        ?.supply(amount, account, useAsCollateral)
+        .then(() => {
+          setIsSuccess(true);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }, amount);
 
   const withdrawAsset = async (amount: BigNumber) =>
