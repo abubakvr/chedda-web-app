@@ -48,14 +48,8 @@ export const useTransaction = (asset: string) => {
     executeTransaction(async ({ chedda }) => {
       if (!account) return;
       const lendingPool = chedda?.lendingPool(strPoolId, signer as Signer);
-      lendingPool
-        ?.supply(amount, account, useAsCollateral)
-        .then(() => {
-          setIsSuccess(true);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      await lendingPool?.supply(amount, account, useAsCollateral);
+      setIsSuccess(true);
     }, amount);
 
   const withdrawAsset = async (amount: BigNumber) =>
