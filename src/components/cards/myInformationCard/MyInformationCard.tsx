@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
-import { IAccountInfo } from "chedda-sdk";
+import { IAccountInfo, IMarketInfo } from "chedda-sdk";
 import { useTokenBalance } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
 import { SupplyModal } from "@/components/modals";
+import { BigNumber } from "ethers";
 
 interface MyInformationCardProps {
   poolStats: IPoolStatsResponse | undefined;
   accountInfo: IAccountInfo | undefined;
+  available: BigNumber | undefined;
   isLoading: boolean;
   assetPrice: number;
   fetchAccountInfo: () => void;
@@ -21,6 +23,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
   accountInfo,
   isLoading,
   assetPrice,
+  available,
   fetchAccountInfo,
 }) => {
   const { data: tokenBalance } = useTokenBalance(
@@ -46,15 +49,19 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
       className="flex flex-col justify-between"
       data-testid="my-information-card"
     >
-      <SupplyModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        asset={poolStats?.asset}
-        assetPrice={assetPrice}
-        supplied={accountInfo?.supplied}
-        baseSupplyAPY={poolStats.baseBorrowAPY}
-        fetchAccountInfo={fetchAccountInfo}
-      />
+      {isModalOpen && (
+        <SupplyModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          asset={poolStats?.asset}
+          assetPrice={assetPrice}
+          supplied={accountInfo?.supplied}
+          available={available}
+          tokenBalance={tokenBalance}
+          baseSupplyAPY={poolStats.baseBorrowAPY}
+          fetchAccountInfo={fetchAccountInfo}
+        />
+      )}
       <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">
         <div className="text-white text-opacity-50 font-bold text-sm uppercase">
           My Information

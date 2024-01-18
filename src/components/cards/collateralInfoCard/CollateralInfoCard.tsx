@@ -12,7 +12,7 @@ import { IFormattedCollateral } from "@/utils/types";
 import { CollateralInfoChart } from "@/components/charts";
 
 interface CollateralInfoCardProps {
-  collateralInfo: IFormattedCollateral[];
+  collateralInfo: IFormattedCollateral[] | undefined;
   accountInfo: IAccountInfo | undefined;
   marketInfo: IMarketInfo | undefined;
   isLoading: boolean;
@@ -35,7 +35,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
     "Collateral Factor",
   ];
 
-  return collateralInfo && marketInfo ? (
+  return collateralInfo ? (
     <div
       className="flex flex-col justify-between"
       data-testid="collateral-info-card"
@@ -82,7 +82,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                 </div>
                 <div className="mt-2">
                   {formatAsPercentage(
-                    parseBigNumberToFloat(marketInfo.liquidationThreshold)
+                    parseBigNumberToFloat(marketInfo?.liquidationThreshold)
                   )}
                 </div>
               </div>
@@ -93,7 +93,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                 </div>
                 <div className="mt-2">
                   {formatAsPercentage(
-                    parseBigNumberToFloat(marketInfo.liquidationPenalty)
+                    parseBigNumberToFloat(marketInfo?.liquidationPenalty)
                   )}
                 </div>
               </div>

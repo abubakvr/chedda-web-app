@@ -103,4 +103,4 @@ export const selectCheddaSliceData = (hookName: string) => (state: RootState) =>
 
 export const selectCheddaSliceLoading =
   (hookName: string) => (state: RootState) =>
-    state.cheddaSlice.fetchDataStates[hookName]?.isLoading;
+    state.cheddaSlice.fetchDataStates[hookName]?.isLoading ?? true;

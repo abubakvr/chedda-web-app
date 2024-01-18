@@ -2,12 +2,13 @@ import React, {
   ChangeEvent,
   Dispatch,
   FC,
+  ReactElement,
   SetStateAction,
   useState,
 } from "react";
-import { formatLargeNumber } from "@/utils/formatters";
-import { IToken, modalInfoItem } from "@/utils/types";
 import { AmountField, Button } from "@/components/common";
+import { formatLargeNumber } from "@/utils/formatters";
+import { IToken } from "@/utils/types";
 
 interface DepositSectionProps {
   title: string;
@@ -15,11 +16,13 @@ interface DepositSectionProps {
   asset: IToken;
   assetPrice: number;
   allowance: string | number;
-  modalInfo: modalInfoItem[];
-  buttonAction: (amount: number, useAsCollateral: boolean) => void;
+  modalInfo: ReactElement<any, any>;
+  buttonAction: (useAsCollateral: boolean) => void;
   isTransactionLoading: boolean;
   clearInputField: boolean;
   setClearInputField: Dispatch<SetStateAction<boolean>>;
+  setAmount: Dispatch<SetStateAction<number>>;
+  amount: number;
 }
 
 export const SupplyModalContent: FC<DepositSectionProps> = ({
@@ -33,8 +36,9 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
   isTransactionLoading,
   clearInputField,
   setClearInputField,
+  setAmount,
+  amount,
 }) => {
-  const [amount, setAmount] = useState<number>(0);
   const [useAsCollateral, setUseAsCollateral] = useState(false);
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUseAsCollateral(e.target.checked);
@@ -76,21 +80,14 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
       )}
       <Button
         type="primary"
-        onClick={() => buttonAction(amount, useAsCollateral)}
+        onClick={() => buttonAction(useAsCollateral)}
         className="mt-6 h-7"
         size="large"
         isLoading={isTransactionLoading}
       >
         {title === "Deposit" ? buttonTitle : title} {asset.symbol}
       </Button>
-      <div className="mt-6 pb-0">
-        {modalInfo?.map((item, index) => (
-          <div key={index} className="flex justify-between text-sm pb-5">
-            <div className="opacity-50 font-semibold">{item.title}</div>
-            <div className="font-bold">{item.value}</div>
-          </div>
-        ))}
-      </div>
+      <div className="mt-6 pb-0">{modalInfo}</div>
     </div>
   );
 };

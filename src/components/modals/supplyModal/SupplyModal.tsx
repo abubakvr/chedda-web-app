@@ -1,21 +1,24 @@
 import React, { FC, useEffect, useState } from "react";
 import { BigNumber, ethers } from "ethers";
-import { useAllowance, useTokenBalance, useTransaction } from "@/hooks";
+import { useAllowance, useTransaction } from "@/hooks";
 import {
   formatAsPercentage,
   formatNumber,
   parseBigNumberToFloat,
 } from "@/utils/formatters";
-import { modalInfoItem, IToken } from "@/utils/types";
+import { IToken } from "@/utils/types";
 import { SuccessModal } from "@/components/modals";
 import { SupplyModalContent } from "@/components/common";
+import { SupplyTabInfo, WithdrawTabInfo } from "./TabInfo";
 
 interface SupplyModalProps {
   asset: IToken;
   assetPrice: number;
   isOpen: boolean;
+  tokenBalance: BigNumber | undefined;
   baseSupplyAPY: string | number;
   supplied: BigNumber | undefined;
+  available: BigNumber | undefined;
   onClose: () => void;
   fetchAccountInfo: () => void;
 }
@@ -38,22 +41,24 @@ const Tab: FC<{ label: string; isActive: boolean; onClick: () => void }> = ({
 export const SupplyModal: FC<SupplyModalProps> = ({
   asset,
   assetPrice,
+  tokenBalance,
   isOpen,
-  baseSupplyAPY,
   supplied,
+  available,
+  baseSupplyAPY,
   onClose,
   fetchAccountInfo,
 }) => {
   const [activeTab, setActiveTab] = useState("Deposit");
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [clearInputField, setClearInputField] = useState(false);
+  const [amount, setAmount] = useState<number>(0);
   const [modalMessage, setModalMessage] = useState("");
   const { data: allowance, fetchData: fetchAllowance } = useAllowance(
     asset.address
   );
   const { isLoading, isSuccess, approveAsset, depositAsset, withdrawAsset } =
     useTransaction(asset.address);
-  const { data: tokenBalance } = useTokenBalance(asset.address);
 
   useEffect(() => {
     setOpenSuccessModal(isSuccess);
@@ -66,10 +71,14 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   const parsedSupplied = parseFloat(
     parseBigNumberToFloat(supplied, asset.decimals)
   );
-  const parsedMaxAmount = parseBigNumberToFloat(tokenBalance, asset.decimals);
 
-  const handleDeposit = async (amount: number, useAsCollateral: boolean) => {
-    if (!amount) {
+  const maxSupply = parseBigNumberToFloat(supplied, asset.decimals);
+  const parsedMaxAmount = parseBigNumberToFloat(tokenBalance, asset.decimals);
+  const parsedAvailableLiquidity = parseFloat(
+    parseBigNumberToFloat(available, asset.decimals)
+  );
+  const handleDeposit = async (useAsCollateral: boolean) => {
+    if (!amount || amount > parseFloat(parsedMaxAmount)) {
       return alert("Enter valid amount");
     }
 
@@ -90,24 +99,19 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     }
   };
 
-  const modalInfo: modalInfoItem[] = [
-    {
-      title: `Allowance `,
-      value: `${formatNumber(parsedAllowance)} ${asset.symbol}`,
-    },
-    {
-      title: `Supplied `,
-      value: `${formatNumber(parsedSupplied)} ${asset.symbol}`,
-    },
-    { title: "Base Supply APY", value: formatAsPercentage(baseSupplyAPY) },
-  ];
-
-  const handleWithdraw = (amount: number) => {
-    if (!amount) {
+  const handleWithdraw = async () => {
+    if (!amount || amount > parsedSupplied) {
       return alert("Enter valid amount");
     }
-    const parsedAmount = ethers.utils.parseUnits(amount.toString(), 6);
-    withdrawAsset(parsedAmount);
+    const parsedAmount = ethers.utils.parseUnits(
+      amount.toString(),
+      asset.decimals
+    );
+    await withdrawAsset(parsedAmount);
+    const modalMessage = `You withdrew ${amount} ${asset.symbol}`;
+    setModalMessage(modalMessage);
+    fetchAllowance();
+    fetchAccountInfo();
   };
 
   const closeSuccessModal = () => {
@@ -159,9 +163,26 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                 setClearInputField={setClearInputField}
                 clearInputField={clearInputField}
                 allowance={parsedAllowance}
-                modalInfo={modalInfo}
+                modalInfo={
+                  <SupplyTabInfo
+                    supplied={`${formatNumber(parsedSupplied)} ${asset.symbol}`}
+                    projectedSupply={
+                      amount
+                        ? `${formatNumber(parsedSupplied + amount)} ${
+                            asset.symbol
+                          }`
+                        : `${formatNumber(parsedSupplied)} ${asset.symbol}`
+                    }
+                    allowance={`${formatNumber(parsedAllowance)} ${
+                      asset.symbol
+                    }`}
+                    baseSupplyAPY={formatAsPercentage(baseSupplyAPY)}
+                  />
+                }
                 buttonAction={handleDeposit}
                 isTransactionLoading={isLoading}
+                setAmount={setAmount}
+                amount={amount}
               />
             )}
             {activeTab === "Withdraw" && (
@@ -170,12 +191,38 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                 asset={asset}
                 assetPrice={assetPrice}
                 allowance={parsedAllowance}
-                modalInfo={modalInfo}
-                maxAmount={parsedMaxAmount}
+                modalInfo={
+                  <WithdrawTabInfo
+                    supplied={`${formatNumber(parsedSupplied)} ${asset.symbol}`}
+                    baseSupplyAPY={formatAsPercentage(baseSupplyAPY)}
+                    projectedSupply={
+                      amount
+                        ? `${formatNumber(parsedSupplied - amount)} ${
+                            asset.symbol
+                          }`
+                        : `${formatNumber(parsedSupplied)} ${asset.symbol}`
+                    }
+                    liquidity={`${formatNumber(parsedAvailableLiquidity)} ${
+                      asset.symbol
+                    }`}
+                    projectedLiquidity={
+                      amount
+                        ? `${formatNumber(parsedAvailableLiquidity - amount)} ${
+                            asset.symbol
+                          }`
+                        : `${formatNumber(parsedAvailableLiquidity)} ${
+                            asset.symbol
+                          }`
+                    }
+                  />
+                }
+                maxAmount={maxSupply}
                 setClearInputField={setClearInputField}
                 clearInputField={clearInputField}
                 buttonAction={handleWithdraw}
                 isTransactionLoading={isLoading}
+                setAmount={setAmount}
+                amount={amount}
               />
             )}
           </div>

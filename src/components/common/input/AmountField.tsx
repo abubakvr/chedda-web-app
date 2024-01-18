@@ -1,5 +1,4 @@
-import { useMarketInfo } from "@/hooks";
-import { formatCurrency, parseBigNumberToFloat } from "@/utils/formatters";
+import { formatCurrency } from "@/utils/formatters";
 import React, {
   useState,
   ChangeEvent,
@@ -25,22 +24,6 @@ export const AmountField: FC<InputWithMaxButtonProps> = ({
   setClearInputField,
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
-
-  // const calculateAssetPrice = (): number => {
-  //   const oraclePriceDecimals = parseBigNumberToFloat(
-  //     marketInfo?.oraclePriceDecimals,
-  //     0,
-  //     5
-  //   );
-
-  //   const oraclePrice = parseBigNumberToFloat(
-  //     marketInfo?.oraclePrice,
-  //     parseFloat(oraclePriceDecimals),
-  //     2
-  //   );
-
-  //   return parseFloat(oraclePrice);
-  // };
 
   useEffect(() => {
     if (clearInputField) {
@@ -74,7 +57,6 @@ export const AmountField: FC<InputWithMaxButtonProps> = ({
   const onMaxButtonClick = () => {
     setInputValue(maxValue);
     onChange(maxValue);
-    console.log(assetPrice);
   };
 
   const calculatedValue =

@@ -21,7 +21,11 @@ import { InterestRatesChart, SuppyAndBorrowChart } from "@/components/charts";
 const Page = () => {
   const { currentEnvironment } = useEnvironment();
   const { data: poolStats, isLoading } = usePoolStats();
-  const { data: accountInfo, fetchData: fetchAccountInfo } = useAccountInfo();
+  const {
+    data: accountInfo,
+    fetchData: fetchAccountInfo,
+    isLoading: accountInfoLoading,
+  } = useAccountInfo();
   const { data: marketInfo, isLoading: marketInfoLoading } = useMarketInfo();
   const { data: collateralData, isLoading: collateralInfoLoading } =
     useCollateralInfo();
@@ -53,7 +57,7 @@ const Page = () => {
         <div className="w-[67%] h-fit flex flex-col gap-y-6">
           <div className="pool-card rounded-lg">
             <CollateralInfoCard
-              collateralInfo={collateralInfo ?? []}
+              collateralInfo={collateralInfo}
               accountInfo={accountInfo}
               marketInfo={marketInfo}
               isLoading={collateralInfoLoading || marketInfoLoading}
@@ -72,7 +76,8 @@ const Page = () => {
               poolStats={poolStats}
               accountInfo={accountInfo}
               assetPrice={assetPrice}
-              isLoading={availableLoading}
+              isLoading={accountInfoLoading}
+              available={available}
               fetchAccountInfo={fetchAccountInfo}
             />
           </div>
