@@ -1,6 +1,6 @@
 // MyInformationCard.test.tsx
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { MyInformationCard } from "../MyInformationCard";
 import { mockAccountInfo, mockPoolStats } from "@/utils/Mocks/MockTestData";
 import { useTokenBalance } from "@/hooks";

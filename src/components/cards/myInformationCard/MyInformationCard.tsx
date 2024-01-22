@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
-import { IAccountInfo, IMarketInfo } from "chedda-sdk";
+import { IAccountInfo } from "chedda-sdk";
 import { useTokenBalance } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
