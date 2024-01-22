@@ -156,6 +156,17 @@ export const getTokenBalance: GetDataFunction<BigNumber> = async ({
   return await token.balanceOf(account);
 };
 
+export const getAssetBalance: GetDataFunction<BigNumber> = async ({
+  chedda,
+  signer,
+  account,
+  poolId,
+}) => {
+  if (!poolId || !account) return null;
+  const pool = chedda.lendingPool(poolId, signer as Signer);
+  return await pool.assetBalance(account);
+};
+
 // Exported custom hooks
 export const useAccountInfo = (): HookResult<IAccountInfo> =>
   useFetcher<IAccountInfo>(getAccountInfo);
@@ -190,4 +201,8 @@ export const useAllowance = (asset: string): HookResult<BigNumber> => {
 
 export const useTokenBalance = (asset: string): HookResult<BigNumber> => {
   return useFetcher<BigNumber>(getTokenBalance, asset);
+};
+
+export const useAssetBalance = (asset: string): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getAssetBalance, asset);
 };

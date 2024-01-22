@@ -18,6 +18,9 @@ const config = {
   transform: {
     "^.+\\.tsx?$": "babel-jest",
   },
+  moduleNameMapper: {
+    "^react-redux$": "<rootDir>/__mocks__/react-redux.js",
+  },
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

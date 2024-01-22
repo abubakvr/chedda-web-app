@@ -25,9 +25,13 @@ import {
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 import { mockUseWeb3ReactData } from "@/utils/Mocks/MockUseWeb3React";
+import { useParams } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 jest.mock("ethers");
 jest.mock("@web3-react/core");
+jest.mock("next/navigation");
+jest.mock("react-redux");
 jest.mock("../useCheddaSdk");
 jest.mock("../useEnvironment");
 
@@ -41,12 +45,23 @@ const mockUseWeb3React = useWeb3React as jest.MockedFunction<
   typeof useWeb3React
 >;
 
+const mockUseParams = useParams as jest.MockedFunction<typeof useParams>;
+
+const mockUseDispatch = useDispatch as jest.MockedFunction<typeof useDispatch>;
+
 const mockProvider = {
   getSigner: jest.fn(),
 };
 
+jest.mock("react-redux");
+
 describe("useAccountInfo Hook", () => {
   beforeEach(() => {
+    jest.mock("@web3-react/core", () => ({
+      useWeb3React: () => ({
+        account: "0x00",
+      }),
+    }));
     jest.mock("@web3-react/core", () => ({
       useWeb3React: () => ({
         account: "0x00",
@@ -56,6 +71,10 @@ describe("useAccountInfo Hook", () => {
       currentEnvironment: mockCurrentEnvironment,
       switchEnvironment: jest.fn(),
     });
+    (mockUseParams as jest.Mock).mockReturnValue({
+      poolId: "0x00",
+    });
+    mockUseDispatch.mockImplementation(() => jest.fn());
     mockUseCheddaSdk.mockReset();
   });
 

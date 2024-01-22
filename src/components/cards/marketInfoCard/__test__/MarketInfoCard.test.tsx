@@ -3,21 +3,23 @@ import { render, screen } from "@testing-library/react";
 import { MarketInfoCard } from "../MarketInfoCard";
 import { mockMarketInfo, mockPoolStats } from "@/utils/Mocks/MockTestData";
 import { useTokenBalance } from "@/hooks";
+import { BigNumber } from "ethers";
 
 jest.mock("ethers");
-jest.mock("../../../../hooks/useTokenBalance");
+jest.mock("../../../../hooks");
 
 describe("MarketInfoCard", () => {
   it("renders MarketInfoCard component correctly", () => {
     (useTokenBalance as jest.Mock).mockImplementation(() => ({
-      fetchTokenBalance: jest.fn(),
-      tokenBalance: "1000",
+      data: "1000",
+      isLoading: false,
     }));
 
     render(
       <MarketInfoCard
         marketInfo={mockMarketInfo}
-        asset={mockPoolStats[0].asset}
+        available={BigNumber.from(1000)}
+        poolStats={mockPoolStats[0]}
         isLoading={false}
       />
     );
@@ -34,14 +36,15 @@ describe("MarketInfoCard", () => {
 
   it("renders MarketInfoCard component in loading state correctly", () => {
     (useTokenBalance as jest.Mock).mockImplementation(() => ({
-      fetchTokenBalance: jest.fn(),
-      tokenBalance: "1000",
+      data: "1000",
+      isLoading: true,
     }));
 
     render(
       <MarketInfoCard
         marketInfo={undefined}
-        asset={undefined}
+        available={undefined}
+        poolStats={undefined}
         isLoading={true}
       />
     );

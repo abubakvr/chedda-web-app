@@ -35,7 +35,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
     "Collateral Factor",
   ];
 
-  return collateralInfo ? (
+  return (
     <div
       className="flex flex-col justify-between"
       data-testid="collateral-info-card"
@@ -51,7 +51,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
           data-testid="collateral-info-container"
         >
           <div className="w-2/5 flex items-center justify-center">
-            <CollateralInfoChart collateralInfo={collateralInfo} />
+            <CollateralInfoChart collateralInfo={collateralInfo ?? []} />
           </div>
           <div className="w-3/5">
             <div
@@ -169,5 +169,5 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
         </div>
       </div>
     </div>
-  ) : null;
+  );
 };

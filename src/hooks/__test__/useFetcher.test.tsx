@@ -1,11 +1,15 @@
 import { mockAccountInfo } from "@/utils/Mocks/MockTestData";
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { ethers } from "ethers";
+import { useParams } from "next/navigation";
+import { useSelector } from "react-redux";
 import { useCheddaSdk } from "../useCheddaSdk";
 import { useFetcher } from "../useFetcher";
 
 jest.mock("ethers");
 jest.mock("@web3-react/core");
+jest.mock("react-redux");
+jest.mock("next/navigation");
 jest.mock("../useCheddaSdk");
 jest.mock("../useEnvironment");
 
@@ -18,6 +22,12 @@ jest.mock("../useEnvironment", () => ({
   useEnvironment: jest.fn(() => ({
     currentEnvironment: { contracts: { LendingPoolLens: {} } },
   })),
+}));
+
+jest.mock("react-redux", () => ({
+  ...jest.requireActual("react-redux"),
+  useDispatch: jest.fn(),
+  useSelector: jest.fn(),
 }));
 
 // Mock useWeb3React
@@ -37,12 +47,18 @@ const mockUseCheddaSdk = useCheddaSdk as jest.MockedFunction<
   typeof useCheddaSdk
 >;
 
+const mockUseParams = useParams as jest.MockedFunction<typeof useParams>;
+
 describe("useFetcher hook", () => {
   beforeEach(() => {
+    (mockUseParams as jest.Mock).mockReturnValue({
+      poolId: "0x00",
+    });
     jest.clearAllMocks();
   });
 
   it("fetches data successfully", async () => {
+    const dispatch = jest.fn();
     const mockProvider = {
       getSigner: jest.fn(),
     };
@@ -52,9 +68,7 @@ describe("useFetcher hook", () => {
     mockUseCheddaSdk.mockReturnValue({
       chedda: {
         provider: new ethers.providers.WebSocketProvider("wss://testgoerliurl"),
-        poolLens: jest.fn().mockReturnValue({
-          getPoolAccountInfo: mockGetAccountInfo,
-        }),
+        poolLens: jest.fn(),
         interestRateProjector: jest.fn(),
         lendingPool: jest.fn(),
         erc20token: jest.fn(),
@@ -68,7 +82,7 @@ describe("useFetcher hook", () => {
     let mockGetData = jest.fn().mockReturnValue("mockData");
 
     const { result } = renderHook(() =>
-      useFetcher<string>("mockPoolId", mockGetData)
+      useFetcher<string>(mockGetData, "mockPoolId")
     );
     // Assert initial state
     await waitFor(async () => {

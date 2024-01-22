@@ -1,68 +1,106 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useCallback, useMemo } from "react";
-import { AppDispatch, RootState } from "@/redux/store";
-import {
-  fetchData,
-  selectCheddaSliceData,
-  selectCheddaSliceLoading,
-} from "@/redux/api/cheddaSlice";
-import { useEnvironment, useCheddaSdk } from "@/hooks";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCheddaSdk } from "./useCheddaSdk";
+import { useEnvironment } from "./useEnvironment";
 import { useWeb3React } from "@web3-react/core";
-import { GetDataFunction } from "@/redux/api/actions";
+import { Signer } from "ethers";
+import { Chedda } from "chedda-sdk";
+import { IEnvironment, IPoolLens } from "@/utils/types";
 import { useParams } from "next/navigation";
 
-export const useFetcher = <T = any,>(
-  getData: GetDataFunction<T>,
+export const useFetcher = <T = unknown,>(
+  getData: (params: {
+    lens: any;
+    poolId: string;
+    account?: string;
+    chedda: Chedda;
+    signer?: Signer;
+    environment: IEnvironment;
+    asset: string | undefined;
+  }) => Promise<T | null>,
   asset?: string
 ) => {
-  const dispatch = useDispatch<AppDispatch>();
   const { currentEnvironment } = useEnvironment();
   const { chedda, signer } = useCheddaSdk();
   const { account } = useWeb3React();
   const { poolId } = useParams();
-
   const strPoolId = poolId?.toString();
-  const hookName = getData.name;
 
-  const fetchDataCallback = useCallback(() => {
-    dispatch(
-      fetchData({
-        hookName,
-        chedda,
-        currentEnvironment,
-        account,
+  const [data, setData] = useState<T | undefined>();
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getDataName = useCallback(
+    () => getData.name || "unknownFunction",
+    [getData]
+  );
+
+  const lens = useMemo(() => {
+    if (chedda && currentEnvironment) {
+      return chedda.poolLens(
+        currentEnvironment.contracts.LendingPoolLens,
+        signer as Signer
+      );
+    }
+    return null;
+  }, [chedda, currentEnvironment, signer]);
+
+  const fetchData = useCallback(async () => {
+    try {
+      if (!chedda || !currentEnvironment) {
+        return null;
+      }
+
+      const response = await getData({
+        lens,
         poolId: strPoolId,
-        getData,
-        asset,
+        account,
+        chedda,
         signer,
-      })
-    );
+        environment: currentEnvironment,
+        asset,
+      });
+
+      return response;
+    } catch (error: any) {
+      throw new Error(
+        `Error in fetchData for ${getDataName()}: ${error.message}`
+      );
+    }
   }, [
-    dispatch,
     chedda,
     currentEnvironment,
-    account,
-    strPoolId,
-    getData,
+    lens,
     signer,
-    hookName,
+    account,
+    getData,
+    getDataName,
+    strPoolId,
     asset,
   ]);
 
-  const isLoading = useSelector((state: RootState) =>
-    selectCheddaSliceLoading(hookName)(state)
-  );
-  const data = useSelector((state: RootState) =>
-    selectCheddaSliceData(hookName)(state)
-  );
-
   useEffect(() => {
-    fetchDataCallback();
-  }, [fetchDataCallback]);
+    const fetchCheddaData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetchData();
+        if (response !== null && response !== undefined) {
+          setData(response);
+        }
+      } catch (error: any) {
+        setIsLoading(false);
+        throw new Error(
+          `Error in fetchData for ${getDataName()}: ${error.message}`
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCheddaData();
+  }, [fetchData, getDataName]);
 
   return {
-    data: data,
-    isLoading: isLoading,
-    fetchData: fetchDataCallback,
+    data,
+    isLoading,
+    fetchData,
   };
 };

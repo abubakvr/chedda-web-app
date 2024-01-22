@@ -39,7 +39,7 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
   setAmount,
   amount,
 }) => {
-  const [useAsCollateral, setUseAsCollateral] = useState(false);
+  const [useAsCollateral, setUseAsCollateral] = useState(true);
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUseAsCollateral(e.target.checked);
   };

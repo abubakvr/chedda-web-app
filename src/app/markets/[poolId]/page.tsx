@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { MarketInfoCard, SummaryCard } from "@/components/cards";
 import {
   calculateAssetPrice,
@@ -60,7 +60,9 @@ const Page = () => {
               collateralInfo={collateralInfo}
               accountInfo={accountInfo}
               marketInfo={marketInfo}
-              isLoading={collateralInfoLoading || marketInfoLoading}
+              isLoading={
+                collateralInfoLoading || marketInfoLoading || accountInfoLoading
+              }
             />
           </div>
           <div className="pool-card rounded-lg">

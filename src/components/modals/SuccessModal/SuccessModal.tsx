@@ -7,12 +7,14 @@ interface SuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
   modalMessage: string;
+  continueAction: () => void;
 }
 
 export const SuccessModal = ({
   onClose,
   isOpen,
   modalMessage,
+  continueAction,
 }: SuccessModalProps) => {
   return (
     <div
@@ -50,7 +52,12 @@ export const SuccessModal = ({
               Stake LP Tokens
             </Button>
             <div className="mt-3 text-2xl text-white">or</div>
-            <Button type="secondary" size="large" className="mt-3">
+            <Button
+              type="secondary"
+              size="large"
+              className="mt-3"
+              onClick={continueAction}
+            >
               Continue
             </Button>
           </div>

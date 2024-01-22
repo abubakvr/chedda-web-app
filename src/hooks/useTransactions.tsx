@@ -40,8 +40,7 @@ export const useTransaction = (asset: string) => {
     executeTransaction(async ({ chedda }) => {
       if (!chedda) return;
       const token = chedda?.erc20token(asset, signer as Signer);
-      const totalSupply = await token?.totalSupply();
-      await token?.approve(strPoolId, totalSupply);
+      await token?.approve(strPoolId, amount);
     }, amount);
 
   const depositAsset = async (amount: BigNumber, useAsCollateral: boolean) =>
