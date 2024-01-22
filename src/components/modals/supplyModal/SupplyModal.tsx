@@ -153,7 +153,6 @@ export const SupplyModal: FC<SupplyModalProps> = ({
           continueAction={() => setOpenSuccessModal(false)}
         />
       )}
-      x
       <Toast
         isOpen={showToast}
         onClose={() => setShowToast(false)}

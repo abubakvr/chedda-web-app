@@ -49,19 +49,6 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
       className="flex flex-col justify-between"
       data-testid="my-information-card"
     >
-      {isModalOpen && (
-        <SupplyModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          asset={poolStats?.asset}
-          assetPrice={assetPrice}
-          supplied={accountInfo?.supplied}
-          available={available}
-          tokenBalance={tokenBalance}
-          baseSupplyAPY={poolStats.baseBorrowAPY}
-          fetchAccountInfo={fetchAccountInfo}
-        />
-      )}
       <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">
         <div className="text-white text-opacity-50 font-bold text-sm uppercase">
           My Information
@@ -164,6 +151,19 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           Borrow
         </button>
       </div>
+      {isModalOpen && (
+        <SupplyModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          asset={poolStats?.asset}
+          assetPrice={assetPrice}
+          supplied={accountInfo?.supplied}
+          available={available}
+          tokenBalance={tokenBalance}
+          baseSupplyAPY={poolStats.baseBorrowAPY}
+          fetchAccountInfo={fetchAccountInfo}
+        />
+      )}
     </div>
   );
 };
