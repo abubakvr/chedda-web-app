@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { BigNumber, ethers } from "ethers";
 import { useAllowance, useAssetBalance, useTransaction } from "@/hooks";
 import {
@@ -10,6 +10,7 @@ import { IToken } from "@/utils/types";
 import { SuccessModal } from "@/components/modals";
 import { SupplyModalContent } from "@/components/common";
 import { SupplyTabInfo, WithdrawTabInfo } from "./TabInfo";
+import { Toast } from "@/components/ui";
 
 interface SupplyModalProps {
   asset: IToken;
@@ -47,11 +48,12 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   available,
   baseSupplyAPY,
   onClose,
-  fetchAccountInfo,
 }) => {
   const [activeTab, setActiveTab] = useState("Deposit");
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+  const [showToast, setShowToast] = useState(false);
   const [clearInputField, setClearInputField] = useState(false);
+  const [toastMessage, setToastMessage] = useState("false");
   const [supplyAmount, setSupplyAmount] = useState<number>(0);
   const [withdrawAmount, setWithdrawAmount] = useState<number>(0);
   const [modalMessage, setModalMessage] = useState<string>("");
@@ -106,7 +108,10 @@ export const SupplyModal: FC<SupplyModalProps> = ({
           });
       } else {
         await approveAsset(parsedAmount);
-        fetchAllowance();
+        const txMessage = `You approved ${parsedAmount} ${asset.symbol}`;
+        setToastMessage(txMessage);
+        setClearInputField(true);
+        setShowToast(true);
       }
     } catch (error: any) {
       throw Error("Error handling deposit:", error);
@@ -123,10 +128,10 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     );
     withdrawAsset(parsedAmount)
       .then(() => {
-        const modalMessage = `You withdrew ${withdrawAmount} ${asset.symbol}`;
-        setModalMessage(modalMessage);
+        const txMessage = `You've successfully withdrawn ${withdrawAmount} ${asset.symbol}`;
+        setToastMessage(txMessage);
         setClearInputField(true);
-        setOpenSuccessModal(true);
+        setShowToast(true);
       })
       .catch((res) => {
         console.log(res);
@@ -148,7 +153,13 @@ export const SupplyModal: FC<SupplyModalProps> = ({
           continueAction={() => setOpenSuccessModal(false)}
         />
       )}
-
+      x
+      <Toast
+        isOpen={showToast}
+        onClose={() => setShowToast(false)}
+        toastMessage={toastMessage}
+        duration={10000}
+      />
       <div
         className={`fixed inset-0 ${
           isOpen && !openSuccessModal ? "block" : "hidden"

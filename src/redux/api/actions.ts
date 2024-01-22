@@ -30,7 +30,7 @@ export interface GetDataFunction<T> {
     poolId: string;
     account?: string;
     chedda: Chedda;
-    signer?: any;
+    signer?: Signer;
     environment: IEnvironment;
   }): Promise<T | null>;
 }
