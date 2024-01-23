@@ -1,3 +1,5 @@
+// SuccessModal.js
+
 import React from "react";
 import SuccessIcon from "@/assets/icon/success-icon.svg";
 import Image from "next/image";
@@ -16,8 +18,9 @@ export const SuccessModal = ({
   modalMessage,
   continueAction,
 }: SuccessModalProps) => {
-  return (
+  return isOpen ? (
     <div
+      data-testid="successModalContainer"
       className={`fixed inset-0 ${
         isOpen ? "block" : "hidden"
       } bg-[#00000024] bg-opacity-75 overflow-y-auto backdrop-filter backdrop-blur-sm z-20`}
@@ -28,6 +31,7 @@ export const SuccessModal = ({
             <span
               className="text-4xl cursor-pointer font-bold text-white relative"
               onClick={onClose}
+              data-testid="close-success-modal"
             >
               &times;
             </span>
@@ -38,7 +42,10 @@ export const SuccessModal = ({
               alt="success"
               className="flex self-center"
             />
-            <div className="text-3xl text-white mt-6 font-bold">
+            <div
+              data-testid="transactionCompletedText"
+              className="text-3xl text-white mt-6 font-bold"
+            >
               Transaction Completed
             </div>
             <div className="text-2xl text-[#FFFFFF50] mt-6 ">
@@ -64,5 +71,5 @@ export const SuccessModal = ({
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };

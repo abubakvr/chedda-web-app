@@ -40,6 +40,7 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
   amount,
 }) => {
   const [useAsCollateral, setUseAsCollateral] = useState(true);
+
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUseAsCollateral(e.target.checked);
   };
@@ -48,11 +49,13 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
     parseFloat(allowance.toString()) < amount ? "Approve" : "Supply";
 
   return (
-    <div className="mt-6">
+    <div data-testid="supply-modal-content" className="mt-6">
       <div className="text-xl font-bold">{title} your assets</div>
       <div className="flex justify-between mt-6 items-center text-xs">
-        <div className="text-[#DEDEDE]">Enter amount to {title}</div>
-        <div className="font-bold">
+        <div data-testid="amount-label" className="text-[#DEDEDE]">
+          Enter amount to {title}
+        </div>
+        <div data-testid="max-amount" className="font-bold">
           Max: {`${formatLargeNumber(maxAmount)} ${asset.symbol}`}
         </div>
       </div>
@@ -70,6 +73,7 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
           <div>Use as collateral</div>
           <label className="switch">
             <input
+              data-testid="use-as-collateral-checkbox"
               type="checkbox"
               checked={useAsCollateral}
               onChange={handleCheckboxChange}
@@ -87,7 +91,9 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
       >
         {title === "Deposit" ? buttonTitle : title} {asset.symbol}
       </Button>
-      <div className="mt-6 pb-0">{modalInfo}</div>
+      <div data-testid="modal-info" className="mt-6 pb-0">
+        {modalInfo}
+      </div>
     </div>
   );
 };

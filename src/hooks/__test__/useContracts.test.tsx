@@ -11,6 +11,7 @@ import {
   usePoolState,
   useAggregateStats,
   useAvailableLiquidity,
+  useAssetBalance,
 } from "@/hooks";
 import {
   mockCurrentEnvironment,
@@ -53,7 +54,9 @@ const mockProvider = {
   getSigner: jest.fn(),
 };
 
-jest.mock("react-redux");
+jest.mock("@web3-react/core", () => ({
+  useWeb3React: jest.fn(),
+}));
 
 describe("useAccountInfo Hook", () => {
   beforeEach(() => {
@@ -483,5 +486,49 @@ describe("useAccountInfo Hook", () => {
 
     expect(mockUseCheddaSdk).toHaveBeenCalled();
     expect(mockGetAvailableLiquidity).toHaveBeenCalled();
+  });
+
+  it("fetches and sets asset balance correctly", async () => {
+    const mockProvider = {
+      getSigner: jest.fn(),
+    };
+
+    const mockGetAssetBalance = jest.fn().mockResolvedValue("0x00");
+
+    mockUseCheddaSdk.mockReturnValue({
+      chedda: {
+        provider: new ethers.providers.WebSocketProvider("wss://testgoerliurl"),
+        poolLens: jest.fn(),
+        interestRateProjector: jest.fn(),
+        lendingPool: jest.fn().mockReturnValue({
+          assetBalance: mockGetAssetBalance,
+        }),
+        erc20token: jest.fn(),
+        priceOracle: jest.fn(),
+        closeProvider: jest.fn(),
+      },
+      signer: mockProvider.getSigner(),
+      setupChedda: jest.fn(),
+    });
+
+    mockUseEnvironment.mockReturnValue({
+      currentEnvironment: mockCurrentEnvironment,
+      switchEnvironment: jest.fn(),
+    });
+
+    const { result } = renderHook(() => useAssetBalance("0x00"));
+
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.data).toBeUndefined();
+
+    await act(async () => {
+      await expect(result.current.fetchData()).resolves.not.toThrow();
+    });
+
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.data).toEqual("0x00");
+
+    expect(mockUseCheddaSdk).toHaveBeenCalled();
+    expect(mockGetAssetBalance).toHaveBeenCalled();
   });
 });

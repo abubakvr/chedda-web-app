@@ -24,12 +24,14 @@ interface SupplyModalProps {
   fetchAccountInfo: () => void;
 }
 
-const Tab: FC<{ label: string; isActive: boolean; onClick: () => void }> = ({
-  label,
-  isActive,
-  onClick,
-}) => (
+const Tab: FC<{
+  label: string;
+  isActive: boolean;
+  onClick: () => void;
+  testId: string;
+}> = ({ label, isActive, onClick, testId }) => (
   <button
+    data-testid={testId}
     className={`text-sm font-bold px-4 py-2 focus:outline-none relative w-full hover:bg-[#4c37a740] ${
       isActive && "modal-button rounded"
     }`}
@@ -57,9 +59,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   const [supplyAmount, setSupplyAmount] = useState<number>(0);
   const [withdrawAmount, setWithdrawAmount] = useState<number>(0);
   const [modalMessage, setModalMessage] = useState<string>("");
-  const { data: allowance, fetchData: fetchAllowance } = useAllowance(
-    asset.address
-  );
+  const { data: allowance } = useAllowance(asset.address);
   const { data: assetBalance } = useAssetBalance(asset.address);
   const { isLoading, approveAsset, depositAsset, withdrawAsset } =
     useTransaction(asset.address);
@@ -160,6 +160,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
         duration={10000}
       />
       <div
+        data-testid="modal-container"
         className={`fixed inset-0 ${
           isOpen && !openSuccessModal ? "block" : "hidden"
         } bg-[#00000024] bg-opacity-75 overflow-y-auto backdrop-filter backdrop-blur-sm z-20`}
@@ -167,7 +168,12 @@ export const SupplyModal: FC<SupplyModalProps> = ({
         <div className="flex items-center justify-center min-h-screen">
           <div className="app-modal p-8 rounded shadow-lg w-[550px]">
             <div className="flex justify-between items-center">
-              <h2 className="text-3xl font-bold">Supply Asset</h2>
+              <h2
+                className="text-3xl font-bold"
+                data-testid="supply-modal-title"
+              >
+                Supply Asset
+              </h2>
               <span
                 className="text-4xl cursor-pointer font-bold text-white relative"
                 onClick={onClose}
@@ -183,6 +189,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                   setActiveTab("Deposit");
                   setSupplyAmount(0);
                 }}
+                testId="deposit-tab"
               />
               <Tab
                 label="Withdraw"
@@ -191,78 +198,87 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                   setActiveTab("Withdraw");
                   setWithdrawAmount(0);
                 }}
+                testId="withdraw-tab"
               />
             </div>
             {activeTab === "Deposit" && (
-              <SupplyModalContent
-                title="Deposit"
-                maxAmount={parsedMaxAmount}
-                asset={asset}
-                assetPrice={assetPrice}
-                setClearInputField={setClearInputField}
-                clearInputField={clearInputField}
-                allowance={parsedAllowance}
-                modalInfo={
-                  <SupplyTabInfo
-                    supplied={`${formatNumber(parsedSupplied)} ${asset.symbol}`}
-                    projectedSupply={
-                      supplyAmount
-                        ? `${formatNumber(parsedSupplied + supplyAmount)} ${
-                            asset.symbol
-                          }`
-                        : `${formatNumber(parsedSupplied)} ${asset.symbol}`
-                    }
-                    allowance={`${formatNumber(parsedAllowance)} ${
-                      asset.symbol
-                    }`}
-                    baseSupplyAPY={formatAsPercentage(baseSupplyAPY)}
-                  />
-                }
-                buttonAction={handleDeposit}
-                isTransactionLoading={isLoading}
-                setAmount={setSupplyAmount}
-                amount={supplyAmount}
-              />
+              <div data-testid="deposit-content">
+                <SupplyModalContent
+                  title="Deposit"
+                  maxAmount={parsedMaxAmount}
+                  asset={asset}
+                  assetPrice={assetPrice}
+                  setClearInputField={setClearInputField}
+                  clearInputField={clearInputField}
+                  allowance={parsedAllowance}
+                  modalInfo={
+                    <SupplyTabInfo
+                      supplied={`${formatNumber(parsedSupplied)} ${
+                        asset.symbol
+                      }`}
+                      projectedSupply={
+                        supplyAmount
+                          ? `${formatNumber(parsedSupplied + supplyAmount)} ${
+                              asset.symbol
+                            }`
+                          : `${formatNumber(parsedSupplied)} ${asset.symbol}`
+                      }
+                      allowance={`${formatNumber(parsedAllowance)} ${
+                        asset.symbol
+                      }`}
+                      baseSupplyAPY={formatAsPercentage(baseSupplyAPY)}
+                    />
+                  }
+                  buttonAction={handleDeposit}
+                  isTransactionLoading={isLoading}
+                  setAmount={setSupplyAmount}
+                  amount={supplyAmount}
+                />
+              </div>
             )}
             {activeTab === "Withdraw" && (
-              <SupplyModalContent
-                title="Withdraw"
-                asset={asset}
-                assetPrice={assetPrice}
-                allowance={parsedAllowance}
-                modalInfo={
-                  <WithdrawTabInfo
-                    supplied={`${formatNumber(parsedSupplied)} ${asset.symbol}`}
-                    baseSupplyAPY={formatAsPercentage(baseSupplyAPY)}
-                    projectedSupply={
-                      withdrawAmount
-                        ? `${formatNumber(parsedSupplied - withdrawAmount)} ${
-                            asset.symbol
-                          }`
-                        : `${formatNumber(parsedSupplied)} ${asset.symbol}`
-                    }
-                    liquidity={`${formatNumber(parsedAvailableLiquidity)} ${
-                      asset.symbol
-                    }`}
-                    projectedLiquidity={
-                      withdrawAmount
-                        ? `${formatNumber(
-                            parsedAvailableLiquidity - withdrawAmount
-                          )} ${asset.symbol}`
-                        : `${formatNumber(parsedAvailableLiquidity)} ${
-                            asset.symbol
-                          }`
-                    }
-                  />
-                }
-                maxAmount={maxWithdrawAmount.toString()}
-                setClearInputField={setClearInputField}
-                clearInputField={clearInputField}
-                buttonAction={handleWithdraw}
-                isTransactionLoading={isLoading}
-                setAmount={setWithdrawAmount}
-                amount={withdrawAmount}
-              />
+              <div data-testid="withdraw-content">
+                <SupplyModalContent
+                  title="Withdraw"
+                  asset={asset}
+                  assetPrice={assetPrice}
+                  allowance={parsedAllowance}
+                  modalInfo={
+                    <WithdrawTabInfo
+                      supplied={`${formatNumber(parsedSupplied)} ${
+                        asset.symbol
+                      }`}
+                      baseSupplyAPY={formatAsPercentage(baseSupplyAPY)}
+                      projectedSupply={
+                        withdrawAmount
+                          ? `${formatNumber(parsedSupplied - withdrawAmount)} ${
+                              asset.symbol
+                            }`
+                          : `${formatNumber(parsedSupplied)} ${asset.symbol}`
+                      }
+                      liquidity={`${formatNumber(parsedAvailableLiquidity)} ${
+                        asset.symbol
+                      }`}
+                      projectedLiquidity={
+                        withdrawAmount
+                          ? `${formatNumber(
+                              parsedAvailableLiquidity - withdrawAmount
+                            )} ${asset.symbol}`
+                          : `${formatNumber(parsedAvailableLiquidity)} ${
+                              asset.symbol
+                            }`
+                      }
+                    />
+                  }
+                  maxAmount={maxWithdrawAmount.toString()}
+                  setClearInputField={setClearInputField}
+                  clearInputField={clearInputField}
+                  buttonAction={handleWithdraw}
+                  isTransactionLoading={isLoading}
+                  setAmount={setWithdrawAmount}
+                  amount={withdrawAmount}
+                />
+              </div>
             )}
           </div>
         </div>

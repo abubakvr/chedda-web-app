@@ -73,8 +73,9 @@ export const AmountField: FC<InputWithMaxButtonProps> = ({
           onInput={handleInput}
           onChange={handleInputChange}
           placeholder="0.00"
+          data-testid="amount-input"
         />
-        <div className="text-sm text-[#ffffff50] mt-1">
+        <div className="text-sm text-[#ffffff50] mt-1" data-testid="value-box">
           {calculatedValue || "$0.00"}
         </div>
       </div>
@@ -83,6 +84,7 @@ export const AmountField: FC<InputWithMaxButtonProps> = ({
           maxActive && "bg-[#261da2]"
         }`}
         onClick={onMaxButtonClick}
+        data-testid="max-button"
       >
         MAX
       </button>
