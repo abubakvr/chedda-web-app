@@ -15,7 +15,7 @@ const config: Config = {
         "3xl": "1920px",
       },
       colors: {
-        "lavendar-purple": "#BCC3E7",
+        success: "#44B410",
         "turtoise-green": "#5DDEFA",
         "card-bg": "var(--card-bg)",
       },

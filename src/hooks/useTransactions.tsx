@@ -22,7 +22,8 @@ export const useTransaction = (asset: string) => {
 
   const executeTransaction = async (
     transaction: (params: {
-      chedda: Chedda | undefined | null;
+      lendingPool: any;
+      token: any;
       amount: BigNumber;
     }) => Promise<any>,
     amount: BigNumber
@@ -126,5 +127,6 @@ export const useTransaction = (asset: string) => {
     approveAsset,
     depositAsset,
     withdrawAsset,
+    depositCollateral,
   };
 };
