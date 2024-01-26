@@ -7,7 +7,7 @@ import {
   IPoolState,
   IPoolStats,
 } from "chedda-sdk";
-import { Signer } from "ethers";
+import { ethers, Signer } from "ethers";
 import { StaticImageData } from "next/image";
 import React from "react";
 
@@ -136,16 +136,14 @@ export type GetDataFunction<T> = ({
   lens,
   poolId,
   account,
-  pool,
-  token,
+  chedda,
   signer,
   environment,
 }: {
   lens: any;
   poolId: string;
   account?: string;
-  pool: any;
-  token: any;
+  chedda: Chedda;
   signer?: Signer;
   environment: IEnvironment;
   asset?: string;

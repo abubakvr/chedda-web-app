@@ -120,7 +120,9 @@ export const SupplyModal: FC<SupplyModalProps> = ({
         depositAsset(parsedAmount, useAsCollateral)
           .then(async (res) => {
             if (res) {
-              const modalMessage = `You supplied ${supplyAmount} ${asset.symbol}`;
+              const modalMessage = `You supplied ${formatNumber(
+                supplyAmount
+              )} ${asset.symbol}`;
               setModalMessage(modalMessage);
               setClearInputField(true);
               setSupplyAmount(0);
@@ -134,7 +136,9 @@ export const SupplyModal: FC<SupplyModalProps> = ({
       } else {
         await approveAsset(parsedAmount).then((res) => {
           if (res) {
-            const txMessage = `You approved ${supplyAmount} ${asset.symbol}`;
+            const txMessage = `You approved ${formatNumber(supplyAmount)} ${
+              asset.symbol
+            }`;
             setToastMessage(txMessage);
             fetchAllowance(false);
             setShowToast(true);
@@ -157,7 +161,9 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     withdrawAsset(parsedAmount)
       .then((res) => {
         if (res) {
-          const txMessage = `You've successfully withdrawn ${withdrawAmount} ${asset.symbol}`;
+          const txMessage = `You've successfully withdrawn ${formatNumber(
+            withdrawAmount
+          )} ${asset.symbol}`;
           setToastMessage(txMessage);
           setWithdrawAmount(0);
           fetchModalData();

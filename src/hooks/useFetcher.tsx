@@ -45,7 +45,7 @@ export const useFetcher = <T = any,>(
       chedda,
       currentEnvironment,
       account,
-      poolId,
+      strPoolId,
       getData,
       signer,
       hookName,
