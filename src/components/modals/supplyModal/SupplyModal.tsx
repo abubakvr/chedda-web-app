@@ -1,6 +1,12 @@
 import React, { FC, useState } from "react";
 import { BigNumber, ethers } from "ethers";
-import { useAllowance, useAssetBalance, useTransaction } from "@/hooks";
+import {
+  useAllowance,
+  useAssetBalance,
+  useAvailableLiquidity,
+  useTokenBalance,
+  useTransaction,
+} from "@/hooks";
 import {
   formatAsPercentage,
   formatNumber,
@@ -21,7 +27,7 @@ interface SupplyModalProps {
   supplied: BigNumber | undefined;
   available: BigNumber | undefined;
   onClose: () => void;
-  fetchAccountInfo: () => void;
+  fetchAccountInfo: (showLoading?: false) => void;
 }
 
 const Tab: FC<{
@@ -50,6 +56,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   available,
   baseSupplyAPY,
   onClose,
+  fetchAccountInfo,
 }) => {
   const [activeTab, setActiveTab] = useState("Deposit");
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
@@ -59,8 +66,14 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   const [supplyAmount, setSupplyAmount] = useState<number>(0);
   const [withdrawAmount, setWithdrawAmount] = useState<number>(0);
   const [modalMessage, setModalMessage] = useState<string>("");
-  const { data: allowance } = useAllowance(asset.address);
-  const { data: assetBalance } = useAssetBalance(asset.address);
+  const { data: allowance, fetchData: fetchAllowance } = useAllowance(
+    asset.address
+  );
+  const { data: assetBalance, fetchData: fetchAssetBalance } = useAssetBalance(
+    asset.address
+  );
+  const { fetchData: fetchTokenBalance } = useTokenBalance(asset.address);
+  const { fetchData: fetchAvailable } = useAvailableLiquidity();
   const { isLoading, approveAsset, depositAsset, withdrawAsset } =
     useTransaction(asset.address);
 
@@ -84,6 +97,14 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     parsedAvailableLiquidity
   );
 
+  const fetchModalData = () => {
+    fetchAssetBalance(false);
+    fetchAllowance(false);
+    fetchTokenBalance(false);
+    fetchAvailable(false);
+    fetchAccountInfo(false);
+  };
+
   const handleDeposit = async (useAsCollateral: boolean) => {
     try {
       if (!supplyAmount || supplyAmount > parseFloat(parsedMaxAmount)) {
@@ -97,21 +118,28 @@ export const SupplyModal: FC<SupplyModalProps> = ({
 
       if (supplyAmount <= parsedAllowance) {
         depositAsset(parsedAmount, useAsCollateral)
-          .then(() => {
-            const modalMessage = `You supplied ${supplyAmount} ${asset.symbol}`;
-            setModalMessage(modalMessage);
-            setClearInputField(true);
-            setOpenSuccessModal(true);
+          .then(async (res) => {
+            if (res) {
+              const modalMessage = `You supplied ${supplyAmount} ${asset.symbol}`;
+              setModalMessage(modalMessage);
+              setClearInputField(true);
+              setSupplyAmount(0);
+              fetchModalData();
+              setOpenSuccessModal(true);
+            }
           })
           .catch((res) => {
             console.log(res);
           });
       } else {
-        await approveAsset(parsedAmount);
-        const txMessage = `You approved ${parsedAmount} ${asset.symbol}`;
-        setToastMessage(txMessage);
-        setClearInputField(true);
-        setShowToast(true);
+        await approveAsset(parsedAmount).then((res) => {
+          if (res) {
+            const txMessage = `You approved ${supplyAmount} ${asset.symbol}`;
+            setToastMessage(txMessage);
+            fetchAllowance(false);
+            setShowToast(true);
+          }
+        });
       }
     } catch (error: any) {
       throw Error("Error handling deposit:", error);
@@ -127,14 +155,18 @@ export const SupplyModal: FC<SupplyModalProps> = ({
       asset.decimals
     );
     withdrawAsset(parsedAmount)
-      .then(() => {
-        const txMessage = `You've successfully withdrawn ${withdrawAmount} ${asset.symbol}`;
-        setToastMessage(txMessage);
-        setClearInputField(true);
-        setShowToast(true);
+      .then((res) => {
+        if (res) {
+          const txMessage = `You've successfully withdrawn ${withdrawAmount} ${asset.symbol}`;
+          setToastMessage(txMessage);
+          setWithdrawAmount(0);
+          fetchModalData();
+          setClearInputField(true);
+          setShowToast(true);
+        }
       })
-      .catch((res) => {
-        console.log(res);
+      .catch((error) => {
+        console.error(error);
       });
   };
 

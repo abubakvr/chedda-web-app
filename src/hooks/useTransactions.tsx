@@ -1,9 +1,9 @@
+import { Chedda } from "chedda-sdk";
 import { useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { BigNumber, Signer } from "ethers";
 import { useCheddaSdk } from "./useCheddaSdk";
 import { useParams } from "next/navigation";
-import { Chedda } from "chedda-sdk";
 
 export const useTransaction = (asset: string) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -11,13 +11,14 @@ export const useTransaction = (asset: string) => {
   const { account } = useWeb3React();
   const { chedda, signer } = useCheddaSdk();
   const { poolId } = useParams();
+
   const strPoolId = poolId.toString();
 
   const executeTransaction = async (
     transaction: (params: {
       chedda: Chedda | undefined | null;
       amount: BigNumber;
-    }) => Promise<void>,
+    }) => Promise<any>,
     amount: BigNumber
   ) => {
     if (!account) {
@@ -28,7 +29,7 @@ export const useTransaction = (asset: string) => {
     try {
       setIsLoading(true);
       setIsSuccess(false);
-      await transaction({ chedda, amount });
+      return await transaction({ chedda, amount });
     } catch (error: any) {
       alert("An error occurred: " + error.message);
     } finally {
@@ -40,22 +41,21 @@ export const useTransaction = (asset: string) => {
     executeTransaction(async ({ chedda }) => {
       if (!chedda) return;
       const token = chedda?.erc20token(asset, signer as Signer);
-      await token?.approve(strPoolId, amount);
+      return await token?.approve(strPoolId, amount);
     }, amount);
 
   const depositAsset = async (amount: BigNumber, useAsCollateral: boolean) =>
     executeTransaction(async ({ chedda }) => {
       if (!account) return;
       const lendingPool = chedda?.lendingPool(strPoolId, signer as Signer);
-      await lendingPool?.supply(amount, account, useAsCollateral);
-      setIsSuccess(true);
+      return await lendingPool?.supply(amount, account, useAsCollateral);
     }, amount);
 
   const withdrawAsset = async (amount: BigNumber) =>
     executeTransaction(async ({ chedda }) => {
       if (!account) return;
       const lendingPool = chedda?.lendingPool(strPoolId, signer as Signer);
-      await lendingPool?.withdraw(amount, account, account);
+      return await lendingPool?.withdraw(amount, account, account);
     }, amount);
 
   return {

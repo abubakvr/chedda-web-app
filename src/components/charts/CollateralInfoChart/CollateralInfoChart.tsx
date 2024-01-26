@@ -49,12 +49,6 @@ export const CollateralInfoChart = ({
         options: chartOptions,
       });
     }
-
-    return () => {
-      if (chartInstance.current) {
-        chartInstance.current.destroy();
-      }
-    };
   }, [collateralInfo]);
 
   return (

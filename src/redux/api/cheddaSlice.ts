@@ -14,6 +14,7 @@ interface AsyncState<T> {
 
 interface FetchDataParams {
   hookName: string; // Use the hook name as the identifier
+  showLoading?: boolean;
   chedda: Chedda | undefined | null;
   currentEnvironment: IEnvironment | undefined;
   account?: string;
@@ -33,6 +34,7 @@ export const fetchData = createAsyncThunk<any, FetchDataParams>(
     try {
       const {
         hookName,
+        showLoading,
         chedda,
         currentEnvironment,
         account,
@@ -57,7 +59,7 @@ export const fetchData = createAsyncThunk<any, FetchDataParams>(
         asset,
         environment: currentEnvironment,
       });
-      return { hookName, data };
+      return { showLoading, hookName, data };
     } catch (error) {
       console.error("Error fetching data:", error);
       throw error;
@@ -73,9 +75,12 @@ export const cheddaSlice = createSlice({
     builder
       .addCase(fetchData.pending, (state, action) => {
         const hookName = action.meta.arg.hookName;
+        const showLoading = action.meta.arg.showLoading ?? true;
+        const existingData = state.fetchDataStates[hookName]?.data;
+
         state.fetchDataStates[hookName] = {
-          data: undefined,
-          isLoading: true,
+          data: existingData ?? undefined,
+          isLoading: showLoading ? true : false,
         };
       })
       .addCase(

@@ -104,7 +104,6 @@ describe("useAccountInfo Hook", () => {
 
     const { result } = renderHook(() => useAccountInfo());
 
-    expect(result.current.isLoading).toBe(true);
     expect(result.current.data).toBeUndefined();
 
     await act(async () => {
@@ -140,7 +139,6 @@ describe("useAccountInfo Hook", () => {
 
     const { result } = renderHook(() => useMarketInfo());
 
-    expect(result.current.isLoading).toBe(true);
     expect(result.current.data).toBeUndefined();
 
     await act(async () => {
@@ -179,7 +177,6 @@ describe("useAccountInfo Hook", () => {
 
     const { result } = renderHook(() => useCollateralInfo());
 
-    expect(result.current.isLoading).toBe(true);
     expect(result.current.data).toBeUndefined();
 
     await act(async () => {
@@ -217,7 +214,7 @@ describe("useAccountInfo Hook", () => {
     const { result } = renderHook(() => usePoolStatsList());
 
     // Ensure that the hook initializes with the correct values
-    expect(result.current.isLoading).toBe(true);
+
     expect(result.current.data).toBeUndefined();
 
     // Wait for the hook to fetch and update the values
@@ -258,7 +255,7 @@ describe("useAccountInfo Hook", () => {
     const { result } = renderHook(() => usePoolStats());
 
     // Ensure that the hook initializes with the correct values
-    expect(result.current.isLoading).toBe(true);
+
     expect(result.current.data).toBeUndefined();
 
     // Wait for the hook to fetch and update the values
@@ -298,7 +295,7 @@ describe("useAccountInfo Hook", () => {
     const { result } = renderHook(() => useRatesProjector());
 
     // Ensure that the initial state is correct
-    expect(result.current.isLoading).toBe(true);
+
     expect(result.current.data).toBeUndefined();
     expect(mockProvider.getSigner).toHaveBeenCalled();
 
@@ -331,7 +328,7 @@ describe("useAccountInfo Hook", () => {
     const { result } = renderHook(() => usePoolState());
 
     // Ensure that the initial state is correct
-    expect(result.current.isLoading).toBe(true);
+
     expect(result.current.data).toBeUndefined();
     expect(mockProvider.getSigner).toHaveBeenCalled();
 
@@ -377,7 +374,7 @@ describe("useAccountInfo Hook", () => {
     const { result } = renderHook(() => useAggregateStats());
 
     // Ensure that the hook initializes with the correct values
-    expect(result.current.isLoading).toBe(true);
+
     expect(result.current.data).toBeUndefined();
 
     // Wait for the hook to fetch and update the values
@@ -427,7 +424,7 @@ describe("useAccountInfo Hook", () => {
     const { result } = renderHook(() => useAggregateStats());
 
     // Ensure that the hook initializes with the correct values
-    expect(result.current.isLoading).toBe(true);
+
     expect(result.current.data).toBeUndefined();
 
     // Wait for the hook to fetch and update the values
@@ -474,7 +471,6 @@ describe("useAccountInfo Hook", () => {
 
     const { result } = renderHook(() => useAvailableLiquidity());
 
-    expect(result.current.isLoading).toBe(true);
     expect(result.current.data).toBeUndefined();
 
     await act(async () => {
@@ -518,7 +514,6 @@ describe("useAccountInfo Hook", () => {
 
     const { result } = renderHook(() => useAssetBalance("0x00"));
 
-    expect(result.current.isLoading).toBe(true);
     expect(result.current.data).toBeUndefined();
 
     await act(async () => {

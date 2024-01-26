@@ -2,7 +2,13 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { BigNumber, utils } from "ethers";
 import { StaticImageData } from "next/image";
 import { SupplyModal } from "../SupplyModal";
-import { useAllowance, useAssetBalance, useTransaction } from "@/hooks";
+import {
+  useAllowance,
+  useAssetBalance,
+  useAvailableLiquidity,
+  useTokenBalance,
+  useTransaction,
+} from "@/hooks";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks");
@@ -38,6 +44,15 @@ describe("SupplyModal", () => {
     }));
 
     (useAssetBalance as jest.Mock).mockImplementation(() => ({
+      isLoading: false,
+      data: "1000",
+    }));
+
+    (useTokenBalance as jest.Mock).mockImplementation(() => ({
+      isLoading: false,
+      data: "1000",
+    }));
+    (useAvailableLiquidity as jest.Mock).mockImplementation(() => ({
       isLoading: false,
       data: "1000",
     }));

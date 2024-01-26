@@ -15,7 +15,7 @@ interface MyInformationCardProps {
   available: BigNumber | undefined;
   isLoading: boolean;
   assetPrice: number;
-  fetchAccountInfo: () => void;
+  fetchAccountInfo: (showLoading?: false) => void;
 }
 
 export const MyInformationCard: React.FC<MyInformationCardProps> = ({
