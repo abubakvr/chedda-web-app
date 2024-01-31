@@ -1,5 +1,3 @@
-// SuccessModal.js
-
 import React from "react";
 import SuccessIcon from "@/assets/icon/success-icon.svg";
 import Image from "next/image";
