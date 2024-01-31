@@ -1,2 +1,2 @@
 export * from "./supplyModal/SupplyModal";
-export * from "./SuccessModal/SuccessModal";
+export * from "./successModal/SuccessModal";

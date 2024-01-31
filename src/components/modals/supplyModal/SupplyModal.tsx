@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { BigNumber, ethers } from "ethers";
 import {
   useAllowance,
@@ -13,10 +13,10 @@ import {
   parseBigNumberToFloat,
 } from "@/utils/formatters";
 import { IToken } from "@/utils/types";
+import { Toast } from "@/components/ui";
 import { SuccessModal } from "@/components/modals";
 import { SupplyModalContent } from "@/components/common";
 import { SupplyTabInfo, WithdrawTabInfo } from "./TabInfo";
-import { Toast } from "@/components/ui";
 
 interface SupplyModalProps {
   asset: IToken;
@@ -74,8 +74,13 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   );
   const { fetchData: fetchTokenBalance } = useTokenBalance(asset.address);
   const { fetchData: fetchAvailable } = useAvailableLiquidity();
-  const { isLoading, approveAsset, depositAsset, withdrawAsset } =
-    useTransaction(asset.address);
+  const {
+    isLoading,
+    transactionStatus,
+    approveAsset,
+    depositAsset,
+    withdrawAsset,
+  } = useTransaction(asset.address);
 
   const parsedAllowance = parseFloat(
     parseBigNumberToFloat(allowance, asset.decimals)
@@ -97,13 +102,40 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     parsedAvailableLiquidity
   );
 
-  const fetchModalData = () => {
+  const fetchModalData = useCallback(() => {
     fetchAssetBalance(false);
     fetchAllowance(false);
     fetchTokenBalance(false);
     fetchAvailable(false);
     fetchAccountInfo(false);
-  };
+  }, [
+    fetchAssetBalance,
+    fetchAllowance,
+    fetchTokenBalance,
+    fetchAvailable,
+    fetchAccountInfo,
+  ]);
+
+  useEffect(() => {
+    if (transactionStatus.isApproved) {
+      setShowToast(true);
+      fetchAllowance(false);
+    }
+
+    if (transactionStatus.isDeposited) {
+      setSupplyAmount(0);
+      setClearInputField(true);
+      setOpenSuccessModal(true);
+      fetchModalData();
+    }
+
+    if (transactionStatus.isWithdrawn) {
+      setWithdrawAmount(0);
+      setClearInputField(true);
+      setShowToast(true);
+      fetchModalData();
+    }
+  }, [transactionStatus, asset.symbol, fetchAllowance, fetchModalData]);
 
   const handleDeposit = async (useAsCollateral: boolean) => {
     try {
@@ -118,32 +150,26 @@ export const SupplyModal: FC<SupplyModalProps> = ({
 
       if (supplyAmount <= parsedAllowance) {
         depositAsset(parsedAmount, useAsCollateral)
-          .then(async (res) => {
-            if (res) {
-              const modalMessage = `You supplied ${formatNumber(
-                supplyAmount
-              )} ${asset.symbol}`;
-              setModalMessage(modalMessage);
-              setClearInputField(true);
-              setSupplyAmount(0);
-              fetchModalData();
-              setOpenSuccessModal(true);
-            }
+          .then(() => {
+            const txMessage = `You've successfully supplied ${formatNumber(
+              supplyAmount
+            )} ${asset.symbol}`;
+            setModalMessage(txMessage);
           })
-          .catch((res) => {
-            console.log(res);
+          .catch((error) => {
+            console.error(error);
           });
       } else {
-        await approveAsset(parsedAmount).then((res) => {
-          if (res) {
-            const txMessage = `You approved ${formatNumber(supplyAmount)} ${
-              asset.symbol
-            }`;
+        await approveAsset(parsedAmount)
+          .then(() => {
+            const txMessage = `You've successfully approved ${formatNumber(
+              supplyAmount
+            )} ${asset.symbol}`;
             setToastMessage(txMessage);
-            fetchAllowance(false);
-            setShowToast(true);
-          }
-        });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       }
     } catch (error: any) {
       throw Error("Error handling deposit:", error);
@@ -159,17 +185,11 @@ export const SupplyModal: FC<SupplyModalProps> = ({
       asset.decimals
     );
     withdrawAsset(parsedAmount)
-      .then((res) => {
-        if (res) {
-          const txMessage = `You've successfully withdrawn ${formatNumber(
-            withdrawAmount
-          )} ${asset.symbol}`;
-          setToastMessage(txMessage);
-          setWithdrawAmount(0);
-          fetchModalData();
-          setClearInputField(true);
-          setShowToast(true);
-        }
+      .then(() => {
+        const txMessage = `You've successfully withdrawn ${formatNumber(
+          withdrawAmount
+        )} ${asset.symbol}`;
+        setToastMessage(txMessage);
       })
       .catch((error) => {
         console.error(error);
@@ -183,14 +203,12 @@ export const SupplyModal: FC<SupplyModalProps> = ({
 
   return (
     <>
-      {openSuccessModal && (
-        <SuccessModal
-          onClose={closeSuccessModal}
-          isOpen={openSuccessModal}
-          modalMessage={modalMessage}
-          continueAction={() => setOpenSuccessModal(false)}
-        />
-      )}
+      <SuccessModal
+        onClose={closeSuccessModal}
+        isOpen={openSuccessModal}
+        modalMessage={modalMessage}
+        continueAction={() => setOpenSuccessModal(false)}
+      />
       <Toast
         isOpen={showToast}
         onClose={() => setShowToast(false)}
@@ -254,13 +272,9 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                       supplied={`${formatNumber(parsedSupplied)} ${
                         asset.symbol
                       }`}
-                      projectedSupply={
-                        supplyAmount
-                          ? `${formatNumber(parsedSupplied + supplyAmount)} ${
-                              asset.symbol
-                            }`
-                          : `${formatNumber(parsedSupplied)} ${asset.symbol}`
-                      }
+                      projectedSupply={`${formatNumber(
+                        parsedSupplied + (supplyAmount || 0)
+                      )} ${asset.symbol}`}
                       allowance={`${formatNumber(parsedAllowance)} ${
                         asset.symbol
                       }`}
@@ -287,25 +301,15 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                         asset.symbol
                       }`}
                       baseSupplyAPY={formatAsPercentage(baseSupplyAPY)}
-                      projectedSupply={
-                        withdrawAmount
-                          ? `${formatNumber(parsedSupplied - withdrawAmount)} ${
-                              asset.symbol
-                            }`
-                          : `${formatNumber(parsedSupplied)} ${asset.symbol}`
-                      }
+                      projectedSupply={`${formatNumber(
+                        parsedSupplied - (withdrawAmount || 0)
+                      )} ${asset.symbol}`}
                       liquidity={`${formatNumber(parsedAvailableLiquidity)} ${
                         asset.symbol
                       }`}
-                      projectedLiquidity={
-                        withdrawAmount
-                          ? `${formatNumber(
-                              parsedAvailableLiquidity - withdrawAmount
-                            )} ${asset.symbol}`
-                          : `${formatNumber(parsedAvailableLiquidity)} ${
-                              asset.symbol
-                            }`
-                      }
+                      projectedLiquidity={`${formatNumber(
+                        parsedAvailableLiquidity - (withdrawAmount || 0)
+                      )} ${asset.symbol}`}
                     />
                   }
                   maxAmount={maxWithdrawAmount.toString()}
