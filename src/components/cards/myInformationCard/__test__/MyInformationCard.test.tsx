@@ -9,9 +9,6 @@ import { ethers } from "ethers";
 jest.mock("ethers");
 jest.mock("../../../../hooks");
 
-const mockSupplyClick = jest.fn();
-const mockBorrowClick = jest.fn();
-
 describe("MyInformationCard", () => {
   it("renders MyInformationCard component correctly", () => {
     (useTokenBalance as jest.Mock).mockImplementation(() => ({

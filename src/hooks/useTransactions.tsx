@@ -4,6 +4,8 @@ import { useWeb3React } from "@web3-react/core";
 import { BigNumber, Signer } from "ethers";
 import { useCheddaSdk } from "./useCheddaSdk";
 import { useParams } from "next/navigation";
+import { useEnvironment } from "./useEnvironment";
+import { parseBigNumberToFloat } from "@/utils/formatters";
 
 export const useTransaction = (asset: string) => {
   const [transactionStatus, setTransactionStatus] = useState({
@@ -17,21 +19,19 @@ export const useTransaction = (asset: string) => {
   const { poolId } = useParams();
   const strPoolId = poolId.toString();
 
-  const lendingPool = chedda?.lendingPool(strPoolId, signer as Signer);
   const token = chedda?.erc20token(asset, signer as Signer);
+  const lendingPool = chedda?.lendingPool(strPoolId, signer as Signer);
 
   const executeTransaction = async (
     transaction: (params: {
       lendingPool: any;
       token: any;
-      amount: BigNumber;
+      priceOracle: any;
+      amount?: BigNumber;
     }) => Promise<any>,
-    amount: BigNumber
+    amount?: BigNumber
   ) => {
-    if (!account) {
-      alert("Please connect your wallet");
-      return;
-    }
+    if (!account) return;
 
     try {
       setTransactionStatus({
@@ -119,6 +119,16 @@ export const useTransaction = (asset: string) => {
     withdrawHandler,
     approvalHandler,
   ]);
+
+  useEffect(() => {
+    lendingPool?.contract.on("CollateralAdded", () => {
+      console.log("Collateral Added");
+    });
+
+    token?.contract.on("Approval", () => {
+      console.log("Token approved");
+    });
+  }, [chedda]);
 
   return {
     isLoading: transactionStatus.isLoading,

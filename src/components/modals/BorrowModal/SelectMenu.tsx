@@ -1,28 +1,27 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ArrowDownIcon from "@/assets/icon/arrow-down.svg";
-import USDCLogo from "@/assets/logos/usdc-logo.png";
-const collaterals = [
-  { name: "Hello", symbol: "USDC", image: USDCLogo },
-  { name: "Hello", symbol: "AAVE", image: USDCLogo },
-  { name: "Hello", symbol: "WETH", image: USDCLogo },
-];
+import { IToken } from "@/utils/types";
 
 interface SelectMenuProps {
-  getAssetBalance: (asset: string) => void;
+  setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
+  selectedCollateral: IToken;
+  collaterals: IToken[];
 }
 
-export const SelectMenu = ({ getAssetBalance }: SelectMenuProps) => {
+export const SelectMenu = ({
+  setSelectedCollateral,
+  selectedCollateral,
+  collaterals,
+}: SelectMenuProps) => {
   const [isOpenSelectMenu, setIsOpenSelectMenu] = useState(false);
-  const [selectedCollateral, setSelectedCollateral] = useState(collaterals[0]);
 
   const openSelectMenu = () => {
     setIsOpenSelectMenu(!isOpenSelectMenu);
   };
 
-  const handleCollateralSelect = (collateral: any) => {
+  const handleCollateralSelect = (collateral: IToken) => {
     setSelectedCollateral(collateral);
-    getAssetBalance(collateral);
     setIsOpenSelectMenu(false);
   };
 
@@ -49,13 +48,13 @@ export const SelectMenu = ({ getAssetBalance }: SelectMenuProps) => {
       >
         <div>
           <Image
-            src={selectedCollateral.image}
+            src={selectedCollateral?.logo}
             className="w-4 h-4 self-center"
             alt="collateral image"
           />
         </div>
         <div className="flex gap-1 mr-2 items-center font-bold">
-          {selectedCollateral.symbol}
+          {selectedCollateral?.symbol}
         </div>
         <div>
           <Image
@@ -72,7 +71,7 @@ export const SelectMenu = ({ getAssetBalance }: SelectMenuProps) => {
         }`}
       >
         <ul className="list-reset text-center font-bold">
-          {collaterals.map((c) => (
+          {collaterals?.map((c) => (
             <li
               key={c.symbol}
               className="py-2 px-2 flex items-center gap-x-2 rounded-sm text-sm hover:cursor-pointer hover:bg-[#4c37a740] transition-all last:border-none"
@@ -80,7 +79,7 @@ export const SelectMenu = ({ getAssetBalance }: SelectMenuProps) => {
             >
               <div>
                 <Image
-                  src={c.image}
+                  src={c.logo}
                   className="w-4 h-4 self-center"
                   alt="Arrow down"
                 />

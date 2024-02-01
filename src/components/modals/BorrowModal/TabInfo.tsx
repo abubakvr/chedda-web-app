@@ -4,12 +4,13 @@ import ArrowRight from "@/assets/icon/arrow-right.svg";
 import InfoIcon from "@/assets/icon/info-icon.svg";
 
 interface SupplyInfoProps {
+  symbol: string;
   collateral: string;
   projectedCollateral: string;
   projectedCollateralValue: string;
   collateralValue: string;
   healthFactor: string;
-  projectedHealthFactor: string;
+  projectedHealthFactor: number;
 }
 
 interface WithdrawInfoProps {
@@ -21,6 +22,7 @@ interface WithdrawInfoProps {
 }
 
 export const DepositTabInfo = ({
+  symbol,
   collateralValue,
   projectedCollateralValue,
   collateral,
@@ -31,7 +33,7 @@ export const DepositTabInfo = ({
   return (
     <div>
       <div className="flex justify-between text-sm pb-5">
-        <div className="opacity-50 font-semibold">USDC Collateral</div>
+        <div className="opacity-50 font-semibold">{symbol} Collateral</div>
         <div className="flex space-x-2">
           <div className="font-bold">{collateral}</div>
           <Image

@@ -1,13 +1,12 @@
 import React, { FC, useState } from "react";
-import { BigNumber, ethers } from "ethers";
-import { useAllowance, useAssetBalance, useTransaction } from "@/hooks";
-import { parseBigNumberToFloat } from "@/utils/formatters";
+import { BigNumber } from "ethers";
 import { IToken } from "@/utils/types";
 import { SuccessModal } from "@/components/modals";
 import { Toast } from "@/components/ui";
 import { DepositTab } from "./DepositTab";
 
-interface SupplyModalProps {
+interface BorrowModalProps {
+  collaterals: IToken[];
   asset: IToken;
   assetPrice: number;
   isOpen: boolean;
@@ -36,17 +35,17 @@ const Tab: FC<{
   </button>
 );
 
-export const BorrowModal: FC<SupplyModalProps> = ({ isOpen, onClose }) => {
+export const BorrowModal: FC<BorrowModalProps> = ({
+  isOpen,
+  onClose,
+  collaterals,
+}) => {
   const [activeTab, setActiveTab] = useState("Deposit");
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
-  const [assetBalance, setAssetBalance] = useState<any>();
-
-  const getAssetBalance = (token: string) => {
-    const { data: assetBalance } = useAssetBalance(token);
-    console.log(assetBalance);
-    setAssetBalance(assetBalance);
-  };
+  const [selectedCollateral, setSelectedCollateral] = useState<IToken>(
+    collaterals[0]
+  );
 
   const closeSuccessModal = () => {
     setOpenSuccessModal(false);
@@ -126,7 +125,11 @@ export const BorrowModal: FC<SupplyModalProps> = ({ isOpen, onClose }) => {
               />
             </div>
             {activeTab === "Deposit" && (
-              <DepositTab getAssetBalance={getAssetBalance} />
+              <DepositTab
+                collaterals={collaterals}
+                selectedCollateral={selectedCollateral}
+                setSelectedCollateral={setSelectedCollateral}
+              />
             )}
           </div>
         </div>
