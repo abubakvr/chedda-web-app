@@ -27,7 +27,7 @@ interface SupplyModalProps {
   supplied: BigNumber | undefined;
   available: BigNumber | undefined;
   onClose: () => void;
-  fetchAccountInfo: (showLoading?: false) => void;
+  fetchAccountInfo: (showLoading?: boolean) => void;
 }
 
 const Tab: FC<{
@@ -74,13 +74,8 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   );
   const { fetchData: fetchTokenBalance } = useTokenBalance(asset.address);
   const { fetchData: fetchAvailable } = useAvailableLiquidity();
-  const {
-    isLoading,
-    transactionStatus,
-    approveAsset,
-    depositAsset,
-    withdrawAsset,
-  } = useTransaction(asset.address);
+  const { supplyTxStatus, approveAsset, depositAsset, withdrawAsset } =
+    useTransaction(asset.address);
 
   const parsedAllowance = parseFloat(
     parseBigNumberToFloat(allowance, asset.decimals)
@@ -117,25 +112,25 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   ]);
 
   useEffect(() => {
-    if (transactionStatus.isApproved) {
+    if (supplyTxStatus.isApproved) {
       setShowToast(true);
       fetchAllowance(false);
     }
 
-    if (transactionStatus.isDeposited) {
+    if (supplyTxStatus.isDeposited) {
       setSupplyAmount(0);
       setClearInputField(true);
       setOpenSuccessModal(true);
       fetchModalData();
     }
 
-    if (transactionStatus.isWithdrawn) {
+    if (supplyTxStatus.isWithdrawn) {
       setWithdrawAmount(0);
       setClearInputField(true);
       setShowToast(true);
       fetchModalData();
     }
-  }, [transactionStatus, asset.symbol, fetchAllowance, fetchModalData]);
+  }, [supplyTxStatus, asset.symbol, fetchAllowance, fetchModalData]);
 
   const handleDeposit = async (useAsCollateral: boolean) => {
     try {
@@ -282,7 +277,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                     />
                   }
                   buttonAction={handleDeposit}
-                  isTransactionLoading={isLoading}
+                  isTransactionLoading={supplyTxStatus.isLoading}
                   setAmount={setSupplyAmount}
                   amount={supplyAmount}
                 />
@@ -316,7 +311,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                   setClearInputField={setClearInputField}
                   clearInputField={clearInputField}
                   buttonAction={handleWithdraw}
-                  isTransactionLoading={isLoading}
+                  isTransactionLoading={supplyTxStatus.isLoading}
                   setAmount={setWithdrawAmount}
                   amount={withdrawAmount}
                 />

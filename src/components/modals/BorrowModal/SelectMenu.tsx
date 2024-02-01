@@ -41,10 +41,14 @@ export const SelectMenu = ({
   }, []);
 
   return (
-    <div className="relative select-menu-container">
+    <div
+      className="relative select-menu-container"
+      data-testid="select-menu-container"
+    >
       <button
         onClick={openSelectMenu}
         className="h-8 min-w-24 px-3 rounded text-xs gap-x-1 flex modal-button justify-between items-center hover:opacity-90 font-bold"
+        data-testid="select-menu-button"
       >
         <div>
           <Image
@@ -53,7 +57,10 @@ export const SelectMenu = ({
             alt="collateral image"
           />
         </div>
-        <div className="flex gap-1 mr-2 items-center font-bold">
+        <div
+          className="flex gap-1 mr-2 items-center font-bold"
+          data-testid="select-button-text"
+        >
           {selectedCollateral?.symbol}
         </div>
         <div>
@@ -65,7 +72,7 @@ export const SelectMenu = ({
         </div>
       </button>
       <div
-        id="mySelectMenu"
+        data-testid="select-menu"
         className={`p-2 transition-all absolute mt-1 w-32 right-0 bg-[#201D47] menu-ng text-white rounded-sm shadow-lg z-10 ${
           isOpenSelectMenu ? "" : "hidden"
         }`}
@@ -76,6 +83,7 @@ export const SelectMenu = ({
               key={c.symbol}
               className="py-2 px-2 flex items-center gap-x-2 rounded-sm text-sm hover:cursor-pointer hover:bg-[#4c37a740] transition-all last:border-none"
               onClick={() => handleCollateralSelect(c)}
+              data-testid={`collateral-item-${c.symbol}`}
             >
               <div>
                 <Image

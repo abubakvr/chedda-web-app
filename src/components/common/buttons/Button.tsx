@@ -10,6 +10,7 @@ interface ButtonProps {
   className?: string;
   size?: "small" | "large";
   isLoading?: boolean;
+  disabled?: boolean;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -19,6 +20,7 @@ export const Button: FC<ButtonProps> = ({
   className,
   size,
   isLoading,
+  disabled,
 }) => (
   <button
     data-testid="custom-button"
@@ -31,10 +33,12 @@ export const Button: FC<ButtonProps> = ({
     } w-full text-center ${
       size === "large" ? "h-[56px]" : size === "small" ? "h-11" : ""
     } items-center rounded-lg text-white text-opacity-100 ${
-      isLoading && "opacity-50 hover:opacity-50"
-    } uppercase font-bold text-xl hover:opacity-80 flex justify-center gap-x-3 `}
+      isLoading || disabled
+        ? "opacity-50 hover:opacity-50"
+        : "hover:opacity-80 "
+    } uppercase font-bold text-xl flex justify-center gap-x-3 `}
     onClick={onClick}
-    disabled={isLoading}
+    disabled={isLoading || disabled}
   >
     <div data-testid="loading-button-icon" role="status">
       {isLoading && <LoadingIcon />}

@@ -157,6 +157,17 @@ export const getTokenBalance: GetDataFunction<BigNumber> = async ({
   return await token.balanceOf(account);
 };
 
+export const getSelectTokenBalance: GetDataFunction<BigNumber> = async ({
+  chedda,
+  signer,
+  account,
+  asset,
+}) => {
+  if (!asset || !account) return null;
+  const token = chedda.erc20token(asset, signer as Signer);
+  return await token.balanceOf(account);
+};
+
 export const getAssetBalance: GetDataFunction<BigNumber> = async ({
   chedda,
   signer,
@@ -257,4 +268,8 @@ export const useAccountCollateral = (
 
 export const useAccountHealth = (): HookResult<BigNumber> => {
   return useFetcher<BigNumber>(getAccountHealth);
+};
+
+export const useSelectTokenBalance = (asset: string): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getSelectTokenBalance, asset);
 };

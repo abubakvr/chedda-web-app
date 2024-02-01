@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
 import { IAccountInfo } from "chedda-sdk";
-import { useTokenBalance, useTransaction } from "@/hooks";
+import { useTokenBalance } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
 import { BorrowModal, SupplyModal } from "@/components/modals";
 import { BigNumber } from "ethers";
+import { fetchData } from "@/redux/api/cheddaSlice";
 
 interface MyInformationCardProps {
   poolStats: IPoolStatsResponse | undefined;
@@ -15,7 +16,7 @@ interface MyInformationCardProps {
   available: BigNumber | undefined;
   isLoading: boolean;
   assetPrice: number;
-  fetchAccountInfo: (showLoading?: false) => void;
+  fetchAccountInfo: (showLoading?: boolean) => void;
 }
 
 export const MyInformationCard: React.FC<MyInformationCardProps> = ({
@@ -28,8 +29,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
 }) => {
   const [isSupplyModalOpen, setIsSupplyModalOpen] = useState(false);
   const [isBorrowModalOpen, setIsBorrowModalOpen] = useState(false);
-  const [collaterals, setCollateralBalance] = useState<IToken[]>([]);
-  const { data: tokenBalance } = useTokenBalance(
+  const { data: tokenBalance, fetchData: fetchTokenBalance } = useTokenBalance(
     poolStats?.asset.address ?? ""
   );
 
@@ -39,6 +39,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
 
   const closeBorrowModal = () => {
     setIsBorrowModalOpen(false);
+    fetchTokenBalance(false);
   };
 
   if (isLoading || !poolStats) {

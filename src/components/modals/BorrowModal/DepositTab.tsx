@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AmountField, Button } from "@/components/common";
 import {
   formatLargeNumber,
@@ -8,45 +8,55 @@ import {
 import { DepositTabInfo } from "./TabInfo";
 import { SelectMenu } from "./SelectMenu";
 import { IToken } from "@/utils/types";
-import {
-  useAllowance,
-  useTransaction,
-  useTokenValue,
-  useAccountCollateral,
-  useAccountHealth,
-  useTokenBalance,
-} from "@/hooks";
-import { ethers } from "ethers";
+import { useTransaction } from "@/hooks";
+import { BigNumber, ethers } from "ethers";
+import { Toast } from "@/components/ui";
+import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
 
 interface DepositTabProps {
   setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
+  fetchAllowance: (showLoading?: boolean) => void;
+  refreshModal: () => void;
   selectedCollateral: IToken;
   collaterals: IToken[];
+  isLoading: Record<string, boolean>;
+  allowance: BigNumber | undefined;
+  accountCollateral: Record<string, BigNumber> | undefined;
+  tokenBalance: BigNumber | undefined;
+  healthFactor: BigNumber | undefined;
+  assetPrice: string | undefined;
 }
 
 export const DepositTab = ({
-  setSelectedCollateral,
   selectedCollateral,
   collaterals,
+  isLoading,
+  allowance,
+  accountCollateral,
+  tokenBalance,
+  healthFactor,
+  assetPrice,
+  setSelectedCollateral,
+  fetchAllowance,
+  refreshModal,
 }: DepositTabProps) => {
   const [clearInputField, setClearInputField] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
   const [amount, setAmount] = useState(0);
   const { address: tokenAddress, decimals, symbol } = selectedCollateral;
-  const { data: allowance, fetchData: fetchAllowance } =
-    useAllowance(tokenAddress);
-  const { data: accountCollateral, fetchData: fetchAccountCollateral } =
-    useAccountCollateral(tokenAddress);
-  const { data: tokenBalance, fetchData: fetchTokenBalance } =
-    useTokenBalance(tokenAddress);
-  const { data: healthFactor, fetchData: fetchHealthFactor } =
-    useAccountHealth();
-  const { isLoading, depositCollateral, approveAsset } =
+  const {
+    allowanceLoading,
+    accountCollateralLoading,
+    tokenBalanceLoading,
+    healthFactorLoading,
+  } = isLoading;
+  const { borrowTxStatus, depositCollateral, approveAsset } =
     useTransaction(tokenAddress);
-  const { data: assetPrice } = useTokenValue(tokenAddress);
+
   const parsedAllowance = parseFloat(
     parseBigNumberToFloat(allowance, decimals)
   );
-
   const parsedAssetBalance = parseBigNumberToFloat(tokenBalance, decimals);
   const parsedAccountCollateral = parseFloat(
     parseBigNumberToFloat(accountCollateral?.accountCollateralAmount, decimals)
@@ -57,7 +67,7 @@ export const DepositTab = ({
   const parsedHealthFactor = parseFloat(parseBigNumberToFloat(healthFactor));
   const buttonTitle = parsedAllowance < amount ? "Approve" : "Deposit";
   const projectedHealthFactor =
-    parsedAccountCollateralValue / (amount * Number(assetPrice));
+    parsedAccountCollateralValue / (amount * Number(assetPrice || 0));
 
   const handleDepositCollateral = async () => {
     try {
@@ -66,80 +76,114 @@ export const DepositTab = ({
       }
 
       const parsedAmount = ethers.utils.parseUnits(amount.toString(), decimals);
+
       if (amount <= parsedAllowance) {
-        depositCollateral(tokenAddress, parsedAmount).then((res) => {
-          if (res) {
-            console.log("Deposited");
-            fetchAllowance();
-            fetchAccountCollateral();
-            fetchHealthFactor();
-            fetchTokenBalance();
-          }
-        });
+        await depositCollateral(parsedAmount);
+        const txMessage = `You've successfully deposited ${formatNumber(
+          amount
+        )} ${symbol}`;
+        setToastMessage(txMessage);
       } else {
-        approveAsset(parsedAmount).then((res) => {
-          if (res) {
-            console.log("Approved");
-            fetchAllowance();
-          }
-        });
+        await approveAsset(parsedAmount);
+        const txMessage = `You've successfully approved ${formatNumber(
+          amount
+        )} ${symbol}`;
+        setToastMessage(txMessage);
       }
     } catch (error: any) {
-      throw Error("Error in depositing asset");
+      throw Error("Error in depositing asset:" + error.message);
     }
   };
 
+  useEffect(() => {
+    if (borrowTxStatus.isApproved) {
+      setShowToast(true);
+      fetchAllowance(false);
+    }
+
+    if (borrowTxStatus.isCollateralDeposited) {
+      setAmount(0);
+      setClearInputField(true);
+      setShowToast(true);
+      refreshModal();
+    }
+  }, [
+    borrowTxStatus.isApproved,
+    borrowTxStatus.isCollateralDeposited,
+    fetchAllowance,
+    refreshModal,
+  ]);
+
   return (
-    <div data-testid="deposit-tab-content" className="mt-6">
-      <div className="text-xl font-bold flex justify-between">
-        <div>Deposit your Collateral</div>
-        <SelectMenu
-          setSelectedCollateral={setSelectedCollateral}
-          selectedCollateral={selectedCollateral}
-          collaterals={collaterals}
-        />
-      </div>
-      <div className="flex justify-between mt-6 items-center text-xs">
-        <div data-testid="amount-label" className="text-[#DEDEDE]">
-          Enter amount to Deposit
-        </div>
-        <div data-testid="max-amount" className="font-bold">
-          Max: {`${formatLargeNumber(parsedAssetBalance)} ${symbol}`}
-        </div>
-      </div>
-      <AmountField
-        onChange={(value) => {
-          setAmount(parseFloat(value));
-        }}
-        clearInputField={clearInputField}
-        setClearInputField={setClearInputField}
-        maxValue={parsedAssetBalance}
-        assetPrice={Number(assetPrice) || 0}
+    <>
+      <Toast
+        isOpen={showToast}
+        onClose={() => setShowToast(false)}
+        toastMessage={toastMessage}
+        duration={10000}
       />
-      <Button
-        type="primary"
-        onClick={handleDepositCollateral}
-        className="mt-6 h-7"
-        size="large"
-        isLoading={isLoading}
-      >
-        {buttonTitle} {symbol}
-      </Button>
-      <div data-testid="modal-info" className="mt-6 pb-0">
-        <DepositTabInfo
-          symbol={symbol}
-          collateral={`${formatNumber(parsedAccountCollateral)} ${symbol}`}
-          projectedCollateral={`${formatNumber(
-            parsedAccountCollateral + (amount || 0)
-          )} ${symbol}`}
-          collateralValue={`$${formatNumber(parsedAccountCollateralValue)} `}
-          projectedCollateralValue={`$${formatNumber(
-            parsedAccountCollateralValue + (amount || 0)
-          )} `}
-          healthFactor={`${formatNumber(parsedHealthFactor)}`}
-          projectedHealthFactor={projectedHealthFactor || parsedHealthFactor}
+      <div data-testid="deposit-tab-content" className="mt-6">
+        <div className="text-xl font-bold flex justify-between">
+          <div>Deposit your Collateral</div>
+          <SelectMenu
+            setSelectedCollateral={setSelectedCollateral}
+            selectedCollateral={selectedCollateral}
+            collaterals={collaterals}
+          />
+        </div>
+        <div className="flex justify-between mt-6 items-center text-xs">
+          <div data-testid="amount-label" className="text-[#DEDEDE]">
+            Enter amount to Deposit
+          </div>
+          <div
+            data-testid="max-amount"
+            className="font-bold flex items-center gap-x-1"
+          >
+            <RefreshSpinner isOpen={tokenBalanceLoading} />
+            <div data-testid="max-amount">
+              Max:{" "}
+              {tokenBalanceLoading
+                ? "_"
+                : `${formatLargeNumber(parsedAssetBalance)} ${symbol}`}
+            </div>
+          </div>
+        </div>
+        <AmountField
+          onChange={(value) => {
+            setAmount(parseFloat(value));
+          }}
+          clearInputField={clearInputField}
+          setClearInputField={setClearInputField}
+          maxValue={parsedAssetBalance}
+          assetPrice={Number(assetPrice) || 0}
         />
+        <Button
+          type="primary"
+          onClick={handleDepositCollateral}
+          className="mt-6 h-7"
+          size="large"
+          isLoading={borrowTxStatus.isLoading}
+          disabled={accountCollateralLoading || allowanceLoading}
+        >
+          {buttonTitle} {symbol}
+        </Button>
+        <div data-testid="modal-info" className="mt-6 pb-0">
+          <DepositTabInfo
+            isLoading={accountCollateralLoading || healthFactorLoading}
+            symbol={symbol}
+            collateral={`${formatNumber(parsedAccountCollateral)} ${symbol}`}
+            projectedCollateral={`${formatNumber(
+              parsedAccountCollateral + (amount || 0)
+            )} ${symbol}`}
+            collateralValue={`$${formatNumber(parsedAccountCollateralValue)} `}
+            projectedCollateralValue={`$${formatNumber(
+              parsedAccountCollateralValue + (amount * Number(assetPrice) || 0)
+            )} `}
+            healthFactor={`${formatNumber(parsedHealthFactor)}`}
+            projectedHealthFactor={projectedHealthFactor || parsedHealthFactor}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };

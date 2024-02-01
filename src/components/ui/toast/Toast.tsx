@@ -3,14 +3,14 @@ import React, { useEffect, useState } from "react";
 interface ToastProps {
   isOpen: boolean;
   onClose: () => void;
-  duration?: number;
+  duration: number;
   toastMessage: string;
 }
 
 export const Toast: React.FC<ToastProps> = ({
   isOpen,
   onClose,
-  duration = 5000,
+  duration,
   toastMessage,
 }) => {
   const [sliderWidth, setSliderWidth] = useState(0);

@@ -1,11 +1,16 @@
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { BigNumber } from "ethers";
 import { IToken } from "@/utils/types";
-import { SuccessModal } from "@/components/modals";
-import { Toast } from "@/components/ui";
 import { DepositTab } from "./DepositTab";
+import {
+  useAccountCollateral,
+  useAccountHealth,
+  useAllowance,
+  useSelectTokenBalance,
+  useTokenValue,
+} from "@/hooks";
 
-interface BorrowModalProps {
+export interface BorrowModalProps {
   collaterals: IToken[];
   asset: IToken;
   assetPrice: number;
@@ -15,7 +20,7 @@ interface BorrowModalProps {
   supplied: BigNumber | undefined;
   available: BigNumber | undefined;
   onClose: () => void;
-  fetchAccountInfo: () => void;
+  fetchAccountInfo: (showLoading?: boolean) => void;
 }
 
 const Tab: FC<{
@@ -39,39 +44,62 @@ export const BorrowModal: FC<BorrowModalProps> = ({
   isOpen,
   onClose,
   collaterals,
+  fetchAccountInfo,
 }) => {
   const [activeTab, setActiveTab] = useState("Deposit");
-  const [openSuccessModal, setOpenSuccessModal] = useState(false);
-  const [showToast, setShowToast] = useState(false);
   const [selectedCollateral, setSelectedCollateral] = useState<IToken>(
     collaterals[0]
   );
+  const tokenAddress = selectedCollateral.address;
+  const {
+    isLoading: allowanceLoading,
+    data: allowance,
+    fetchData: fetchAllowance,
+  } = useAllowance(tokenAddress);
+  const {
+    isLoading: accountCollateralLoading,
+    data: accountCollateral,
+    fetchData: fetchAccountCollateral,
+  } = useAccountCollateral(tokenAddress);
+  const {
+    isLoading: tokenBalanceLoading,
+    data: tokenBalance,
+    fetchData: fetchTokenBalance,
+  } = useSelectTokenBalance(tokenAddress);
+  const {
+    isLoading: healthFactorLoading,
+    data: healthFactor,
+    fetchData: fetchHealthFactor,
+  } = useAccountHealth();
+  const { data: assetPrice } = useTokenValue(tokenAddress);
 
-  const closeSuccessModal = () => {
-    setOpenSuccessModal(false);
-    onClose();
+  const isLoading = {
+    allowanceLoading,
+    accountCollateralLoading,
+    tokenBalanceLoading,
+    healthFactorLoading,
   };
+
+  const refreshModal = useCallback(() => {
+    fetchAllowance(false);
+    fetchAccountCollateral(false);
+    fetchHealthFactor(false);
+    fetchTokenBalance(false);
+    fetchAccountInfo(false);
+  }, [
+    fetchAllowance,
+    fetchAccountCollateral,
+    fetchHealthFactor,
+    fetchTokenBalance,
+    fetchAccountInfo,
+  ]);
 
   return (
     <>
-      {openSuccessModal && (
-        <SuccessModal
-          onClose={closeSuccessModal}
-          isOpen={openSuccessModal}
-          modalMessage={""}
-          continueAction={() => setOpenSuccessModal(false)}
-        />
-      )}
-      <Toast
-        isOpen={showToast}
-        onClose={() => setShowToast(false)}
-        toastMessage={""}
-        duration={10000}
-      />
       <div
         data-testid="modal-container"
         className={`fixed inset-0 ${
-          isOpen && !openSuccessModal ? "block" : "hidden"
+          isOpen ? "block overflow-hidden" : "hidden"
         } bg-[#00000024] bg-opacity-75 overflow-y-auto backdrop-filter backdrop-blur-sm z-20`}
       >
         <div className="flex items-center justify-center min-h-screen">
@@ -101,11 +129,11 @@ export const BorrowModal: FC<BorrowModalProps> = ({
               />
               <Tab
                 label="Borrow"
-                isActive={activeTab === "Withdraw"}
+                isActive={activeTab === "Borrow"}
                 onClick={() => {
-                  setActiveTab("Withdraw");
+                  setActiveTab("Borrow");
                 }}
-                testId="withdraw-tab"
+                testId="borrow-tab"
               />
               <Tab
                 label="Withdraw"
@@ -117,11 +145,11 @@ export const BorrowModal: FC<BorrowModalProps> = ({
               />
               <Tab
                 label="Repay"
-                isActive={activeTab === "Withdraw"}
+                isActive={activeTab === "Repay"}
                 onClick={() => {
-                  setActiveTab("Withdraw");
+                  setActiveTab("Repay");
                 }}
-                testId="withdraw-tab"
+                testId="repay-tab"
               />
             </div>
             {activeTab === "Deposit" && (
@@ -129,6 +157,14 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 collaterals={collaterals}
                 selectedCollateral={selectedCollateral}
                 setSelectedCollateral={setSelectedCollateral}
+                isLoading={isLoading}
+                allowance={allowance}
+                accountCollateral={accountCollateral}
+                tokenBalance={tokenBalance}
+                healthFactor={healthFactor}
+                assetPrice={assetPrice}
+                refreshModal={refreshModal}
+                fetchAllowance={fetchAllowance}
               />
             )}
           </div>
