@@ -123,13 +123,18 @@ export const DepositTab = ({
         duration={10000}
       />
       <div data-testid="deposit-tab-content" className="mt-6">
-        <div className="text-xl font-bold flex justify-between">
+        <div className="text-xl font-bold flex justify-between items-center">
           <div>Deposit your Collateral</div>
-          <SelectMenu
-            setSelectedCollateral={setSelectedCollateral}
-            selectedCollateral={selectedCollateral}
-            collaterals={collaterals}
-          />
+          <div>
+            <div className="text-[10px] text-[#FFFFFF50] flex justify-end">
+              Select asset
+            </div>
+            <SelectMenu
+              setSelectedCollateral={setSelectedCollateral}
+              selectedCollateral={selectedCollateral}
+              collaterals={collaterals}
+            />
+          </div>
         </div>
         <div className="flex justify-between mt-6 items-center text-xs">
           <div data-testid="amount-label" className="text-[#DEDEDE]">
