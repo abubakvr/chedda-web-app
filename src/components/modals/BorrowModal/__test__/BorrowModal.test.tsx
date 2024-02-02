@@ -28,14 +28,6 @@ const mockProps: BorrowModalProps = {
       color: "#ffffff",
     },
   ],
-  asset: {
-    name: "Ethereum",
-    symbol: "ETH",
-    address: "0xfed321",
-    logo: {} as StaticImageData,
-    decimals: 18,
-    color: "#ffffff",
-  },
   fetchAccountInfo: jest.fn(),
 };
 

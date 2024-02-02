@@ -172,12 +172,6 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           collaterals={poolStats.collaterals}
           isOpen={isBorrowModalOpen}
           onClose={closeBorrowModal}
-          asset={poolStats?.asset}
-          assetPrice={assetPrice}
-          supplied={accountInfo?.supplied}
-          available={available}
-          tokenBalance={tokenBalance}
-          baseSupplyAPY={poolStats.baseBorrowAPY}
           fetchAccountInfo={fetchAccountInfo}
         />
       )}

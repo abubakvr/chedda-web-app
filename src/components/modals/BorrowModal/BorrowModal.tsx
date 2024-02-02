@@ -2,6 +2,7 @@ import React, { FC, useCallback, useEffect, useState } from "react";
 import { BigNumber } from "ethers";
 import { IToken } from "@/utils/types";
 import { DepositTab } from "./DepositTab";
+import { WithdrawTab } from "./WithdrawTab";
 import {
   useAccountCollateral,
   useAccountHealth,
@@ -12,13 +13,7 @@ import {
 
 export interface BorrowModalProps {
   collaterals: IToken[];
-  asset: IToken;
-  assetPrice: number;
   isOpen: boolean;
-  tokenBalance: BigNumber | undefined;
-  baseSupplyAPY: string | number;
-  supplied: BigNumber | undefined;
-  available: BigNumber | undefined;
   onClose: () => void;
   fetchAccountInfo: (showLoading?: boolean) => void;
 }
@@ -124,6 +119,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 isActive={activeTab === "Deposit"}
                 onClick={() => {
                   setActiveTab("Deposit");
+                  setSelectedCollateral(collaterals[0]);
                 }}
                 testId="deposit-tab"
               />
@@ -140,6 +136,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 isActive={activeTab === "Withdraw"}
                 onClick={() => {
                   setActiveTab("Withdraw");
+                  setSelectedCollateral(collaterals[0]);
                 }}
                 testId="withdraw-tab"
               />
@@ -161,6 +158,19 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 allowance={allowance}
                 accountCollateral={accountCollateral}
                 tokenBalance={tokenBalance}
+                healthFactor={healthFactor}
+                assetPrice={assetPrice}
+                refreshModal={refreshModal}
+                fetchAllowance={fetchAllowance}
+              />
+            )}
+            {activeTab === "Withdraw" && (
+              <WithdrawTab
+                collaterals={collaterals}
+                selectedCollateral={selectedCollateral}
+                setSelectedCollateral={setSelectedCollateral}
+                isLoading={isLoading}
+                accountCollateral={accountCollateral}
                 healthFactor={healthFactor}
                 assetPrice={assetPrice}
                 refreshModal={refreshModal}
