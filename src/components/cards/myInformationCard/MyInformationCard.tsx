@@ -160,7 +160,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           supplied={accountInfo?.supplied}
           available={available}
           tokenBalance={tokenBalance}
-          baseSupplyAPY={poolStats.baseBorrowAPY}
+          baseSupplyAPY={poolStats.baseSupplyAPY}
           fetchAccountInfo={fetchAccountInfo}
         />
       )}
