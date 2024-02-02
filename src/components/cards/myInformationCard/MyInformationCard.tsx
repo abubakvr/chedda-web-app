@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
 import { IAccountInfo } from "chedda-sdk";
@@ -6,23 +6,38 @@ import { useTokenBalance } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
+import { SupplyModal } from "@/components/modals";
+import { BigNumber } from "ethers";
 
 interface MyInformationCardProps {
   poolStats: IPoolStatsResponse | undefined;
   accountInfo: IAccountInfo | undefined;
+  available: BigNumber | undefined;
   isLoading: boolean;
-  onSupplyClick: () => void;
-  onBorrowClick: () => void;
+  assetPrice: number;
+  fetchAccountInfo: (showLoading?: false) => void;
 }
 
 export const MyInformationCard: React.FC<MyInformationCardProps> = ({
   poolStats,
   accountInfo,
   isLoading,
-  onSupplyClick,
-  onBorrowClick,
+  assetPrice,
+  available,
+  fetchAccountInfo,
 }) => {
-  const { tokenBalance } = useTokenBalance(poolStats?.asset.address ?? "");
+  const { data: tokenBalance } = useTokenBalance(
+    poolStats?.asset.address ?? ""
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   if (isLoading || !poolStats) {
     // Render loading placeholder if poolStats is undefined
@@ -76,8 +91,8 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           </div>
         </div>
         <button
-          className="secondary-button manage-gradient-text flex gap-x-1 h-10 items-center text-white text-opacity-100-2 uppercase font-bold text-xs py-[5px] px-4  hover:opacity-80"
-          onClick={onSupplyClick}
+          className="secondary-button manage-gradient-text flex gap-x-1 h-10 items-center text-white text-opacity-100-2 uppercase font-bold text-xs py-[5px] px-4 hover:opacity-80"
+          onClick={() => {}}
         >
           Manage Collateral
         </button>
@@ -125,17 +140,30 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
       <div className="flex flex-col justify-center p-8 space-y-5">
         <button
           className="primary-button text-center h-11 items-center rounded-lg text-white text-opacity-100-2 uppercase font-bold text-lg hover:opacity-80"
-          onClick={onSupplyClick}
+          onClick={openModal}
         >
           Supply
         </button>
         <button
           className="secondary-button button-gradient-text text-center h-11 items-center text-white text-opacity-100-2 uppercase font-bold text-lg hover:opacity-80"
-          onClick={onBorrowClick}
+          onClick={() => {}}
         >
           Borrow
         </button>
       </div>
+      {isModalOpen && (
+        <SupplyModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          asset={poolStats?.asset}
+          assetPrice={assetPrice}
+          supplied={accountInfo?.supplied}
+          available={available}
+          tokenBalance={tokenBalance}
+          baseSupplyAPY={poolStats.baseSupplyAPY}
+          fetchAccountInfo={fetchAccountInfo}
+        />
+      )}
     </div>
   );
 };

@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import { MarketInfoCard, SummaryCard } from "@/components/cards";
-import { useParams } from "next/navigation";
 import {
+  calculateAssetPrice,
   formatCollateralInfo,
   getPoolSummaryData,
 } from "@/utils/formatResponse";
@@ -19,18 +19,18 @@ import { MyInformationCard, CollateralInfoCard } from "@/components/cards";
 import { InterestRatesChart, SuppyAndBorrowChart } from "@/components/charts";
 
 const Page = () => {
-  const { poolId } = useParams();
   const { currentEnvironment } = useEnvironment();
-  const strPoolId = poolId.toString();
-  const { data: poolStats, isLoading } = usePoolStats(strPoolId);
-  const { data: accountInfo, isLoading: accountInfoLoading } =
-    useAccountInfo(strPoolId);
-  const { data: marketInfo, isLoading: marketInfoLoading } =
-    useMarketInfo(strPoolId);
+  const { data: poolStats, isLoading } = usePoolStats();
+  const {
+    data: accountInfo,
+    fetchData: fetchAccountInfo,
+    isLoading: accountInfoLoading,
+  } = useAccountInfo();
+  const { data: marketInfo, isLoading: marketInfoLoading } = useMarketInfo();
   const { data: collateralData, isLoading: collateralInfoLoading } =
-    useCollateralInfo(strPoolId);
+    useCollateralInfo();
   const { data: available, isLoading: availableLoading } =
-    useAvailableLiquidity(strPoolId);
+    useAvailableLiquidity();
 
   const collateralInfo = formatCollateralInfo(
     collateralData,
@@ -39,6 +39,7 @@ const Page = () => {
   );
 
   const poolSummary = getPoolSummaryData(poolStats);
+  const assetPrice = calculateAssetPrice(marketInfo);
 
   return (
     <div
@@ -56,7 +57,7 @@ const Page = () => {
         <div className="w-[67%] h-fit flex flex-col gap-y-6">
           <div className="pool-card rounded-lg">
             <CollateralInfoCard
-              collateralInfo={collateralInfo ?? []}
+              collateralInfo={collateralInfo}
               accountInfo={accountInfo}
               marketInfo={marketInfo}
               isLoading={
@@ -65,14 +66,10 @@ const Page = () => {
             />
           </div>
           <div className="pool-card rounded-lg">
-            <SuppyAndBorrowChart
-              collateralInfo={collateralInfo ?? []}
-              poolId={strPoolId}
-              decimals={poolStats?.asset.decimals}
-            />
+            <SuppyAndBorrowChart decimals={poolStats?.asset.decimals} />
           </div>
           <div className="pool-card rounded-lg">
-            <InterestRatesChart poolId={strPoolId} />
+            <InterestRatesChart />
           </div>
         </div>
         <div className="w-[33%] text-white flex flex-col gap-y-6">
@@ -80,9 +77,10 @@ const Page = () => {
             <MyInformationCard
               poolStats={poolStats}
               accountInfo={accountInfo}
+              assetPrice={assetPrice}
               isLoading={accountInfoLoading}
-              onBorrowClick={() => {}}
-              onSupplyClick={() => {}}
+              available={available}
+              fetchAccountInfo={fetchAccountInfo}
             />
           </div>
           <div className="pool-card rounded-lg">

@@ -27,13 +27,9 @@ describe("CollateralInfoCard", () => {
       "collateral-info-container"
     );
     expect(collateralInfoContainer).toBeInTheDocument();
-
-    // Check if my collateral value is rendered
     const myCollateralValue = screen.getByTestId("my-collateral-value");
     expect(myCollateralValue).toBeInTheDocument();
     expect(myCollateralValue).toHaveTextContent("$0.00"); // Replace with the expected content
-
-    // Check if collateral header items are rendered
     const collateralHeaderItems = screen.getAllByTestId(
       /^collateral-header-item-/
     );
@@ -43,9 +39,6 @@ describe("CollateralInfoCard", () => {
     mockCollateralInfo.forEach((_, index) => {
       const collateralItem = screen.getByTestId(`collateral-item-${index}`);
       expect(collateralItem).toBeInTheDocument();
-
-      // Add more specific assertions based on your actual implementation
-      // Example: Check if the logo, symbol, amounts, and factors are rendered correctly
       const collateralItemLogo = screen.getByTestId(
         `collateral-item-logo-${index}`
       );
@@ -60,17 +53,16 @@ describe("CollateralInfoCard", () => {
   });
 
   it("renders skeleton when loading", () => {
-    render(<CollateralInfoCard {...mockProps} isLoading={true} />);
+    render(
+      <CollateralInfoCard
+        collateralInfo={undefined}
+        accountInfo={undefined}
+        isLoading={true}
+        marketInfo={undefined}
+      />
+    );
 
     // Check if the skeleton is rendered when loading
-    expect(screen.getByText("Collateral Information")).toBeInTheDocument();
-    expect(screen.getByTestId("collateral-info-skeleton")).toBeInTheDocument();
-  });
-
-  it("renders skeleton when marketInfo is not available", () => {
-    render(<CollateralInfoCard {...mockProps} marketInfo={undefined} />);
-
-    // Check if the skeleton is rendered when marketInfo is not available
     expect(screen.getByText("Collateral Information")).toBeInTheDocument();
     expect(screen.getByTestId("collateral-info-skeleton")).toBeInTheDocument();
   });

@@ -1,6 +1,7 @@
 import {
   IAccountCollateralDeposited,
   IAggregateStats,
+  IMarketInfo,
   IPoolStats,
 } from "chedda-sdk";
 import {
@@ -179,4 +180,22 @@ export const formatCollateralInfo = (
   });
 
   return data;
+};
+
+export const calculateAssetPrice = (
+  marketInfo: IMarketInfo | undefined
+): number => {
+  const oraclePriceDecimals = parseBigNumberToFloat(
+    marketInfo?.oraclePriceDecimals,
+    0,
+    5
+  );
+
+  const oraclePrice = parseBigNumberToFloat(
+    marketInfo?.oraclePrice,
+    parseFloat(oraclePriceDecimals),
+    2
+  );
+
+  return parseFloat(oraclePrice);
 };

@@ -1,12 +1,13 @@
 // MyInformationCard.test.tsx
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { MyInformationCard } from "../MyInformationCard";
 import { mockAccountInfo, mockPoolStats } from "@/utils/Mocks/MockTestData";
 import { useTokenBalance } from "@/hooks";
+import { ethers } from "ethers";
 
 jest.mock("ethers");
-jest.mock("../../../../hooks/useTokenBalance");
+jest.mock("../../../../hooks");
 
 const mockSupplyClick = jest.fn();
 const mockBorrowClick = jest.fn();
@@ -23,8 +24,9 @@ describe("MyInformationCard", () => {
         accountInfo={mockAccountInfo}
         poolStats={mockPoolStats[0]}
         isLoading={false}
-        onSupplyClick={mockSupplyClick}
-        onBorrowClick={mockBorrowClick}
+        assetPrice={1000}
+        available={ethers.BigNumber.from("1000")}
+        fetchAccountInfo={jest.fn()}
       />
     );
 
@@ -33,31 +35,6 @@ describe("MyInformationCard", () => {
     expect(screen.getByText("Vault Contract")).toBeInTheDocument();
     expect(screen.getAllByTestId("collateral-logo")).toHaveLength(2);
     expect(screen.getByTestId("collaterals-list")).toBeInTheDocument();
-  });
-
-  it("calls onSupplyClick and onBorrowClick when corresponding buttons are clicked", () => {
-    (useTokenBalance as jest.Mock).mockImplementation(() => ({
-      fetchTokenBalance: jest.fn(),
-      tokenBalance: "1000",
-    }));
-
-    render(
-      <MyInformationCard
-        accountInfo={mockAccountInfo}
-        isLoading={false}
-        poolStats={mockPoolStats[0]}
-        onSupplyClick={mockSupplyClick}
-        onBorrowClick={mockBorrowClick}
-      />
-    );
-
-    // Simulate button clicks
-    fireEvent.click(screen.getByText("Supply"));
-    fireEvent.click(screen.getByText("Borrow"));
-
-    // Verify that the corresponding functions were called
-    expect(mockSupplyClick).toHaveBeenCalledTimes(1);
-    expect(mockBorrowClick).toHaveBeenCalledTimes(1);
   });
 
   it("renders MyInformationCard component in loading state correctly", () => {
@@ -71,8 +48,9 @@ describe("MyInformationCard", () => {
         accountInfo={undefined}
         poolStats={undefined}
         isLoading={true}
-        onSupplyClick={mockSupplyClick}
-        onBorrowClick={mockBorrowClick}
+        assetPrice={0}
+        available={undefined}
+        fetchAccountInfo={jest.fn()}
       />
     );
 

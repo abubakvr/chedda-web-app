@@ -28,8 +28,8 @@ import { BigNumber } from "ethers";
 jest.mock("ethers");
 jest.mock("chart.js");
 jest.mock("../../../../hooks/useContracts");
-jest.mock("../../../../hooks/useTokenBalance");
 jest.mock("../../../../hooks/useEnvironment");
+jest.mock("../../../../hooks");
 
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),
@@ -39,6 +39,7 @@ jest.mock("next/navigation", () => ({
 jest.mock("../../../../utils/formatResponse", () => ({
   getPoolSummaryData: jest.fn(),
   formatCollateralInfo: jest.fn(),
+  calculateAssetPrice: jest.fn(),
 }));
 
 const mockUseEnvironment = useEnvironment as jest.MockedFunction<
@@ -75,8 +76,8 @@ describe("Pool details component", () => {
       { title: "Mock Title", value: "Mock Value" },
     ]);
     (useTokenBalance as jest.Mock).mockImplementation(() => ({
-      fetchTokenBalance: jest.fn(),
-      tokenBalance: "1000",
+      data: "1000",
+      isLoading: false,
     }));
     (useMarketInfo as jest.Mock).mockImplementation(() => ({
       data: mockMarketInfo,
@@ -91,8 +92,8 @@ describe("Pool details component", () => {
       isLoading: false,
     }));
     (useAvailableLiquidity as jest.Mock).mockReturnValue({
-      isLoading: false,
       data: BigNumber.from("1000"),
+      isLoading: false,
     });
 
     render(<Page />);
@@ -117,8 +118,8 @@ describe("Pool details component", () => {
       isLoading: true,
     });
     (useTokenBalance as jest.Mock).mockImplementation(() => ({
-      fetchTokenBalance: jest.fn(),
-      tokenBalance: "1000",
+      data: null,
+      isLoading: true,
     }));
     (useMarketInfo as jest.Mock).mockImplementation(() => ({
       data: null,

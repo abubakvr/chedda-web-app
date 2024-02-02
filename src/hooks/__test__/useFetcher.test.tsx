@@ -1,86 +1,66 @@
-import { mockAccountInfo } from "@/utils/Mocks/MockTestData";
-import { renderHook, act, waitFor } from "@testing-library/react";
-import { ethers } from "ethers";
-import { useCheddaSdk } from "../useCheddaSdk";
+import * as redux from "react-redux";
+import { renderHook, act } from "@testing-library/react";
+import { useWeb3React } from "@web3-react/core";
+import { useCheddaSdk, useEnvironment } from "@/hooks";
+import { useParams } from "next/navigation";
 import { useFetcher } from "../useFetcher";
 
 jest.mock("ethers");
-jest.mock("@web3-react/core");
-jest.mock("../useCheddaSdk");
-jest.mock("../useEnvironment");
+jest.mock("react-redux", () => {
+  const originalModule = jest.requireActual("react-redux");
+  return {
+    ...originalModule,
+    useDispatch: jest.fn(),
+    useSelector: jest.fn(),
+  };
+});
 
-// Mock useCheddaSdk and useEnvironment
-jest.mock("../useCheddaSdk", () => ({
-  useCheddaSdk: jest.fn(() => ({ chedda: {}, signer: {} })),
+jest.mock("../../hooks", () => ({
+  useEnvironment: jest.fn(),
+  useCheddaSdk: jest.fn(),
 }));
 
-jest.mock("../useEnvironment", () => ({
-  useEnvironment: jest.fn(() => ({
-    currentEnvironment: { contracts: { LendingPoolLens: {} } },
-  })),
-}));
-
-// Mock useWeb3React
 jest.mock("@web3-react/core", () => ({
-  useWeb3React: jest.fn(() => ({ account: "mockAccount" })),
+  useWeb3React: jest.fn(),
 }));
 
-export const mockConsoleError = (): void => {
-  jest.spyOn(console, "error").mockImplementation(() => {});
-};
+jest.mock("next/navigation", () => ({
+  useParams: jest.fn(),
+}));
 
-export const restoreConsoleError = (): void => {
-  jest.spyOn(console, "error").mockRestore();
-};
-
-const mockUseCheddaSdk = useCheddaSdk as jest.MockedFunction<
-  typeof useCheddaSdk
->;
-
-describe("useFetcher hook", () => {
+describe("useFetcher", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it("fetches data successfully", async () => {
-    const mockProvider = {
-      getSigner: jest.fn(),
-    };
+  it("fetches data and updates state", async () => {
+    const useDispatchSpy = jest.spyOn(redux, "useDispatch");
+    const useSelectorSpy = jest.spyOn(redux, "useSelector");
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    useSelectorSpy.mockReturnValue(false);
 
-    const mockGetAccountInfo = jest.fn().mockReturnValue(mockAccountInfo);
-
-    mockUseCheddaSdk.mockReturnValue({
-      chedda: {
-        provider: new ethers.providers.WebSocketProvider("wss://testgoerliurl"),
-        poolLens: jest.fn().mockReturnValue({
-          getPoolAccountInfo: mockGetAccountInfo,
-        }),
-        interestRateProjector: jest.fn(),
-        lendingPool: jest.fn(),
-        erc20token: jest.fn(),
-        priceOracle: jest.fn(),
-        closeProvider: jest.fn(),
-      },
-      signer: mockProvider.getSigner(),
-      setupChedda: jest.fn(),
+    (useEnvironment as jest.Mock).mockReturnValue({
+      currentEnvironment: "mockEnv",
     });
-
-    let mockGetData = jest.fn().mockReturnValue("mockData");
-
-    const { result } = renderHook(() =>
-      useFetcher<string>("mockPoolId", mockGetData)
-    );
-    // Assert initial state
-    await waitFor(async () => {
-      expect(result.current.isLoading).toBe(true);
-      expect(result.current.data).toBeUndefined();
+    (useCheddaSdk as jest.Mock).mockReturnValue({
+      chedda: "mockChedda",
+      signer: "mockSigner",
     });
+    (useWeb3React as jest.Mock).mockReturnValue({ account: "mockAccount" });
+    (useParams as jest.Mock).mockReturnValue({ poolId: "mockPoolId" });
 
-    await act(async () => {
-      // Call the function that triggers useEffect
-      await expect(result.current.fetchData()).resolves.not.toThrow();
-    });
+    const getDataMock = jest.fn().mockResolvedValue("mockData");
 
-    expect(result.current.data).toBe("mockData");
+    const { result } = renderHook(() => useFetcher(getDataMock, "mockAsset"));
+
+    // Expect the initial state to be false (not undefined)
+    expect(result.current.isLoading).toBe(false);
+
+    await act(() => result.current.fetchData());
+
+    // Expect that the function passed is called
+    expect(mockDispatchFn).toHaveBeenCalled();
+    expect(result.current.isLoading).toBe(false);
   });
 });

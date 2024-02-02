@@ -82,15 +82,8 @@ const CustomTooltip: React.FC<CustomTooltipProps<Payload>> = (props) => {
   );
 };
 
-export const SuppyAndBorrowChart = ({
-  poolId,
-  decimals,
-}: {
-  collateralInfo: IFormattedCollateral[];
-  poolId: string;
-  decimals?: number;
-}) => {
-  const { isLoading, data } = usePoolState(poolId);
+export const SuppyAndBorrowChart = ({ decimals }: { decimals?: number }) => {
+  const { isLoading, data } = usePoolState();
 
   if (isLoading) {
     return (

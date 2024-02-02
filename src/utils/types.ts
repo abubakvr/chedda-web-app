@@ -126,9 +126,9 @@ export interface ISummaryStats {
 }
 
 export interface HookResult<T> {
-  data?: T;
+  data: T | undefined;
   isLoading: boolean;
-  fetchData: () => Promise<T | null>;
+  fetchData: (showLoading?: boolean) => void;
 }
 
 // Common data fetching function type
@@ -146,6 +146,7 @@ export type GetDataFunction<T> = ({
   chedda: Chedda;
   signer?: Signer;
   environment: IEnvironment;
+  asset?: string;
 }) => Promise<T | null>;
 
 export interface CustomTooltipProps<T> {
@@ -171,4 +172,9 @@ export interface IPoolLens {
   setActive(pool: string, isActive: boolean): Promise<void>;
   transferOwnership(newOwner: string): Promise<void>;
   unregisterPool(pool: string): Promise<void>;
+}
+
+export interface modalInfoItem {
+  title: string;
+  value: string | number;
 }

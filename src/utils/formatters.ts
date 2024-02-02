@@ -182,3 +182,14 @@ function toFixed(x: number): number {
   }
   return x;
 }
+
+export function formatNumber(amount: number): string {
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "decimal",
+  });
+
+  // Get the formatted number string
+  const formattedString = formatter.format(amount);
+
+  return formattedString;
+}
