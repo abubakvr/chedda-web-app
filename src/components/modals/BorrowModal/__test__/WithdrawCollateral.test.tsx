@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { WithdrawTab } from "../WithdrawTab";
+import { WithdrawTab } from "../Tabs/WithdrawTab";
 import { StaticImageData } from "next/image";
 import { useTransaction } from "@/hooks";
 import { BigNumber } from "ethers";

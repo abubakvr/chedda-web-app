@@ -1,7 +1,6 @@
 import React, { FC, useCallback, useState } from "react";
 import { IToken } from "@/utils/types";
-import { DepositTab } from "./DepositTab";
-import { WithdrawTab } from "./WithdrawTab";
+import { DepositTab, WithdrawTab, BorrowTab } from "./Tabs";
 import {
   useAccountCollateral,
   useAccountHealth,
