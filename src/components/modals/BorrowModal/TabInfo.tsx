@@ -16,11 +16,15 @@ export interface DepositTabInfoProps {
 }
 
 export interface WithdrawInfoProps {
+  isLoading: boolean;
+  totalBorrowed: string;
+  collateralValue: string;
+  healthFactor: string;
   liquidity: string;
-  supplied: string;
-  baseSupplyAPY: string;
+  projectedTotalBorrowed: string;
+  projectedCollateralValue: string;
+  projectedHealthFactor: string;
   projectedLiquidity: string;
-  projectedSupply: string;
 }
 
 export const DepositTabInfo = ({
@@ -113,47 +117,112 @@ export const DepositTabInfo = ({
   );
 };
 
-export const WithdrawTabInfo = ({
+export const BorrowTabInfo = ({
+  isLoading,
+  totalBorrowed,
+  collateralValue,
+  healthFactor,
   liquidity,
-  supplied,
+  projectedTotalBorrowed,
+  projectedCollateralValue,
+  projectedHealthFactor,
   projectedLiquidity,
-  projectedSupply,
 }: WithdrawInfoProps) => {
   return (
     <div data-testid="withdraw-tab-info">
       <div className="flex justify-between text-sm pb-5">
-        <div className="opacity-50 font-semibold" data-testid="liquidity-label">
-          Liquidity
+        <div
+          className="opacity-50 font-semibold flex gap-x-2"
+          data-testid="health-factor-label"
+        >
+          Health Factor
+          <Image src={InfoIcon} alt="info icon" />
         </div>
-        <div className="flex space-x-2">
-          <div className="font-bold" data-testid="current-liquidity">
-            {liquidity}
-          </div>
-          <Image
-            src={ArrowRight}
-            alt="right arrow"
-            className="flex self-center"
-          />
-          <div className="font-bold" data-testid="projected-liquidity">
-            {projectedLiquidity}
+        <div className="flex items-center gap-x-1.5">
+          <div className="flex space-x-2  opacity-50">
+            <div className="font-bold" data-testid="health-factor">
+              {isLoading ? "-" : totalBorrowed}
+            </div>
+            <Image
+              src={ArrowRight}
+              alt="right arrow"
+              className="flex self-center"
+            />
+            <div className="font-bold" data-testid="projected-health-factor">
+              {isLoading ? "-" : projectedTotalBorrowed}
+            </div>
           </div>
         </div>
       </div>
       <div className="flex justify-between text-sm pb-5">
-        <div className="opacity-50 font-semibold" data-testid="supplied-label">
-          Supplied
+        <div
+          className="opacity-50 font-semibold flex gap-x-2"
+          data-testid="health-factor-label"
+        >
+          Health Factor
+          <Image src={InfoIcon} alt="info icon" />
         </div>
-        <div className="flex space-x-2">
-          <div className="font-bold" data-testid="current-supplied">
-            {supplied}
+        <div className="flex items-center gap-x-1.5">
+          <div className="flex space-x-2  opacity-50">
+            <div className="font-bold" data-testid="health-factor">
+              {isLoading ? "-" : collateralValue}
+            </div>
+            <Image
+              src={ArrowRight}
+              alt="right arrow"
+              className="flex self-center"
+            />
+            <div className="font-bold" data-testid="projected-health-factor">
+              {isLoading ? "-" : projectedCollateralValue}
+            </div>
           </div>
-          <Image
-            src={ArrowRight}
-            alt="right arrow"
-            className="flex self-center"
-          />
-          <div className="font-bold" data-testid="projected-supply">
-            {projectedSupply}
+        </div>
+      </div>
+      <div className="flex justify-between text-sm pb-5">
+        <div
+          className="opacity-50 font-semibold flex gap-x-2"
+          data-testid="health-factor-label"
+        >
+          Health Factor
+          <Image src={InfoIcon} alt="info icon" />
+        </div>
+        <div className="flex items-center gap-x-1.5">
+          <div className="flex space-x-2  text-success">
+            <div className="font-bold" data-testid="health-factor">
+              {isLoading ? "-" : healthFactor}
+            </div>
+            <Image
+              src={ArrowRight}
+              alt="right arrow"
+              className="flex self-center"
+            />
+            <div className="font-bold" data-testid="projected-health-factor">
+              {isLoading ? "-" : projectedHealthFactor}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="flex justify-between text-sm pb-5">
+        <div
+          className="opacity-50 font-semibold flex gap-x-2"
+          data-testid="health-factor-label"
+        >
+          Health Factor
+          <Image src={InfoIcon} alt="info icon" />
+        </div>
+        <div className="flex items-center gap-x-1.5">
+          <div className="flex space-x-2  opacity-50">
+            <div className="font-bold" data-testid="health-factor">
+              {isLoading ? "-" : liquidity}
+            </div>
+            <Image
+              src={ArrowRight}
+              alt="right arrow"
+              className="flex self-center"
+            />
+            <div className="font-bold" data-testid="projected-health-factor">
+              {isLoading ? "-" : projectedLiquidity}
+            </div>
           </div>
         </div>
       </div>

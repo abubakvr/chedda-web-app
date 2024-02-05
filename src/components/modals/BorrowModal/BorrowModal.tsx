@@ -190,6 +190,19 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 tokenCollateralValue={tokenCollateralValue}
               />
             )}
+            {activeTab === "Borrow" && (
+              <BorrowTab
+                collaterals={collaterals}
+                selectedCollateral={selectedCollateral}
+                setSelectedCollateral={setSelectedCollateral}
+                isLoading={isLoading}
+                accountCollateral={accountCollateral}
+                healthFactor={healthFactor}
+                assetPrice={assetPrice}
+                refreshModal={refreshModal}
+                fetchAllowance={fetchAllowance}
+              />
+            )}
           </div>
         </div>
       </div>

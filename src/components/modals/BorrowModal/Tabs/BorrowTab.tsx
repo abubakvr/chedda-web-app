@@ -6,7 +6,6 @@ import {
   parseBigNumberToFloat,
 } from "@/utils/formatters";
 import { DepositTabInfo } from "../TabInfo";
-import { SelectMenu } from "../SelectMenu";
 import { IToken } from "@/utils/types";
 import { useTransaction } from "@/hooks";
 import { BigNumber, ethers } from "ethers";
@@ -40,7 +39,7 @@ export const BorrowTab = ({
   const [amount, setAmount] = useState(0);
   const { address: tokenAddress, decimals, symbol } = selectedCollateral;
   const { accountCollateralLoading, healthFactorLoading } = isLoading;
-  const { borrowTxStatus, withdrawCollateral } = useTransaction(tokenAddress);
+  const { borrowTxStatus, borrowAsset } = useTransaction(tokenAddress);
 
   const parsedAccountCollateralAmount = parseFloat(
     parseBigNumberToFloat(accountCollateral?.accountCollateralAmount, decimals)
@@ -54,41 +53,31 @@ export const BorrowTab = ({
 
   const handleWithdrawCollateral = async () => {
     try {
-      if (!amount || amount > parsedAccountCollateralAmount) {
+      if (!amount || amount > parsedAccountCollateralValue) {
         return alert("Enter valid amount");
       } else if (projectedHealthFactor < 1.05) {
         return alert("Low health factor. Reduce the withdrawal amount");
       }
 
       const parsedAmount = ethers.utils.parseUnits(amount.toString(), decimals);
-      await withdrawCollateral(parsedAmount);
-      const txMessage = `You've successfully Withdrawn ${formatNumber(
+      await borrowAsset(parsedAmount);
+      const txMessage = `You've successfully Borrowed ${formatNumber(
         amount
       )} ${symbol}`;
       setToastMessage(txMessage);
     } catch (error: any) {
-      throw Error("Error in withdrawing asset:" + error.message);
+      throw Error("Error in borrowing asset:" + error.message);
     }
   };
 
   useEffect(() => {
-    if (borrowTxStatus.isApproved) {
-      setShowToast(true);
-      fetchAllowance(false);
-    }
-
-    if (borrowTxStatus.isCollateralWithdrawn) {
+    if (borrowTxStatus.isAssetBorrowed) {
       setAmount(0);
       setClearInputField(true);
       setShowToast(true);
       refreshModal();
     }
-  }, [
-    borrowTxStatus.isApproved,
-    borrowTxStatus.isCollateralWithdrawn,
-    fetchAllowance,
-    refreshModal,
-  ]);
+  }, [borrowTxStatus.isAssetBorrowed, fetchAllowance, refreshModal]);
 
   return (
     <>
@@ -100,11 +89,11 @@ export const BorrowTab = ({
       />
       <div data-testid="withdraw-tab-content" className="mt-6">
         <div className="text-xl font-bold flex justify-between">
-          <div>Withdraw your Collateral</div>
+          <div>Select amount to Borrow</div>
         </div>
         <div className="flex justify-between mt-6 items-center text-xs">
           <div data-testid="amount-label" className="text-[#DEDEDE]">
-            Enter amount to Withdraw
+            Enter amount to Borrow
           </div>
           <div
             data-testid="max-amount"
@@ -115,7 +104,7 @@ export const BorrowTab = ({
               Max:{" "}
               {isLoading.accountCollateralLoading
                 ? "_"
-                : `${formatLargeNumber(parsedAccountCollateralAmount)} ${symbol}`}
+                : `${formatLargeNumber(parsedAccountCollateralValue)} ${symbol}`}
             </div>
           </div>
         </div>
@@ -125,7 +114,7 @@ export const BorrowTab = ({
           }}
           clearInputField={clearInputField}
           setClearInputField={setClearInputField}
-          maxValue={parsedAccountCollateralAmount.toString()}
+          maxValue={parsedAccountCollateralValue.toString()}
           assetPrice={Number(assetPrice) || 0}
         />
         <Button
@@ -136,7 +125,7 @@ export const BorrowTab = ({
           isLoading={borrowTxStatus.isLoading}
           disabled={accountCollateralLoading}
         >
-          Withdraw {symbol}
+          Borrow {symbol}
         </Button>
         <div data-testid="modal-info" className="mt-6 pb-0">
           <DepositTabInfo
