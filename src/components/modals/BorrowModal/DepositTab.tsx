@@ -25,6 +25,8 @@ interface DepositTabProps {
   tokenBalance: BigNumber | undefined;
   healthFactor: BigNumber | undefined;
   assetPrice: string | undefined;
+  totalBorrowed: BigNumber | undefined;
+  tokenCollateralValue: BigNumber | undefined;
 }
 
 export const DepositTab = ({
@@ -39,6 +41,8 @@ export const DepositTab = ({
   setSelectedCollateral,
   fetchAllowance,
   refreshModal,
+  totalBorrowed,
+  tokenCollateralValue,
 }: DepositTabProps) => {
   const [clearInputField, setClearInputField] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -65,9 +69,16 @@ export const DepositTab = ({
     parseBigNumberToFloat(accountCollateral?.totalAccountCollateralValue)
   );
   const parsedHealthFactor = parseFloat(parseBigNumberToFloat(healthFactor));
+  const parsedTokenCollateralValue = parseFloat(
+    parseBigNumberToFloat(tokenCollateralValue)
+  );
   const buttonTitle = parsedAllowance < amount ? "Approve" : "Deposit";
+  const valueOfNewCollateral = amount * parsedTokenCollateralValue;
+  const valueOfAssetsBorrowed =
+    parseFloat(parseBigNumberToFloat(totalBorrowed, 6)) * Number(assetPrice);
   const projectedHealthFactor =
-    parsedAccountCollateralValue / (amount * Number(assetPrice || 0));
+    (parsedAccountCollateralValue + valueOfNewCollateral) /
+    valueOfAssetsBorrowed;
 
   const handleDepositCollateral = async () => {
     try {

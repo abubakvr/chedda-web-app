@@ -8,7 +8,6 @@ import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
 import { BorrowModal, SupplyModal } from "@/components/modals";
 import { BigNumber } from "ethers";
-import { fetchData } from "@/redux/api/cheddaSlice";
 
 interface MyInformationCardProps {
   poolStats: IPoolStatsResponse | undefined;
@@ -179,6 +178,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           tokenBalance={tokenBalance}
           baseSupplyAPY={poolStats.baseBorrowAPY}
           fetchAccountInfo={fetchAccountInfo}
+          totalBorrowed={accountInfo?.borrowed}
         />
       )}
     </div>

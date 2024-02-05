@@ -7,6 +7,7 @@ import {
   useAccountHealth,
   useAllowance,
   useSelectTokenBalance,
+  useTokenCollateralValue,
   useTokenValue,
 } from "@/hooks";
 
@@ -21,6 +22,7 @@ export interface BorrowModalProps {
   available: BigNumber | undefined;
   onClose: () => void;
   fetchAccountInfo: (showLoading?: boolean) => void;
+  totalBorrowed: BigNumber | undefined;
 }
 
 const Tab: FC<{
@@ -45,6 +47,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
   onClose,
   collaterals,
   fetchAccountInfo,
+  totalBorrowed,
 }) => {
   const [activeTab, setActiveTab] = useState("Deposit");
   const [selectedCollateral, setSelectedCollateral] = useState<IToken>(
@@ -72,6 +75,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
     fetchData: fetchHealthFactor,
   } = useAccountHealth();
   const { data: assetPrice } = useTokenValue(tokenAddress);
+  const { data: tokenCollateralValue } = useTokenCollateralValue(tokenAddress);
 
   const isLoading = {
     allowanceLoading,
@@ -165,6 +169,8 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 assetPrice={assetPrice}
                 refreshModal={refreshModal}
                 fetchAllowance={fetchAllowance}
+                totalBorrowed={totalBorrowed}
+                tokenCollateralValue={tokenCollateralValue}
               />
             )}
           </div>
