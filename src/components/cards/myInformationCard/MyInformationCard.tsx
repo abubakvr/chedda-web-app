@@ -41,6 +41,12 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
     fetchTokenBalance(false);
   };
 
+  const totalBorrowed = parseBigNumberToFloat(
+    accountInfo?.borrowed,
+    accountInfo?.decimals,
+    10
+  );
+
   if (isLoading || !poolStats) {
     // Render loading placeholder if poolStats is undefined
     return <InfoCardSkeleton title="MY INFORMATION" itemCount={5} />;
@@ -123,12 +129,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
         <div className="flex justify-between text-sm pb-5">
           <div className="opacity-50 font-semibold">Total Borrowed</div>
           <div className="font-bold">
-            {`${formatLargeNumber(
-              parseBigNumberToFloat(
-                accountInfo?.borrowed,
-                accountInfo?.decimals
-              )
-            )} ${poolStats?.asset.symbol}`}
+            {`${formatLargeNumber(totalBorrowed)} ${poolStats?.asset.symbol}`}
           </div>
         </div>
         <div className="flex justify-between text-sm ">
@@ -178,7 +179,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           tokenBalance={tokenBalance}
           baseSupplyAPY={poolStats.baseBorrowAPY}
           fetchAccountInfo={fetchAccountInfo}
-          totalBorrowed={accountInfo?.borrowed}
+          totalBorrowed={totalBorrowed}
         />
       )}
     </div>

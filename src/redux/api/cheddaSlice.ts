@@ -22,6 +22,7 @@ interface FetchDataParams {
   getData: any;
   signer: any;
   asset?: string;
+  decimals?: number;
 }
 
 const initialState: CheddaSliceState = {
@@ -42,6 +43,7 @@ export const fetchData = createAsyncThunk<any, FetchDataParams>(
         getData,
         signer,
         asset,
+        decimals,
       } = params;
 
       if (!currentEnvironment || !chedda) return;
@@ -57,6 +59,7 @@ export const fetchData = createAsyncThunk<any, FetchDataParams>(
         chedda,
         signer,
         asset,
+        decimals,
         environment: currentEnvironment,
       });
       return { showLoading, hookName, data };

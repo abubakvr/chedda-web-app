@@ -25,7 +25,7 @@ interface DepositTabProps {
   tokenBalance: BigNumber | undefined;
   healthFactor: BigNumber | undefined;
   assetPrice: string | undefined;
-  totalBorrowed: BigNumber | undefined;
+  totalBorrowed: string;
   tokenCollateralValue: BigNumber | undefined;
 }
 
@@ -66,21 +66,29 @@ export const DepositTab = ({
     parseBigNumberToFloat(accountCollateral?.accountCollateralAmount, decimals)
   );
   const parsedAccountCollateralValue = parseFloat(
-    parseBigNumberToFloat(accountCollateral?.totalAccountCollateralValue)
+    parseBigNumberToFloat(
+      accountCollateral?.totalAccountCollateralValue,
+      18,
+      10
+    )
   );
   const parsedHealthFactor = parseFloat(parseBigNumberToFloat(healthFactor));
   const parsedTokenCollateralValue = parseFloat(
-    parseBigNumberToFloat(tokenCollateralValue)
+    parseBigNumberToFloat(tokenCollateralValue, 18, 10)
   );
   const buttonTitle = parsedAllowance < amount ? "Approve" : "Deposit";
+  const valueOfAssetsBorrowed = parseFloat(totalBorrowed) * Number(assetPrice);
+
   const valueOfNewCollateral = amount * parsedTokenCollateralValue;
-  const valueOfAssetsBorrowed =
-    parseFloat(parseBigNumberToFloat(totalBorrowed, 6)) * Number(assetPrice);
+
   const projectedHealthFactor =
     (parsedAccountCollateralValue + valueOfNewCollateral) /
     valueOfAssetsBorrowed;
 
   const handleDepositCollateral = async () => {
+    console.log("parsedTokenCollateralValue", parsedTokenCollateralValue);
+    console.log("valueOfAssetsBorrowed", valueOfAssetsBorrowed);
+    console.log("parsedAccountCollateralValue", parsedAccountCollateralValue);
     try {
       if (!amount || amount > parseFloat(parsedAssetBalance)) {
         return alert("Enter valid amount");

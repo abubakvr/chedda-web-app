@@ -22,7 +22,7 @@ export interface BorrowModalProps {
   available: BigNumber | undefined;
   onClose: () => void;
   fetchAccountInfo: (showLoading?: boolean) => void;
-  totalBorrowed: BigNumber | undefined;
+  totalBorrowed: string;
 }
 
 const Tab: FC<{
@@ -53,7 +53,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
   const [selectedCollateral, setSelectedCollateral] = useState<IToken>(
     collaterals[0]
   );
-  const tokenAddress = selectedCollateral.address;
+  const { address: tokenAddress, decimals } = selectedCollateral;
   const {
     isLoading: allowanceLoading,
     data: allowance,
@@ -74,8 +74,11 @@ export const BorrowModal: FC<BorrowModalProps> = ({
     data: healthFactor,
     fetchData: fetchHealthFactor,
   } = useAccountHealth();
-  const { data: assetPrice } = useTokenValue(tokenAddress);
-  const { data: tokenCollateralValue } = useTokenCollateralValue(tokenAddress);
+  const { data: assetPrice } = useTokenValue(collaterals[0].address);
+  const { data: tokenCollateralValue } = useTokenCollateralValue(
+    tokenAddress,
+    decimals
+  );
 
   const isLoading = {
     allowanceLoading,
