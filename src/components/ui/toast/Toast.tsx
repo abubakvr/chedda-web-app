@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 interface ToastProps {
   isOpen: boolean;
@@ -13,7 +13,7 @@ export const Toast: React.FC<ToastProps> = ({
 }) => {
   const [toasts, setToasts] = useState([] as any[]);
 
-  const addToast = () => {
+  const addToast = useCallback(() => {
     const newToast = {
       id: Date.now(),
       isOpen: true,
@@ -42,7 +42,7 @@ export const Toast: React.FC<ToastProps> = ({
       removeToast(newToast.id);
       clearInterval(timer);
     }, duration);
-  };
+  }, [duration]);
 
   const removeToast = (id: number) => {
     setToasts((prevToasts) => prevToasts.filter((t) => t.id !== id));
@@ -52,7 +52,7 @@ export const Toast: React.FC<ToastProps> = ({
     if (isOpen) {
       addToast();
     }
-  }, [isOpen, duration, toastMessage]);
+  }, [isOpen, duration, toastMessage, addToast]);
 
   return (
     <div className="toast-container">
