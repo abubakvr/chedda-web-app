@@ -183,24 +183,12 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 isLoading={isLoading}
                 accountCollateral={accountCollateral}
                 healthFactor={healthFactor}
+                tokenValue={tokenValue}
                 assetPrice={assetPrice}
                 refreshModal={refreshModal}
                 fetchAllowance={fetchAllowance}
                 totalBorrowed={totalBorrowed}
                 tokenCollateralValue={tokenCollateralValue}
-              />
-            )}
-            {activeTab === "Withdraw" && (
-              <WithdrawTab
-                collaterals={collaterals}
-                selectedCollateral={selectedCollateral}
-                setSelectedCollateral={setSelectedCollateral}
-                isLoading={isLoading}
-                accountCollateral={accountCollateral}
-                healthFactor={healthFactor}
-                assetPrice={assetPrice}
-                refreshModal={refreshModal}
-                fetchAllowance={fetchAllowance}
               />
             )}
           </div>

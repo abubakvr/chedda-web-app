@@ -22,7 +22,10 @@ interface WithdrawTabProps {
   isLoading: Record<string, boolean>;
   accountCollateral: Record<string, BigNumber> | undefined;
   healthFactor: BigNumber | undefined;
-  assetPrice: string | undefined;
+  totalBorrowed: string;
+  tokenValue: string | undefined;
+  assetPrice: number;
+  tokenCollateralValue: BigNumber | undefined;
 }
 
 export const WithdrawTab = ({
@@ -32,6 +35,9 @@ export const WithdrawTab = ({
   accountCollateral,
   healthFactor,
   assetPrice,
+  tokenValue,
+  totalBorrowed,
+  tokenCollateralValue,
   setSelectedCollateral,
   fetchAllowance,
   refreshModal,
@@ -39,33 +45,53 @@ export const WithdrawTab = ({
   const [clearInputField, setClearInputField] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
-  const [amount, setAmount] = useState(0);
+  const [inputAmount, setInputAmount] = useState(0);
   const { address: tokenAddress, decimals, symbol } = selectedCollateral;
   const { accountCollateralLoading, healthFactorLoading } = isLoading;
-  const { borrowTxStatus, withdrawCollateral } = useTransaction(tokenAddress);
+  const { borrowTxStatus, withdrawCollateral, resetTxState } =
+    useTransaction(tokenAddress);
 
   const parsedAccountCollateralAmount = parseFloat(
     parseBigNumberToFloat(accountCollateral?.accountCollateralAmount, decimals)
   );
-  const parsedAccountCollateralValue = parseFloat(
-    parseBigNumberToFloat(accountCollateral?.totalAccountCollateralValue)
+  const parsedTotalAccountCollateralValue = parseFloat(
+    parseBigNumberToFloat(
+      accountCollateral?.totalAccountCollateralValue,
+      18,
+      10
+    )
   );
-  const parsedHealthFactor = parseFloat(parseBigNumberToFloat(healthFactor));
+  const parsedHealthFactor = parseFloat(
+    parseBigNumberToFloat(healthFactor, 18, 10)
+  );
+
+  const parsedTokenCollateralValue = parseFloat(
+    parseBigNumberToFloat(tokenCollateralValue, 18, 10)
+  );
+
+  const valueOfAssetsBorrowed = parseFloat(totalBorrowed) * assetPrice;
+
+  const valueOfNewCollateral = inputAmount * parsedTokenCollateralValue;
+
   const projectedHealthFactor =
-    parsedAccountCollateralValue / (amount * Number(assetPrice || 0));
+    (parsedTotalAccountCollateralValue - valueOfNewCollateral) /
+    valueOfAssetsBorrowed;
 
   const handleWithdrawCollateral = async () => {
     try {
-      if (!amount || amount > parsedAccountCollateralAmount) {
+      if (!inputAmount || inputAmount > parsedAccountCollateralAmount) {
         return alert("Enter valid amount");
       } else if (projectedHealthFactor < 1.05) {
         return alert("Low health factor. Reduce the withdrawal amount");
       }
 
-      const parsedAmount = ethers.utils.parseUnits(amount.toString(), decimals);
+      const parsedAmount = ethers.utils.parseUnits(
+        inputAmount.toString(),
+        decimals
+      );
       await withdrawCollateral(parsedAmount);
       const txMessage = `You've successfully Withdrawn ${formatNumber(
-        amount
+        inputAmount
       )} ${symbol}`;
       setToastMessage(txMessage);
     } catch (error: any) {
@@ -77,29 +103,27 @@ export const WithdrawTab = ({
     if (borrowTxStatus.isApproved) {
       setShowToast(true);
       fetchAllowance(false);
+      resetTxState();
     }
 
     if (borrowTxStatus.isCollateralWithdrawn) {
-      setAmount(0);
+      setInputAmount(0);
       setClearInputField(true);
       setShowToast(true);
       refreshModal();
+      resetTxState();
     }
   }, [
     borrowTxStatus.isApproved,
     borrowTxStatus.isCollateralWithdrawn,
     fetchAllowance,
     refreshModal,
+    resetTxState,
   ]);
 
   return (
     <>
-      <Toast
-        isOpen={showToast}
-        onClose={() => setShowToast(false)}
-        toastMessage={toastMessage}
-        duration={10000}
-      />
+      <Toast isOpen={showToast} toastMessage={toastMessage} />
       <div data-testid="withdraw-tab-content" className="mt-6">
         <div className="text-xl font-bold flex justify-between items-center">
           <div>Withdraw your Collateral</div>
@@ -133,12 +157,12 @@ export const WithdrawTab = ({
         </div>
         <AmountField
           onChange={(value) => {
-            setAmount(parseFloat(value));
+            setInputAmount(parseFloat(value));
           }}
           clearInputField={clearInputField}
           setClearInputField={setClearInputField}
           maxValue={parsedAccountCollateralAmount.toString()}
-          assetPrice={Number(assetPrice) || 0}
+          assetPrice={Number(tokenValue) || 0}
         />
         <Button
           type="primary"
@@ -154,13 +178,14 @@ export const WithdrawTab = ({
           <DepositTabInfo
             isLoading={accountCollateralLoading || healthFactorLoading}
             symbol={symbol}
-            collateral={`${formatNumber(parsedAccountCollateralAmount)} ${symbol}`}
-            projectedCollateral={`${formatNumber(
-              parsedAccountCollateralAmount - (amount || 0)
+            collateralAmount={`${formatNumber(parsedAccountCollateralAmount)} ${symbol}`}
+            projectedCollateralAmount={`${formatNumber(
+              parsedAccountCollateralAmount - (inputAmount || 0)
             )} ${symbol}`}
-            collateralValue={`$${formatNumber(parsedAccountCollateralValue)} `}
-            projectedCollateralValue={`$${formatNumber(
-              parsedAccountCollateralValue - (amount * Number(assetPrice) || 0)
+            totalCollateralValue={`$${formatNumber(parsedTotalAccountCollateralValue)} `}
+            projectedTotalCollateralValue={`$${formatNumber(
+              parsedTotalAccountCollateralValue -
+                (inputAmount * parsedTokenCollateralValue || 0)
             )} `}
             healthFactor={`${formatNumber(parsedHealthFactor)}`}
             projectedHealthFactor={projectedHealthFactor || parsedHealthFactor}

@@ -73,6 +73,7 @@ export const useTransaction = (asset: string) => {
       isLoading: false,
       isApproved: false,
       isCollateralDeposited: false,
+      isCollateralWithdrawn: false,
     });
   };
 
