@@ -1,68 +1,92 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AmountField, Button } from "@/components/common";
 import {
   formatLargeNumber,
   formatNumber,
   parseBigNumberToFloat,
 } from "@/utils/formatters";
-import { DepositTabInfo } from "../TabInfo";
+import { BorrowTabInfo } from "../TabInfo";
 import { IToken } from "@/utils/types";
 import { useTransaction } from "@/hooks";
 import { BigNumber, ethers } from "ethers";
 import { Toast } from "@/components/ui";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
 
-interface BorrowTabProps {
-  setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
-  fetchAllowance: (showLoading?: boolean) => void;
-  refreshModal: () => void;
-  selectedCollateral: IToken;
-  collaterals: IToken[];
+export interface BorrowTabProps {
+  asset: IToken;
   isLoading: Record<string, boolean>;
   accountCollateral: Record<string, BigNumber> | undefined;
   healthFactor: BigNumber | undefined;
-  assetPrice: string | undefined;
+  tokenValue: string | undefined;
+  availableLiquidity: BigNumber | undefined;
+  totalBorrowed: string;
+  assetPrice: number;
+  tokenCollateralValue: BigNumber | undefined;
+  fetchAllowance: (showLoading?: boolean) => void;
+  refreshModal: () => void;
 }
 
 export const BorrowTab = ({
-  selectedCollateral,
   isLoading,
+  asset,
   accountCollateral,
   healthFactor,
+  tokenValue,
   assetPrice,
+  tokenCollateralValue,
+  totalBorrowed,
+  availableLiquidity,
   fetchAllowance,
   refreshModal,
 }: BorrowTabProps) => {
   const [clearInputField, setClearInputField] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
-  const [amount, setAmount] = useState(0);
-  const { address: tokenAddress, decimals, symbol } = selectedCollateral;
+  const [inputAmount, setInputAmount] = useState(0);
+  const { address: tokenAddress, decimals, symbol } = asset;
   const { accountCollateralLoading, healthFactorLoading } = isLoading;
   const { borrowTxStatus, borrowAsset } = useTransaction(tokenAddress);
 
-  const parsedAccountCollateralAmount = parseFloat(
-    parseBigNumberToFloat(accountCollateral?.accountCollateralAmount, decimals)
+  const parsedTotalAccountCollateralValue = parseFloat(
+    parseBigNumberToFloat(
+      accountCollateral?.totalAccountCollateralValue,
+      18,
+      10
+    )
   );
-  const parsedAccountCollateralValue = parseFloat(
-    parseBigNumberToFloat(accountCollateral?.totalAccountCollateralValue)
+  const parsedAvailableLiquidity = parseFloat(
+    parseBigNumberToFloat(availableLiquidity, decimals)
   );
+
+  const parsedTokenCollateralValue = parseFloat(
+    parseBigNumberToFloat(tokenCollateralValue, 18, 10)
+  );
+
+  const valueOfAssetsBorrowed = parseFloat(totalBorrowed) * assetPrice;
+
+  const valueOfNewCollateral = inputAmount * Number(tokenValue);
+
   const parsedHealthFactor = parseFloat(parseBigNumberToFloat(healthFactor));
+
+  const maxInputValue = (parsedTotalAccountCollateralValue * 0.95) / assetPrice;
+
   const projectedHealthFactor =
-    parsedAccountCollateralValue / (amount * Number(assetPrice || 0));
+    parsedTotalAccountCollateralValue /
+    (valueOfAssetsBorrowed + valueOfNewCollateral);
 
   const handleWithdrawCollateral = async () => {
     try {
-      if (!amount || amount > parsedAccountCollateralValue) {
+      if (!inputAmount || inputAmount > maxInputValue) {
         return alert("Enter valid amount");
-      } else if (projectedHealthFactor < 1.05) {
-        return alert("Low health factor. Reduce the withdrawal amount");
       }
 
-      const parsedAmount = ethers.utils.parseUnits(amount.toString(), decimals);
+      const parsedAmount = ethers.utils.parseUnits(
+        inputAmount.toString(),
+        decimals
+      );
       await borrowAsset(parsedAmount);
       const txMessage = `You've successfully Borrowed ${formatNumber(
-        amount
+        inputAmount
       )} ${symbol}`;
       setToastMessage(txMessage);
     } catch (error: any) {
@@ -72,7 +96,7 @@ export const BorrowTab = ({
 
   useEffect(() => {
     if (borrowTxStatus.isAssetBorrowed) {
-      setAmount(0);
+      setInputAmount(0);
       setClearInputField(true);
       setShowToast(true);
       refreshModal();
@@ -81,12 +105,7 @@ export const BorrowTab = ({
 
   return (
     <>
-      <Toast
-        isOpen={showToast}
-        onClose={() => setShowToast(false)}
-        toastMessage={toastMessage}
-        duration={10000}
-      />
+      <Toast isOpen={showToast} toastMessage={toastMessage} duration={10000} />
       <div data-testid="withdraw-tab-content" className="mt-6">
         <div className="text-xl font-bold flex justify-between">
           <div>Select amount to Borrow</div>
@@ -104,18 +123,18 @@ export const BorrowTab = ({
               Max:{" "}
               {isLoading.accountCollateralLoading
                 ? "_"
-                : `${formatLargeNumber(parsedAccountCollateralValue)} ${symbol}`}
+                : `${formatLargeNumber(maxInputValue)} ${symbol}`}
             </div>
           </div>
         </div>
         <AmountField
           onChange={(value) => {
-            setAmount(parseFloat(value));
+            setInputAmount(parseFloat(value));
           }}
           clearInputField={clearInputField}
           setClearInputField={setClearInputField}
-          maxValue={parsedAccountCollateralValue.toString()}
-          assetPrice={Number(assetPrice) || 0}
+          maxValue={maxInputValue.toString()}
+          assetPrice={Number(tokenValue) || 0}
         />
         <Button
           type="primary"
@@ -128,19 +147,23 @@ export const BorrowTab = ({
           Borrow {symbol}
         </Button>
         <div data-testid="modal-info" className="mt-6 pb-0">
-          <DepositTabInfo
+          <BorrowTabInfo
             isLoading={accountCollateralLoading || healthFactorLoading}
-            symbol={symbol}
-            collateral={`${formatNumber(parsedAccountCollateralAmount)} ${symbol}`}
-            projectedCollateral={`${formatNumber(
-              parsedAccountCollateralAmount - (amount || 0)
+            totalBorrowed={`${formatNumber(parseFloat(totalBorrowed))} ${symbol}`}
+            projectedTotalBorrowed={`${formatNumber(
+              parseFloat(totalBorrowed) + (inputAmount || 0)
             )} ${symbol}`}
-            collateralValue={`$${formatNumber(parsedAccountCollateralValue)} `}
+            collateralValue={`$${formatNumber(parsedTotalAccountCollateralValue)} `}
             projectedCollateralValue={`$${formatNumber(
-              parsedAccountCollateralValue - (amount * Number(assetPrice) || 0)
+              parsedTotalAccountCollateralValue +
+                (inputAmount * parsedTokenCollateralValue || 0)
             )} `}
             healthFactor={`${formatNumber(parsedHealthFactor)}`}
             projectedHealthFactor={projectedHealthFactor || parsedHealthFactor}
+            liquidity={`${formatNumber(parsedAvailableLiquidity)}  ${symbol}`}
+            projectedLiquidity={`${formatNumber(
+              parsedAvailableLiquidity - (inputAmount || 0)
+            )} ${symbol}`}
           />
         </div>
       </div>

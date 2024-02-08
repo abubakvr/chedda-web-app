@@ -3,6 +3,7 @@ import Image from "next/image";
 import ArrowRight from "@/assets/icon/arrow-right.svg";
 import InfoIcon from "@/assets/icon/info-icon.svg";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
+import { toFixedTrunc } from "@/utils/formatters";
 
 export interface DepositTabInfoProps {
   isLoading: boolean;
@@ -15,15 +16,15 @@ export interface DepositTabInfoProps {
   projectedHealthFactor: number;
 }
 
-export interface WithdrawInfoProps {
+export interface BorrowTabInfoProps {
   isLoading: boolean;
   totalBorrowed: string;
-  collateralValue: string;
-  healthFactor: string;
-  liquidity: string;
   projectedTotalBorrowed: string;
+  collateralValue: string;
   projectedCollateralValue: string;
-  projectedHealthFactor: string;
+  healthFactor: string;
+  projectedHealthFactor: number;
+  liquidity: string;
   projectedLiquidity: string;
 }
 
@@ -100,7 +101,7 @@ export const DepositTabInfo = ({
         <div className="flex items-center gap-x-1.5">
           <div className="flex space-x-2  text-success">
             <div className="font-bold" data-testid="health-factor">
-              {isLoading ? "-" : parseFloat(healthFactor).toFixed(2)}
+              {isLoading ? "-" : toFixedTrunc(Number(healthFactor), 2)}
             </div>
             <Image
               src={ArrowRight}
@@ -108,7 +109,7 @@ export const DepositTabInfo = ({
               className="flex self-center"
             />
             <div className="font-bold" data-testid="projected-health-factor">
-              {isLoading ? "-" : projectedHealthFactor.toFixed(2)}
+              {isLoading ? "-" : toFixedTrunc(projectedHealthFactor, 2)}
             </div>
           </div>
         </div>
@@ -127,20 +128,20 @@ export const BorrowTabInfo = ({
   projectedCollateralValue,
   projectedHealthFactor,
   projectedLiquidity,
-}: WithdrawInfoProps) => {
+}: BorrowTabInfoProps) => {
   return (
-    <div data-testid="withdraw-tab-info">
+    <div data-testid="borrow-tab-info">
       <div className="flex justify-between text-sm pb-5">
         <div
           className="opacity-50 font-semibold flex gap-x-2"
-          data-testid="health-factor-label"
+          data-testid="total-borrowed-label"
         >
-          Health Factor
+          Borrowed
           <Image src={InfoIcon} alt="info icon" />
         </div>
         <div className="flex items-center gap-x-1.5">
-          <div className="flex space-x-2  opacity-50">
-            <div className="font-bold" data-testid="health-factor">
+          <div className="flex space-x-2">
+            <div className="font-bold" data-testid="total-borrowed">
               {isLoading ? "-" : totalBorrowed}
             </div>
             <Image
@@ -148,7 +149,7 @@ export const BorrowTabInfo = ({
               alt="right arrow"
               className="flex self-center"
             />
-            <div className="font-bold" data-testid="projected-health-factor">
+            <div className="font-bold" data-testid="projected-total-borrowed">
               {isLoading ? "-" : projectedTotalBorrowed}
             </div>
           </div>
@@ -157,14 +158,14 @@ export const BorrowTabInfo = ({
       <div className="flex justify-between text-sm pb-5">
         <div
           className="opacity-50 font-semibold flex gap-x-2"
-          data-testid="health-factor-label"
+          data-testid="collateral-value-label"
         >
-          Health Factor
+          Collateral Value
           <Image src={InfoIcon} alt="info icon" />
         </div>
         <div className="flex items-center gap-x-1.5">
-          <div className="flex space-x-2  opacity-50">
-            <div className="font-bold" data-testid="health-factor">
+          <div className="flex space-x-2">
+            <div className="font-bold" data-testid="collateral-value">
               {isLoading ? "-" : collateralValue}
             </div>
             <Image
@@ -172,7 +173,7 @@ export const BorrowTabInfo = ({
               alt="right arrow"
               className="flex self-center"
             />
-            <div className="font-bold" data-testid="projected-health-factor">
+            <div className="font-bold" data-testid="projected-collateral-value">
               {isLoading ? "-" : projectedCollateralValue}
             </div>
           </div>
@@ -189,7 +190,7 @@ export const BorrowTabInfo = ({
         <div className="flex items-center gap-x-1.5">
           <div className="flex space-x-2  text-success">
             <div className="font-bold" data-testid="health-factor">
-              {isLoading ? "-" : healthFactor}
+              {isLoading ? "-" : toFixedTrunc(Number(healthFactor), 2)}
             </div>
             <Image
               src={ArrowRight}
@@ -197,7 +198,7 @@ export const BorrowTabInfo = ({
               className="flex self-center"
             />
             <div className="font-bold" data-testid="projected-health-factor">
-              {isLoading ? "-" : projectedHealthFactor}
+              {isLoading ? "-" : toFixedTrunc(projectedHealthFactor, 2)}
             </div>
           </div>
         </div>
@@ -205,14 +206,14 @@ export const BorrowTabInfo = ({
       <div className="flex justify-between text-sm pb-5">
         <div
           className="opacity-50 font-semibold flex gap-x-2"
-          data-testid="health-factor-label"
+          data-testid="liquidity-label"
         >
-          Health Factor
+          Liquidity
           <Image src={InfoIcon} alt="info icon" />
         </div>
         <div className="flex items-center gap-x-1.5">
-          <div className="flex space-x-2  opacity-50">
-            <div className="font-bold" data-testid="health-factor">
+          <div className="flex space-x-2 ">
+            <div className="font-bold" data-testid="liquidity">
               {isLoading ? "-" : liquidity}
             </div>
             <Image
@@ -220,7 +221,7 @@ export const BorrowTabInfo = ({
               alt="right arrow"
               className="flex self-center"
             />
-            <div className="font-bold" data-testid="projected-health-factor">
+            <div className="font-bold" data-testid="projected-liquidity">
               {isLoading ? "-" : projectedLiquidity}
             </div>
           </div>

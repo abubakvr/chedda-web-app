@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { DepositTab } from "../Tabs/DepositTab";
+import { DepositTab, DepositTabProps } from "../Tabs/DepositTab";
 import { StaticImageData } from "next/image";
 import { useTransaction } from "@/hooks";
 import { BigNumber } from "ethers";
@@ -25,7 +25,7 @@ jest.mock("../../../../components/ui", () => ({
   Toast: jest.fn(() => null),
 }));
 
-const mockProps = {
+const mockProps: DepositTabProps = {
   selectedCollateral: {
     name: "Token3",
     symbol: "T3",
@@ -40,7 +40,10 @@ const mockProps = {
   accountCollateral: undefined,
   tokenBalance: BigNumber.from("50000000000000000000000"),
   healthFactor: BigNumber.from("5000000000000000000"),
-  assetPrice: "5000",
+  assetPrice: 5000,
+  totalBorrowed: "9000",
+  tokenValue: "9000",
+  tokenCollateralValue: BigNumber.from("5000000000000000000"),
   setSelectedCollateral: jest.fn(),
   fetchAllowance: jest.fn(),
   refreshModal: jest.fn(),
@@ -104,9 +107,9 @@ describe("DepositTab Component", () => {
     });
   });
 
-  it("render deposit tab section", async () => {
+  it("renders deposit info tab section", async () => {
     render(<DepositTab {...mockProps} />);
 
-    expect(screen.getByTestId("modal-info")).toBeInTheDocument();
+    expect(screen.getByTestId("deposit-tab-info")).toBeInTheDocument();
   });
 });

@@ -13,10 +13,7 @@ import { BigNumber, ethers } from "ethers";
 import { Toast } from "@/components/ui";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
 
-interface WithdrawTabProps {
-  setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
-  fetchAllowance: (showLoading?: boolean) => void;
-  refreshModal: () => void;
+export interface WithdrawTabProps {
   selectedCollateral: IToken;
   collaterals: IToken[];
   isLoading: Record<string, boolean>;
@@ -26,6 +23,9 @@ interface WithdrawTabProps {
   tokenValue: string | undefined;
   assetPrice: number;
   tokenCollateralValue: BigNumber | undefined;
+  setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
+  fetchAllowance: (showLoading?: boolean) => void;
+  refreshModal: () => void;
 }
 
 export const WithdrawTab = ({

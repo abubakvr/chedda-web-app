@@ -6,11 +6,13 @@ import {
   useAccountCollateral,
   useAccountHealth,
   useAllowance,
+  useAvailableLiquidity,
   useSelectTokenBalance,
   useTokenCollateralValue,
   useTokenValue,
   useTransaction,
 } from "@/hooks";
+import { BigNumber } from "ethers";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks");
@@ -18,6 +20,14 @@ jest.mock("../../../../hooks");
 const mockProps: BorrowModalProps = {
   isOpen: true,
   onClose: jest.fn(),
+  asset: {
+    name: "Ethereum",
+    symbol: "ETH",
+    address: "0xfed321",
+    logo: {} as StaticImageData,
+    decimals: 18,
+    color: "#ffffff",
+  },
   collaterals: [
     {
       name: "Ethereum",
@@ -31,6 +41,7 @@ const mockProps: BorrowModalProps = {
   totalBorrowed: "20000",
   assetPrice: 90,
   fetchAccountInfo: jest.fn(),
+  availableLiquidity: BigNumber.from("390"),
 };
 
 describe("BorrowModal Component", () => {
@@ -59,6 +70,10 @@ describe("BorrowModal Component", () => {
     }));
 
     (useTokenValue as jest.Mock).mockImplementation(() => ({
+      isLoading: false,
+      data: "1000",
+    }));
+    (useAvailableLiquidity as jest.Mock).mockImplementation(() => ({
       isLoading: false,
       data: "1000",
     }));

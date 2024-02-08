@@ -5,16 +5,20 @@ import {
   useAccountCollateral,
   useAccountHealth,
   useAllowance,
+  useAvailableLiquidity,
   useSelectTokenBalance,
   useTokenCollateralValue,
   useTokenValue,
 } from "@/hooks";
+import { BigNumber } from "ethers";
 
 export interface BorrowModalProps {
+  asset: IToken;
   isOpen: boolean;
   collaterals: IToken[];
   assetPrice: number;
   totalBorrowed: string;
+  availableLiquidity: BigNumber | undefined;
   onClose: () => void;
   fetchAccountInfo: (showLoading?: boolean) => void;
 }
@@ -38,9 +42,11 @@ const Tab: FC<{
 
 export const BorrowModal: FC<BorrowModalProps> = ({
   isOpen,
+  asset,
   collaterals,
   assetPrice,
   totalBorrowed,
+  availableLiquidity,
   onClose,
   fetchAccountInfo,
 }) => {
@@ -74,6 +80,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
     tokenAddress,
     decimals
   );
+  const { fetchData: fetchAvailable } = useAvailableLiquidity();
 
   const isLoading = {
     allowanceLoading,
@@ -88,12 +95,14 @@ export const BorrowModal: FC<BorrowModalProps> = ({
     fetchHealthFactor(false);
     fetchTokenBalance(false);
     fetchAccountInfo(false);
+    fetchAvailable(false);
   }, [
     fetchAllowance,
     fetchAccountCollateral,
     fetchHealthFactor,
     fetchTokenBalance,
     fetchAccountInfo,
+    fetchAvailable,
   ]);
 
   return (
@@ -192,15 +201,17 @@ export const BorrowModal: FC<BorrowModalProps> = ({
             )}
             {activeTab === "Borrow" && (
               <BorrowTab
-                collaterals={collaterals}
-                selectedCollateral={selectedCollateral}
-                setSelectedCollateral={setSelectedCollateral}
+                asset={asset}
                 isLoading={isLoading}
                 accountCollateral={accountCollateral}
                 healthFactor={healthFactor}
+                tokenValue={tokenValue}
                 assetPrice={assetPrice}
                 refreshModal={refreshModal}
                 fetchAllowance={fetchAllowance}
+                availableLiquidity={availableLiquidity}
+                totalBorrowed={totalBorrowed}
+                tokenCollateralValue={tokenCollateralValue}
               />
             )}
           </div>

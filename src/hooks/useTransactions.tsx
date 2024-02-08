@@ -76,6 +76,7 @@ export const useTransaction = (asset: string) => {
       isApproved: false,
       isCollateralDeposited: false,
       isCollateralWithdrawn: false,
+      isAssetBorrowed: false,
     });
   };
 
@@ -186,7 +187,7 @@ export const useTransaction = (asset: string) => {
   );
 
   const borrowAssetHandler = useCallback(
-    (_token: string, owner: string) => {
+    (owner: string) => {
       if (owner === account) {
         setBorrowTxStatus((prevStatus) => ({
           ...prevStatus,

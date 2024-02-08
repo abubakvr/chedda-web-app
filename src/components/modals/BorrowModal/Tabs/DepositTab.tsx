@@ -13,10 +13,7 @@ import { BigNumber, ethers } from "ethers";
 import { Toast } from "@/components/ui";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
 
-interface DepositTabProps {
-  setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
-  fetchAllowance: (showLoading?: boolean) => void;
-  refreshModal: () => void;
+export interface DepositTabProps {
   selectedCollateral: IToken;
   collaterals: IToken[];
   isLoading: Record<string, boolean>;
@@ -28,6 +25,9 @@ interface DepositTabProps {
   tokenBalance: BigNumber | undefined;
   healthFactor: BigNumber | undefined;
   tokenCollateralValue: BigNumber | undefined;
+  setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
+  fetchAllowance: (showLoading?: boolean) => void;
+  refreshModal: () => void;
 }
 
 export const DepositTab = ({
