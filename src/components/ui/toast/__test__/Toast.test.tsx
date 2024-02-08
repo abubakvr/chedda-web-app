@@ -5,29 +5,28 @@ import {
   waitFor,
   fireEvent,
   act,
+  queryByText,
 } from "@testing-library/react";
 import { Toast } from "../Toast";
 
 jest.useFakeTimers();
 
 describe("Toast Component", () => {
-  it("renders Toast component correctly and closes after duration", async () => {
-    const onCloseMock = jest.fn();
-
-    render(
-      <Toast
-        isOpen={true}
-        onClose={onCloseMock}
-        duration={1000}
-        toastMessage="Test Message"
-      />
+  it("renders without crashing", () => {
+    const { container } = render(
+      <Toast isOpen={false} toastMessage="Test Message" />
     );
+    expect(container).toBeInTheDocument();
+  });
+
+  it("renders Toast component correctly and closes after duration", async () => {
+    render(<Toast isOpen={true} duration={1000} toastMessage="Test Message" />);
 
     // Check initial rendering
-    expect(screen.getByTestId("modal-title")).toHaveTextContent(
+    expect(screen.getByTestId("toast-title")).toHaveTextContent(
       "Transaction Successful"
     );
-    expect(screen.getByTestId("modal-message")).toHaveTextContent(
+    expect(screen.getByTestId("toast-message")).toHaveTextContent(
       "Test Message"
     );
     expect(screen.getByTestId("close-toast")).toBeInTheDocument();
@@ -41,22 +40,13 @@ describe("Toast Component", () => {
     });
 
     await waitFor(() => {
-      expect(onCloseMock).toHaveBeenCalledTimes(1);
       expect(slider).toHaveStyle("width: 0% ");
-      expect(onCloseMock).toHaveBeenCalledTimes(1);
     });
   });
 
   it("calls onClose when close button is clicked", async () => {
-    const onCloseMock = jest.fn();
-
-    render(
-      <Toast
-        isOpen={true}
-        onClose={onCloseMock}
-        duration={5000}
-        toastMessage="Test Message"
-      />
+    const { queryByText } = render(
+      <Toast isOpen={true} duration={5000} toastMessage="Test Message" />
     );
 
     // Click close button
@@ -65,29 +55,19 @@ describe("Toast Component", () => {
     });
 
     await waitFor(() => {
-      expect(onCloseMock).toHaveBeenCalledTimes(1);
+      expect(queryByText("Transaction Successful")).not.toBeInTheDocument();
+      expect(queryByText("Test Message")).not.toBeInTheDocument();
     });
   });
 
-  it("does not call onClose when not open", async () => {
-    const onCloseMock = jest.fn();
-
-    render(
-      <Toast
-        isOpen={false}
-        onClose={onCloseMock}
-        duration={5000}
-        toastMessage="Test Message"
-      />
+  it("displays toast when isOpen is true", async () => {
+    const { getByText } = render(
+      <Toast isOpen={true} toastMessage="Test Message" />
     );
 
-    // Fast-forward time to trigger the interval
-    act(() => {
-      jest.advanceTimersByTime(1000);
-    });
-
     await waitFor(() => {
-      expect(onCloseMock).not.toHaveBeenCalled();
+      expect(getByText("Transaction Successful")).toBeInTheDocument();
+      expect(getByText("Test Message")).toBeInTheDocument();
     });
   });
 });

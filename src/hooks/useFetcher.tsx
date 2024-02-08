@@ -13,7 +13,8 @@ import { useParams } from "next/navigation";
 
 export const useFetcher = <T = any,>(
   getData: GetDataFunction<T>,
-  asset?: string
+  asset?: string,
+  decimals?: number
 ) => {
   const dispatch = useDispatch<AppDispatch>();
   const { currentEnvironment } = useEnvironment();
@@ -37,6 +38,7 @@ export const useFetcher = <T = any,>(
           getData,
           asset,
           signer,
+          decimals,
         })
       );
     },
@@ -50,6 +52,7 @@ export const useFetcher = <T = any,>(
       signer,
       hookName,
       asset,
+      decimals,
     ]
   );
 

@@ -188,7 +188,8 @@ const getTokenValue: GetDataFunction<string> = async ({
   const priceOracle = chedda.priceOracle(environment.contracts.PriceFeed);
   const decimals = await priceOracle.decimals();
   const assetPrice = await priceOracle.readPrice(asset);
-  return parseBigNumberToFloat(assetPrice, decimals as any);
+
+  return parseBigNumberToFloat(assetPrice, decimals as any, 10);
 };
 
 export const getTotalCollateral: GetDataFunction<
@@ -216,9 +217,23 @@ export const getAccountHealth: GetDataFunction<BigNumber> = async ({
   return await pool?.accountHealth(account);
 };
 
+export const getTokenCollateralValue: GetDataFunction<BigNumber> = async ({
+  poolId,
+  signer,
+  chedda,
+  asset,
+  decimals,
+}) => {
+  if (!asset) return null;
+  const pool = chedda.lendingPool(poolId, signer as Signer);
+  const amount = ethers.utils.parseUnits("1", decimals);
+  return await pool.getTokenCollateralValue(asset, amount);
+};
+
 // Exported custom hooks
-export const useAccountInfo = (): HookResult<IAccountInfo> =>
-  useFetcher<IAccountInfo>(getAccountInfo);
+export const useAccountInfo = (): HookResult<IAccountInfo> => {
+  return useFetcher<IAccountInfo>(getAccountInfo);
+};
 
 export const useMarketInfo = (): HookResult<IMarketInfo> =>
   useFetcher<IMarketInfo>(getMarketInfo);
@@ -272,4 +287,11 @@ export const useAccountHealth = (): HookResult<BigNumber> => {
 
 export const useSelectTokenBalance = (asset: string): HookResult<BigNumber> => {
   return useFetcher<BigNumber>(getSelectTokenBalance, asset);
+};
+
+export const useTokenCollateralValue = (
+  asset: string,
+  decimals: number
+): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getTokenCollateralValue, asset, decimals);
 };

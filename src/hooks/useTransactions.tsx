@@ -62,6 +62,20 @@ export const useTransaction = (asset: string) => {
     }
   };
 
+  const resetTxState = () => {
+    setSupplyTxStatus({
+      isLoading: false,
+      isApproved: false,
+      isDeposited: false,
+      isWithdrawn: false,
+    });
+    setBorrowTxStatus({
+      isLoading: false,
+      isApproved: false,
+      isCollateralDeposited: false,
+    });
+  };
+
   const approveAsset = async (amount: BigNumber) =>
     executeTransaction(async () => {
       if (!amount) return;
@@ -187,6 +201,7 @@ export const useTransaction = (asset: string) => {
     depositAsset,
     withdrawAsset,
     depositCollateral,
+    resetTxState,
     withdrawCollateral,
   };
 };
