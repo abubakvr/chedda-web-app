@@ -230,19 +230,6 @@ export const getTokenCollateralValue: GetDataFunction<BigNumber> = async ({
   return await pool.getTokenCollateralValue(asset, amount);
 };
 
-export const getDebtValue: GetDataFunction<BigNumber> = async ({
-  poolId,
-  signer,
-  chedda,
-  asset,
-  decimals = "0",
-}) => {
-  if (!asset) return null;
-  const pool = chedda.lendingPool(poolId, signer as Signer);
-  const amount = ethers.utils.parseUnits(decimals.toString());
-  return await pool.getTokenMarketValue(asset, amount);
-};
-
 // Exported custom hooks
 export const useAccountInfo = (): HookResult<IAccountInfo> => {
   return useFetcher<IAccountInfo>(getAccountInfo);
@@ -307,11 +294,4 @@ export const useTokenCollateralValue = (
   decimals: number
 ): HookResult<BigNumber> => {
   return useFetcher<BigNumber>(getTokenCollateralValue, asset, decimals);
-};
-
-export const useDebtValue = (
-  asset: string,
-  decimals: number
-): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getDebtValue, asset, decimals);
 };

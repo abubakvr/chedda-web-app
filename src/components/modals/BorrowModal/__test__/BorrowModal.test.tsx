@@ -1,13 +1,13 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { BorrowModal, BorrowModalProps } from "../BorrowModal";
-import { BigNumber } from "ethers";
 import { StaticImageData } from "next/image";
 import {
   useAccountCollateral,
   useAccountHealth,
   useAllowance,
   useSelectTokenBalance,
+  useTokenCollateralValue,
   useTokenValue,
   useTransaction,
 } from "@/hooks";
@@ -28,14 +28,8 @@ const mockProps: BorrowModalProps = {
       color: "#ffffff",
     },
   ],
-  asset: {
-    name: "Ethereum",
-    symbol: "ETH",
-    address: "0xfed321",
-    logo: {} as StaticImageData,
-    decimals: 18,
-    color: "#ffffff",
-  },
+  totalBorrowed: "20000",
+  assetPrice: 90,
   fetchAccountInfo: jest.fn(),
 };
 
@@ -56,6 +50,10 @@ describe("BorrowModal Component", () => {
       data: "1000",
     }));
     (useSelectTokenBalance as jest.Mock).mockImplementation(() => ({
+      isLoading: false,
+      data: "1000",
+    }));
+    (useTokenCollateralValue as jest.Mock).mockImplementation(() => ({
       isLoading: false,
       data: "1000",
     }));

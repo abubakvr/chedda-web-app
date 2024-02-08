@@ -60,6 +60,20 @@ export const useTransaction = (asset: string) => {
     }
   };
 
+  const resetTxState = () => {
+    setSupplyTxStatus({
+      isLoading: false,
+      isApproved: false,
+      isDeposited: false,
+      isWithdrawn: false,
+    });
+    setBorrowTxStatus({
+      isLoading: false,
+      isApproved: false,
+      isCollateralDeposited: false,
+    });
+  };
+
   const approveAsset = async (amount: BigNumber) =>
     executeTransaction(async () => {
       if (!amount) return;
@@ -129,7 +143,7 @@ export const useTransaction = (asset: string) => {
   );
 
   const depositCollateralHandler = useCallback(
-    (token: string, owner: string) => {
+    (_token: string, owner: string) => {
       if (owner === account) {
         setBorrowTxStatus((prevStatus) => ({
           ...prevStatus,
@@ -142,10 +156,10 @@ export const useTransaction = (asset: string) => {
   );
 
   useEffect(() => {
+    token?.contract?.on("Approval", approvalHandler);
     lendingPool?.contract?.on("Deposit", depositHandler);
     lendingPool?.contract?.on("Withdraw", withdrawHandler);
     lendingPool?.contract?.on("CollateralAdded", depositCollateralHandler);
-    token?.contract?.on("Approval", approvalHandler);
   }, [
     chedda,
     lendingPool?.contract,
@@ -164,5 +178,6 @@ export const useTransaction = (asset: string) => {
     depositAsset,
     withdrawAsset,
     depositCollateral,
+    resetTxState,
   };
 };

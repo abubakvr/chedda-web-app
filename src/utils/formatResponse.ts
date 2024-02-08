@@ -188,13 +188,13 @@ export const calculateAssetPrice = (
   const oraclePriceDecimals = parseBigNumberToFloat(
     marketInfo?.oraclePriceDecimals,
     0,
-    5
+    10
   );
 
   const oraclePrice = parseBigNumberToFloat(
     marketInfo?.oraclePrice,
     parseFloat(oraclePriceDecimals),
-    2
+    10
   );
 
   return parseFloat(oraclePrice);

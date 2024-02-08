@@ -11,10 +11,10 @@ describe("DepositTabInfo Component", () => {
   const mockProps: DepositTabInfoProps = {
     isLoading: false,
     symbol: "ETH",
-    collateralValue: "1000",
-    projectedCollateralValue: "1200",
-    collateral: "900",
-    projectedCollateral: "1100",
+    totalCollateralValue: "1000",
+    projectedTotalCollateralValue: "1200",
+    collateralAmount: "900",
+    projectedCollateralAmount: "1100",
     healthFactor: "1.5",
     projectedHealthFactor: 1.7,
   };
@@ -32,8 +32,8 @@ describe("DepositTabInfo Component", () => {
     expect(screen.getByTestId("symbol-label")).toHaveTextContent(
       "ETH Collateral"
     );
-    expect(screen.getByTestId("collateral")).toHaveTextContent("900");
-    expect(screen.getByTestId("projected-collateral")).toHaveTextContent(
+    expect(screen.getByTestId("collateral-amount")).toHaveTextContent("900");
+    expect(screen.getByTestId("projected-collateral-amount")).toHaveTextContent(
       "1100"
     );
     expect(screen.getByTestId("total-collateral-value")).toHaveTextContent(
