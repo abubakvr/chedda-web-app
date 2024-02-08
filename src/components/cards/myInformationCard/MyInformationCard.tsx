@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
 import { IAccountInfo } from "chedda-sdk";
@@ -6,8 +6,9 @@ import { useTokenBalance } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
-import { SupplyModal } from "@/components/modals";
+import { BorrowModal, SupplyModal } from "@/components/modals";
 import { BigNumber } from "ethers";
+import { fetchData } from "@/redux/api/cheddaSlice";
 
 interface MyInformationCardProps {
   poolStats: IPoolStatsResponse | undefined;
@@ -15,7 +16,7 @@ interface MyInformationCardProps {
   available: BigNumber | undefined;
   isLoading: boolean;
   assetPrice: number;
-  fetchAccountInfo: (showLoading?: false) => void;
+  fetchAccountInfo: (showLoading?: boolean) => void;
 }
 
 export const MyInformationCard: React.FC<MyInformationCardProps> = ({
@@ -26,17 +27,19 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
   available,
   fetchAccountInfo,
 }) => {
-  const { data: tokenBalance } = useTokenBalance(
+  const [isSupplyModalOpen, setIsSupplyModalOpen] = useState(false);
+  const [isBorrowModalOpen, setIsBorrowModalOpen] = useState(false);
+  const { data: tokenBalance, fetchData: fetchTokenBalance } = useTokenBalance(
     poolStats?.asset.address ?? ""
   );
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const closeSupplyModal = () => {
+    setIsSupplyModalOpen(false);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeBorrowModal = () => {
+    setIsBorrowModalOpen(false);
+    fetchTokenBalance(false);
   };
 
   if (isLoading || !poolStats) {
@@ -140,21 +143,35 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
       <div className="flex flex-col justify-center p-8 space-y-5">
         <button
           className="primary-button text-center h-11 items-center rounded-lg text-white text-opacity-100-2 uppercase font-bold text-lg hover:opacity-80"
-          onClick={openModal}
+          onClick={() => setIsSupplyModalOpen(true)}
         >
           Supply
         </button>
         <button
           className="secondary-button button-gradient-text text-center h-11 items-center text-white text-opacity-100-2 uppercase font-bold text-lg hover:opacity-80"
-          onClick={() => {}}
+          onClick={() => setIsBorrowModalOpen(true)}
         >
           Borrow
         </button>
       </div>
-      {isModalOpen && (
+      {isSupplyModalOpen && (
         <SupplyModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
+          isOpen={isSupplyModalOpen}
+          onClose={closeSupplyModal}
+          asset={poolStats?.asset}
+          assetPrice={assetPrice}
+          supplied={accountInfo?.supplied}
+          available={available}
+          tokenBalance={tokenBalance}
+          baseSupplyAPY={poolStats.baseBorrowAPY}
+          fetchAccountInfo={fetchAccountInfo}
+        />
+      )}
+      {isBorrowModalOpen && (
+        <BorrowModal
+          collaterals={poolStats.collaterals}
+          isOpen={isBorrowModalOpen}
+          onClose={closeBorrowModal}
           asset={poolStats?.asset}
           assetPrice={assetPrice}
           supplied={accountInfo?.supplied}

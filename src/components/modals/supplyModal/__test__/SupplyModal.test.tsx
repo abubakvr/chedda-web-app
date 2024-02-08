@@ -58,7 +58,7 @@ describe("SupplyModal", () => {
     }));
 
     (useTransaction as jest.Mock).mockImplementation(() => ({
-      transactionStatus: {
+      supplyTxStatus: {
         isLoading: false,
         isApproved: false,
         isDeposited: false,

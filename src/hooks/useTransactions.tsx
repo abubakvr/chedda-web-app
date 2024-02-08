@@ -1,4 +1,3 @@
-import { Chedda } from "chedda-sdk";
 import { useCallback, useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { BigNumber, Signer } from "ethers";
@@ -6,43 +5,55 @@ import { useCheddaSdk } from "./useCheddaSdk";
 import { useParams } from "next/navigation";
 
 export const useTransaction = (asset: string) => {
-  const [transactionStatus, setTransactionStatus] = useState({
+  const [supplyTxStatus, setSupplyTxStatus] = useState({
     isLoading: false,
     isApproved: false,
     isDeposited: false,
     isWithdrawn: false,
+  });
+  const [borrowTxStatus, setBorrowTxStatus] = useState({
+    isLoading: false,
+    isApproved: false,
+    isCollateralDeposited: false,
   });
   const { account } = useWeb3React();
   const { chedda, signer } = useCheddaSdk();
   const { poolId } = useParams();
   const strPoolId = poolId.toString();
 
-  const lendingPool = chedda?.lendingPool(strPoolId, signer as Signer);
   const token = chedda?.erc20token(asset, signer as Signer);
+  const lendingPool = chedda?.lendingPool(strPoolId, signer as Signer);
 
   const executeTransaction = async (
     transaction: (params: {
-      chedda: Chedda | undefined | null;
-      amount: BigNumber;
+      lendingPool: any;
+      token: any;
+      amount?: BigNumber;
     }) => Promise<any>,
-    amount: BigNumber
+    amount?: BigNumber
   ) => {
-    if (!account) {
-      alert("Please connect your wallet");
-      return;
-    }
+    if (!account) return;
 
     try {
-      setTransactionStatus({
+      setSupplyTxStatus({
         isLoading: true,
         isApproved: false,
         isDeposited: false,
         isWithdrawn: false,
       });
-      return await transaction({ chedda, amount });
+      setBorrowTxStatus({
+        isLoading: true,
+        isApproved: false,
+        isCollateralDeposited: false,
+      });
+      return await transaction({ amount, token, lendingPool });
     } catch (error: any) {
       alert("An error occurred: " + error.message);
-      setTransactionStatus((prevStatus) => ({
+      setSupplyTxStatus((prevStatus) => ({
+        ...prevStatus,
+        isLoading: false,
+      }));
+      setBorrowTxStatus((prevStatus) => ({
         ...prevStatus,
         isLoading: false,
       }));
@@ -67,48 +78,73 @@ export const useTransaction = (asset: string) => {
       return await lendingPool?.withdraw(amount, account, account);
     }, amount);
 
+  const depositCollateral = async (amount: BigNumber) =>
+    executeTransaction(async () => {
+      if (!account) return;
+      return await lendingPool?.addCollateral(asset, amount);
+    }, amount);
+
   const depositHandler = useCallback(
     (owner: string) => {
       if (owner === account) {
-        setTransactionStatus((prevStatus) => ({
+        setSupplyTxStatus((prevStatus) => ({
           ...prevStatus,
           isLoading: false,
           isDeposited: true,
         }));
       }
     },
-    [account, setTransactionStatus]
+    [account, setSupplyTxStatus]
   );
 
   const withdrawHandler = useCallback(
     (owner: string) => {
       if (owner === account) {
-        setTransactionStatus((prevStatus) => ({
+        setSupplyTxStatus((prevStatus) => ({
           ...prevStatus,
           isLoading: false,
           isWithdrawn: true,
         }));
       }
     },
-    [account, setTransactionStatus]
+    [account, setSupplyTxStatus]
   );
 
   const approvalHandler = useCallback(
     (owner: string) => {
       if (owner === account) {
-        setTransactionStatus((prevStatus) => ({
+        setSupplyTxStatus((prevStatus) => ({
+          ...prevStatus,
+          isLoading: false,
+          isApproved: true,
+        }));
+        setBorrowTxStatus((prevStatus) => ({
           ...prevStatus,
           isLoading: false,
           isApproved: true,
         }));
       }
     },
-    [account, setTransactionStatus]
+    [account, setSupplyTxStatus]
+  );
+
+  const depositCollateralHandler = useCallback(
+    (token: string, owner: string) => {
+      if (owner === account) {
+        setBorrowTxStatus((prevStatus) => ({
+          ...prevStatus,
+          isLoading: false,
+          isCollateralDeposited: true,
+        }));
+      }
+    },
+    [account, setBorrowTxStatus]
   );
 
   useEffect(() => {
     lendingPool?.contract?.on("Deposit", depositHandler);
     lendingPool?.contract?.on("Withdraw", withdrawHandler);
+    lendingPool?.contract?.on("CollateralAdded", depositCollateralHandler);
     token?.contract?.on("Approval", approvalHandler);
   }, [
     chedda,
@@ -117,14 +153,16 @@ export const useTransaction = (asset: string) => {
     depositHandler,
     withdrawHandler,
     approvalHandler,
+    depositCollateralHandler,
   ]);
 
   return {
-    isLoading: transactionStatus.isLoading,
-    transactionStatus,
+    supplyTxStatus,
+    borrowTxStatus,
     lendingPool,
     approveAsset,
     depositAsset,
     withdrawAsset,
+    depositCollateral,
   };
 };

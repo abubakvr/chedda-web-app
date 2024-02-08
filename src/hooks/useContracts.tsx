@@ -24,6 +24,7 @@ import {
   getAggregateInfo,
 } from "@/utils/formatResponse";
 import { useFetcher } from "./useFetcher";
+import { parseBigNumberToFloat } from "@/utils/formatters";
 
 export const getAccountInfo: GetDataFunction<IAccountInfo> = async ({
   lens,
@@ -156,6 +157,17 @@ export const getTokenBalance: GetDataFunction<BigNumber> = async ({
   return await token.balanceOf(account);
 };
 
+export const getSelectTokenBalance: GetDataFunction<BigNumber> = async ({
+  chedda,
+  signer,
+  account,
+  asset,
+}) => {
+  if (!asset || !account) return null;
+  const token = chedda.erc20token(asset, signer as Signer);
+  return await token.balanceOf(account);
+};
+
 export const getAssetBalance: GetDataFunction<BigNumber> = async ({
   chedda,
   signer,
@@ -165,6 +177,43 @@ export const getAssetBalance: GetDataFunction<BigNumber> = async ({
   if (!poolId || !account) return null;
   const pool = chedda.lendingPool(poolId, signer as Signer);
   return await pool.assetBalance(account);
+};
+
+const getTokenValue: GetDataFunction<string> = async ({
+  asset,
+  chedda,
+  environment,
+}) => {
+  if (!asset) return null;
+  const priceOracle = chedda.priceOracle(environment.contracts.PriceFeed);
+  const decimals = await priceOracle.decimals();
+  const assetPrice = await priceOracle.readPrice(asset);
+  return parseBigNumberToFloat(assetPrice, decimals as any);
+};
+
+export const getTotalCollateral: GetDataFunction<
+  Record<string, BigNumber>
+> = async ({ chedda, signer, poolId, account, asset = "" }) => {
+  if (!account) return null;
+  const pool = chedda.lendingPool(poolId, signer as Signer);
+  const totalAccountCollateralValue =
+    await pool?.totalAccountCollateralValue(account);
+  const accountCollateralAmount = await pool?.accountCollateralAmount(
+    account,
+    asset
+  );
+  return { totalAccountCollateralValue, accountCollateralAmount };
+};
+
+export const getAccountHealth: GetDataFunction<BigNumber> = async ({
+  poolId,
+  signer,
+  chedda,
+  account,
+}) => {
+  if (!account) return null;
+  const pool = chedda.lendingPool(poolId, signer as Signer);
+  return await pool?.accountHealth(account);
 };
 
 // Exported custom hooks
@@ -205,4 +254,22 @@ export const useTokenBalance = (asset: string): HookResult<BigNumber> => {
 
 export const useAssetBalance = (asset: string): HookResult<BigNumber> => {
   return useFetcher<BigNumber>(getAssetBalance, asset);
+};
+
+export const useTokenValue = (asset: string): HookResult<string> => {
+  return useFetcher<string>(getTokenValue, asset);
+};
+
+export const useAccountCollateral = (
+  asset: string
+): HookResult<Record<string, BigNumber>> => {
+  return useFetcher<Record<string, BigNumber>>(getTotalCollateral, asset);
+};
+
+export const useAccountHealth = (): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getAccountHealth);
+};
+
+export const useSelectTokenBalance = (asset: string): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getSelectTokenBalance, asset);
 };
