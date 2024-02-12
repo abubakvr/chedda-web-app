@@ -154,10 +154,6 @@ export const BorrowTab = ({
               parseFloat(totalBorrowed) + (inputAmount || 0)
             )} ${symbol}`}
             collateralValue={`$${formatNumber(parsedTotalAccountCollateralValue)} `}
-            projectedCollateralValue={`$${formatNumber(
-              parsedTotalAccountCollateralValue +
-                (inputAmount * parsedTokenCollateralValue || 0)
-            )} `}
             healthFactor={`${formatNumber(parsedHealthFactor)}`}
             projectedHealthFactor={projectedHealthFactor || parsedHealthFactor}
             liquidity={`${formatNumber(parsedAvailableLiquidity)}  ${symbol}`}

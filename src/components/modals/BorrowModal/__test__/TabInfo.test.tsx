@@ -53,7 +53,6 @@ describe("BorrowTabInfo Component", () => {
     healthFactor: "2.5",
     liquidity: "$3000",
     projectedTotalBorrowed: "1500",
-    projectedCollateralValue: "$5500",
     projectedHealthFactor: 2.7,
     projectedLiquidity: "$2800",
   };
@@ -75,9 +74,6 @@ describe("BorrowTabInfo Component", () => {
       "Collateral Value"
     );
     expect(screen.getByTestId("collateral-value")).toHaveTextContent("$5000");
-    expect(screen.getByTestId("projected-collateral-value")).toHaveTextContent(
-      "$5500"
-    );
 
     expect(screen.getByTestId("health-factor-label")).toHaveTextContent(
       "Health Factor"
@@ -114,9 +110,6 @@ describe("BorrowTabInfo Component", () => {
       "Collateral Value"
     );
     expect(screen.getByTestId("collateral-value")).toHaveTextContent("-");
-    expect(screen.getByTestId("projected-collateral-value")).toHaveTextContent(
-      "-"
-    );
 
     expect(screen.getByTestId("health-factor-label")).toHaveTextContent(
       "Health Factor"

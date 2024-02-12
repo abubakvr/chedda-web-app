@@ -21,7 +21,6 @@ export interface BorrowTabInfoProps {
   totalBorrowed: string;
   projectedTotalBorrowed: string;
   collateralValue: string;
-  projectedCollateralValue: string;
   healthFactor: string;
   projectedHealthFactor: number;
   liquidity: string;
@@ -125,7 +124,6 @@ export const BorrowTabInfo = ({
   healthFactor,
   liquidity,
   projectedTotalBorrowed,
-  projectedCollateralValue,
   projectedHealthFactor,
   projectedLiquidity,
 }: BorrowTabInfoProps) => {
@@ -167,14 +165,6 @@ export const BorrowTabInfo = ({
           <div className="flex space-x-2">
             <div className="font-bold" data-testid="collateral-value">
               {isLoading ? "-" : collateralValue}
-            </div>
-            <Image
-              src={ArrowRight}
-              alt="right arrow"
-              className="flex self-center"
-            />
-            <div className="font-bold" data-testid="projected-collateral-value">
-              {isLoading ? "-" : projectedCollateralValue}
             </div>
           </div>
         </div>
