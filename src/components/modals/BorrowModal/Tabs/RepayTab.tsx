@@ -11,6 +11,7 @@ import { useTransaction } from "@/hooks";
 import { BigNumber, ethers } from "ethers";
 import { Toast } from "@/components/ui";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
+import { displayProjectedHealthFactor } from "@/utils/helpers";
 
 export interface RepayTabProps {
   asset: IToken;
@@ -37,7 +38,6 @@ export const RepayTab = ({
   allowance,
   tokenBalance,
   assetPrice,
-  tokenCollateralValue,
   totalBorrowed,
   availableLiquidity,
   fetchAllowance,
@@ -63,16 +63,18 @@ export const RepayTab = ({
     parseBigNumberToFloat(availableLiquidity, decimals)
   );
 
+  const parsedTotalBorrowed = parseFloat(totalBorrowed);
+
   const parsedAssetBalance = parseBigNumberToFloat(tokenBalance, decimals);
 
-  const valueOfAssetsBorrowed = parseFloat(totalBorrowed) * assetPrice;
+  const valueOfAssetsBorrowed = parsedTotalBorrowed * assetPrice;
 
   const valueOfNewCollateral = inputAmount * Number(tokenValue);
 
   const parsedHealthFactor = parseFloat(parseBigNumberToFloat(healthFactor));
 
   const maxInputValue = Math.min(
-    parseFloat(totalBorrowed),
+    parsedTotalBorrowed,
     parseFloat(parsedAssetBalance)
   );
 
@@ -136,7 +138,7 @@ export const RepayTab = ({
   return (
     <>
       <Toast isOpen={showToast} toastMessage={toastMessage} />
-      <div data-testid="withdraw-tab-content" className="mt-6">
+      <div data-testid="repay-tab-content" className="mt-6">
         <div className="text-xl font-bold flex justify-between">
           <div>Repay your borrowed asset</div>
         </div>
@@ -179,13 +181,17 @@ export const RepayTab = ({
         <div data-testid="modal-info" className="mt-6 pb-0">
           <BorrowTabInfo
             isLoading={accountCollateralLoading || healthFactorLoading}
-            totalBorrowed={`${formatNumber(parseFloat(totalBorrowed))} ${symbol}`}
+            totalBorrowed={`${formatNumber(parsedTotalBorrowed)} ${symbol}`}
             projectedTotalBorrowed={`${formatNumber(
-              parseFloat(totalBorrowed) - (inputAmount || 0)
+              parsedTotalBorrowed - (inputAmount || 0)
             )} ${symbol}`}
             collateralValue={`$${formatNumber(parsedTotalAccountCollateralValue)} `}
             healthFactor={`${formatNumber(parsedHealthFactor)}`}
-            projectedHealthFactor={projectedHealthFactor || parsedHealthFactor}
+            projectedHealthFactor={displayProjectedHealthFactor(
+              totalBorrowed,
+              projectedHealthFactor,
+              parsedHealthFactor
+            )}
             liquidity={`${formatNumber(parsedAvailableLiquidity)}  ${symbol}`}
             projectedLiquidity={`${formatNumber(
               parsedAvailableLiquidity + (inputAmount || 0)

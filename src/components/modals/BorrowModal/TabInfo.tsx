@@ -138,6 +138,7 @@ export const BorrowTabInfo = ({
           <Image src={InfoIcon} alt="info icon" />
         </div>
         <div className="flex items-center gap-x-1.5">
+          <RefreshSpinner isOpen={isLoading} data-testid="refresh-spinner" />
           <div className="flex space-x-2">
             <div className="font-bold" data-testid="total-borrowed">
               {isLoading ? "-" : totalBorrowed}

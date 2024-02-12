@@ -12,6 +12,7 @@ import { useTransaction } from "@/hooks";
 import { BigNumber, ethers } from "ethers";
 import { Toast } from "@/components/ui";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
+import { displayProjectedHealthFactor } from "@/utils/helpers";
 
 export interface WithdrawTabProps {
   selectedCollateral: IToken;
@@ -61,6 +62,9 @@ export const WithdrawTab = ({
       10
     )
   );
+
+  const parsedTotalBorrowed = parseFloat(totalBorrowed);
+
   const parsedHealthFactor = parseFloat(
     parseBigNumberToFloat(healthFactor, 18, 10)
   );
@@ -69,7 +73,7 @@ export const WithdrawTab = ({
     parseBigNumberToFloat(tokenCollateralValue, 18, 10)
   );
 
-  const valueOfAssetsBorrowed = parseFloat(totalBorrowed) * assetPrice;
+  const valueOfAssetsBorrowed = parsedTotalBorrowed * assetPrice;
 
   const valueOfNewCollateral = inputAmount * parsedTokenCollateralValue;
 
@@ -188,7 +192,11 @@ export const WithdrawTab = ({
                 (inputAmount * parsedTokenCollateralValue || 0)
             )} `}
             healthFactor={`${formatNumber(parsedHealthFactor)}`}
-            projectedHealthFactor={projectedHealthFactor || parsedHealthFactor}
+            projectedHealthFactor={displayProjectedHealthFactor(
+              totalBorrowed,
+              projectedHealthFactor,
+              parsedHealthFactor
+            )}
           />
         </div>
       </div>

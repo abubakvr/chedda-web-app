@@ -56,3 +56,23 @@ export const utilizationsArray: BigNumber[] = Array.from(
   { length: 101 },
   (_, index) => BigNumber.from(BigInt(index) * BigInt(10000000000000000))
 );
+
+export function displayProjectedHealthFactor(
+  totalBorrowed: string,
+  projectedHealthFactor: number | null | undefined,
+  parsedHealthFactor: number
+): number {
+  if (
+    parseFloat(totalBorrowed) !== 0 &&
+    projectedHealthFactor !== null &&
+    projectedHealthFactor !== undefined &&
+    projectedHealthFactor < 100 &&
+    projectedHealthFactor > 0
+  ) {
+    return projectedHealthFactor;
+  } else if (!projectedHealthFactor) {
+    return parsedHealthFactor;
+  } else {
+    return 100;
+  }
+}

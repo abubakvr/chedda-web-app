@@ -11,6 +11,7 @@ import { useTransaction } from "@/hooks";
 import { BigNumber, ethers } from "ethers";
 import { Toast } from "@/components/ui";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
+import { displayProjectedHealthFactor } from "@/utils/helpers";
 
 export interface BorrowTabProps {
   asset: IToken;
@@ -150,7 +151,11 @@ export const BorrowTab = ({
             )} ${symbol}`}
             collateralValue={`$${formatNumber(parsedTotalAccountCollateralValue)} `}
             healthFactor={`${formatNumber(parsedHealthFactor)}`}
-            projectedHealthFactor={projectedHealthFactor || parsedHealthFactor}
+            projectedHealthFactor={displayProjectedHealthFactor(
+              totalBorrowed,
+              projectedHealthFactor,
+              parsedHealthFactor
+            )}
             liquidity={`${formatNumber(parsedAvailableLiquidity)}  ${symbol}`}
             projectedLiquidity={`${formatNumber(
               parsedAvailableLiquidity - (inputAmount || 0)
