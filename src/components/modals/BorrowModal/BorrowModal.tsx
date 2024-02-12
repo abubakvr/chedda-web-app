@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState } from "react";
 import { IToken } from "@/utils/types";
-import { DepositTab, WithdrawTab, BorrowTab } from "./Tabs";
+import { DepositTab, WithdrawTab, BorrowTab, RepayTab } from "./Tabs";
 import {
   useAccountCollateral,
   useAccountHealth,
@@ -50,7 +50,9 @@ export const BorrowModal: FC<BorrowModalProps> = ({
   onClose,
   fetchAccountInfo,
 }) => {
-  const [activeTab, setActiveTab] = useState("Deposit");
+  const [activeTab, setActiveTab] = useState<
+    "Deposit" | "Withdraw" | "Repay" | "Borrow"
+  >("Deposit");
   const [selectedCollateral, setSelectedCollateral] = useState<IToken>(
     collaterals[0]
   );
@@ -204,6 +206,23 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 asset={asset}
                 isLoading={isLoading}
                 accountCollateral={accountCollateral}
+                healthFactor={healthFactor}
+                tokenValue={tokenValue}
+                assetPrice={assetPrice}
+                refreshModal={refreshModal}
+                fetchAllowance={fetchAllowance}
+                availableLiquidity={availableLiquidity}
+                totalBorrowed={totalBorrowed}
+                tokenCollateralValue={tokenCollateralValue}
+              />
+            )}
+            {activeTab === "Repay" && (
+              <RepayTab
+                asset={asset}
+                isLoading={isLoading}
+                allowance={allowance}
+                accountCollateral={accountCollateral}
+                tokenBalance={tokenBalance}
                 healthFactor={healthFactor}
                 tokenValue={tokenValue}
                 assetPrice={assetPrice}

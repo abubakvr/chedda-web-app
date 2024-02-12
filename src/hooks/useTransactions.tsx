@@ -17,6 +17,7 @@ export const useTransaction = (asset: string) => {
     isCollateralDeposited: false,
     isCollateralWithdrawn: false,
     isAssetBorrowed: false,
+    isAssetRepaid: false,
   });
   const { account } = useWeb3React();
   const { chedda, signer } = useCheddaSdk();
@@ -49,6 +50,7 @@ export const useTransaction = (asset: string) => {
         isCollateralDeposited: false,
         isCollateralWithdrawn: false,
         isAssetBorrowed: false,
+        isAssetRepaid: false,
       });
       return await transaction({ amount, token, lendingPool });
     } catch (error: any) {
@@ -77,6 +79,7 @@ export const useTransaction = (asset: string) => {
       isCollateralDeposited: false,
       isCollateralWithdrawn: false,
       isAssetBorrowed: false,
+      isAssetRepaid: false,
     });
   };
 
@@ -114,6 +117,12 @@ export const useTransaction = (asset: string) => {
     executeTransaction(async () => {
       if (!account) return;
       return await lendingPool?.take(amount);
+    }, amount);
+
+  const repayAsset = async (amount: BigNumber) =>
+    executeTransaction(async () => {
+      if (!account) return;
+      return await lendingPool?.putAmount(amount);
     }, amount);
 
   const depositHandler = useCallback(
@@ -199,6 +208,19 @@ export const useTransaction = (asset: string) => {
     [account, setBorrowTxStatus]
   );
 
+  const repayAssetHandler = useCallback(
+    (owner: string) => {
+      if (owner === account) {
+        setBorrowTxStatus((prevStatus) => ({
+          ...prevStatus,
+          isLoading: false,
+          isAssetRepaid: true,
+        }));
+      }
+    },
+    [account, setBorrowTxStatus]
+  );
+
   useEffect(() => {
     token?.contract?.on("Approval", approvalHandler);
     lendingPool?.contract?.on("Deposit", depositHandler);
@@ -206,6 +228,7 @@ export const useTransaction = (asset: string) => {
     lendingPool?.contract?.on("CollateralAdded", depositCollateralHandler);
     lendingPool?.contract?.on("CollateralRemoved", withdrawCollateralHandler);
     lendingPool?.contract?.on("AssetBorrowed", borrowAssetHandler);
+    lendingPool?.contract?.on("AssetRepaid", repayAssetHandler);
   }, [
     chedda,
     lendingPool?.contract,
@@ -216,6 +239,7 @@ export const useTransaction = (asset: string) => {
     depositCollateralHandler,
     withdrawCollateralHandler,
     borrowAssetHandler,
+    repayAssetHandler,
   ]);
 
   return {
@@ -226,8 +250,9 @@ export const useTransaction = (asset: string) => {
     depositAsset,
     withdrawAsset,
     depositCollateral,
-    resetTxState,
     withdrawCollateral,
     borrowAsset,
+    repayAsset,
+    resetTxState,
   };
 };
