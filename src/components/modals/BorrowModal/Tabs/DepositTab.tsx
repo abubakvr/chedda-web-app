@@ -12,6 +12,7 @@ import { useTransaction } from "@/hooks";
 import { BigNumber, ethers } from "ethers";
 import { Toast } from "@/components/ui";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
+import { displayProjectedHealthFactor } from "@/utils/helpers";
 
 export interface DepositTabProps {
   selectedCollateral: IToken;
@@ -208,7 +209,11 @@ export const DepositTab = ({
                 (inputAmount * parsedTokenCollateralValue || 0)
             )} `}
             healthFactor={`${formatNumber(parsedHealthFactor)}`}
-            projectedHealthFactor={projectedHealthFactor || parsedHealthFactor}
+            projectedHealthFactor={displayProjectedHealthFactor(
+              totalBorrowed,
+              projectedHealthFactor,
+              parsedHealthFactor
+            )}
           />
         </div>
       </div>
