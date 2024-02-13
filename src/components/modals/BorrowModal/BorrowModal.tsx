@@ -1,21 +1,24 @@
 import React, { FC, useCallback, useState } from "react";
 import { IToken } from "@/utils/types";
-import { DepositTab } from "./DepositTab";
-import { WithdrawTab } from "./WithdrawTab";
+import { DepositTab, WithdrawTab, BorrowTab, RepayTab } from "./Tabs";
 import {
   useAccountCollateral,
   useAccountHealth,
   useAllowance,
+  useAvailableLiquidity,
   useSelectTokenBalance,
   useTokenCollateralValue,
   useTokenValue,
 } from "@/hooks";
+import { BigNumber } from "ethers";
 
 export interface BorrowModalProps {
+  asset: IToken;
   isOpen: boolean;
   collaterals: IToken[];
   assetPrice: number;
   totalBorrowed: string;
+  availableLiquidity: BigNumber | undefined;
   onClose: () => void;
   fetchAccountInfo: (showLoading?: boolean) => void;
 }
@@ -39,13 +42,17 @@ const Tab: FC<{
 
 export const BorrowModal: FC<BorrowModalProps> = ({
   isOpen,
+  asset,
   collaterals,
   assetPrice,
   totalBorrowed,
+  availableLiquidity,
   onClose,
   fetchAccountInfo,
 }) => {
-  const [activeTab, setActiveTab] = useState("Deposit");
+  const [activeTab, setActiveTab] = useState<
+    "Deposit" | "Withdraw" | "Repay" | "Borrow"
+  >("Deposit");
   const [selectedCollateral, setSelectedCollateral] = useState<IToken>(
     collaterals[0]
   );
@@ -75,6 +82,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
     tokenAddress,
     decimals
   );
+  const { fetchData: fetchAvailable } = useAvailableLiquidity();
 
   const isLoading = {
     allowanceLoading,
@@ -89,12 +97,14 @@ export const BorrowModal: FC<BorrowModalProps> = ({
     fetchHealthFactor(false);
     fetchTokenBalance(false);
     fetchAccountInfo(false);
+    fetchAvailable(false);
   }, [
     fetchAllowance,
     fetchAccountCollateral,
     fetchHealthFactor,
     fetchTokenBalance,
     fetchAccountInfo,
+    fetchAvailable,
   ]);
 
   return (
@@ -187,6 +197,38 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 assetPrice={assetPrice}
                 refreshModal={refreshModal}
                 fetchAllowance={fetchAllowance}
+                totalBorrowed={totalBorrowed}
+                tokenCollateralValue={tokenCollateralValue}
+              />
+            )}
+            {activeTab === "Borrow" && (
+              <BorrowTab
+                asset={asset}
+                isLoading={isLoading}
+                accountCollateral={accountCollateral}
+                healthFactor={healthFactor}
+                tokenValue={tokenValue}
+                assetPrice={assetPrice}
+                refreshModal={refreshModal}
+                fetchAllowance={fetchAllowance}
+                availableLiquidity={availableLiquidity}
+                totalBorrowed={totalBorrowed}
+                tokenCollateralValue={tokenCollateralValue}
+              />
+            )}
+            {activeTab === "Repay" && (
+              <RepayTab
+                asset={asset}
+                isLoading={isLoading}
+                allowance={allowance}
+                accountCollateral={accountCollateral}
+                tokenBalance={tokenBalance}
+                healthFactor={healthFactor}
+                tokenValue={tokenValue}
+                assetPrice={assetPrice}
+                refreshModal={refreshModal}
+                fetchAllowance={fetchAllowance}
+                availableLiquidity={availableLiquidity}
                 totalBorrowed={totalBorrowed}
                 tokenCollateralValue={tokenCollateralValue}
               />

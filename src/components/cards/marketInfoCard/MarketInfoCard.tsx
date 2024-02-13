@@ -75,9 +75,9 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
           },
           {
             label: "Available Liquidity",
-            value: `${formatCurrency(
+            value: `${formatLargeNumber(
               parseBigNumberToFloat(available, poolStats?.asset.decimals)
-            )}`,
+            )} ${poolStats?.asset?.symbol}`,
           },
           {
             label: "Utilization",

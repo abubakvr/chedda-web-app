@@ -3,6 +3,7 @@ import Image from "next/image";
 import ArrowRight from "@/assets/icon/arrow-right.svg";
 import InfoIcon from "@/assets/icon/info-icon.svg";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
+import { toFixedTrunc } from "@/utils/formatters";
 
 export interface DepositTabInfoProps {
   isLoading: boolean;
@@ -15,12 +16,15 @@ export interface DepositTabInfoProps {
   projectedHealthFactor: number;
 }
 
-export interface WithdrawInfoProps {
+export interface BorrowTabInfoProps {
+  isLoading: boolean;
+  totalBorrowed: string;
+  projectedTotalBorrowed: string;
+  collateralValue: string;
+  healthFactor: string;
+  projectedHealthFactor: number;
   liquidity: string;
-  supplied: string;
-  baseSupplyAPY: string;
   projectedLiquidity: string;
-  projectedSupply: string;
 }
 
 export const DepositTabInfo = ({
@@ -96,7 +100,7 @@ export const DepositTabInfo = ({
         <div className="flex items-center gap-x-1.5">
           <div className="flex space-x-2  text-success">
             <div className="font-bold" data-testid="health-factor">
-              {isLoading ? "-" : parseFloat(healthFactor).toFixed(2)}
+              {isLoading ? "-" : toFixedTrunc(Number(healthFactor), 2)}
             </div>
             <Image
               src={ArrowRight}
@@ -104,7 +108,7 @@ export const DepositTabInfo = ({
               className="flex self-center"
             />
             <div className="font-bold" data-testid="projected-health-factor">
-              {isLoading ? "-" : projectedHealthFactor.toFixed(2)}
+              {isLoading ? "-" : toFixedTrunc(projectedHealthFactor, 2)}
             </div>
           </div>
         </div>
@@ -113,47 +117,104 @@ export const DepositTabInfo = ({
   );
 };
 
-export const WithdrawTabInfo = ({
+export const BorrowTabInfo = ({
+  isLoading,
+  totalBorrowed,
+  collateralValue,
+  healthFactor,
   liquidity,
-  supplied,
+  projectedTotalBorrowed,
+  projectedHealthFactor,
   projectedLiquidity,
-  projectedSupply,
-}: WithdrawInfoProps) => {
+}: BorrowTabInfoProps) => {
   return (
-    <div data-testid="withdraw-tab-info">
+    <div data-testid="borrow-tab-info">
       <div className="flex justify-between text-sm pb-5">
-        <div className="opacity-50 font-semibold" data-testid="liquidity-label">
-          Liquidity
+        <div
+          className="opacity-50 font-semibold flex gap-x-2"
+          data-testid="total-borrowed-label"
+        >
+          Borrowed
+          <Image src={InfoIcon} alt="info icon" />
         </div>
-        <div className="flex space-x-2">
-          <div className="font-bold" data-testid="current-liquidity">
-            {liquidity}
-          </div>
-          <Image
-            src={ArrowRight}
-            alt="right arrow"
-            className="flex self-center"
-          />
-          <div className="font-bold" data-testid="projected-liquidity">
-            {projectedLiquidity}
+        <div className="flex items-center gap-x-1.5">
+          <RefreshSpinner isOpen={isLoading} data-testid="refresh-spinner" />
+          <div className="flex space-x-2">
+            <div className="font-bold" data-testid="total-borrowed">
+              {isLoading ? "-" : totalBorrowed}
+            </div>
+            <Image
+              src={ArrowRight}
+              alt="right arrow"
+              className="flex self-center"
+            />
+            <div className="font-bold" data-testid="projected-total-borrowed">
+              {isLoading ? "-" : projectedTotalBorrowed}
+            </div>
           </div>
         </div>
       </div>
       <div className="flex justify-between text-sm pb-5">
-        <div className="opacity-50 font-semibold" data-testid="supplied-label">
-          Supplied
+        <div
+          className="opacity-50 font-semibold flex gap-x-2"
+          data-testid="collateral-value-label"
+        >
+          Collateral Value
+          <Image src={InfoIcon} alt="info icon" />
         </div>
-        <div className="flex space-x-2">
-          <div className="font-bold" data-testid="current-supplied">
-            {supplied}
+        <div className="flex items-center gap-x-1.5">
+          <div className="flex space-x-2">
+            <div className="font-bold" data-testid="collateral-value">
+              {isLoading ? "-" : collateralValue}
+            </div>
           </div>
-          <Image
-            src={ArrowRight}
-            alt="right arrow"
-            className="flex self-center"
-          />
-          <div className="font-bold" data-testid="projected-supply">
-            {projectedSupply}
+        </div>
+      </div>
+      <div className="flex justify-between text-sm pb-5">
+        <div
+          className="opacity-50 font-semibold flex gap-x-2"
+          data-testid="health-factor-label"
+        >
+          Health Factor
+          <Image src={InfoIcon} alt="info icon" />
+        </div>
+        <div className="flex items-center gap-x-1.5">
+          <div className="flex space-x-2  text-success">
+            <div className="font-bold" data-testid="health-factor">
+              {isLoading ? "-" : toFixedTrunc(Number(healthFactor), 2)}
+            </div>
+            <Image
+              src={ArrowRight}
+              alt="right arrow"
+              className="flex self-center"
+            />
+            <div className="font-bold" data-testid="projected-health-factor">
+              {isLoading ? "-" : toFixedTrunc(projectedHealthFactor, 2)}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="flex justify-between text-sm pb-5">
+        <div
+          className="opacity-50 font-semibold flex gap-x-2"
+          data-testid="liquidity-label"
+        >
+          Liquidity
+          <Image src={InfoIcon} alt="info icon" />
+        </div>
+        <div className="flex items-center gap-x-1.5">
+          <div className="flex space-x-2 ">
+            <div className="font-bold" data-testid="liquidity">
+              {isLoading ? "-" : liquidity}
+            </div>
+            <Image
+              src={ArrowRight}
+              alt="right arrow"
+              className="flex self-center"
+            />
+            <div className="font-bold" data-testid="projected-liquidity">
+              {isLoading ? "-" : projectedLiquidity}
+            </div>
           </div>
         </div>
       </div>

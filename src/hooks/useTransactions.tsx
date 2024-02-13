@@ -16,6 +16,8 @@ export const useTransaction = (asset: string) => {
     isApproved: false,
     isCollateralDeposited: false,
     isCollateralWithdrawn: false,
+    isAssetBorrowed: false,
+    isAssetRepaid: false,
   });
   const { account } = useWeb3React();
   const { chedda, signer } = useCheddaSdk();
@@ -47,6 +49,8 @@ export const useTransaction = (asset: string) => {
         isApproved: false,
         isCollateralDeposited: false,
         isCollateralWithdrawn: false,
+        isAssetBorrowed: false,
+        isAssetRepaid: false,
       });
       return await transaction({ amount, token, lendingPool });
     } catch (error: any) {
@@ -74,6 +78,8 @@ export const useTransaction = (asset: string) => {
       isApproved: false,
       isCollateralDeposited: false,
       isCollateralWithdrawn: false,
+      isAssetBorrowed: false,
+      isAssetRepaid: false,
     });
   };
 
@@ -105,6 +111,18 @@ export const useTransaction = (asset: string) => {
     executeTransaction(async () => {
       if (!account) return;
       return await lendingPool?.removeCollateral(asset, amount);
+    }, amount);
+
+  const borrowAsset = async (amount: BigNumber) =>
+    executeTransaction(async () => {
+      if (!account) return;
+      return await lendingPool?.take(amount);
+    }, amount);
+
+  const repayAsset = async (amount: BigNumber) =>
+    executeTransaction(async () => {
+      if (!account) return;
+      return await lendingPool?.putAmount(amount);
     }, amount);
 
   const depositHandler = useCallback(
@@ -177,12 +195,40 @@ export const useTransaction = (asset: string) => {
     [account, setBorrowTxStatus]
   );
 
+  const borrowAssetHandler = useCallback(
+    (owner: string) => {
+      if (owner === account) {
+        setBorrowTxStatus((prevStatus) => ({
+          ...prevStatus,
+          isLoading: false,
+          isAssetBorrowed: true,
+        }));
+      }
+    },
+    [account, setBorrowTxStatus]
+  );
+
+  const repayAssetHandler = useCallback(
+    (owner: string) => {
+      if (owner === account) {
+        setBorrowTxStatus((prevStatus) => ({
+          ...prevStatus,
+          isLoading: false,
+          isAssetRepaid: true,
+        }));
+      }
+    },
+    [account, setBorrowTxStatus]
+  );
+
   useEffect(() => {
     token?.contract?.on("Approval", approvalHandler);
     lendingPool?.contract?.on("Deposit", depositHandler);
     lendingPool?.contract?.on("Withdraw", withdrawHandler);
     lendingPool?.contract?.on("CollateralAdded", depositCollateralHandler);
     lendingPool?.contract?.on("CollateralRemoved", withdrawCollateralHandler);
+    lendingPool?.contract?.on("AssetBorrowed", borrowAssetHandler);
+    lendingPool?.contract?.on("AssetRepaid", repayAssetHandler);
   }, [
     chedda,
     lendingPool?.contract,
@@ -192,6 +238,8 @@ export const useTransaction = (asset: string) => {
     approvalHandler,
     depositCollateralHandler,
     withdrawCollateralHandler,
+    borrowAssetHandler,
+    repayAssetHandler,
   ]);
 
   return {
@@ -202,7 +250,9 @@ export const useTransaction = (asset: string) => {
     depositAsset,
     withdrawAsset,
     depositCollateral,
-    resetTxState,
     withdrawCollateral,
+    borrowAsset,
+    repayAsset,
+    resetTxState,
   };
 };
