@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useState } from "react";
 import { IToken } from "@/utils/types";
 import { DepositTab } from "./DepositTab";
+import { WithdrawTab } from "./WithdrawTab";
 import {
   useAccountCollateral,
   useAccountHealth,
@@ -126,6 +127,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 isActive={activeTab === "Deposit"}
                 onClick={() => {
                   setActiveTab("Deposit");
+                  setSelectedCollateral(collaterals[0]);
                 }}
                 testId="deposit-tab"
               />
@@ -142,6 +144,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 isActive={activeTab === "Withdraw"}
                 onClick={() => {
                   setActiveTab("Withdraw");
+                  setSelectedCollateral(collaterals[0]);
                 }}
                 testId="withdraw-tab"
               />
@@ -163,6 +166,22 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 allowance={allowance}
                 accountCollateral={accountCollateral}
                 tokenBalance={tokenBalance}
+                healthFactor={healthFactor}
+                tokenValue={tokenValue}
+                assetPrice={assetPrice}
+                refreshModal={refreshModal}
+                fetchAllowance={fetchAllowance}
+                totalBorrowed={totalBorrowed}
+                tokenCollateralValue={tokenCollateralValue}
+              />
+            )}
+            {activeTab === "Withdraw" && (
+              <WithdrawTab
+                collaterals={collaterals}
+                selectedCollateral={selectedCollateral}
+                setSelectedCollateral={setSelectedCollateral}
+                isLoading={isLoading}
+                accountCollateral={accountCollateral}
                 healthFactor={healthFactor}
                 tokenValue={tokenValue}
                 assetPrice={assetPrice}

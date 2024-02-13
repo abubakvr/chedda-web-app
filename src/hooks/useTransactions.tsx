@@ -15,6 +15,7 @@ export const useTransaction = (asset: string) => {
     isLoading: false,
     isApproved: false,
     isCollateralDeposited: false,
+    isCollateralWithdrawn: false,
   });
   const { account } = useWeb3React();
   const { chedda, signer } = useCheddaSdk();
@@ -45,6 +46,7 @@ export const useTransaction = (asset: string) => {
         isLoading: true,
         isApproved: false,
         isCollateralDeposited: false,
+        isCollateralWithdrawn: false,
       });
       return await transaction({ amount, token, lendingPool });
     } catch (error: any) {
@@ -71,6 +73,7 @@ export const useTransaction = (asset: string) => {
       isLoading: false,
       isApproved: false,
       isCollateralDeposited: false,
+      isCollateralWithdrawn: false,
     });
   };
 
@@ -96,6 +99,12 @@ export const useTransaction = (asset: string) => {
     executeTransaction(async () => {
       if (!account) return;
       return await lendingPool?.addCollateral(asset, amount);
+    }, amount);
+
+  const withdrawCollateral = async (amount: BigNumber) =>
+    executeTransaction(async () => {
+      if (!account) return;
+      return await lendingPool?.removeCollateral(asset, amount);
     }, amount);
 
   const depositHandler = useCallback(
@@ -155,11 +164,25 @@ export const useTransaction = (asset: string) => {
     [account, setBorrowTxStatus]
   );
 
+  const withdrawCollateralHandler = useCallback(
+    (_token: string, owner: string) => {
+      if (owner === account) {
+        setBorrowTxStatus((prevStatus) => ({
+          ...prevStatus,
+          isLoading: false,
+          isCollateralWithdrawn: true,
+        }));
+      }
+    },
+    [account, setBorrowTxStatus]
+  );
+
   useEffect(() => {
     token?.contract?.on("Approval", approvalHandler);
     lendingPool?.contract?.on("Deposit", depositHandler);
     lendingPool?.contract?.on("Withdraw", withdrawHandler);
     lendingPool?.contract?.on("CollateralAdded", depositCollateralHandler);
+    lendingPool?.contract?.on("CollateralRemoved", withdrawCollateralHandler);
   }, [
     chedda,
     lendingPool?.contract,
@@ -168,6 +191,7 @@ export const useTransaction = (asset: string) => {
     withdrawHandler,
     approvalHandler,
     depositCollateralHandler,
+    withdrawCollateralHandler,
   ]);
 
   return {
@@ -179,5 +203,6 @@ export const useTransaction = (asset: string) => {
     withdrawAsset,
     depositCollateral,
     resetTxState,
+    withdrawCollateral,
   };
 };
