@@ -139,6 +139,7 @@ export type GetDataFunction<T> = ({
   chedda,
   signer,
   environment,
+  decimals,
 }: {
   lens: any;
   poolId: string;
@@ -147,6 +148,7 @@ export type GetDataFunction<T> = ({
   signer?: Signer;
   environment: IEnvironment;
   asset?: string;
+  decimals?: number;
 }) => Promise<T | null>;
 
 export interface CustomTooltipProps<T> {

@@ -204,12 +204,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
         modalMessage={modalMessage}
         continueAction={() => setOpenSuccessModal(false)}
       />
-      <Toast
-        isOpen={showToast}
-        onClose={() => setShowToast(false)}
-        toastMessage={toastMessage}
-        duration={10000}
-      />
+      <Toast isOpen={showToast} toastMessage={toastMessage} />
       <div
         data-testid="modal-container"
         className={`fixed inset-0 ${

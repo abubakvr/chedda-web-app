@@ -7,10 +7,10 @@ import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
 export interface DepositTabInfoProps {
   isLoading: boolean;
   symbol: string;
-  collateral: string;
-  projectedCollateral: string;
-  projectedCollateralValue: string;
-  collateralValue: string;
+  collateralAmount: string;
+  projectedCollateralAmount: string;
+  projectedTotalCollateralValue: string;
+  totalCollateralValue: string;
   healthFactor: string;
   projectedHealthFactor: number;
 }
@@ -26,10 +26,10 @@ export interface WithdrawInfoProps {
 export const DepositTabInfo = ({
   isLoading,
   symbol,
-  collateralValue,
-  projectedCollateralValue,
-  collateral,
-  projectedCollateral,
+  totalCollateralValue,
+  projectedTotalCollateralValue,
+  collateralAmount,
+  projectedCollateralAmount,
   healthFactor,
   projectedHealthFactor,
 }: DepositTabInfoProps) => {
@@ -42,16 +42,19 @@ export const DepositTabInfo = ({
         <div className="flex items-center gap-x-1.5">
           <RefreshSpinner isOpen={isLoading} data-testid="refresh-spinner" />
           <div className="flex space-x-2">
-            <div className="font-bold" data-testid="collateral">
-              {isLoading ? "-" : collateral}
+            <div className="font-bold" data-testid="collateral-amount">
+              {isLoading ? "-" : collateralAmount}
             </div>
             <Image
               src={ArrowRight}
               alt="loading spinner"
               className="flex self-center"
             />
-            <div className="font-bold" data-testid="projected-collateral">
-              {isLoading ? "-" : projectedCollateral}
+            <div
+              className="font-bold"
+              data-testid="projected-collateral-amount"
+            >
+              {isLoading ? "-" : projectedCollateralAmount}
             </div>
           </div>
         </div>
@@ -66,7 +69,7 @@ export const DepositTabInfo = ({
         <div className="flex items-center gap-x-1.5">
           <div className="flex space-x-2">
             <div className="font-bold" data-testid="total-collateral-value">
-              {isLoading ? "-" : collateralValue}
+              {isLoading ? "-" : totalCollateralValue}
             </div>
             <Image
               src={ArrowRight}
@@ -77,7 +80,7 @@ export const DepositTabInfo = ({
               className="font-bold"
               data-testid="projected-total-collateral-value"
             >
-              {isLoading ? "-" : projectedCollateralValue}
+              {isLoading ? "-" : projectedTotalCollateralValue}
             </div>
           </div>
         </div>

@@ -1,24 +1,21 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
-import { BigNumber } from "ethers";
+import React, { FC, useCallback, useState } from "react";
 import { IToken } from "@/utils/types";
 import { DepositTab } from "./DepositTab";
+import { WithdrawTab } from "./WithdrawTab";
 import {
   useAccountCollateral,
   useAccountHealth,
   useAllowance,
   useSelectTokenBalance,
+  useTokenCollateralValue,
   useTokenValue,
 } from "@/hooks";
 
 export interface BorrowModalProps {
-  collaterals: IToken[];
-  asset: IToken;
-  assetPrice: number;
   isOpen: boolean;
-  tokenBalance: BigNumber | undefined;
-  baseSupplyAPY: string | number;
-  supplied: BigNumber | undefined;
-  available: BigNumber | undefined;
+  collaterals: IToken[];
+  assetPrice: number;
+  totalBorrowed: string;
   onClose: () => void;
   fetchAccountInfo: (showLoading?: boolean) => void;
 }
@@ -26,8 +23,8 @@ export interface BorrowModalProps {
 const Tab: FC<{
   label: string;
   isActive: boolean;
-  onClick: () => void;
   testId: string;
+  onClick: () => void;
 }> = ({ label, isActive, onClick, testId }) => (
   <button
     data-testid={testId}
@@ -42,15 +39,17 @@ const Tab: FC<{
 
 export const BorrowModal: FC<BorrowModalProps> = ({
   isOpen,
-  onClose,
   collaterals,
+  assetPrice,
+  totalBorrowed,
+  onClose,
   fetchAccountInfo,
 }) => {
   const [activeTab, setActiveTab] = useState("Deposit");
   const [selectedCollateral, setSelectedCollateral] = useState<IToken>(
     collaterals[0]
   );
-  const tokenAddress = selectedCollateral.address;
+  const { address: tokenAddress, decimals } = selectedCollateral;
   const {
     isLoading: allowanceLoading,
     data: allowance,
@@ -71,7 +70,11 @@ export const BorrowModal: FC<BorrowModalProps> = ({
     data: healthFactor,
     fetchData: fetchHealthFactor,
   } = useAccountHealth();
-  const { data: assetPrice } = useTokenValue(tokenAddress);
+  const { data: tokenValue } = useTokenValue(tokenAddress);
+  const { data: tokenCollateralValue } = useTokenCollateralValue(
+    tokenAddress,
+    decimals
+  );
 
   const isLoading = {
     allowanceLoading,
@@ -124,6 +127,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 isActive={activeTab === "Deposit"}
                 onClick={() => {
                   setActiveTab("Deposit");
+                  setSelectedCollateral(collaterals[0]);
                 }}
                 testId="deposit-tab"
               />
@@ -140,6 +144,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 isActive={activeTab === "Withdraw"}
                 onClick={() => {
                   setActiveTab("Withdraw");
+                  setSelectedCollateral(collaterals[0]);
                 }}
                 testId="withdraw-tab"
               />
@@ -162,9 +167,28 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 accountCollateral={accountCollateral}
                 tokenBalance={tokenBalance}
                 healthFactor={healthFactor}
+                tokenValue={tokenValue}
                 assetPrice={assetPrice}
                 refreshModal={refreshModal}
                 fetchAllowance={fetchAllowance}
+                totalBorrowed={totalBorrowed}
+                tokenCollateralValue={tokenCollateralValue}
+              />
+            )}
+            {activeTab === "Withdraw" && (
+              <WithdrawTab
+                collaterals={collaterals}
+                selectedCollateral={selectedCollateral}
+                setSelectedCollateral={setSelectedCollateral}
+                isLoading={isLoading}
+                accountCollateral={accountCollateral}
+                healthFactor={healthFactor}
+                tokenValue={tokenValue}
+                assetPrice={assetPrice}
+                refreshModal={refreshModal}
+                fetchAllowance={fetchAllowance}
+                totalBorrowed={totalBorrowed}
+                tokenCollateralValue={tokenCollateralValue}
               />
             )}
           </div>
