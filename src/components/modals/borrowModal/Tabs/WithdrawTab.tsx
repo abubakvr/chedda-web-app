@@ -174,7 +174,7 @@ export const WithdrawTab = ({
         />
         {selectedCollateral.symbol === asset.symbol && (
           <div className="text-warning text-xs mt-3">
-            You can only withdraw the pool asset by supplying{" "}
+            You can only withdraw the pool asset by withdrawing{" "}
             <button
               className="cursor-pointer relative"
               onClick={() => openSupplyModal("Withdraw")}
