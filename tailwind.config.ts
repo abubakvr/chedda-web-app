@@ -15,7 +15,10 @@ const config: Config = {
         "3xl": "1920px",
       },
       colors: {
+        mist: "#FFFFFF50",
         success: "#44B410",
+        warning: "#F89F1A",
+        error: "#E91E63",
         "turtoise-green": "#5DDEFA",
         "card-bg": "var(--card-bg)",
       },

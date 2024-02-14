@@ -28,12 +28,14 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
 }) => {
   const [isSupplyModalOpen, setIsSupplyModalOpen] = useState(false);
   const [isBorrowModalOpen, setIsBorrowModalOpen] = useState(false);
+  const [defaultTab, setDefaultTab] = useState<string | null>();
   const { data: tokenBalance, fetchData: fetchTokenBalance } = useTokenBalance(
     poolStats?.asset.address ?? ""
   );
 
   const closeSupplyModal = () => {
     setIsSupplyModalOpen(false);
+    setDefaultTab(null);
   };
 
   const closeBorrowModal = () => {
@@ -51,6 +53,12 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
     // Render loading placeholder if poolStats is undefined
     return <InfoCardSkeleton title="MY INFORMATION" itemCount={5} />;
   }
+
+  const openSupplyModal = (activeTab: "Deposit" | "Withdraw") => {
+    setIsBorrowModalOpen(false);
+    setIsSupplyModalOpen(true);
+    setDefaultTab(activeTab);
+  };
 
   return (
     <div
@@ -165,6 +173,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           tokenBalance={tokenBalance}
           baseSupplyAPY={poolStats.baseSupplyAPY}
           fetchAccountInfo={fetchAccountInfo}
+          defaultTab={defaultTab}
         />
       )}
       {isBorrowModalOpen && (
@@ -177,6 +186,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           totalBorrowed={totalBorrowed}
           onClose={closeBorrowModal}
           fetchAccountInfo={fetchAccountInfo}
+          openSupplyModal={openSupplyModal}
         />
       )}
     </div>

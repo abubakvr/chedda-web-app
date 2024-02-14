@@ -21,6 +21,7 @@ export interface BorrowModalProps {
   availableLiquidity: BigNumber | undefined;
   onClose: () => void;
   fetchAccountInfo: (showLoading?: boolean) => void;
+  openSupplyModal: (activeTab: "Deposit" | "Withdraw") => void;
 }
 
 const Tab: FC<{
@@ -49,6 +50,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
   availableLiquidity,
   onClose,
   fetchAccountInfo,
+  openSupplyModal,
 }) => {
   const [activeTab, setActiveTab] = useState<
     "Deposit" | "Withdraw" | "Repay" | "Borrow"
@@ -169,6 +171,8 @@ export const BorrowModal: FC<BorrowModalProps> = ({
             </div>
             {activeTab === "Deposit" && (
               <DepositTab
+                asset={asset}
+                openSupplyModal={openSupplyModal}
                 collaterals={collaterals}
                 selectedCollateral={selectedCollateral}
                 setSelectedCollateral={setSelectedCollateral}
@@ -187,6 +191,8 @@ export const BorrowModal: FC<BorrowModalProps> = ({
             )}
             {activeTab === "Withdraw" && (
               <WithdrawTab
+                asset={asset}
+                openSupplyModal={openSupplyModal}
                 collaterals={collaterals}
                 selectedCollateral={selectedCollateral}
                 setSelectedCollateral={setSelectedCollateral}

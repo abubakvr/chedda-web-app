@@ -15,6 +15,7 @@ import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
 import { displayProjectedHealthFactor } from "@/utils/helpers";
 
 export interface DepositTabProps {
+  asset: IToken;
   selectedCollateral: IToken;
   collaterals: IToken[];
   isLoading: Record<string, boolean>;
@@ -29,9 +30,11 @@ export interface DepositTabProps {
   setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
   fetchAllowance: (showLoading?: boolean) => void;
   refreshModal: () => void;
+  openSupplyModal: (activeTab: "Deposit" | "Withdraw") => void;
 }
 
 export const DepositTab = ({
+  asset,
   selectedCollateral,
   collaterals,
   isLoading,
@@ -46,6 +49,7 @@ export const DepositTab = ({
   setSelectedCollateral,
   fetchAllowance,
   refreshModal,
+  openSupplyModal,
 }: DepositTabProps) => {
   const [clearInputField, setClearInputField] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -185,13 +189,28 @@ export const DepositTab = ({
           maxValue={parsedAssetBalance}
           assetPrice={Number(tokenValue) || 0}
         />
+        {selectedCollateral.symbol === asset.symbol && (
+          <div className="text-warning text-xs mt-3">
+            You can only deposit the pool asset by supplying{" "}
+            <button
+              className="cursor-pointer relative"
+              onClick={() => openSupplyModal("Deposit")}
+            >
+              <u>here</u>
+            </button>
+          </div>
+        )}
         <Button
           type="primary"
           onClick={handleDepositCollateral}
           className="mt-6 h-7"
           size="large"
           isLoading={borrowTxStatus.isLoading}
-          disabled={accountCollateralLoading || allowanceLoading}
+          disabled={
+            accountCollateralLoading ||
+            allowanceLoading ||
+            selectedCollateral.symbol === asset.symbol
+          }
         >
           {buttonTitle} {symbol}
         </Button>
