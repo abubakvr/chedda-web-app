@@ -23,7 +23,8 @@ export interface DepositTabProps {
   assetPrice: number;
   tokenValue: string | undefined;
   allowance: BigNumber | undefined;
-  accountCollateral: Record<string, BigNumber> | undefined;
+  accountCollateralAmount: BigNumber | undefined;
+  totalCollateralValue: string;
   tokenBalance: BigNumber | undefined;
   healthFactor: BigNumber | undefined;
   tokenCollateralValue: BigNumber | undefined;
@@ -39,7 +40,8 @@ export const DepositTab = ({
   collaterals,
   isLoading,
   allowance,
-  accountCollateral,
+  accountCollateralAmount,
+  totalCollateralValue,
   tokenBalance,
   healthFactor,
   assetPrice,
@@ -70,14 +72,7 @@ export const DepositTab = ({
   );
   const parsedAssetBalance = parseBigNumberToFloat(tokenBalance, decimals);
   const parsedAccountCollateral = parseFloat(
-    parseBigNumberToFloat(accountCollateral?.accountCollateralAmount, decimals)
-  );
-  const parsedTotalAccountCollateralValue = parseFloat(
-    parseBigNumberToFloat(
-      accountCollateral?.totalAccountCollateralValue,
-      18,
-      10
-    )
+    parseBigNumberToFloat(accountCollateralAmount, decimals)
   );
   const parsedHealthFactor = parseFloat(
     parseBigNumberToFloat(healthFactor, 18, 10)
@@ -90,7 +85,7 @@ export const DepositTab = ({
   const valueOfNewCollateral = inputAmount * parsedTokenCollateralValue;
 
   const projectedHealthFactor =
-    (parsedTotalAccountCollateralValue + valueOfNewCollateral) /
+    (Number(totalCollateralValue) + valueOfNewCollateral) /
     valueOfAssetsBorrowed;
 
   const buttonTitle = parsedAllowance < inputAmount ? "Approve" : "Deposit";
@@ -222,9 +217,9 @@ export const DepositTab = ({
             projectedCollateralAmount={`${formatNumber(
               parsedAccountCollateral + (inputAmount || 0)
             )} ${symbol}`}
-            totalCollateralValue={`$${formatNumber(parsedTotalAccountCollateralValue)} `}
+            totalCollateralValue={`$${formatNumber(parseFloat(totalCollateralValue))} `}
             projectedTotalCollateralValue={`$${formatNumber(
-              parsedTotalAccountCollateralValue +
+              Number(totalCollateralValue) +
                 (inputAmount * parsedTokenCollateralValue || 0)
             )} `}
             healthFactor={`${formatNumber(parsedHealthFactor)}`}

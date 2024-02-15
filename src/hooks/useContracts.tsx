@@ -192,18 +192,20 @@ const getTokenValue: GetDataFunction<string> = async ({
   return parseBigNumberToFloat(assetPrice, decimals as any, 10);
 };
 
-export const getTotalCollateral: GetDataFunction<
-  Record<string, BigNumber>
-> = async ({ chedda, signer, poolId, account, asset = "" }) => {
+export const getAccountCollateral: GetDataFunction<BigNumber> = async ({
+  chedda,
+  signer,
+  poolId,
+  account,
+  asset = "",
+}) => {
   if (!account) return null;
   const pool = chedda.lendingPool(poolId, signer as Signer);
-  const totalAccountCollateralValue =
-    await pool?.totalAccountCollateralValue(account);
   const accountCollateralAmount = await pool?.accountCollateralAmount(
     account,
     asset
   );
-  return { totalAccountCollateralValue, accountCollateralAmount };
+  return accountCollateralAmount;
 };
 
 export const getAccountHealth: GetDataFunction<BigNumber> = async ({
@@ -275,10 +277,8 @@ export const useTokenValue = (asset: string): HookResult<string> => {
   return useFetcher<string>(getTokenValue, asset);
 };
 
-export const useAccountCollateral = (
-  asset: string
-): HookResult<Record<string, BigNumber>> => {
-  return useFetcher<Record<string, BigNumber>>(getTotalCollateral, asset);
+export const useAccountCollateral = (asset: string): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getAccountCollateral, asset);
 };
 
 export const useAccountHealth = (): HookResult<BigNumber> => {

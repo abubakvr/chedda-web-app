@@ -18,6 +18,7 @@ export interface BorrowModalProps {
   collaterals: IToken[];
   assetPrice: number;
   totalBorrowed: string;
+  totalCollateralValue: string;
   availableLiquidity: BigNumber | undefined;
   onClose: () => void;
   fetchAccountInfo: (showLoading?: boolean) => void;
@@ -47,6 +48,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
   collaterals,
   assetPrice,
   totalBorrowed,
+  totalCollateralValue,
   availableLiquidity,
   onClose,
   fetchAccountInfo,
@@ -178,7 +180,8 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 setSelectedCollateral={setSelectedCollateral}
                 isLoading={isLoading}
                 allowance={allowance}
-                accountCollateral={accountCollateral}
+                accountCollateralAmount={accountCollateral}
+                totalCollateralValue={totalCollateralValue}
                 tokenBalance={tokenBalance}
                 healthFactor={healthFactor}
                 tokenValue={tokenValue}
@@ -197,7 +200,8 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 selectedCollateral={selectedCollateral}
                 setSelectedCollateral={setSelectedCollateral}
                 isLoading={isLoading}
-                accountCollateral={accountCollateral}
+                accountCollateralAmount={accountCollateral}
+                totalCollateralValue={totalCollateralValue}
                 healthFactor={healthFactor}
                 tokenValue={tokenValue}
                 assetPrice={assetPrice}
@@ -211,7 +215,8 @@ export const BorrowModal: FC<BorrowModalProps> = ({
               <BorrowTab
                 asset={asset}
                 isLoading={isLoading}
-                accountCollateral={accountCollateral}
+                accountCollateralAmount={accountCollateral}
+                totalCollateralValue={totalCollateralValue}
                 healthFactor={healthFactor}
                 tokenValue={tokenValue}
                 assetPrice={assetPrice}
@@ -227,7 +232,8 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 asset={asset}
                 isLoading={isLoading}
                 allowance={allowance}
-                accountCollateral={accountCollateral}
+                accountCollateralAmount={accountCollateral}
+                totalCollateralValue={totalCollateralValue}
                 tokenBalance={tokenBalance}
                 healthFactor={healthFactor}
                 tokenValue={tokenValue}

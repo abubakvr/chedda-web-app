@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
 import { IAccountInfo } from "chedda-sdk";
@@ -46,6 +46,12 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
   const totalBorrowed = parseBigNumberToFloat(
     accountInfo?.borrowed,
     accountInfo?.decimals,
+    10
+  );
+
+  const totalCollateralValue = parseBigNumberToFloat(
+    accountInfo?.totalCollateralValue,
+    18,
     10
   );
 
@@ -184,6 +190,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           assetPrice={assetPrice}
           availableLiquidity={available}
           totalBorrowed={totalBorrowed}
+          totalCollateralValue={totalCollateralValue}
           onClose={closeBorrowModal}
           fetchAccountInfo={fetchAccountInfo}
           openSupplyModal={openSupplyModal}
