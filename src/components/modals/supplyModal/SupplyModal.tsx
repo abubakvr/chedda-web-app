@@ -26,6 +26,7 @@ interface SupplyModalProps {
   baseSupplyAPY: string | number;
   supplied: BigNumber | undefined;
   available: BigNumber | undefined;
+  defaultTab?: string | null;
   onClose: () => void;
   fetchAccountInfo: (showLoading?: boolean) => void;
 }
@@ -55,10 +56,11 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   supplied,
   available,
   baseSupplyAPY,
+  defaultTab,
   onClose,
   fetchAccountInfo,
 }) => {
-  const [activeTab, setActiveTab] = useState("Deposit");
+  const [activeTab, setActiveTab] = useState(defaultTab || "Deposit");
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [clearInputField, setClearInputField] = useState(false);

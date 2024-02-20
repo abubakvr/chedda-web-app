@@ -26,6 +26,14 @@ jest.mock("../../../../components/ui", () => ({
 }));
 
 const mockProps: WithdrawTabProps = {
+  asset: {
+    name: "Token1",
+    symbol: "T1",
+    address: "0xfed321",
+    logo: {} as StaticImageData,
+    decimals: 18,
+    color: "#ffffff",
+  },
   selectedCollateral: {
     name: "Token3",
     symbol: "T3",
@@ -50,6 +58,7 @@ const mockProps: WithdrawTabProps = {
   setSelectedCollateral: jest.fn(),
   fetchAllowance: jest.fn(),
   refreshModal: jest.fn(),
+  openSupplyModal: jest.fn(),
 };
 
 const mockWithdrawCollateral = jest.fn();
@@ -85,6 +94,25 @@ describe("WithdrawTab Component", () => {
     await waitFor(() => {
       expect(screen.getByTestId("loading-button-icon")).toBeInTheDocument();
       expect(mockWithdrawCollateral).toHaveBeenCalled();
+    });
+  });
+
+  it("blocks depositing asset if selected collateral is same as asset", async () => {
+    let componentProps = mockProps;
+
+    componentProps.selectedCollateral["symbol"] = "T1";
+
+    render(<WithdrawTab {...componentProps} />);
+
+    const amountInput = screen.getByTestId("amount-input");
+
+    fireEvent.change(amountInput, { target: { value: "50" } });
+
+    fireEvent.click(screen.getByText("Withdraw T1"));
+
+    await waitFor(() => {
+      expect(screen.getByTestId("loading-button-icon")).toBeInTheDocument();
+      expect(screen.getByText("Withdraw T1")).toHaveAttribute("disabled");
     });
   });
 

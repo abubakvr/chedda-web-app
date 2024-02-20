@@ -15,6 +15,7 @@ import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
 import { displayProjectedHealthFactor } from "@/utils/helpers";
 
 export interface WithdrawTabProps {
+  asset: IToken;
   selectedCollateral: IToken;
   collaterals: IToken[];
   isLoading: Record<string, boolean>;
@@ -27,9 +28,11 @@ export interface WithdrawTabProps {
   setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
   fetchAllowance: (showLoading?: boolean) => void;
   refreshModal: () => void;
+  openSupplyModal: (activeTab: "Deposit" | "Withdraw") => void;
 }
 
 export const WithdrawTab = ({
+  asset,
   selectedCollateral,
   collaterals,
   isLoading,
@@ -42,6 +45,7 @@ export const WithdrawTab = ({
   setSelectedCollateral,
   fetchAllowance,
   refreshModal,
+  openSupplyModal,
 }: WithdrawTabProps) => {
   const [clearInputField, setClearInputField] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -168,13 +172,27 @@ export const WithdrawTab = ({
           maxValue={parsedAccountCollateralAmount.toString()}
           assetPrice={Number(tokenValue) || 0}
         />
+        {selectedCollateral.symbol === asset.symbol && (
+          <div className="text-warning text-xs mt-3">
+            You can only withdraw the pool asset by withdrawing{" "}
+            <button
+              className="cursor-pointer relative"
+              onClick={() => openSupplyModal("Withdraw")}
+            >
+              <u>here</u>
+            </button>
+          </div>
+        )}
         <Button
           type="primary"
           onClick={handleWithdrawCollateral}
           className="mt-6 h-7"
           size="large"
           isLoading={borrowTxStatus.isLoading}
-          disabled={accountCollateralLoading}
+          disabled={
+            accountCollateralLoading ||
+            selectedCollateral.symbol === asset.symbol
+          }
         >
           Withdraw {symbol}
         </Button>
