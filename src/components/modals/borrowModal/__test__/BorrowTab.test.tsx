@@ -33,9 +33,8 @@ const mockProps: BorrowTabProps = {
     logo: {} as StaticImageData,
     color: "#ffffff",
   },
-  accountCollateral: {
-    totalAccountCollateralValue: BigNumber.from("50000000000000000000000"),
-  },
+  accountCollateralAmount: BigNumber.from("50000000000000000000000"),
+  totalCollateralValue: "50000000000000000000000",
   healthFactor: BigNumber.from("39000000000000000"),
   tokenValue: "1000",
   fetchAllowance: jest.fn(),

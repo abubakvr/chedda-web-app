@@ -16,7 +16,8 @@ import { displayProjectedHealthFactor } from "@/utils/helpers";
 export interface RepayTabProps {
   asset: IToken;
   isLoading: Record<string, boolean>;
-  accountCollateral: Record<string, BigNumber> | undefined;
+  accountCollateralAmount: BigNumber | undefined;
+  totalCollateralValue: string;
   healthFactor: BigNumber | undefined;
   tokenValue: string | undefined;
   tokenBalance: BigNumber | undefined;
@@ -32,7 +33,8 @@ export interface RepayTabProps {
 export const RepayTab = ({
   isLoading,
   asset,
-  accountCollateral,
+  totalCollateralValue,
+  accountCollateralAmount,
   healthFactor,
   tokenValue,
   allowance,
@@ -52,13 +54,7 @@ export const RepayTab = ({
   const { borrowTxStatus, repayAsset, approveAsset } =
     useTransaction(tokenAddress);
 
-  const parsedTotalAccountCollateralValue = parseFloat(
-    parseBigNumberToFloat(
-      accountCollateral?.totalAccountCollateralValue,
-      18,
-      10
-    )
-  );
+  const parsedTotalAccountCollateralValue = parseFloat(totalCollateralValue);
   const parsedAvailableLiquidity = parseFloat(
     parseBigNumberToFloat(availableLiquidity, decimals)
   );
@@ -185,7 +181,7 @@ export const RepayTab = ({
             projectedTotalBorrowed={`${formatNumber(
               parsedTotalBorrowed - (inputAmount || 0)
             )} ${symbol}`}
-            collateralValue={`$${formatNumber(parsedTotalAccountCollateralValue)} `}
+            collateralValue={`$${formatNumber(parseFloat(totalCollateralValue))} `}
             healthFactor={`${formatNumber(parsedHealthFactor)}`}
             projectedHealthFactor={displayProjectedHealthFactor(
               totalBorrowed,

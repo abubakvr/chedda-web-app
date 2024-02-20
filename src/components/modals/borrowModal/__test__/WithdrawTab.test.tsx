@@ -44,12 +44,8 @@ const mockProps: WithdrawTabProps = {
   },
   collaterals: [],
   isLoading: {},
-  accountCollateral: {
-    accountCollateralAmount: BigNumber.from("50000000000000000000000"),
-    totalAccountCollateralValue: BigNumber.from(
-      "500000000000000000000000000000"
-    ),
-  },
+  accountCollateralAmount: BigNumber.from("50000000000000000000000"),
+  totalCollateralValue: "500000000000000000000000000000",
   healthFactor: BigNumber.from("5000000000000000000"),
   assetPrice: 5000,
   totalBorrowed: "9000",

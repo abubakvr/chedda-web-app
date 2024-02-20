@@ -19,7 +19,8 @@ export interface WithdrawTabProps {
   selectedCollateral: IToken;
   collaterals: IToken[];
   isLoading: Record<string, boolean>;
-  accountCollateral: Record<string, BigNumber> | undefined;
+  accountCollateralAmount: BigNumber | undefined;
+  totalCollateralValue: string;
   healthFactor: BigNumber | undefined;
   totalBorrowed: string;
   tokenValue: string | undefined;
@@ -36,7 +37,8 @@ export const WithdrawTab = ({
   selectedCollateral,
   collaterals,
   isLoading,
-  accountCollateral,
+  accountCollateralAmount,
+  totalCollateralValue,
   healthFactor,
   assetPrice,
   tokenValue,
@@ -57,15 +59,9 @@ export const WithdrawTab = ({
     useTransaction(tokenAddress);
 
   const parsedAccountCollateralAmount = parseFloat(
-    parseBigNumberToFloat(accountCollateral?.accountCollateralAmount, decimals)
+    parseBigNumberToFloat(accountCollateralAmount, decimals)
   );
-  const parsedTotalAccountCollateralValue = parseFloat(
-    parseBigNumberToFloat(
-      accountCollateral?.totalAccountCollateralValue,
-      18,
-      10
-    )
-  );
+  const parsedTotalAccountCollateralValue = parseFloat(totalCollateralValue);
 
   const parsedTotalBorrowed = parseFloat(totalBorrowed);
 
@@ -204,7 +200,7 @@ export const WithdrawTab = ({
             projectedCollateralAmount={`${formatNumber(
               parsedAccountCollateralAmount - (inputAmount || 0)
             )} ${symbol}`}
-            totalCollateralValue={`$${formatNumber(parsedTotalAccountCollateralValue)} `}
+            totalCollateralValue={`$${formatNumber(parseFloat(totalCollateralValue))} `}
             projectedTotalCollateralValue={`$${formatNumber(
               parsedTotalAccountCollateralValue -
                 (inputAmount * parsedTokenCollateralValue || 0)

@@ -16,7 +16,8 @@ import { displayProjectedHealthFactor } from "@/utils/helpers";
 export interface BorrowTabProps {
   asset: IToken;
   isLoading: Record<string, boolean>;
-  accountCollateral: Record<string, BigNumber> | undefined;
+  accountCollateralAmount: BigNumber | undefined;
+  totalCollateralValue: string;
   healthFactor: BigNumber | undefined;
   tokenValue: string | undefined;
   availableLiquidity: BigNumber | undefined;
@@ -30,7 +31,8 @@ export interface BorrowTabProps {
 export const BorrowTab = ({
   isLoading,
   asset,
-  accountCollateral,
+  accountCollateralAmount,
+  totalCollateralValue,
   healthFactor,
   tokenValue,
   assetPrice,
@@ -47,13 +49,8 @@ export const BorrowTab = ({
   const { accountCollateralLoading, healthFactorLoading } = isLoading;
   const { borrowTxStatus, borrowAsset } = useTransaction(tokenAddress);
 
-  const parsedTotalAccountCollateralValue = parseFloat(
-    parseBigNumberToFloat(
-      accountCollateral?.totalAccountCollateralValue,
-      18,
-      10
-    )
-  );
+  const parsedTotalAccountCollateralValue = parseFloat(totalCollateralValue);
+
   const parsedAvailableLiquidity = parseFloat(
     parseBigNumberToFloat(availableLiquidity, decimals)
   );
@@ -149,7 +146,7 @@ export const BorrowTab = ({
             projectedTotalBorrowed={`${formatNumber(
               parseFloat(totalBorrowed) + (inputAmount || 0)
             )} ${symbol}`}
-            collateralValue={`$${formatNumber(parsedTotalAccountCollateralValue)} `}
+            collateralValue={`$${formatNumber(parseFloat(totalCollateralValue))} `}
             healthFactor={`${formatNumber(parsedHealthFactor)}`}
             projectedHealthFactor={displayProjectedHealthFactor(
               totalBorrowed,
