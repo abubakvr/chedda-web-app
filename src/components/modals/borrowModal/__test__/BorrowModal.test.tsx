@@ -7,12 +7,14 @@ import {
   useAccountHealth,
   useAllowance,
   useAvailableLiquidity,
+  useEnvironment,
   useSelectTokenBalance,
   useTokenCollateralValue,
   useTokenValue,
   useTransaction,
 } from "@/hooks";
 import { BigNumber } from "ethers";
+import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks");
@@ -79,14 +81,18 @@ describe("BorrowModal Component", () => {
       isLoading: false,
       data: "1000",
     }));
+    (useEnvironment as jest.Mock).mockReturnValue({
+      currentEnvironment: mockCurrentEnvironment,
+      switchEnvironment: jest.fn(),
+    });
     (useTransaction as jest.Mock).mockImplementation(() => ({
       borrowTxStatus: {
         isLoading: false,
         isApproved: false,
         isCollateralDeposited: false,
       },
-      approveAsset: jest.fn(),
-      depositCollateral: jest.fn(),
+      approveAsset: jest.fn().mockResolvedValue({ hash: "0x00" }),
+      depositCollateral: jest.fn().mockResolvedValue({ hash: "0x00" }),
     }));
   });
 

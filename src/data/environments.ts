@@ -18,6 +18,7 @@ export const environmentConfig: IEnvironmentConfig = {
     environmentName: "Ethereum testnet",
     jsonRpcUrl: `https://sepolia.infura.io/v3/${infuraKey}`,
     webSocketUrl: `wss://sepolia.infura.io/ws/v3/${infuraKey}`,
+    txUrlPrefix: "https://sepolia.etherscan.io/tx/",
     chainId: 11155111,
     contracts: {
       LendingPool: "0x7de1c0bf2d5a810b98ce9373e8195353ff4dbed1",
@@ -78,6 +79,7 @@ export const environmentConfig: IEnvironmentConfig = {
     environmentName: "Arbitrum Sepolia",
     jsonRpcUrl: `https://arbitrum-sepolia.infura.io/v3/${infuraKey}`,
     webSocketUrl: `wss://arb-sepolia.g.alchemy.com/v2/${alchemyKey}`,
+    txUrlPrefix: "https://sepolia.arbiscan.io/tx",
     chainId: 421614,
     contracts: {
       LendingPool: "0x7de1c0bf2d5a810b98ce9373e8195353ff4dbed1",

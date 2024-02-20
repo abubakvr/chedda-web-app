@@ -47,6 +47,7 @@ export interface IEnvironment {
   environmentName: string;
   jsonRpcUrl: string;
   webSocketUrl: string;
+  txUrlPrefix: string;
   chainId: number;
   contracts: {
     LendingPool: string;

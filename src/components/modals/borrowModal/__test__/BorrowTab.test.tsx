@@ -7,17 +7,7 @@ import { BigNumber } from "ethers";
 import { useTransaction } from "@/hooks";
 
 jest.spyOn(window, "alert").mockImplementation(() => {});
-
-jest.mock("../../../../hooks", () => ({
-  useTransaction: jest.fn(() => ({
-    borrowTxStatus: {
-      isLoading: false,
-      isAssetBorrowed: false,
-    },
-    borrowAsset: jest.fn(() => Promise.resolve()),
-  })),
-}));
-
+jest.mock("../../../../hooks");
 // Mock the Toast component
 jest.mock("../../../../components/ui", () => ({
   Toast: jest.fn(() => null),
@@ -45,7 +35,7 @@ const mockProps: BorrowTabProps = {
   availableLiquidity: BigNumber.from("390000000000000000000"),
 };
 
-const mockBorrowAsset = jest.fn();
+const mockBorrowAsset = jest.fn().mockResolvedValue({ hash: "0x00" });
 
 describe("BorrowTab Component", () => {
   beforeEach(() => {

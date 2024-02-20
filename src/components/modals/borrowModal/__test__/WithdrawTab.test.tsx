@@ -8,17 +8,7 @@ import { BigNumber } from "ethers";
 jest.spyOn(window, "alert").mockImplementation(() => {});
 
 // Mock the useTransaction hook
-jest.mock("../../../../hooks", () => ({
-  useTransaction: jest.fn(() => ({
-    borrowTxStatus: {
-      isLoading: false,
-      isApproved: false,
-      isCollaterDeposited: false,
-      isCollaterWithdrawn: false,
-    },
-    withdrawCollateral: jest.fn(() => Promise.resolve()),
-  })),
-}));
+jest.mock("../../../../hooks");
 
 // Mock the Toast component
 jest.mock("../../../../components/ui", () => ({
@@ -57,7 +47,7 @@ const mockProps: WithdrawTabProps = {
   openSupplyModal: jest.fn(),
 };
 
-const mockWithdrawCollateral = jest.fn();
+const mockWithdrawCollateral = jest.fn().mockResolvedValue({ hash: "0x00" });
 
 describe("WithdrawTab Component", () => {
   beforeEach(() => {

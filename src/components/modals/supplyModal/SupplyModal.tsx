@@ -64,10 +64,12 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [clearInputField, setClearInputField] = useState(false);
-  const [toastMessage, setToastMessage] = useState("false");
+  const [{ txMessage, txHash }, setTxDetails] = useState({
+    txMessage: "",
+    txHash: "",
+  });
   const [supplyAmount, setSupplyAmount] = useState<number>(0);
   const [withdrawAmount, setWithdrawAmount] = useState<number>(0);
-  const [modalMessage, setModalMessage] = useState<string>("");
   const { data: allowance, fetchData: fetchAllowance } = useAllowance(
     asset.address
   );
@@ -147,22 +149,22 @@ export const SupplyModal: FC<SupplyModalProps> = ({
 
       if (supplyAmount <= parsedAllowance) {
         depositAsset(parsedAmount, useAsCollateral)
-          .then(() => {
+          .then((res) => {
             const txMessage = `You've successfully supplied ${formatNumber(
               supplyAmount
             )} ${asset.symbol}`;
-            setModalMessage(txMessage);
+            setTxDetails({ txMessage, txHash: res.hash });
           })
           .catch((error) => {
             console.error(error);
           });
       } else {
-        await approveAsset(parsedAmount)
-          .then(() => {
+        approveAsset(parsedAmount)
+          .then((res) => {
             const txMessage = `You've successfully approved ${formatNumber(
               supplyAmount
             )} ${asset.symbol}`;
-            setToastMessage(txMessage);
+            setTxDetails({ txMessage, txHash: res.hash });
           })
           .catch((error) => {
             console.error(error);
@@ -182,11 +184,11 @@ export const SupplyModal: FC<SupplyModalProps> = ({
       asset.decimals
     );
     withdrawAsset(parsedAmount)
-      .then(() => {
+      .then((res) => {
         const txMessage = `You've successfully withdrawn ${formatNumber(
           withdrawAmount
         )} ${asset.symbol}`;
-        setToastMessage(txMessage);
+        setTxDetails({ txMessage, txHash: res.hash });
       })
       .catch((error) => {
         console.error(error);
@@ -203,10 +205,10 @@ export const SupplyModal: FC<SupplyModalProps> = ({
       <SuccessModal
         onClose={closeSuccessModal}
         isOpen={openSuccessModal}
-        modalMessage={modalMessage}
+        modalMessage={txMessage}
         continueAction={() => setOpenSuccessModal(false)}
       />
-      <Toast isOpen={showToast} toastMessage={toastMessage} />
+      <Toast isOpen={showToast} toastMessage={txMessage} txHash={txHash} />
       <div
         data-testid="modal-container"
         className={`fixed inset-0 ${

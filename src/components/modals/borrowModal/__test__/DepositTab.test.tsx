@@ -8,17 +8,7 @@ import { BigNumber } from "ethers";
 jest.spyOn(window, "alert").mockImplementation(() => {});
 
 // Mock the useTransaction hook
-jest.mock("../../../../hooks", () => ({
-  useTransaction: jest.fn(() => ({
-    borrowTxStatus: {
-      isLoading: false,
-      isApproved: false,
-      isCollaterDeposited: false,
-    },
-    depositCollateral: jest.fn(() => Promise.resolve()),
-    approveAsset: jest.fn(() => Promise.resolve()),
-  })),
-}));
+jest.mock("../../../../hooks");
 
 // Mock the Toast component
 jest.mock("../../../../components/ui", () => ({
@@ -59,8 +49,8 @@ const mockProps: DepositTabProps = {
   openSupplyModal: jest.fn(),
 };
 
-const mockDepositCollateral = jest.fn();
-const mockApproveCollateral = jest.fn();
+const mockDepositCollateral = jest.fn().mockResolvedValue({ hash: "0x00" });
+const mockApproveCollateral = jest.fn().mockResolvedValue({ hash: "0x00" });
 
 // Mock other dependencies as needed
 

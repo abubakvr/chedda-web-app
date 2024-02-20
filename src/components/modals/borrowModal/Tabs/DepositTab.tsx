@@ -54,7 +54,10 @@ export const DepositTab = ({
   openSupplyModal,
 }: DepositTabProps) => {
   const [clearInputField, setClearInputField] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [{ txMessage, txHash }, setTxDetails] = useState({
+    txMessage: "",
+    txHash: "",
+  });
   const [showToast, setShowToast] = useState(false);
   const [inputAmount, setInputAmount] = useState(0);
   const { address: tokenAddress, decimals, symbol } = selectedCollateral;
@@ -102,17 +105,27 @@ export const DepositTab = ({
       );
 
       if (inputAmount <= parsedAllowance) {
-        await depositCollateral(parsedAmount);
-        const txMessage = `You've successfully deposited ${formatNumber(
-          inputAmount
-        )} ${symbol}`;
-        setToastMessage(txMessage);
+        depositCollateral(parsedAmount)
+          .then((res) => {
+            const txMessage = `You've successfully deposited ${formatNumber(
+              inputAmount
+            )} ${symbol}`;
+            setTxDetails({ txMessage, txHash: res.hash });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       } else {
-        await approveAsset(parsedAmount);
-        const txMessage = `You've successfully approved ${formatNumber(
-          inputAmount
-        )} ${symbol}`;
-        setToastMessage(txMessage);
+        approveAsset(parsedAmount)
+          .then((res) => {
+            const txMessage = `You've successfully approved ${formatNumber(
+              inputAmount
+            )} ${symbol}`;
+            setTxDetails({ txMessage, txHash: res.hash });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       }
     } catch (error: any) {
       throw Error("Error in depositing asset:" + error.message);
@@ -143,7 +156,7 @@ export const DepositTab = ({
 
   return (
     <>
-      <Toast isOpen={showToast} toastMessage={toastMessage} />
+      <Toast isOpen={showToast} toastMessage={txMessage} txHash={txHash} />
       <div data-testid="deposit-tab-content" className="mt-6">
         <div className="text-xl font-bold flex justify-between items-center">
           <div>Deposit your Collateral</div>

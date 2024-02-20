@@ -50,13 +50,15 @@ export const WithdrawTab = ({
   openSupplyModal,
 }: WithdrawTabProps) => {
   const [clearInputField, setClearInputField] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [{ txMessage, txHash }, setTxDetails] = useState({
+    txMessage: "",
+    txHash: "",
+  });
   const [showToast, setShowToast] = useState(false);
   const [inputAmount, setInputAmount] = useState(0);
   const { address: tokenAddress, decimals, symbol } = selectedCollateral;
   const { accountCollateralLoading, healthFactorLoading } = isLoading;
-  const { borrowTxStatus, withdrawCollateral, resetTxState } =
-    useTransaction(tokenAddress);
+  const { borrowTxStatus, withdrawCollateral } = useTransaction(tokenAddress);
 
   const parsedAccountCollateralAmount = parseFloat(
     parseBigNumberToFloat(accountCollateralAmount, decimals)
@@ -93,41 +95,34 @@ export const WithdrawTab = ({
         inputAmount.toString(),
         decimals
       );
-      await withdrawCollateral(parsedAmount);
-      const txMessage = `You've successfully Withdrawn ${formatNumber(
-        inputAmount
-      )} ${symbol}`;
-      setToastMessage(txMessage);
+
+      withdrawCollateral(parsedAmount)
+        .then((res) => {
+          const txMessage = `You've successfully Withdrawn ${formatNumber(
+            inputAmount
+          )} ${symbol}`;
+          setTxDetails({ txMessage, txHash: res.hash });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     } catch (error: any) {
       throw Error("Error in withdrawing asset:" + error.message);
     }
   };
 
   useEffect(() => {
-    if (borrowTxStatus.isApproved) {
-      setShowToast(true);
-      fetchAllowance(false);
-      resetTxState();
-    }
-
     if (borrowTxStatus.isCollateralWithdrawn) {
       setInputAmount(0);
       setClearInputField(true);
       setShowToast(true);
       refreshModal();
-      resetTxState();
     }
-  }, [
-    borrowTxStatus.isApproved,
-    borrowTxStatus.isCollateralWithdrawn,
-    fetchAllowance,
-    refreshModal,
-    resetTxState,
-  ]);
+  }, [borrowTxStatus.isCollateralWithdrawn, fetchAllowance, refreshModal]);
 
   return (
     <>
-      <Toast isOpen={showToast} toastMessage={toastMessage} />
+      <Toast isOpen={showToast} toastMessage={txMessage} txHash={txHash} />
       <div data-testid="withdraw-tab-content" className="mt-6">
         <div className="text-xl font-bold flex justify-between items-center">
           <div>Withdraw your Collateral</div>
