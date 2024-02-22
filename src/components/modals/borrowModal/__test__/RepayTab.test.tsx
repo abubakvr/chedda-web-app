@@ -39,7 +39,10 @@ const mockProps: RepayTabProps = {
   availableLiquidity: BigNumber.from("390000000000000000000"),
 };
 const mockRepayAsset = jest.fn().mockResolvedValue({ hash: "0x00" });
-
+JSON.parse = jest.fn().mockReturnValue({
+  errorMessage: "",
+  fullText: "",
+});
 describe("RepayTab Component", () => {
   beforeEach(() => {
     (useTransaction as jest.Mock).mockImplementation(() => ({

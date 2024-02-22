@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AmountField, Button } from "@/components/common";
 import {
   formatLargeNumber,
@@ -45,16 +45,23 @@ export const RepayTab = ({
   refreshModal,
 }: RepayTabProps) => {
   const [clearInputField, setClearInputField] = useState(false);
-  const [{ txMessage, txHash }, setTxDetails] = useState({
+  const [{ txMessage, txHash, txStatus, copyText }, setTxDetails] = useState<{
+    txMessage: string;
+    txHash: string | null;
+    copyText: string | null;
+    txStatus: "success" | "failed";
+  }>({
+    copyText: "",
     txMessage: "",
     txHash: "",
+    txStatus: "success",
   });
   const [showToast, setShowToast] = useState(false);
   const [inputAmount, setInputAmount] = useState(0);
+  const [txLoading, setTxLoading] = useState(false);
   const { address: tokenAddress, decimals, symbol } = asset;
   const { accountCollateralLoading, healthFactorLoading } = isLoading;
-  const { borrowTxStatus, repayAsset, approveAsset, resetTxState } =
-    useTransaction(tokenAddress);
+  const { repayAsset, approveAsset } = useTransaction(tokenAddress);
 
   const parsedTotalAccountCollateralValue = parseFloat(totalCollateralValue);
   const parsedAvailableLiquidity = parseFloat(
@@ -92,63 +99,119 @@ export const RepayTab = ({
         return alert("Enter valid amount");
       }
 
+      setTxLoading(true);
+      setShowToast(false);
       const parsedAmount = ethers.utils.parseUnits(
         inputAmount.toString(),
         decimals
       );
       if (inputAmount <= parsedAllowance) {
         repayAsset(parsedAmount)
-          .then((res) => {
-            const txMessage = `You've successfully Repaid ${formatNumber(
-              inputAmount
-            )} ${symbol}`;
-            setTxDetails({ txMessage, txHash: res.hash });
+          .then(async (res) => {
+            if (res) {
+              const result = await res.wait();
+              if (result.status === 1) {
+                const txMessage = `You've successfully repaid ${formatNumber(
+                  inputAmount
+                )} ${symbol}`;
+                setTxDetails({
+                  txMessage,
+                  copyText: null,
+                  txHash: res.hash,
+                  txStatus: "success",
+                });
+                setInputAmount(0);
+                setClearInputField(true);
+                setShowToast(true);
+                refreshModal();
+              } else {
+                const txMessage = `An error occurred while proccessing your transaction`;
+                setTxDetails({
+                  txMessage,
+                  copyText: null,
+                  txHash: res.hash,
+                  txStatus: "failed",
+                });
+                setShowToast(true);
+              }
+            }
+            setTxLoading(false);
           })
           .catch((error) => {
-            console.error(error);
+            const errorObject = JSON.parse(error.message);
+            setTxDetails({
+              txMessage: errorObject.errorMessage,
+              copyText: errorObject.fullText,
+              txHash: null,
+              txStatus: "failed",
+            });
+            setShowToast(true);
+            setTxLoading(false);
           });
       } else {
         approveAsset(parsedAmount)
-          .then((res) => {
-            const txMessage = `You've successfully approved ${formatNumber(
-              inputAmount
-            )} ${symbol}`;
-            setTxDetails({ txMessage, txHash: res.hash });
+          .then(async (res) => {
+            if (res) {
+              const result = await res.wait();
+              if (result.status === 1) {
+                const txMessage = `You've successfully approved ${formatNumber(
+                  inputAmount
+                )} ${symbol}`;
+                setTxDetails({
+                  txMessage,
+                  copyText: null,
+                  txHash: res.hash,
+                  txStatus: "success",
+                });
+                setShowToast(true);
+                fetchAllowance(false);
+              } else {
+                const txMessage = `An error occurred while proccessing your transaction`;
+                setTxDetails({
+                  txMessage,
+                  copyText: null,
+                  txHash: res.hash,
+                  txStatus: "failed",
+                });
+                setShowToast(true);
+              }
+            }
+            setTxLoading(false);
           })
           .catch((error) => {
-            console.error(error);
+            const errorObject = JSON.parse(error.message);
+            setTxDetails({
+              txMessage: errorObject.errorMessage,
+              copyText: errorObject.fullText,
+              txHash: null,
+              txStatus: "failed",
+            });
+            setShowToast(true);
+            setTxLoading(false);
           });
       }
     } catch (error: any) {
-      throw Error("Error in repaying asset:" + error.message);
+      const errorObject = JSON.parse(error.message);
+      setTxDetails({
+        txMessage: errorObject.errorMessage,
+        copyText: errorObject.fullText,
+        txHash: null,
+        txStatus: "failed",
+      });
+      setShowToast(true);
+      setTxLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (borrowTxStatus.isApproved) {
-      setShowToast(true);
-      fetchAllowance(false);
-      resetTxState();
-    }
-
-    if (borrowTxStatus.isAssetRepaid) {
-      setInputAmount(0);
-      setClearInputField(true);
-      setShowToast(true);
-      refreshModal();
-      resetTxState();
-    }
-  }, [
-    borrowTxStatus.isAssetRepaid,
-    borrowTxStatus.isApproved,
-    fetchAllowance,
-    refreshModal,
-    resetTxState,
-  ]);
-
   return (
     <>
-      <Toast isOpen={showToast} toastMessage={txMessage} txHash={txHash} />
+      <Toast
+        isOpen={showToast}
+        toastMessage={txMessage}
+        txHash={txHash}
+        status={txStatus}
+        copyText={copyText}
+      />
       <div data-testid="repay-tab-content" className="mt-6">
         <div className="text-xl font-bold flex justify-between">
           <div>Repay your borrowed asset</div>
@@ -184,7 +247,7 @@ export const RepayTab = ({
           onClick={handleWithdrawCollateral}
           className="mt-6 h-7"
           size="large"
-          isLoading={borrowTxStatus.isLoading}
+          isLoading={txLoading}
           disabled={accountCollateralLoading}
         >
           {buttonTitle} {symbol}

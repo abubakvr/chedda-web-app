@@ -1,4 +1,4 @@
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 
 export function findNearestIndex(sortedArray: number[], targetNumber: number) {
   // Check if the array is empty
@@ -74,5 +74,36 @@ export function displayProjectedHealthFactor(
     return parsedHealthFactor;
   } else {
     return 100;
+  }
+}
+
+export function getErrorMessageFromCode(errorCode: string): string {
+  switch (errorCode) {
+    case ethers.errors.INVALID_ARGUMENT:
+      return "Invalid argument. Please check your input.";
+
+    case ethers.errors.MISSING_ARGUMENT:
+      return "Missing argument. Please provide all required parameters.";
+
+    case ethers.errors.UNPREDICTABLE_GAS_LIMIT:
+      return "Gas estimation failed. Transaction may fail or require manual gas limit.";
+
+    case ethers.errors.INSUFFICIENT_FUNDS:
+      return "Insufficient funds. Please make sure your account has enough balance.";
+
+    case ethers.errors.NONCE_EXPIRED:
+      return "Nonce expired. The provided transaction nonce is too low.";
+
+    case ethers.errors.REPLACEMENT_UNDERPRICED:
+      return "Replacement transaction gas price is too low.";
+
+    case ethers.errors.ACTION_REJECTED:
+      return "User rejected the transaction.";
+
+    case ethers.errors.CALL_EXCEPTION:
+      return "Exception occurred during contract call.";
+
+    default:
+      return `Unknown error with code ${errorCode}.`;
   }
 }

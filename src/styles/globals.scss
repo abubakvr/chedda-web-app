@@ -124,13 +124,27 @@ body {
   mask-composite: exclude;
 }
 
-.tx-toast::before {
+.success-toast::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 8px;
   padding: 1px;
   background: linear-gradient(68.02deg, #57fa5412 12%, #44b410 100%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.error-toast::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px;
+  background: linear-gradient(68.02deg, #e91e631f 12%, #e91e63 100%);
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -239,7 +253,8 @@ div.vault-item:last-child {
   fill: none !important;
 }
 
-.tx-toast,
+.success-toast,
+.error-toast,
 .app-modal {
   background: linear-gradient(180deg, #342f74 0%, #232357 100% 129.9%);
   position: relative;
@@ -324,4 +339,17 @@ input:checked + .slider:before {
 
 .animate-spin-slow {
   animation: spin-slow 3s linear infinite;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.2s ease-out;
 }

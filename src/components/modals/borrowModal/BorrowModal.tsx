@@ -167,6 +167,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 isActive={activeTab === "Repay"}
                 onClick={() => {
                   setActiveTab("Repay");
+                  setSelectedCollateral(collaterals[0]);
                 }}
                 testId="repay-tab"
               />

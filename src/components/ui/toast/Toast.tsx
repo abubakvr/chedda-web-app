@@ -1,22 +1,30 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
+import CopyIcon from "@/assets/icon/copy-icon-line.svg";
 import { useEnvironment } from "@/hooks";
+import { copyToClipboard } from "@/utils/copyToClipboard";
 
 interface ToastProps {
+  status?: "success" | "failed";
   isOpen: boolean;
-  txHash?: string;
+  txHash?: string | null;
+  copyText?: string | null;
   duration?: number;
   toastMessage: string;
 }
 
 export const Toast: React.FC<ToastProps> = ({
+  status = "success",
   duration = 10000,
   isOpen,
   txHash,
   toastMessage,
+  copyText,
 }) => {
   const [toasts, setToasts] = useState([] as any[]);
+  const [copyLabel, setCopyLabel] = useState("Copy");
+
   const { currentEnvironment } = useEnvironment();
 
   const addToast = useCallback(() => {
@@ -54,6 +62,19 @@ export const Toast: React.FC<ToastProps> = ({
     setToasts((prevToasts) => prevToasts.filter((t) => t.id !== id));
   };
 
+  const copyAddress = () => {
+    copyToClipboard(JSON.stringify(copyText) ?? "")
+      .then(() => {
+        setCopyLabel("Copied");
+        setTimeout(() => {
+          setCopyLabel("Copy");
+        }, 1500);
+      })
+      .catch((error) => {
+        console.log("error copying text", error);
+      });
+  };
+
   useEffect(() => {
     if (isOpen) {
       addToast();
@@ -66,12 +87,14 @@ export const Toast: React.FC<ToastProps> = ({
         <div
           key={toast.id}
           className={`fixed bottom-5 right-5 ${
-            toast.isOpen ? "block" : "hidden"
-          } overflow-y-auto z-30`}
+            toast.isOpen ? "animate-slide-up" : "hidden"
+          } z-30`}
         >
           <div className="flex items-center justify-center">
-            <div className="tx-toast rounded-lg shadow-lg w-auto">
-              <div className="p-6 pb-4">
+            <div
+              className={`${status === "success" ? "success-toast" : "error-toast"} rounded-lg shadow-lg w-auto`}
+            >
+              <div className="p-6 pb-4 max-w-[350px] min-w-[270px]">
                 <button
                   className="absolute top-1 right-2 text-xl cursor-pointer text-[#CCD2E3]"
                   onClick={() => removeToast(toast.id)}
@@ -80,14 +103,36 @@ export const Toast: React.FC<ToastProps> = ({
                   &times;
                 </button>
                 <div className="text-lg font-bold" data-testid="toast-title">
-                  Transaction Successful
+                  {status === "success"
+                    ? "Transaction Successful"
+                    : "Transaction Failed"}
                 </div>
                 <div>
                   <div
-                    className="text-sm text-[#ffffff50]"
+                    className="text-sm text-[#ffffff50] flex items-center gap-x-1"
                     data-testid="toast-message"
                   >
-                    {toastMessage}
+                    {status === "success" ? toastMessage : `${toastMessage}`}
+                    {status === "failed" && (
+                      <div className="w-4 h-4">
+                        <button
+                          className="hover:opacity-70 relative address-container w-4 h-4"
+                          onClick={copyAddress}
+                        >
+                          <Image
+                            src={CopyIcon}
+                            alt="copy error message"
+                            className="h-4 w-4"
+                          />
+                          <div
+                            className="tooltip"
+                            data-testid="address-copy-tooltip"
+                          >
+                            {copyLabel}
+                          </div>
+                        </button>
+                      </div>
+                    )}
                   </div>
                   {txHash && (
                     <a
@@ -106,7 +151,7 @@ export const Toast: React.FC<ToastProps> = ({
               <div
                 className={`h-[5px] transition-all rounded-b-[16px] ${
                   toast.sliderWidth !== 100 && "rounded-br-none "
-                } bg-green-600`}
+                } ${status === "success" ? "bg-success" : "bg-error"}`}
                 style={{ width: `${toast.sliderWidth}%` }}
                 data-testid="slider"
               ></div>

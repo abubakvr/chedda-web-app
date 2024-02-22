@@ -6,8 +6,6 @@ import { useTransaction } from "@/hooks";
 import { BigNumber } from "ethers";
 
 jest.spyOn(window, "alert").mockImplementation(() => {});
-
-// Mock the useTransaction hook
 jest.mock("../../../../hooks");
 
 // Mock the Toast component
@@ -51,8 +49,10 @@ const mockProps: DepositTabProps = {
 
 const mockDepositCollateral = jest.fn().mockResolvedValue({ hash: "0x00" });
 const mockApproveCollateral = jest.fn().mockResolvedValue({ hash: "0x00" });
-
-// Mock other dependencies as needed
+JSON.parse = jest.fn().mockReturnValue({
+  errorMessage: "",
+  fullText: "",
+});
 
 describe("DepositTab Component", () => {
   beforeEach(() => {
