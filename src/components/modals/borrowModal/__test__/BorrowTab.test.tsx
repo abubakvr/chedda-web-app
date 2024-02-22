@@ -36,6 +36,10 @@ const mockProps: BorrowTabProps = {
 };
 
 const mockBorrowAsset = jest.fn().mockResolvedValue({ hash: "0x00" });
+JSON.parse = jest.fn().mockReturnValue({
+  errorMessage: "",
+  fullText: "",
+});
 
 describe("BorrowTab Component", () => {
   beforeEach(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AmountField, Button } from "@/components/common";
 import {
   formatLargeNumber,
@@ -37,19 +37,26 @@ export const BorrowTab = ({
   assetPrice,
   totalBorrowed,
   availableLiquidity,
-  fetchAllowance,
   refreshModal,
 }: BorrowTabProps) => {
   const [clearInputField, setClearInputField] = useState(false);
-  const [{ txMessage, txHash }, setTxDetails] = useState({
+  const [txLoading, setTxLoading] = useState(false);
+  const [{ txMessage, txHash, txStatus, copyText }, setTxDetails] = useState<{
+    txMessage: string;
+    txHash: string | null;
+    copyText: string | null;
+    txStatus: "success" | "failed";
+  }>({
+    copyText: "",
     txMessage: "",
     txHash: "",
+    txStatus: "success",
   });
   const [showToast, setShowToast] = useState(false);
   const [inputAmount, setInputAmount] = useState(0);
   const { address: tokenAddress, decimals, symbol } = asset;
   const { accountCollateralLoading, healthFactorLoading } = isLoading;
-  const { borrowTxStatus, borrowAsset } = useTransaction(tokenAddress);
+  const { borrowAsset } = useTransaction(tokenAddress);
 
   const parsedTotalAccountCollateralValue = parseFloat(totalCollateralValue);
 
@@ -75,37 +82,75 @@ export const BorrowTab = ({
         return alert("Enter valid amount");
       }
 
+      setTxLoading(true);
+      setShowToast(false);
       const parsedAmount = ethers.utils.parseUnits(
         inputAmount.toString(),
         decimals
       );
       borrowAsset(parsedAmount)
-        .then((res) => {
-          const txMessage = `You've successfully Borrowed ${formatNumber(
-            inputAmount
-          )} ${symbol}`;
-          setTxDetails({ txMessage, txHash: res.hash });
+        .then(async (res) => {
+          if (res) {
+            const result = await res.wait();
+            if (result.status === 1) {
+              const txMessage = `You've successfully borrowed ${formatNumber(
+                inputAmount
+              )} ${symbol}`;
+              setTxDetails({
+                copyText: null,
+                txMessage,
+                txHash: res.hash,
+                txStatus: "success",
+              });
+              setInputAmount(0);
+              setClearInputField(true);
+              setShowToast(true);
+              refreshModal();
+            } else {
+              const txMessage = `An error occurred while proccessing your transaction`;
+              setTxDetails({
+                copyText: null,
+                txMessage,
+                txHash: res.hash,
+                txStatus: "failed",
+              });
+              setShowToast(true);
+            }
+          }
+          setTxLoading(false);
         })
         .catch((error) => {
-          console.error(error);
+          const errorObject = JSON.parse(error.message);
+          setTxDetails({
+            txMessage: errorObject.errorMessage,
+            copyText: errorObject.fullText,
+            txHash: null,
+            txStatus: "failed",
+          });
+          setShowToast(true);
+          setTxLoading(false);
         });
     } catch (error: any) {
-      throw Error("Error in borrowing asset:" + error.message);
+      const errorObject = JSON.parse(error.message);
+      setTxDetails({
+        txMessage: errorObject.errorMessage,
+        copyText: errorObject.fullText,
+        txHash: null,
+        txStatus: "failed",
+      });
+      setShowToast(true);
+      setTxLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (borrowTxStatus.isAssetBorrowed) {
-      setInputAmount(0);
-      setClearInputField(true);
-      setShowToast(true);
-      refreshModal();
-    }
-  }, [borrowTxStatus.isAssetBorrowed, fetchAllowance, refreshModal]);
-
   return (
     <>
-      <Toast isOpen={showToast} toastMessage={txMessage} txHash={txHash} />
+      <Toast
+        isOpen={showToast}
+        toastMessage={txMessage}
+        txHash={txHash}
+        status={txStatus}
+      />
       <div data-testid="withdraw-tab-content" className="mt-6">
         <div className="text-xl font-bold flex justify-between">
           <div>Select amount to Borrow</div>
@@ -141,7 +186,7 @@ export const BorrowTab = ({
           onClick={handleWithdrawCollateral}
           className="mt-6 h-7"
           size="large"
-          isLoading={borrowTxStatus.isLoading}
+          isLoading={txLoading}
           disabled={accountCollateralLoading}
         >
           Borrow {symbol}

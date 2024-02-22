@@ -48,6 +48,10 @@ const mockProps: WithdrawTabProps = {
 };
 
 const mockWithdrawCollateral = jest.fn().mockResolvedValue({ hash: "0x00" });
+JSON.parse = jest.fn().mockReturnValue({
+  errorMessage: "",
+  fullText: "",
+});
 
 describe("WithdrawTab Component", () => {
   beforeEach(() => {

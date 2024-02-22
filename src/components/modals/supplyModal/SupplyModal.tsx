@@ -63,10 +63,18 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   const [activeTab, setActiveTab] = useState(defaultTab || "Deposit");
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [txLoading, setTxLoading] = useState(false);
   const [clearInputField, setClearInputField] = useState(false);
-  const [{ txMessage, txHash }, setTxDetails] = useState({
+  const [{ txMessage, txHash, txStatus, copyText }, setTxDetails] = useState<{
+    txMessage: string;
+    txHash: string | null;
+    copyText: string | null;
+    txStatus: "success" | "failed";
+  }>({
+    copyText: "",
     txMessage: "",
     txHash: "",
+    txStatus: "success",
   });
   const [supplyAmount, setSupplyAmount] = useState<number>(0);
   const [withdrawAmount, setWithdrawAmount] = useState<number>(0);
@@ -78,8 +86,9 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   );
   const { fetchData: fetchTokenBalance } = useTokenBalance(asset.address);
   const { fetchData: fetchAvailable } = useAvailableLiquidity();
-  const { supplyTxStatus, approveAsset, depositAsset, withdrawAsset } =
-    useTransaction(asset.address);
+  const { approveAsset, depositAsset, withdrawAsset } = useTransaction(
+    asset.address
+  );
 
   const parsedAllowance = parseFloat(
     parseBigNumberToFloat(allowance, asset.decimals)
@@ -115,33 +124,14 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     fetchAccountInfo,
   ]);
 
-  useEffect(() => {
-    if (supplyTxStatus.isApproved) {
-      setShowToast(true);
-      fetchAllowance(false);
-    }
-
-    if (supplyTxStatus.isDeposited) {
-      setSupplyAmount(0);
-      setClearInputField(true);
-      setOpenSuccessModal(true);
-      fetchModalData();
-    }
-
-    if (supplyTxStatus.isWithdrawn) {
-      setWithdrawAmount(0);
-      setClearInputField(true);
-      setShowToast(true);
-      fetchModalData();
-    }
-  }, [supplyTxStatus, asset.symbol, fetchAllowance, fetchModalData]);
-
   const handleDeposit = async (useAsCollateral: boolean) => {
     try {
       if (!supplyAmount || supplyAmount > parseFloat(parsedMaxAmount)) {
         return alert("Enter valid amount");
       }
 
+      setTxLoading(true);
+      setShowToast(false);
       const parsedAmount = ethers.utils.parseUnits(
         supplyAmount.toString(),
         asset.decimals
@@ -149,29 +139,99 @@ export const SupplyModal: FC<SupplyModalProps> = ({
 
       if (supplyAmount <= parsedAllowance) {
         depositAsset(parsedAmount, useAsCollateral)
-          .then((res) => {
-            const txMessage = `You've successfully supplied ${formatNumber(
-              supplyAmount
-            )} ${asset.symbol}`;
-            setTxDetails({ txMessage, txHash: res.hash });
+          .then(async (res) => {
+            if (res) {
+              const result = await res.wait();
+              if (result.status === 1) {
+                const txMessage = `You've successfully supplied ${formatNumber(
+                  supplyAmount
+                )} ${asset.symbol}`;
+                setTxDetails({
+                  txMessage,
+                  copyText: null,
+                  txHash: res.hash,
+                  txStatus: "success",
+                });
+                setSupplyAmount(0);
+                setClearInputField(true);
+                setOpenSuccessModal(true);
+                fetchModalData();
+              } else {
+                const txMessage = `An error occurred while proccessing your transaction`;
+                setTxDetails({
+                  txMessage,
+                  copyText: null,
+                  txHash: res.hash,
+                  txStatus: "failed",
+                });
+                setShowToast(true);
+              }
+            }
+            setTxLoading(false);
           })
           .catch((error) => {
-            console.error(error);
+            const errorObject = JSON.parse(error.message);
+            setTxDetails({
+              txMessage: errorObject.errorMessage,
+              copyText: errorObject.fullText,
+              txHash: null,
+              txStatus: "failed",
+            });
+            setShowToast(true);
+            setTxLoading(false);
           });
       } else {
         approveAsset(parsedAmount)
-          .then((res) => {
-            const txMessage = `You've successfully approved ${formatNumber(
-              supplyAmount
-            )} ${asset.symbol}`;
-            setTxDetails({ txMessage, txHash: res.hash });
+          .then(async (res) => {
+            if (res) {
+              const result = await res.wait();
+              if (result.status === 1) {
+                const txMessage = `You've successfully approved ${formatNumber(
+                  supplyAmount
+                )} ${asset.symbol}`;
+                setTxDetails({
+                  txMessage,
+                  copyText: null,
+                  txHash: res.hash,
+                  txStatus: "success",
+                });
+                setShowToast(true);
+                fetchAllowance(false);
+              } else {
+                const txMessage = `An error occurred while proccessing your transaction`;
+                setTxDetails({
+                  txMessage,
+                  copyText: null,
+                  txHash: res.hash,
+                  txStatus: "failed",
+                });
+                setShowToast(true);
+              }
+            }
+            setTxLoading(false);
           })
           .catch((error) => {
-            console.error(error);
+            const errorObject = JSON.parse(error.message);
+            setTxDetails({
+              txMessage: errorObject.errorMessage,
+              copyText: errorObject.fullText,
+              txHash: null,
+              txStatus: "failed",
+            });
+            setShowToast(true);
+            setTxLoading(false);
           });
       }
     } catch (error: any) {
-      throw Error("Error handling deposit:", error);
+      const errorObject = JSON.parse(error.message);
+      setTxDetails({
+        txMessage: errorObject.errorMessage,
+        copyText: errorObject.fullText,
+        txHash: null,
+        txStatus: "failed",
+      });
+      setShowToast(true);
+      setTxLoading(false);
     }
   };
 
@@ -179,19 +239,53 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     if (!withdrawAmount || withdrawAmount > parsedSupplied) {
       return alert("Enter valid amount");
     }
+    setTxLoading(true);
+    setShowToast(false);
     const parsedAmount = ethers.utils.parseUnits(
       withdrawAmount.toString(),
       asset.decimals
     );
     withdrawAsset(parsedAmount)
-      .then((res) => {
-        const txMessage = `You've successfully withdrawn ${formatNumber(
-          withdrawAmount
-        )} ${asset.symbol}`;
-        setTxDetails({ txMessage, txHash: res.hash });
+      .then(async (res) => {
+        if (res) {
+          const result = await res.wait();
+          if (result.status === 1) {
+            const txMessage = `You've successfully withdrawn ${formatNumber(
+              withdrawAmount
+            )} ${asset.symbol}`;
+            setTxDetails({
+              txMessage,
+              copyText: null,
+              txHash: res.hash,
+              txStatus: "success",
+            });
+            setWithdrawAmount(0);
+            setClearInputField(true);
+            setShowToast(true);
+            fetchModalData();
+          } else {
+            const txMessage = `An error occurred while proccessing your transaction`;
+            setTxDetails({
+              txMessage,
+              copyText: null,
+              txHash: res.hash,
+              txStatus: "failed",
+            });
+            setShowToast(true);
+          }
+        }
+        setTxLoading(false);
       })
       .catch((error) => {
-        console.error(error);
+        const errorObject = JSON.parse(error.message);
+        setTxDetails({
+          txMessage: errorObject.errorMessage,
+          copyText: errorObject.fullText,
+          txHash: null,
+          txStatus: "failed",
+        });
+        setShowToast(true);
+        setTxLoading(false);
       });
   };
 
@@ -208,7 +302,13 @@ export const SupplyModal: FC<SupplyModalProps> = ({
         modalMessage={txMessage}
         continueAction={() => setOpenSuccessModal(false)}
       />
-      <Toast isOpen={showToast} toastMessage={txMessage} txHash={txHash} />
+      <Toast
+        isOpen={showToast}
+        toastMessage={txMessage}
+        txHash={txHash}
+        status={txStatus}
+        copyText={copyText}
+      />
       <div
         data-testid="modal-container"
         className={`fixed inset-0 ${
@@ -276,7 +376,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                     />
                   }
                   buttonAction={handleDeposit}
-                  isTransactionLoading={supplyTxStatus.isLoading}
+                  isTransactionLoading={txLoading}
                   setAmount={setSupplyAmount}
                   amount={supplyAmount}
                 />
@@ -310,7 +410,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                   setClearInputField={setClearInputField}
                   clearInputField={clearInputField}
                   buttonAction={handleWithdraw}
-                  isTransactionLoading={supplyTxStatus.isLoading}
+                  isTransactionLoading={txLoading}
                   setAmount={setWithdrawAmount}
                   amount={withdrawAmount}
                 />
