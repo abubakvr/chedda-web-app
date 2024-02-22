@@ -6,9 +6,11 @@ import {
   useAllowance,
   useAssetBalance,
   useAvailableLiquidity,
+  useEnvironment,
   useTokenBalance,
   useTransaction,
 } from "@/hooks";
+import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks");
@@ -68,7 +70,13 @@ describe("SupplyModal", () => {
       approveAsset: jest.fn(),
       withdrawAsset: jest.fn(),
     }));
+
+    (useEnvironment as jest.Mock).mockReturnValue({
+      currentEnvironment: mockCurrentEnvironment,
+      switchEnvironment: jest.fn(),
+    });
   });
+
   it("renders deposit tab content correctly", async () => {
     render(<SupplyModal {...mockProps} />);
 

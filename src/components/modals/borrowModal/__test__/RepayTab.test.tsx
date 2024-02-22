@@ -8,16 +8,7 @@ import { useTransaction } from "@/hooks";
 
 jest.spyOn(window, "alert").mockImplementation(() => {});
 
-jest.mock("../../../../hooks", () => ({
-  useTransaction: jest.fn(() => ({
-    borrowTxStatus: {
-      isLoading: false,
-      isApproved: false,
-      isAssetRepaid: false,
-    },
-    borrowAsset: jest.fn(() => Promise.resolve()),
-  })),
-}));
+jest.mock("../../../../hooks");
 
 // Mock the Toast component
 jest.mock("../../../../components/ui", () => ({
@@ -47,8 +38,7 @@ const mockProps: RepayTabProps = {
   totalBorrowed: "1000",
   availableLiquidity: BigNumber.from("390000000000000000000"),
 };
-
-const mockRepayAsset = jest.fn();
+const mockRepayAsset = jest.fn().mockResolvedValue({ hash: "0x00" });
 
 describe("RepayTab Component", () => {
   beforeEach(() => {

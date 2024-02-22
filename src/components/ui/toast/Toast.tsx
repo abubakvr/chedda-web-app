@@ -1,17 +1,23 @@
 import React, { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
+import LinkOut from "@/assets/icon/link-out.svg";
+import { useEnvironment } from "@/hooks";
 
 interface ToastProps {
   isOpen: boolean;
+  txHash?: string;
   duration?: number;
   toastMessage: string;
 }
 
 export const Toast: React.FC<ToastProps> = ({
-  isOpen,
   duration = 10000,
+  isOpen,
+  txHash,
   toastMessage,
 }) => {
   const [toasts, setToasts] = useState([] as any[]);
+  const { currentEnvironment } = useEnvironment();
 
   const addToast = useCallback(() => {
     const newToast = {
@@ -64,8 +70,8 @@ export const Toast: React.FC<ToastProps> = ({
           } overflow-y-auto z-30`}
         >
           <div className="flex items-center justify-center">
-            <div className="app-modal rounded-lg shadow-lg w-[291px]">
-              <div className="p-6">
+            <div className="tx-toast rounded-lg shadow-lg w-auto">
+              <div className="p-6 pb-4">
                 <button
                   className="absolute top-1 right-2 text-xl cursor-pointer text-[#CCD2E3]"
                   onClick={() => removeToast(toast.id)}
@@ -76,11 +82,25 @@ export const Toast: React.FC<ToastProps> = ({
                 <div className="text-lg font-bold" data-testid="toast-title">
                   Transaction Successful
                 </div>
-                <div
-                  className="text-sm text-[#ffffff50]"
-                  data-testid="toast-message"
-                >
-                  {toastMessage}
+                <div>
+                  <div
+                    className="text-sm text-[#ffffff50]"
+                    data-testid="toast-message"
+                  >
+                    {toastMessage}
+                  </div>
+                  {txHash && (
+                    <a
+                      href={`${currentEnvironment?.txUrlPrefix}/${txHash}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-xs text-[#ffffff] flex justify-end items-center gap-x-1 mt-2 opacity-50 hover:opacity-90"
+                      data-testid="toast-link"
+                    >
+                      Review tx details
+                      <Image src={LinkOut} alt="link out" className="h-3 w-3" />
+                    </a>
+                  )}
                 </div>
               </div>
               <div

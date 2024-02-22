@@ -34,7 +34,6 @@ export const RepayTab = ({
   isLoading,
   asset,
   totalCollateralValue,
-  accountCollateralAmount,
   healthFactor,
   tokenValue,
   allowance,
@@ -46,12 +45,15 @@ export const RepayTab = ({
   refreshModal,
 }: RepayTabProps) => {
   const [clearInputField, setClearInputField] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [{ txMessage, txHash }, setTxDetails] = useState({
+    txMessage: "",
+    txHash: "",
+  });
   const [showToast, setShowToast] = useState(false);
   const [inputAmount, setInputAmount] = useState(0);
   const { address: tokenAddress, decimals, symbol } = asset;
   const { accountCollateralLoading, healthFactorLoading } = isLoading;
-  const { borrowTxStatus, repayAsset, approveAsset } =
+  const { borrowTxStatus, repayAsset, approveAsset, resetTxState } =
     useTransaction(tokenAddress);
 
   const parsedTotalAccountCollateralValue = parseFloat(totalCollateralValue);
@@ -95,17 +97,27 @@ export const RepayTab = ({
         decimals
       );
       if (inputAmount <= parsedAllowance) {
-        await repayAsset(parsedAmount);
-        const txMessage = `You've successfully Repaid ${formatNumber(
-          inputAmount
-        )} ${symbol}`;
-        setToastMessage(txMessage);
+        repayAsset(parsedAmount)
+          .then((res) => {
+            const txMessage = `You've successfully Repaid ${formatNumber(
+              inputAmount
+            )} ${symbol}`;
+            setTxDetails({ txMessage, txHash: res.hash });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       } else {
-        await approveAsset(parsedAmount);
-        const txMessage = `You've successfully approved ${formatNumber(
-          inputAmount
-        )} ${symbol}`;
-        setToastMessage(txMessage);
+        approveAsset(parsedAmount)
+          .then((res) => {
+            const txMessage = `You've successfully approved ${formatNumber(
+              inputAmount
+            )} ${symbol}`;
+            setTxDetails({ txMessage, txHash: res.hash });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       }
     } catch (error: any) {
       throw Error("Error in repaying asset:" + error.message);
@@ -116,6 +128,7 @@ export const RepayTab = ({
     if (borrowTxStatus.isApproved) {
       setShowToast(true);
       fetchAllowance(false);
+      resetTxState();
     }
 
     if (borrowTxStatus.isAssetRepaid) {
@@ -123,17 +136,19 @@ export const RepayTab = ({
       setClearInputField(true);
       setShowToast(true);
       refreshModal();
+      resetTxState();
     }
   }, [
     borrowTxStatus.isAssetRepaid,
     borrowTxStatus.isApproved,
     fetchAllowance,
     refreshModal,
+    resetTxState,
   ]);
 
   return (
     <>
-      <Toast isOpen={showToast} toastMessage={toastMessage} />
+      <Toast isOpen={showToast} toastMessage={txMessage} txHash={txHash} />
       <div data-testid="repay-tab-content" className="mt-6">
         <div className="text-xl font-bold flex justify-between">
           <div>Repay your borrowed asset</div>

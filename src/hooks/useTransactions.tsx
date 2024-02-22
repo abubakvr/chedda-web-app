@@ -86,43 +86,43 @@ export const useTransaction = (asset: string) => {
   const approveAsset = async (amount: BigNumber) =>
     executeTransaction(async () => {
       if (!amount) return;
-      return await token?.approve(strPoolId, amount);
+      return token?.approve(strPoolId, amount);
     }, amount);
 
   const depositAsset = async (amount: BigNumber, useAsCollateral: boolean) =>
     executeTransaction(async () => {
       if (!account) return;
-      return await lendingPool?.supply(amount, account, useAsCollateral);
+      return lendingPool?.supply(amount, account, useAsCollateral);
     }, amount);
 
   const withdrawAsset = async (amount: BigNumber) =>
     executeTransaction(async () => {
       if (!account) return;
-      return await lendingPool?.withdraw(amount, account, account);
+      return lendingPool?.withdraw(amount, account, account);
     }, amount);
 
   const depositCollateral = async (amount: BigNumber) =>
     executeTransaction(async () => {
       if (!account) return;
-      return await lendingPool?.addCollateral(asset, amount);
+      return lendingPool?.addCollateral(asset, amount);
     }, amount);
 
   const withdrawCollateral = async (amount: BigNumber) =>
     executeTransaction(async () => {
       if (!account) return;
-      return await lendingPool?.removeCollateral(asset, amount);
+      return lendingPool?.removeCollateral(asset, amount);
     }, amount);
 
   const borrowAsset = async (amount: BigNumber) =>
     executeTransaction(async () => {
       if (!account) return;
-      return await lendingPool?.take(amount);
+      return lendingPool?.take(amount);
     }, amount);
 
   const repayAsset = async (amount: BigNumber) =>
     executeTransaction(async () => {
       if (!account) return;
-      return await lendingPool?.putAmount(amount);
+      return lendingPool?.putAmount(amount);
     }, amount);
 
   const depositHandler = useCallback(
@@ -153,6 +153,8 @@ export const useTransaction = (asset: string) => {
 
   const approvalHandler = useCallback(
     (owner: string) => {
+      console.log(borrowTxStatus);
+
       if (owner === account) {
         setSupplyTxStatus((prevStatus) => ({
           ...prevStatus,
@@ -175,6 +177,7 @@ export const useTransaction = (asset: string) => {
         setBorrowTxStatus((prevStatus) => ({
           ...prevStatus,
           isLoading: false,
+          isApproved: false,
           isCollateralDeposited: true,
         }));
       }
@@ -214,6 +217,7 @@ export const useTransaction = (asset: string) => {
         setBorrowTxStatus((prevStatus) => ({
           ...prevStatus,
           isLoading: false,
+          isApproved: false,
           isAssetRepaid: true,
         }));
       }

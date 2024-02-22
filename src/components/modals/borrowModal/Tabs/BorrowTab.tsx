@@ -31,7 +31,6 @@ export interface BorrowTabProps {
 export const BorrowTab = ({
   isLoading,
   asset,
-  accountCollateralAmount,
   totalCollateralValue,
   healthFactor,
   tokenValue,
@@ -42,7 +41,10 @@ export const BorrowTab = ({
   refreshModal,
 }: BorrowTabProps) => {
   const [clearInputField, setClearInputField] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [{ txMessage, txHash }, setTxDetails] = useState({
+    txMessage: "",
+    txHash: "",
+  });
   const [showToast, setShowToast] = useState(false);
   const [inputAmount, setInputAmount] = useState(0);
   const { address: tokenAddress, decimals, symbol } = asset;
@@ -77,11 +79,16 @@ export const BorrowTab = ({
         inputAmount.toString(),
         decimals
       );
-      await borrowAsset(parsedAmount);
-      const txMessage = `You've successfully Borrowed ${formatNumber(
-        inputAmount
-      )} ${symbol}`;
-      setToastMessage(txMessage);
+      borrowAsset(parsedAmount)
+        .then((res) => {
+          const txMessage = `You've successfully Borrowed ${formatNumber(
+            inputAmount
+          )} ${symbol}`;
+          setTxDetails({ txMessage, txHash: res.hash });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     } catch (error: any) {
       throw Error("Error in borrowing asset:" + error.message);
     }
@@ -98,7 +105,7 @@ export const BorrowTab = ({
 
   return (
     <>
-      <Toast isOpen={showToast} toastMessage={toastMessage} duration={10000} />
+      <Toast isOpen={showToast} toastMessage={txMessage} txHash={txHash} />
       <div data-testid="withdraw-tab-content" className="mt-6">
         <div className="text-xl font-bold flex justify-between">
           <div>Select amount to Borrow</div>
