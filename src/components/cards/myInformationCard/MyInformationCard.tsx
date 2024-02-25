@@ -8,6 +8,7 @@ import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
 import { BorrowModal, SupplyModal } from "@/components/modals";
 import { BigNumber } from "ethers";
+import { Button } from "@/components/common";
 
 interface MyInformationCardProps {
   poolStats: IPoolStatsResponse | undefined;
@@ -154,19 +155,21 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
         </div>
       </div>
 
-      <div className="flex flex-col justify-center p-8 space-y-5">
-        <button
-          className="primary-button text-center h-11 items-center rounded-lg text-white text-opacity-100-2 uppercase font-bold text-lg hover:opacity-80"
+      <div className="flex flex-col justify-center p-8 gap-y-6">
+        <Button
           onClick={() => setIsSupplyModalOpen(true)}
+          type="primary"
+          size="small"
         >
           Supply
-        </button>
-        <button
-          className="secondary-button button-gradient-text text-center h-11 items-center text-white text-opacity-100-2 uppercase font-bold text-lg hover:opacity-80"
+        </Button>
+        <Button
           onClick={() => setIsBorrowModalOpen(true)}
+          type="secondary"
+          size="small"
         >
           Borrow
-        </button>
+        </Button>
       </div>
       {isSupplyModalOpen && (
         <SupplyModal

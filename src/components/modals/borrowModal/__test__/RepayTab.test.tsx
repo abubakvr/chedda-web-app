@@ -5,12 +5,18 @@ import { RepayTab, RepayTabProps } from "../Tabs";
 import { StaticImageData } from "next/image";
 import { BigNumber } from "ethers";
 import { useTransaction } from "@/hooks";
+import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
+jest.mock("@web3-react/core", () => ({
+  ...jest.requireActual("@web3-react/core"),
+  useWeb3React: jest.fn(() => ({
+    account: "0x123",
+    chainId: 1,
+    isActivating: false,
+  })),
+}));
 jest.spyOn(window, "alert").mockImplementation(() => {});
-
 jest.mock("../../../../hooks");
-
-// Mock the Toast component
 jest.mock("../../../../components/ui", () => ({
   Toast: jest.fn(() => null),
 }));
@@ -61,7 +67,11 @@ describe("RepayTab Component", () => {
   });
 
   it("handles borrowing asset", async () => {
-    render(<RepayTab {...mockProps} />);
+    render(
+      <MockAppProviders>
+        <RepayTab {...mockProps} />
+      </MockAppProviders>
+    );
 
     const amountInput = screen.getByTestId("amount-input") as HTMLInputElement;
 
@@ -76,7 +86,11 @@ describe("RepayTab Component", () => {
   });
 
   it("renders borrow tab info section", async () => {
-    render(<RepayTab {...mockProps} />);
+    render(
+      <MockAppProviders>
+        <RepayTab {...mockProps} />
+      </MockAppProviders>
+    );
 
     expect(screen.getByTestId("borrow-tab-info")).toBeInTheDocument();
   });

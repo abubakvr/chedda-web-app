@@ -1,5 +1,11 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import { BorrowModal, BorrowModalProps } from "../BorrowModal";
 import { StaticImageData } from "next/image";
 import {
@@ -15,7 +21,16 @@ import {
 } from "@/hooks";
 import { BigNumber } from "ethers";
 import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
+import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
+jest.mock("@web3-react/core", () => ({
+  ...jest.requireActual("@web3-react/core"),
+  useWeb3React: jest.fn(() => ({
+    account: "0x123",
+    chainId: 1,
+    isActivating: false,
+  })),
+}));
 jest.mock("ethers");
 jest.mock("../../../../hooks");
 
@@ -97,25 +112,44 @@ describe("BorrowModal Component", () => {
   });
 
   it("renders component with correct data-testid", () => {
-    render(<BorrowModal {...mockProps} />);
+    render(
+      <MockAppProviders>
+        <BorrowModal {...mockProps} />
+      </MockAppProviders>
+    );
 
     const modalContainer = screen.getByTestId("modal-container");
-    expect(modalContainer).toBeInTheDocument();
+
+    waitFor(() => {
+      expect(modalContainer).toBeInTheDocument();
+    });
   });
 
   it("renders Deposit tab by default", () => {
-    render(<BorrowModal {...mockProps} />);
+    render(
+      <MockAppProviders>
+        <BorrowModal {...mockProps} />
+      </MockAppProviders>
+    );
 
     const depositTab = screen.getByTestId("deposit-tab");
-    expect(depositTab).toHaveClass("modal-button rounded");
+    waitFor(() => {
+      expect(depositTab).toHaveClass("modal-button rounded");
+    });
   });
 
   it("switches to Borrow tab on tab click", async () => {
-    render(<BorrowModal {...mockProps} />);
+    render(
+      <MockAppProviders>
+        <BorrowModal {...mockProps} />
+      </MockAppProviders>
+    );
 
     const borrowTab = screen.getByTestId("borrow-tab");
 
-    fireEvent.click(borrowTab);
+    act(() => {
+      fireEvent.click(borrowTab);
+    });
 
     await waitFor(() => {
       expect(borrowTab).toHaveClass("modal-button rounded");

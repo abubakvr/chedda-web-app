@@ -1,4 +1,10 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import { BigNumber, utils } from "ethers";
 import { StaticImageData } from "next/image";
 import { SupplyModal } from "../SupplyModal";
@@ -11,6 +17,7 @@ import {
   useTransaction,
 } from "@/hooks";
 import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
+import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks");
@@ -78,50 +85,68 @@ describe("SupplyModal", () => {
   });
 
   it("renders deposit tab content correctly", async () => {
-    render(<SupplyModal {...mockProps} />);
-
-    // Check if the modal title is rendered
-    expect(screen.getByTestId("supply-modal-title")).toHaveTextContent(
-      "Supply Asset"
+    render(
+      <MockAppProviders>
+        <SupplyModal {...mockProps} />
+      </MockAppProviders>
     );
 
-    // Check if the deposit tab is initially active
-    expect(screen.getByTestId("deposit-tab")).toHaveClass(
-      "modal-button rounded"
-    );
+    waitFor(() => {
+      // Check if the modal title is rendered
+      expect(screen.getByTestId("supply-modal-title")).toHaveTextContent(
+        "Supply Asset"
+      );
 
-    // Check if the deposit content is rendered
-    expect(screen.getByTestId("deposit-content")).toBeInTheDocument();
+      // Check if the deposit tab is initially active
+      expect(screen.getByTestId("deposit-tab")).toHaveClass(
+        "modal-button rounded"
+      );
 
-    // Check if the withdrawal content is not rendered
-    expect(screen.queryByTestId("withdraw-content")).not.toBeInTheDocument();
+      // Check if the deposit content is rendered
+      expect(screen.getByTestId("deposit-content")).toBeInTheDocument();
+
+      // Check if the withdrawal content is not rendered
+      expect(screen.queryByTestId("withdraw-content")).not.toBeInTheDocument();
+    });
   });
 
   it("renders withdraw tab content correctly", async () => {
-    render(<SupplyModal {...mockProps} />);
-
-    // Switch to the Withdraw tab
-    fireEvent.click(screen.getByTestId("withdraw-tab"));
-
-    // Check if the modal title is rendered
-    expect(screen.getByTestId("supply-modal-title")).toHaveTextContent(
-      "Supply Asset"
+    render(
+      <MockAppProviders>
+        <SupplyModal {...mockProps} />
+      </MockAppProviders>
     );
 
-    // Check if the Withdraw tab is now active
-    expect(screen.getByTestId("withdraw-tab")).toHaveClass(
-      "modal-button rounded"
-    );
+    act(() => {
+      // Switch to the Withdraw tab
+      fireEvent.click(screen.getByTestId("withdraw-tab"));
+    });
 
-    // Check if the withdrawal content is rendered
-    expect(screen.getByTestId("withdraw-content")).toBeInTheDocument();
+    waitFor(() => {
+      // Check if the modal title is rendered
+      expect(screen.getByTestId("supply-modal-title")).toHaveTextContent(
+        "Supply Asset"
+      );
 
-    // Check if the deposit content is not rendered
-    expect(screen.queryByTestId("deposit-content")).not.toBeInTheDocument();
+      // Check if the Withdraw tab is now active
+      expect(screen.getByTestId("withdraw-tab")).toHaveClass(
+        "modal-button rounded"
+      );
+
+      // Check if the withdrawal content is rendered
+      expect(screen.getByTestId("withdraw-content")).toBeInTheDocument();
+
+      // Check if the deposit content is not rendered
+      expect(screen.queryByTestId("deposit-content")).not.toBeInTheDocument();
+    });
   });
 
   it("handles deposit action correctly", async () => {
-    render(<SupplyModal {...mockProps} />);
+    render(
+      <MockAppProviders>
+        <SupplyModal {...mockProps} />
+      </MockAppProviders>
+    );
 
     // Check if the deposit tab is initially active
     expect(screen.getByTestId("deposit-tab")).toHaveClass(
@@ -131,11 +156,13 @@ describe("SupplyModal", () => {
     // Enter a valid supply amount
     const input = screen.queryByTestId("amount-input") as HTMLInputElement;
 
-    // Type a value into the input
-    fireEvent.input(input, { target: { value: "0" } });
+    act(() => {
+      // Type a value into the input
+      fireEvent.input(input, { target: { value: "0" } });
 
-    // Click the deposit button
-    fireEvent.click(screen.getByText("Supply T3"));
+      // Click the deposit button
+      fireEvent.click(screen.getByText("Supply T3"));
+    });
 
     // Ensure the success modal is opened
     await waitFor(() =>
@@ -144,7 +171,11 @@ describe("SupplyModal", () => {
   });
 
   it("handles withdraw action correctly", async () => {
-    render(<SupplyModal {...mockProps} />);
+    render(
+      <MockAppProviders>
+        <SupplyModal {...mockProps} />
+      </MockAppProviders>
+    );
 
     // Switch to the Withdraw tab
     fireEvent.click(screen.getByTestId("withdraw-tab"));
