@@ -32,7 +32,7 @@ export const NetworkSwitchBanner = ({
         priority={true}
       />
       <span>
-        You are on the wrong network. please switch network to {chainName}
+        You are on the wrong network. Please switch network to {chainName}
       </span>
       <button
         className="text-white modal-button rounded px-3 py-2 text-sm ml-2 hover:opacity-90"
