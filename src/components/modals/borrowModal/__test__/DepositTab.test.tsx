@@ -8,9 +8,10 @@ import {
 } from "@testing-library/react";
 import { DepositTab, DepositTabProps } from "../Tabs";
 import { StaticImageData } from "next/image";
-import { useTransaction } from "@/hooks";
+import { useEnvironment, useTransaction } from "@/hooks";
 import { BigNumber } from "ethers";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
+import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 
 jest.mock("@web3-react/core", () => ({
   ...jest.requireActual("@web3-react/core"),
@@ -20,10 +21,7 @@ jest.mock("@web3-react/core", () => ({
     isActivating: false,
   })),
 }));
-jest.spyOn(window, "alert").mockImplementation(() => {});
 jest.mock("../../../../hooks");
-
-// Mock the Toast component
 jest.mock("../../../../components/ui", () => ({
   Toast: jest.fn(() => null),
 }));
@@ -80,6 +78,10 @@ describe("DepositTab Component", () => {
       approveAsset: mockApproveCollateral,
       depositCollateral: mockDepositCollateral,
     }));
+    (useEnvironment as jest.Mock).mockReturnValue({
+      currentEnvironment: mockCurrentEnvironment,
+      switchEnvironment: jest.fn(),
+    });
   });
 
   it("renders DepositTab component", async () => {

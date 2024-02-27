@@ -1,9 +1,12 @@
-// MyInformationCard.test.tsx
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MyInformationCard } from "../MyInformationCard";
-import { mockAccountInfo, mockPoolStats } from "@/utils/Mocks/MockTestData";
-import { useTokenBalance } from "@/hooks";
+import {
+  mockAccountInfo,
+  mockCurrentEnvironment,
+  mockPoolStats,
+} from "@/utils/Mocks/MockTestData";
+import { useEnvironment, useTokenBalance } from "@/hooks";
 import { ethers } from "ethers";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
@@ -11,6 +14,12 @@ jest.mock("ethers");
 jest.mock("../../../../hooks");
 
 describe("MyInformationCard", () => {
+  beforeEach(() => {
+    (useEnvironment as jest.Mock).mockReturnValue({
+      currentEnvironment: mockCurrentEnvironment,
+      switchEnvironment: jest.fn(),
+    });
+  });
   it("renders MyInformationCard component correctly", () => {
     (useTokenBalance as jest.Mock).mockImplementation(() => ({
       fetchTokenBalance: jest.fn(),

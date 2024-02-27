@@ -3,9 +3,10 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { RepayTab, RepayTabProps } from "../Tabs";
 import { StaticImageData } from "next/image";
-import { BigNumber } from "ethers";
-import { useTransaction } from "@/hooks";
+import { useEnvironment, useTransaction } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
+import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
+import { BigNumber } from "ethers";
 
 jest.mock("@web3-react/core", () => ({
   ...jest.requireActual("@web3-react/core"),
@@ -15,7 +16,6 @@ jest.mock("@web3-react/core", () => ({
     isActivating: false,
   })),
 }));
-jest.spyOn(window, "alert").mockImplementation(() => {});
 jest.mock("../../../../hooks");
 jest.mock("../../../../components/ui", () => ({
   Toast: jest.fn(() => null),
@@ -38,9 +38,9 @@ const mockProps: RepayTabProps = {
   fetchAllowance: jest.fn(),
   refreshModal: jest.fn(),
   assetPrice: 100,
-  allowance: BigNumber.from("390000000000000000000"),
-  tokenBalance: BigNumber.from("390000000000000000000"),
-  tokenCollateralValue: BigNumber.from("390"),
+  allowance: BigNumber.from("390000000000000000000000000000000000"),
+  tokenBalance: BigNumber.from("3900000000000000000000000000000000000000"),
+  tokenCollateralValue: BigNumber.from("39000000000000000000000"),
   totalBorrowed: "1000",
   availableLiquidity: BigNumber.from("390000000000000000000"),
 };
@@ -49,6 +49,7 @@ JSON.parse = jest.fn().mockReturnValue({
   errorMessage: "",
   fullText: "",
 });
+
 describe("RepayTab Component", () => {
   beforeEach(() => {
     (useTransaction as jest.Mock).mockImplementation(() => ({
@@ -59,6 +60,10 @@ describe("RepayTab Component", () => {
       },
       repayAsset: mockRepayAsset,
     }));
+    (useEnvironment as jest.Mock).mockReturnValue({
+      currentEnvironment: mockCurrentEnvironment,
+      switchEnvironment: jest.fn(),
+    });
   });
   it("renders BorrowTab component", async () => {
     render(<RepayTab {...mockProps} />);
@@ -66,7 +71,7 @@ describe("RepayTab Component", () => {
     expect(screen.getByTestId("repay-tab-content")).toBeInTheDocument();
   });
 
-  it("handles borrowing asset", async () => {
+  it("handles repaying asset", async () => {
     render(
       <MockAppProviders>
         <RepayTab {...mockProps} />
