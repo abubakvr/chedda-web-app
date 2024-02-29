@@ -83,44 +83,6 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           <Image src={LinkOut} alt="link out" />
         </button>
       </div>
-
-      <div className="flex justify-between items-center p-8 border-b border-gray-500">
-        <div className="h-fit">
-          <div className="flex">
-            {poolStats?.collaterals.map((collateral: IToken, i) => (
-              <div key={i} className="logo-cascade round-image">
-                <Image
-                  src={collateral.logo}
-                  className="cascade-img h-10 w-10 round-image"
-                  alt={collateral.symbol}
-                  data-testid="collateral-logo"
-                />
-              </div>
-            ))}
-          </div>
-          <div
-            className={`w-40 mt-2 font-bold flex flex-wrap m-0 gap-x-1 text-ellipsis overflow-hidden`}
-            data-testid="collaterals-list"
-          >
-            {poolStats?.collaterals.map((collateral, i) => (
-              <div
-                className=" flex justify-start items-start text-ellipsis text-white text-lg font-bold"
-                key={i}
-              >
-                {collateral.symbol}
-                {i !== poolStats?.collaterals.length - 1 && <span>,</span>}
-              </div>
-            ))}
-          </div>
-        </div>
-        <button
-          className="secondary-button manage-gradient-text flex gap-x-1 h-10 items-center text-white text-opacity-100-2 uppercase font-bold text-xs py-[5px] px-4 hover:opacity-80"
-          onClick={() => {}}
-        >
-          Manage Collateral
-        </button>
-      </div>
-
       <div className="p-8 pb-0">
         <div className="flex justify-between text-sm pb-5">
           <div className="opacity-50 font-semibold">Available to Supply</div>
