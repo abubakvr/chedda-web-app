@@ -8,9 +8,10 @@ import {
 } from "@testing-library/react";
 import { WithdrawTab, WithdrawTabProps } from "../Tabs/WithdrawTab";
 import { StaticImageData } from "next/image";
-import { useTransaction } from "@/hooks";
+import { useEnvironment, useTransaction } from "@/hooks";
 import { BigNumber } from "ethers";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
+import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 
 jest.mock("@web3-react/core", () => ({
   ...jest.requireActual("@web3-react/core"),
@@ -24,6 +25,7 @@ jest.spyOn(window, "alert").mockImplementation(() => {});
 jest.mock("../../../../hooks");
 jest.mock("../../../../components/ui", () => ({
   Toast: jest.fn(() => null),
+  Button: jest.fn(() => null),
 }));
 
 const mockProps: WithdrawTabProps = {
@@ -75,6 +77,10 @@ describe("WithdrawTab Component", () => {
       },
       withdrawCollateral: mockWithdrawCollateral,
     }));
+    (useEnvironment as jest.Mock).mockReturnValue({
+      currentEnvironment: mockCurrentEnvironment,
+      switchEnvironment: jest.fn(),
+    });
   });
 
   it("renders WithdrawTab component", async () => {
@@ -100,7 +106,6 @@ describe("WithdrawTab Component", () => {
 
     act(() => {
       fireEvent.change(amountInput, { target: { value: "50" } });
-
       fireEvent.click(screen.getByText("Withdraw T3"));
     });
 

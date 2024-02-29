@@ -3,6 +3,7 @@ import { useWeb3React } from "@web3-react/core";
 import { ConnectModal } from "@/components/modals";
 import { Dialog } from "../../dialog/Dialog";
 import { LoadingIcon } from "./LoadingIcon";
+import { useEnvironment, useSwitchChain } from "@/hooks";
 
 interface ButtonProps {
   children: ReactNode;
@@ -34,7 +35,10 @@ export const Button: FC<ButtonProps> = ({
     buttonAction: () => {},
     actionTitle: "",
   });
-  const { account } = useWeb3React();
+  const { account, chainId } = useWeb3React();
+  const { currentEnvironment } = useEnvironment();
+  const appChainId = currentEnvironment?.chainId;
+  const switchChain = useSwitchChain();
 
   const handleButtonClick = () => {
     if (!account) {
@@ -47,6 +51,17 @@ export const Button: FC<ButtonProps> = ({
           setOpenWalletModal(true);
         },
         actionTitle: "Connect",
+      });
+    } else if (appChainId && appChainId !== chainId) {
+      setOpenDialog(true);
+      setDialogDetails({
+        dialogMessage: "Please switch to the correct network and try again.",
+        dialogTitle: "Switch Network",
+        buttonAction: () => {
+          setOpenDialog(false);
+          switchChain(appChainId);
+        },
+        actionTitle: "Switch Network",
       });
     } else {
       onClick();

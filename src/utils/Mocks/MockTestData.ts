@@ -4,7 +4,7 @@ import {
   IPoolStatsResponse,
   ISummaryStats,
 } from "../types";
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
 import { IAccountInfo, IPoolState, IPoolStats } from "chedda-sdk";
 
 export const mockPoolStats: IPoolStatsResponse[] = [
@@ -132,7 +132,7 @@ export const mockGetPoolStats: IPoolStats[] = [
 export const mockCurrentEnvironment = {
   production: false,
   environmentName: "mockEnvironment",
-  jsonRpcUrl: "https://mock-json-rpc-url",
+  jsonRpcUrl: "http://mock-json-rpc-url",
   webSocketUrl: "wss://mock-websocket-url",
   chainId: 1,
   contracts: {
@@ -167,22 +167,6 @@ export const mockCurrentEnvironment = {
 };
 const mockProvider = {
   getSigner: jest.fn(),
-};
-
-export const mockUseCheddaReturnValue = {
-  chedda: {
-    provider: new ethers.providers.WebSocketProvider("wss://testgoerliurl"),
-    poolLens: jest.fn().mockReturnValue({
-      activePools: jest.fn().mockResolvedValue(["pool1", "pool2"]),
-      getPoolStatsList: mockPoolStats,
-    }),
-
-    lendingPool: jest.fn(),
-    erc20token: jest.fn(),
-    priceOracle: jest.fn(),
-    closeProvider: jest.fn(),
-  },
-  signer: mockProvider.getSigner(),
 };
 
 export const mockAggregateStats: ISummaryStats[] = [

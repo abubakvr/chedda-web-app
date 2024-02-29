@@ -10,8 +10,9 @@ import {
 import { BorrowTab, BorrowTabProps } from "../Tabs";
 import { StaticImageData } from "next/image";
 import { BigNumber } from "ethers";
-import { useTransaction } from "@/hooks";
+import { useEnvironment, useTransaction } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
+import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 
 jest.mock("@web3-react/core", () => ({
   ...jest.requireActual("@web3-react/core"),
@@ -21,7 +22,7 @@ jest.mock("@web3-react/core", () => ({
     isActivating: false,
   })),
 }));
-jest.spyOn(window, "alert").mockImplementation(() => {});
+
 jest.mock("../../../../hooks");
 jest.mock("../../../../components/ui", () => ({
   Toast: jest.fn(() => null),
@@ -64,6 +65,10 @@ describe("BorrowTab Component", () => {
       },
       borrowAsset: mockBorrowAsset,
     }));
+    (useEnvironment as jest.Mock).mockReturnValue({
+      currentEnvironment: mockCurrentEnvironment,
+      switchEnvironment: jest.fn(),
+    });
   });
   it("renders BorrowTab component", async () => {
     render(
