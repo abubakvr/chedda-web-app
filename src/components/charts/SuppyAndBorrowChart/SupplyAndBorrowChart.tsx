@@ -36,7 +36,7 @@ const CustomTooltip: React.FC<CustomTooltipProps<Payload>> = (props) => {
       const time = date.toLocaleString("en-US", {
         hour: "numeric",
         minute: "numeric",
-        hour12: true,
+        hour12: false,
       });
       return `${monthName} ${date.getDate()}, ${time}`;
     }

@@ -35,17 +35,11 @@ export function createTimestamps(interval: number, stamps: number) {
   // Get the current date and time in local time
   const currentDate = new Date();
 
-  // Determine the closest 12-hour clock time (12 AM or 12 PM)
-  const currentHour = currentDate.getHours();
-  const closest12HourTime = currentHour < 12 ? 0 : 12;
-
-  // Set the time to the closest 12-hour clock time
-  currentDate.setHours(closest12HourTime, 0, 0, 0);
-
-  const endTimestamp = Math.floor(currentDate.getTime() / 1000);
+  // Set the current time to the current date
+  const currentTimestamp = Math.floor(currentDate.getTime() / 1000);
 
   for (let i = stamps - 1; i >= 0; i--) {
-    const timestamp = endTimestamp - i * intervalInSeconds;
+    const timestamp = currentTimestamp - i * intervalInSeconds;
     timestamps.push(timestamp);
   }
 
