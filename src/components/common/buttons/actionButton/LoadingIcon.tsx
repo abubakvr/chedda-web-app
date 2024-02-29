@@ -1,5 +1,3 @@
-// LoadingIcon.js
-
 import React from "react";
 
 export const LoadingIcon = () => (

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { BigNumber, ethers } from "ethers";
 import {
   useAllowance,
@@ -15,8 +15,8 @@ import {
 import { IToken } from "@/utils/types";
 import { Toast } from "@/components/ui";
 import { SuccessModal } from "@/components/modals";
-import { SupplyModalContent } from "@/components/common";
 import { SupplyTabInfo, WithdrawTabInfo } from "./TabInfo";
+import { SupplyModalContent } from "./modalContent/SupplyModalContent";
 
 interface SupplyModalProps {
   asset: IToken;

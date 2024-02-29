@@ -1,5 +1,5 @@
-import { ConnectModal } from "@/layout/AppHeader/components/connectModal/ConnectModal";
 import React, { useState } from "react";
+import { ConnectModal } from "@/components/modals";
 
 export const ConnectButton = ({}) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);

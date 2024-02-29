@@ -1,16 +1,27 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import { WithdrawTab, WithdrawTabProps } from "../Tabs/WithdrawTab";
 import { StaticImageData } from "next/image";
 import { useTransaction } from "@/hooks";
 import { BigNumber } from "ethers";
+import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
+jest.mock("@web3-react/core", () => ({
+  ...jest.requireActual("@web3-react/core"),
+  useWeb3React: jest.fn(() => ({
+    account: "0x123",
+    chainId: 1,
+    isActivating: false,
+  })),
+}));
 jest.spyOn(window, "alert").mockImplementation(() => {});
-
-// Mock the useTransaction hook
 jest.mock("../../../../hooks");
-
-// Mock the Toast component
 jest.mock("../../../../components/ui", () => ({
   Toast: jest.fn(() => null),
 }));
@@ -67,19 +78,31 @@ describe("WithdrawTab Component", () => {
   });
 
   it("renders WithdrawTab component", async () => {
-    render(<WithdrawTab {...mockProps} />);
+    render(
+      <MockAppProviders>
+        <WithdrawTab {...mockProps} />
+      </MockAppProviders>
+    );
 
-    expect(screen.getByTestId("withdraw-tab-content")).toBeInTheDocument();
+    waitFor(() => {
+      expect(screen.getByTestId("withdraw-tab-content")).toBeInTheDocument();
+    });
   });
 
   it("handles withdrawing collateral", async () => {
-    render(<WithdrawTab {...mockProps} />);
+    render(
+      <MockAppProviders>
+        <WithdrawTab {...mockProps} />
+      </MockAppProviders>
+    );
 
     const amountInput = screen.getByTestId("amount-input");
 
-    fireEvent.change(amountInput, { target: { value: "50" } });
+    act(() => {
+      fireEvent.change(amountInput, { target: { value: "50" } });
 
-    fireEvent.click(screen.getByText("Withdraw T3"));
+      fireEvent.click(screen.getByText("Withdraw T3"));
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId("loading-button-icon")).toBeInTheDocument();
@@ -92,13 +115,17 @@ describe("WithdrawTab Component", () => {
 
     componentProps.selectedCollateral["symbol"] = "T1";
 
-    render(<WithdrawTab {...componentProps} />);
+    render(
+      <MockAppProviders>
+        <WithdrawTab {...componentProps} />
+      </MockAppProviders>
+    );
 
-    const amountInput = screen.getByTestId("amount-input");
-
-    fireEvent.change(amountInput, { target: { value: "50" } });
-
-    fireEvent.click(screen.getByText("Withdraw T1"));
+    act(() => {
+      const amountInput = screen.getByTestId("amount-input");
+      fireEvent.change(amountInput, { target: { value: "50" } });
+      fireEvent.click(screen.getByText("Withdraw T1"));
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId("loading-button-icon")).toBeInTheDocument();
@@ -107,8 +134,14 @@ describe("WithdrawTab Component", () => {
   });
 
   it("renders info tab section", async () => {
-    render(<WithdrawTab {...mockProps} />);
+    render(
+      <MockAppProviders>
+        <WithdrawTab {...mockProps} />
+      </MockAppProviders>
+    );
 
-    expect(screen.getByTestId("deposit-tab-info")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId("deposit-tab-info")).toBeInTheDocument();
+    });
   });
 });

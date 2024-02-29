@@ -1,7 +1,7 @@
 import React from "react";
 import SuccessIcon from "@/assets/icon/success-icon.svg";
 import Image from "next/image";
-import { Button } from "@/components/common/buttons/Button";
+import { Button } from "@/components/common";
 
 interface SuccessModalProps {
   isOpen: boolean;
@@ -53,7 +53,12 @@ export const SuccessModal = ({
               Stake LP tokens, earn CHEDDA — secure rewards in a streamlined and
               rewarding staking venture.
             </div>
-            <Button type="primary" size="large" className="mt-12">
+            <Button
+              type="primary"
+              size="large"
+              className="mt-12"
+              onClick={() => {}}
+            >
               Stake LP Tokens
             </Button>
             <div className="mt-3 text-2xl text-white">or</div>

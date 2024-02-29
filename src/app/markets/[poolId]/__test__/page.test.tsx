@@ -24,6 +24,7 @@ import {
   mockPoolStats,
 } from "@/utils/Mocks/MockTestData";
 import { BigNumber } from "ethers";
+import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("ethers");
 jest.mock("chart.js");
@@ -96,7 +97,11 @@ describe("Pool details component", () => {
       isLoading: false,
     });
 
-    render(<Page />);
+    render(
+      <MockAppProviders>
+        <Page />
+      </MockAppProviders>
+    );
 
     // Wait for the pool details to be rendered
     await waitFor(() => {
@@ -130,7 +135,11 @@ describe("Pool details component", () => {
       isLoading: true,
     }));
 
-    render(<Page />);
+    render(
+      <MockAppProviders>
+        <Page />
+      </MockAppProviders>
+    );
 
     // Wait for the loading state to be rendered
     await waitFor(() => {

@@ -13,7 +13,7 @@ import {
   walletConnect,
 } from "@/connectors/walletConnect";
 
-import { SelectButton } from "../selectButton/SelectButton";
+import { SelectButton } from "../../common/buttons/selectButton/SelectButton";
 import { ConnectModalProps } from "@/utils/types";
 import { connectorIdKey } from "@/utils/constants";
 
@@ -58,7 +58,7 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
 
   return (
     <div
-      className={`fixed inset-0 overflow-y-auto bg-gray-900 bg-opacity-75 z-50 ${
+      className={`fixed inset-0 overflow-y-auto backdrop-filter backdrop-blur-sm bg-opacity-75 z-50 ${
         isModalOpen ? "" : "hidden"
       }`}
       data-testid="connect-modal"

@@ -1,10 +1,25 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import { DepositTab, DepositTabProps } from "../Tabs";
 import { StaticImageData } from "next/image";
 import { useTransaction } from "@/hooks";
 import { BigNumber } from "ethers";
+import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
+jest.mock("@web3-react/core", () => ({
+  ...jest.requireActual("@web3-react/core"),
+  useWeb3React: jest.fn(() => ({
+    account: "0x123",
+    chainId: 1,
+    isActivating: false,
+  })),
+}));
 jest.spyOn(window, "alert").mockImplementation(() => {});
 jest.mock("../../../../hooks");
 
@@ -68,9 +83,15 @@ describe("DepositTab Component", () => {
   });
 
   it("renders DepositTab component", async () => {
-    render(<DepositTab {...mockProps} />);
+    render(
+      <MockAppProviders>
+        <DepositTab {...mockProps} />
+      </MockAppProviders>
+    );
 
-    expect(screen.getByTestId("deposit-tab-content")).toBeInTheDocument();
+    waitFor(() => {
+      expect(screen.getByTestId("deposit-tab-content")).toBeInTheDocument();
+    });
   });
 
   it("handles approving collateral", async () => {
@@ -78,13 +99,18 @@ describe("DepositTab Component", () => {
       ...mockProps,
       allowance: BigNumber.from("500000000000000000"),
     };
-    render(<DepositTab {...customProps} />);
+    render(
+      <MockAppProviders>
+        <DepositTab {...customProps} />
+      </MockAppProviders>
+    );
 
     const amountInput = screen.getByTestId("amount-input");
 
-    fireEvent.change(amountInput, { target: { value: "50" } });
-
-    fireEvent.click(screen.getByText("Approve T3"));
+    act(() => {
+      fireEvent.change(amountInput, { target: { value: "50" } });
+      fireEvent.click(screen.getByText("Approve T3"));
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId("loading-button-icon")).toBeInTheDocument();
@@ -93,13 +119,18 @@ describe("DepositTab Component", () => {
   });
 
   it("handles depositing collateral", async () => {
-    render(<DepositTab {...mockProps} />);
+    render(
+      <MockAppProviders>
+        <DepositTab {...mockProps} />
+      </MockAppProviders>
+    );
 
     const amountInput = screen.getByTestId("amount-input");
 
-    fireEvent.change(amountInput, { target: { value: "50" } });
-
-    fireEvent.click(screen.getByText("Deposit T3"));
+    act(() => {
+      fireEvent.change(amountInput, { target: { value: "50" } });
+      fireEvent.click(screen.getByText("Deposit T3"));
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId("loading-button-icon")).toBeInTheDocument();
@@ -111,13 +142,18 @@ describe("DepositTab Component", () => {
     let componentProps = mockProps;
 
     componentProps.selectedCollateral["symbol"] = "T1";
-    render(<DepositTab {...componentProps} />);
+    render(
+      <MockAppProviders>
+        <DepositTab {...componentProps} />
+      </MockAppProviders>
+    );
 
     const amountInput = screen.getByTestId("amount-input");
 
-    fireEvent.change(amountInput, { target: { value: "50" } });
-
-    fireEvent.click(screen.getByText("Deposit T1"));
+    act(() => {
+      fireEvent.change(amountInput, { target: { value: "50" } });
+      fireEvent.click(screen.getByText("Deposit T1"));
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId("loading-button-icon")).toBeInTheDocument();
@@ -126,8 +162,14 @@ describe("DepositTab Component", () => {
   });
 
   it("renders deposit info tab section", async () => {
-    render(<DepositTab {...mockProps} />);
+    render(
+      <MockAppProviders>
+        <DepositTab {...mockProps} />
+      </MockAppProviders>
+    );
 
-    expect(screen.getByTestId("deposit-tab-info")).toBeInTheDocument();
+    waitFor(() => {
+      expect(screen.getByTestId("deposit-tab-info")).toBeInTheDocument();
+    });
   });
 });
