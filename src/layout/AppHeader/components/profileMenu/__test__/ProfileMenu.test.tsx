@@ -9,8 +9,18 @@ import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 jest.mock("../../../../..//utils/copyToClipboard", () => ({
   copyToClipboard: jest.fn(),
 }));
+jest.mock("react-blockies");
 
 describe("ProfileMenu", () => {
+  beforeAll(() => {
+    const originalWarn = console.warn;
+
+    jest.spyOn(console, "warn").mockImplementation((...args) => {
+      if (!args.some((arg) => arg.includes("Identicon"))) {
+        originalWarn(...args);
+      }
+    });
+  });
   it("should open the profile menu when the button is clicked", () => {
     render(
       <MockAppProviders>

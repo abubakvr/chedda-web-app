@@ -9,6 +9,7 @@ import { coinbaseWallet } from "@/connectors/coinbaseWallet";
 import { ConnectButton } from "../connectButton/ConnectButton";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { connectorIdKey } from "@/utils/constants";
+import { Blockie } from "@/components/ui";
 
 interface ProfileMenuProps {
   account: string | undefined;
@@ -96,12 +97,8 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
             className="h-10 sm:h-10 xl:h-12 w-40 sm:w-40 px-2 rounded-lg text-sm account_button flex justify-evenly items-center hover:opacity-90 font-bold"
             data-testid="profile-menu-button"
           >
-            <div>
-              <Image
-                src={AccountIcon}
-                alt="Blockie"
-                className="rounded-full w-7 h-7"
-              />
+            <div className="rounded-full w-7 h-7 flex items-center">
+              <Blockie accountAddress={account} />
             </div>
             <div data-testid="profile-menu-address">
               {account?.substring(0, 6)}...
