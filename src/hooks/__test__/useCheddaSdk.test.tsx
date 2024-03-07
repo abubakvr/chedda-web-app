@@ -69,7 +69,7 @@ describe("useCheddaSdk Hook", () => {
     const { result } = renderHook(() => useCheddaSdk());
 
     // Ensure that the hook initializes with the correct values
-    expect(result.current.chedda).toBeUndefined();
+    expect(result.current.chedda).toBeNull();
     expect(result.current.signer).toBeUndefined();
   });
 
@@ -81,13 +81,10 @@ describe("useCheddaSdk Hook", () => {
 
     const { result } = renderHook(() => useCheddaSdk());
 
-    await act(async () => {
-      expect(async () => result.current.setupChedda());
-    });
     expect(result.current.chedda).toBeInstanceOf(Chedda);
     expect(result.current.signer).toEqual(mockProvider.getSigner());
 
     expect(mockUseWeb3React).toHaveBeenCalled();
-    expect(mockUseEnvironment).toHaveBeenCalledTimes(2);
+    expect(mockUseEnvironment).toHaveBeenCalledTimes(1);
   });
 });
