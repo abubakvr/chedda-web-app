@@ -134,6 +134,7 @@ export const mockCurrentEnvironment = {
   environmentName: "mockEnvironment",
   jsonRpcUrl: "http://mock-json-rpc-url",
   webSocketUrl: "wss://mock-websocket-url",
+  txUrlPrefix: "http://mock-prefix-url",
   chainId: 1,
   contracts: {
     LendingPool: "mockLendingPoolAddress",
