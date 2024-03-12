@@ -1,100 +1,10 @@
 "use client";
-import React from "react";
-import { MarketInfoCard, SummaryCard } from "@/components/cards";
-import {
-  calculateAssetPrice,
-  formatCollateralInfo,
-  getPoolSummaryData,
-} from "@/utils/formatResponse";
-import {
-  usePoolStats,
-  useAccountInfo,
-  useMarketInfo,
-  useCollateralInfo,
-  useEnvironment,
-  useAvailableLiquidity,
-} from "@/hooks";
-import { SummaryHeader } from "@/components/ui";
-import { MyInformationCard, CollateralInfoCard } from "@/components/cards";
-import { InterestRatesChart, SuppyAndBorrowChart } from "@/components/charts";
+import { redirect, useParams } from "next/navigation";
 
 const Page = () => {
-  const { currentEnvironment } = useEnvironment();
-  const { data: poolStats, isLoading } = usePoolStats();
-  const {
-    data: accountInfo,
-    fetchData: fetchAccountInfo,
-    isLoading: accountInfoLoading,
-  } = useAccountInfo();
-  const { data: marketInfo, isLoading: marketInfoLoading } = useMarketInfo();
-  const { data: collateralData, isLoading: collateralInfoLoading } =
-    useCollateralInfo();
-  const { data: available, isLoading: availableLoading } =
-    useAvailableLiquidity();
+  const { poolId } = useParams();
 
-  const collateralInfo = formatCollateralInfo(
-    collateralData,
-    currentEnvironment?.tokens ?? {},
-    accountInfo?.collateralDeposited
-  );
-
-  const poolSummary = getPoolSummaryData(poolStats);
-  const assetPrice = calculateAssetPrice(marketInfo);
-
-  return (
-    <div
-      className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto pb-10"
-      data-testid="pool-container"
-    >
-      <div className="my-7">
-        <SummaryHeader
-          logoSrc={poolStats?.asset.logo}
-          assetName={poolStats?.characterization}
-        />
-      </div>
-      <SummaryCard stats={poolSummary} isLoading={!poolStats || isLoading} />
-      <div className="mt-8 w-full flex space-x-5">
-        <div className="w-[67%] h-fit flex flex-col gap-y-6">
-          <div className="pool-card rounded-lg">
-            <CollateralInfoCard
-              collateralInfo={collateralInfo}
-              accountInfo={accountInfo}
-              marketInfo={marketInfo}
-              isLoading={
-                collateralInfoLoading || marketInfoLoading || accountInfoLoading
-              }
-            />
-          </div>
-          <div className="pool-card rounded-lg">
-            <SuppyAndBorrowChart decimals={poolStats?.asset.decimals} />
-          </div>
-          <div className="pool-card rounded-lg">
-            <InterestRatesChart />
-          </div>
-        </div>
-        <div className="w-[33%] text-white flex flex-col gap-y-6">
-          <div className="pool-card rounded-lg">
-            <MyInformationCard
-              poolStats={poolStats}
-              accountInfo={accountInfo}
-              assetPrice={assetPrice}
-              isLoading={accountInfoLoading}
-              available={available}
-              fetchAccountInfo={fetchAccountInfo}
-            />
-          </div>
-          <div className="pool-card rounded-lg">
-            <MarketInfoCard
-              available={available}
-              poolStats={poolStats}
-              marketInfo={marketInfo}
-              isLoading={marketInfoLoading || availableLoading}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return redirect(`/markets/${poolId.toString()}/pool`);
 };
 
 export default Page;
