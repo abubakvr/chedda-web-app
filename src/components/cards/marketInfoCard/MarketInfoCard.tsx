@@ -18,7 +18,6 @@ interface MarketInfoCardProps {
 }
 
 export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
-  available,
   marketInfo,
   poolStats,
   isLoading,
@@ -76,12 +75,17 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
           {
             label: "Available Liquidity",
             value: `${formatLargeNumber(
-              parseBigNumberToFloat(available, poolStats?.asset.decimals)
+              parseBigNumberToFloat(
+                marketInfo?.liquidity,
+                poolStats?.asset.decimals
+              )
             )} ${poolStats?.asset?.symbol}`,
           },
           {
             label: "Utilization",
-            value: formatAsPercentage(poolStats?.utilization),
+            value: formatAsPercentage(
+              parseBigNumberToFloat(marketInfo?.utilization, 18, 10)
+            ),
           },
         ].map(({ label, value }, index) => (
           <div

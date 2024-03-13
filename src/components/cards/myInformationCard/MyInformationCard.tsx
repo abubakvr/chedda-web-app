@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
 import { IAccountInfo } from "chedda-sdk";
-import { useTokenBalance } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
@@ -30,9 +29,6 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
   const [isSupplyModalOpen, setIsSupplyModalOpen] = useState(false);
   const [isBorrowModalOpen, setIsBorrowModalOpen] = useState(false);
   const [defaultTab, setDefaultTab] = useState<string | null>();
-  const { data: tokenBalance, fetchData: fetchTokenBalance } = useTokenBalance(
-    poolStats?.asset.address ?? ""
-  );
 
   const closeSupplyModal = () => {
     setIsSupplyModalOpen(false);
@@ -41,7 +37,6 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
 
   const closeBorrowModal = () => {
     setIsBorrowModalOpen(false);
-    fetchTokenBalance(false);
   };
 
   const totalBorrowed = parseBigNumberToFloat(
@@ -88,7 +83,10 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           <div className="opacity-50 font-semibold">Available to Supply</div>
           <div className="text-sm font-bold">
             {`${formatLargeNumber(
-              parseBigNumberToFloat(tokenBalance, accountInfo?.decimals)
+              parseBigNumberToFloat(
+                accountInfo?.walletAssetBalance,
+                accountInfo?.decimals
+              )
             )} ${poolStats?.asset.symbol}`}
           </div>
         </div>
@@ -141,7 +139,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           assetPrice={assetPrice}
           supplied={accountInfo?.supplied}
           available={available}
-          tokenBalance={tokenBalance}
+          tokenBalance={accountInfo?.walletAssetBalance}
           baseSupplyAPY={poolStats.baseSupplyAPY}
           fetchAccountInfo={fetchAccountInfo}
           defaultTab={defaultTab}

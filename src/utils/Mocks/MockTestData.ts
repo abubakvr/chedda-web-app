@@ -198,6 +198,7 @@ export const mockAggregateStats: ISummaryStats[] = [
 ];
 
 export const mockAccountInfo: IAccountInfo = {
+  walletAssetBalance: BigNumber.from(1000),
   supplied: BigNumber.from(1000),
   borrowed: BigNumber.from(500),
   decimals: 2,

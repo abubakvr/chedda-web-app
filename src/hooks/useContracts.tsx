@@ -52,7 +52,7 @@ export const getCollateralInfo: GetDataFunction<ICollateralInfo[]> = async ({
 const getAggregateStats: GetDataFunction<ISummaryStats[]> = async ({
   lens,
 }) => {
-  const aggregateStats = await lens.getAggregateStats();
+  const aggregateStats = await lens.getAggregateStats(true);
   return getAggregateInfo(aggregateStats);
 };
 
