@@ -12,6 +12,14 @@ import {
   usePoolState,
   useRatesProjector,
   useAvailableLiquidity,
+  useStakingBalance,
+  useLpSymbol,
+  useLpAssetValue,
+  useLpDecimals,
+  useTokenValue,
+  useLpAllowance,
+  useLpTokenBalance,
+  useTransaction,
 } from "@/hooks";
 import { getPoolSummaryData } from "@/utils/formatResponse";
 import {
@@ -66,6 +74,42 @@ describe("Pool details component", () => {
       isLoading: true,
       data: mockInterestRates,
     });
+    (useStakingBalance as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useLpTokenBalance as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useLpAllowance as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useTokenValue as jest.Mock).mockReturnValue({
+      data: "1000",
+      isLoading: false,
+    });
+    (useLpDecimals as jest.Mock).mockReturnValue({
+      data: 18,
+      isLoading: false,
+    });
+    (useLpAssetValue as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useLpSymbol as jest.Mock).mockReturnValue({
+      data: "ETH",
+      isLoading: false,
+    });
+    (useTransaction as jest.Mock).mockImplementation(() => ({
+      borrowTxStatus: {
+        isLoading: false,
+        isAssetBorrowed: false,
+      },
+      stakeLpToken: jest.fn(),
+      approveLpToken: jest.fn(),
+    }));
   });
 
   it("renders pool details when data is available", async () => {

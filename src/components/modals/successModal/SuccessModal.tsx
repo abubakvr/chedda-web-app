@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import SuccessIcon from "@/assets/icon/success-icon.svg";
 import Image from "next/image";
 import { Button } from "@/components/common";
@@ -8,6 +8,7 @@ interface SuccessModalProps {
   onClose: () => void;
   modalMessage: string;
   continueAction: () => void;
+  stakeAction: () => void;
 }
 
 export const SuccessModal = ({
@@ -15,6 +16,7 @@ export const SuccessModal = ({
   isOpen,
   modalMessage,
   continueAction,
+  stakeAction,
 }: SuccessModalProps) => {
   return isOpen ? (
     <div
@@ -57,7 +59,10 @@ export const SuccessModal = ({
               type="primary"
               size="large"
               className="mt-12"
-              onClick={() => {}}
+              onClick={() => {
+                stakeAction();
+                onClose();
+              }}
             >
               Stake LP Tokens
             </Button>

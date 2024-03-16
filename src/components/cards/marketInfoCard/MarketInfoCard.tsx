@@ -11,7 +11,6 @@ import { InfoCardSkeleton } from "@/components/ui";
 import { BigNumber } from "ethers";
 
 interface MarketInfoCardProps {
-  available: BigNumber | undefined;
   marketInfo: IMarketInfo | undefined;
   poolStats: IPoolStatsResponse | undefined;
   isLoading: boolean;

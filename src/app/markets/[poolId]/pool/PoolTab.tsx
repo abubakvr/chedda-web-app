@@ -1,12 +1,11 @@
 "use client";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { MarketInfoCard } from "@/components/cards";
 import {
   calculateAssetPrice,
   formatCollateralInfo,
 } from "@/utils/formatResponse";
 import {
-  usePoolStats,
   useAccountInfo,
   useMarketInfo,
   useCollateralInfo,
@@ -15,10 +14,16 @@ import {
 } from "@/hooks";
 import { MyInformationCard, CollateralInfoCard } from "@/components/cards";
 import { InterestRatesChart, SuppyAndBorrowChart } from "@/components/charts";
+import { IPoolStatsResponse } from "@/utils/types";
 
-const Page = () => {
+const PoolTab = ({
+  poolStats,
+  setActivePoolTab,
+}: {
+  poolStats: IPoolStatsResponse | undefined;
+  setActivePoolTab: Dispatch<SetStateAction<string>>;
+}) => {
   const { currentEnvironment } = useEnvironment();
-  const { data: poolStats } = usePoolStats();
   const {
     data: accountInfo,
     fetchData: fetchAccountInfo,
@@ -27,8 +32,7 @@ const Page = () => {
   const { data: marketInfo, isLoading: marketInfoLoading } = useMarketInfo();
   const { data: collateralData, isLoading: collateralInfoLoading } =
     useCollateralInfo();
-  const { data: available, isLoading: availableLoading } =
-    useAvailableLiquidity();
+  const { data: available } = useAvailableLiquidity();
 
   const collateralInfo = formatCollateralInfo(
     collateralData,
@@ -39,7 +43,10 @@ const Page = () => {
   const assetPrice = calculateAssetPrice(marketInfo);
 
   return (
-    <div className="mt-8 w-full flex space-x-5">
+    <div
+      className="mt-8 w-full flex space-x-5"
+      data-testid="pool-tab-container"
+    >
       <div className="w-[67%] h-fit flex flex-col gap-y-6">
         <div className="pool-card rounded-lg">
           <CollateralInfoCard
@@ -67,14 +74,14 @@ const Page = () => {
             isLoading={accountInfoLoading}
             available={available}
             fetchAccountInfo={fetchAccountInfo}
+            setActivePoolTab={setActivePoolTab}
           />
         </div>
         <div className="pool-card rounded-lg">
           <MarketInfoCard
-            available={available}
             poolStats={poolStats}
             marketInfo={marketInfo}
-            isLoading={marketInfoLoading || availableLoading}
+            isLoading={marketInfoLoading}
           />
         </div>
       </div>
@@ -82,4 +89,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default PoolTab;

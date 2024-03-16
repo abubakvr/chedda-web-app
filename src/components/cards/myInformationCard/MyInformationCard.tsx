@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
 import { IAccountInfo } from "chedda-sdk";
@@ -16,6 +16,7 @@ interface MyInformationCardProps {
   isLoading: boolean;
   assetPrice: number;
   fetchAccountInfo: (showLoading?: boolean) => void;
+  setActivePoolTab: Dispatch<SetStateAction<string>>;
 }
 
 export const MyInformationCard: React.FC<MyInformationCardProps> = ({
@@ -25,6 +26,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
   assetPrice,
   available,
   fetchAccountInfo,
+  setActivePoolTab,
 }) => {
   const [isSupplyModalOpen, setIsSupplyModalOpen] = useState(false);
   const [isBorrowModalOpen, setIsBorrowModalOpen] = useState(false);
@@ -143,6 +145,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           baseSupplyAPY={poolStats.baseSupplyAPY}
           fetchAccountInfo={fetchAccountInfo}
           defaultTab={defaultTab}
+          setActivePoolTab={setActivePoolTab}
         />
       )}
       {isBorrowModalOpen && (
