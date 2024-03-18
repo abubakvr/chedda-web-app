@@ -31,9 +31,9 @@ const StakeTab = ({ asset }: { asset: IToken | undefined }) => {
     asset?.address || ""
   );
   const updateCard = () => {
-    fetchStakingBalance();
-    fetchLpTokenBalance();
-    fetchLpAllowance();
+    fetchStakingBalance(false);
+    fetchLpTokenBalance(false);
+    fetchLpAllowance(false);
   };
 
   const isLoading =

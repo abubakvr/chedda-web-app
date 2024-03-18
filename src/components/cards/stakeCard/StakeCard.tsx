@@ -68,7 +68,7 @@ export const StakeCard: FC<StakeModalProps> = ({
   });
   const [stakeAmount, setStakeAmount] = useState<number>(0);
   const [unStakeAmount, setUnstakeAmount] = useState<number>(0);
-  const { stakeLpToken, approveLpToken } = useTransaction("");
+  const { stakeLpToken, unStakeLpToken, approveLpToken } = useTransaction("");
 
   const parsedAllowance = parseFloat(
     parseBigNumberToFloat(lpAllowance, lpDecimals)
@@ -199,7 +199,74 @@ export const StakeCard: FC<StakeModalProps> = ({
     }
   };
 
-  const handleUnStake = () => {};
+  const handleUnStake = async () => {
+    console.log("lpDecimals", lpDecimals);
+    try {
+      if (!unStakeAmount || unStakeAmount > parseFloat(parsedStakingBalance)) {
+        return alert("Enter valid amount");
+      }
+
+      setTxLoading(true);
+      setShowToast(false);
+      const parsedAmount = ethers.utils.parseUnits(
+        unStakeAmount.toString(),
+        lpDecimals
+      );
+
+      unStakeLpToken(parsedAmount)
+        .then(async (res: any) => {
+          if (res) {
+            const result = await res.wait();
+            if (result.status === 1) {
+              const txMessage = `You've successfully Unstaked ${formatNumber(
+                unStakeAmount
+              )} ${lpSymbol}`;
+              setTxDetails({
+                txMessage,
+                copyText: null,
+                txHash: res.hash,
+                txStatus: "success",
+              });
+              setStakeAmount(0);
+              setClearInputField(true);
+              setShowToast(true);
+              updateCard();
+            } else {
+              const txMessage = `An error occurred while proccessing your transaction`;
+              setTxDetails({
+                txMessage,
+                copyText: null,
+                txHash: res.hash,
+                txStatus: "failed",
+              });
+              setShowToast(true);
+            }
+          }
+          setTxLoading(false);
+        })
+        .catch((error: any) => {
+          const errorObject = JSON.parse(error.message);
+          setTxDetails({
+            txMessage: errorObject.errorMessage,
+            copyText: errorObject.fullText,
+            txHash: null,
+            txStatus: "failed",
+          });
+          setShowToast(true);
+          setTxLoading(false);
+        });
+    } catch (error: any) {
+      const errorObject = JSON.parse(error.message);
+      setTxDetails({
+        txMessage: errorObject.errorMessage,
+        copyText: errorObject.fullText,
+        txHash: null,
+        txStatus: "failed",
+      });
+      setShowToast(true);
+      setTxLoading(false);
+    }
+  };
 
   return (
     <>
@@ -275,7 +342,7 @@ export const StakeCard: FC<StakeModalProps> = ({
                   exchangeRate={`1 ${lpSymbol} = ${parsedAssetValue} ${assetSymbol}`}
                 />
               }
-              maxAmount={parsedAssetBalance.toString()}
+              maxAmount={parsedStakingBalance}
               setClearInputField={setClearInputField}
               clearInputField={clearInputField}
               buttonAction={handleUnStake}
