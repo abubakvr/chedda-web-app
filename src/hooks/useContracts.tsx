@@ -4,7 +4,7 @@ import {
   IInterestRatesProjection,
   IMarketInfo,
   IPoolState,
-} from "@/chedda-sdk";
+} from "chedda-sdk";
 import {
   ISummaryStats,
   ICollateralInfo,
