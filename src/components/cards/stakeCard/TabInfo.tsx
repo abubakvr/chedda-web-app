@@ -35,7 +35,7 @@ export const TabInfo = ({ allowance, exchangeRate, myStake }: TabInfoProps) => {
           {exchangeRate}
         </div>
       </div>
-      <div className="flex justify-between text-sm pb-5">
+      <div className="flex justify-between text-sm">
         <div
           className="opacity-50 font-semibold flex gap-x-2"
           data-testid="my-stake-label"
