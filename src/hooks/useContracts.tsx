@@ -289,6 +289,50 @@ const convertToAssets: GetDataFunction<BigNumber> = async ({
   return await pool.convertToAssets(amount);
 };
 
+const getTotalStaked: GetDataFunction<BigNumber> = async ({
+  poolId,
+  signer,
+  chedda,
+}) => {
+  if (!chedda) return null;
+  const pool = chedda.lendingPool(poolId, signer as Signer);
+  const stakePoolContract = await pool.stakePool();
+  const stakingPool = chedda.stakingPool(stakePoolContract, signer as Signer);
+  return await stakingPool.totalStaked();
+};
+
+const getLpStakers: GetDataFunction<BigNumber> = async ({
+  poolId,
+  signer,
+  chedda,
+}) => {
+  if (!chedda) return null;
+  const pool = chedda.lendingPool(poolId, signer as Signer);
+  const stakePoolContract = await pool.stakePool();
+  const stakingPool = chedda.stakingPool(stakePoolContract, signer as Signer);
+  return await stakingPool.stakers();
+};
+
+const getTotalSupply: GetDataFunction<BigNumber> = async ({
+  poolId,
+  signer,
+  chedda,
+}) => {
+  if (!chedda) return null;
+  const pool = chedda.lendingPool(poolId, signer as Signer);
+  return await pool.totalSupply();
+};
+
+const getStakingPoolAddress: GetDataFunction<string> = async ({
+  poolId,
+  signer,
+  chedda,
+}) => {
+  if (!chedda) return null;
+  const pool = chedda.lendingPool(poolId, signer as Signer);
+  return await pool.stakePool();
+};
+
 // Exported custom hooks
 export const useAccountInfo = (): HookResult<IAccountInfo> => {
   return useFetcher<IAccountInfo>(getAccountInfo);
@@ -375,4 +419,20 @@ export const useStakingBalance = (): HookResult<BigNumber> => {
 
 export const useLpDecimals = (): HookResult<number> => {
   return useFetcher<number>(getLpDecimals);
+};
+
+export const useLpStakers = (): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getLpStakers);
+};
+
+export const useTotalStaked = (): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getTotalStaked);
+};
+
+export const useTotalSupply = (): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getTotalSupply);
+};
+
+export const useStakingContractAddress = (): HookResult<string> => {
+  return useFetcher<string>(getStakingPoolAddress);
 };

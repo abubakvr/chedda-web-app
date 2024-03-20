@@ -19,6 +19,7 @@ export const environmentConfig: IEnvironmentConfig = {
     jsonRpcUrl: `https://sepolia.infura.io/v3/${infuraKey}`,
     webSocketUrl: `wss://sepolia.infura.io/ws/v3/${infuraKey}`,
     txUrlPrefix: "https://sepolia.etherscan.io/tx/",
+    contractPrefix: "https://sepolia.etherscan.io/address",
     chainId: 11155111,
     contracts: {
       LendingPool: "0x7de1c0bf2d5a810b98ce9373e8195353ff4dbed1",
@@ -80,6 +81,7 @@ export const environmentConfig: IEnvironmentConfig = {
     jsonRpcUrl: `https://arb-sepolia.g.alchemy.com/v2/${alchemyKey}`,
     webSocketUrl: `wss://arb-sepolia.g.alchemy.com/v2/${alchemyKey}`,
     txUrlPrefix: "https://sepolia.arbiscan.io/tx",
+    contractPrefix: "https://sepolia.arbiscan.io/address",
     chainId: 421614,
     contracts: {
       LendingPool: "0x7de1c0bf2d5a810b98ce9373e8195353ff4dbed1",
