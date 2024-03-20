@@ -102,7 +102,10 @@ export const Toast: React.FC<ToastProps> = ({
                 >
                   &times;
                 </button>
-                <div className="text-lg font-bold" data-testid="toast-title">
+                <div
+                  className="text-lg font-bold text-white"
+                  data-testid="toast-title"
+                >
                   {status === "success"
                     ? "Transaction Successful"
                     : "Transaction Failed"}

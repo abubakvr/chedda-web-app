@@ -11,7 +11,7 @@ export const useTransaction = (asset: string) => {
   const { poolId } = useParams();
   const strPoolId = poolId.toString();
 
-  const token = chedda?.erc20token(asset, signer as Signer);
+  const token = chedda?.erc20token(asset || strPoolId, signer as Signer);
   const lendingPool = chedda?.lendingPool(strPoolId, signer as Signer);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -62,6 +62,13 @@ export const useTransaction = (asset: string) => {
       return lendingPool?.addCollateral(asset, amount);
     }, amount);
 
+  const approveLpToken = async (amount: BigNumber) =>
+    executeTransaction(async () => {
+      const stakingPoolAddress = await lendingPool?.stakePool();
+      if (!amount || !stakingPoolAddress) return;
+      return lendingPool?.approve(stakingPoolAddress, amount);
+    }, amount);
+
   const withdrawCollateral = async (amount: BigNumber) =>
     executeTransaction(async () => {
       if (!account) return;
@@ -80,6 +87,28 @@ export const useTransaction = (asset: string) => {
       return lendingPool?.putAmount(amount);
     }, amount);
 
+  const stakeLpToken = async (amount: BigNumber) =>
+    executeTransaction(async () => {
+      const stakingPoolAddress = await lendingPool?.stakePool();
+      if (!amount || !stakingPoolAddress) return;
+      const stakingPool = chedda?.stakingPool(
+        stakingPoolAddress,
+        signer as Signer
+      );
+      return stakingPool?.stake(amount);
+    }, amount);
+
+  const unStakeLpToken = async (amount: BigNumber) =>
+    executeTransaction(async () => {
+      const stakingPoolAddress = await lendingPool?.stakePool();
+      if (!amount || !stakingPoolAddress) return;
+      const stakingPool = chedda?.stakingPool(
+        stakingPoolAddress,
+        signer as Signer
+      );
+      return stakingPool?.unStake(amount);
+    }, amount);
+
   return {
     errorMessage,
     lendingPool,
@@ -90,5 +119,8 @@ export const useTransaction = (asset: string) => {
     withdrawCollateral,
     borrowAsset,
     repayAsset,
+    approveLpToken,
+    stakeLpToken,
+    unStakeLpToken,
   };
 };

@@ -1,4 +1,10 @@
-import React, { FC, useCallback, useState } from "react";
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useCallback,
+  useState,
+} from "react";
 import { BigNumber, ethers } from "ethers";
 import {
   useAllowance,
@@ -29,6 +35,7 @@ interface SupplyModalProps {
   defaultTab?: string | null;
   onClose: () => void;
   fetchAccountInfo: (showLoading?: boolean) => void;
+  setActivePoolTab: Dispatch<SetStateAction<string>>;
 }
 
 const Tab: FC<{
@@ -59,6 +66,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   defaultTab,
   onClose,
   fetchAccountInfo,
+  setActivePoolTab,
 }) => {
   const [activeTab, setActiveTab] = useState(defaultTab || "Deposit");
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
@@ -301,6 +309,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
         isOpen={openSuccessModal}
         modalMessage={txMessage}
         continueAction={() => setOpenSuccessModal(false)}
+        stakeAction={() => setActivePoolTab("Stake")}
       />
       <Toast
         isOpen={showToast}

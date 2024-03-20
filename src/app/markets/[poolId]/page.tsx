@@ -1,97 +1,57 @@
 "use client";
-import React from "react";
-import { MarketInfoCard, SummaryCard } from "@/components/cards";
-import {
-  calculateAssetPrice,
-  formatCollateralInfo,
-  getPoolSummaryData,
-} from "@/utils/formatResponse";
-import {
-  usePoolStats,
-  useAccountInfo,
-  useMarketInfo,
-  useCollateralInfo,
-  useEnvironment,
-  useAvailableLiquidity,
-} from "@/hooks";
+import { RouteCard, SummaryCard } from "@/components/cards";
 import { SummaryHeader } from "@/components/ui";
-import { MyInformationCard, CollateralInfoCard } from "@/components/cards";
-import { InterestRatesChart, SuppyAndBorrowChart } from "@/components/charts";
+import { usePoolStats } from "@/hooks";
+import { getPoolSummaryData } from "@/utils/formatResponse";
+import React, { useState } from "react";
+import PoolTab from "./pool/PoolTab";
+import StakeTab from "./stake/StakeTab";
 
 const Page = () => {
-  const { currentEnvironment } = useEnvironment();
+  const [activeTab, setActiveTab] = useState("Pool");
   const { data: poolStats, isLoading } = usePoolStats();
-  const {
-    data: accountInfo,
-    fetchData: fetchAccountInfo,
-    isLoading: accountInfoLoading,
-  } = useAccountInfo();
-  const { data: marketInfo, isLoading: marketInfoLoading } = useMarketInfo();
-  const { data: collateralData, isLoading: collateralInfoLoading } =
-    useCollateralInfo();
-  const { data: available, isLoading: availableLoading } =
-    useAvailableLiquidity();
-
-  const collateralInfo = formatCollateralInfo(
-    collateralData,
-    currentEnvironment?.tokens ?? {},
-    accountInfo?.collateralDeposited
-  );
-
   const poolSummary = getPoolSummaryData(poolStats);
-  const assetPrice = calculateAssetPrice(marketInfo);
 
+  const pageTabs = [
+    {
+      name: "Pool",
+      info: "Supply your assets to earn interest. Liquidity Providers can also stake LP tokens to earn CHEDDA token rewards.",
+      tab: <PoolTab poolStats={poolStats} setActivePoolTab={setActiveTab} />,
+    },
+    {
+      name: "Stake",
+      info: "Stake your LP tokens to earn CHEDDA token rewards. CHEDDA token emissions are directed by how much CHEDDA is locked in a pools gauge.",
+      tab: <StakeTab asset={poolStats?.asset} />,
+    },
+    {
+      name: "Lock",
+      info: "Stake your LP tokens to earn CHEDDA token rewards. CHEDDA token emissions are directed by how much CHEDDA is locked in a pools’ gauge.",
+    },
+  ];
+
+  const routeInfo =
+    pageTabs.find((item) => item.name === activeTab)?.info || "";
   return (
-    <div
-      className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto pb-10"
-      data-testid="pool-container"
-    >
-      <div className="my-7">
-        <SummaryHeader
-          logoSrc={poolStats?.asset.logo}
-          assetName={poolStats?.characterization}
+    <div>
+      <div
+        className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto pb-10"
+        data-testid="pool-container"
+      >
+        <div className="my-7">
+          <SummaryHeader
+            logoSrc={poolStats?.asset.logo}
+            assetName={poolStats?.characterization}
+          />
+        </div>
+        <SummaryCard stats={poolSummary} isLoading={!poolStats || isLoading} />
+        <RouteCard
+          setActiveTab={setActiveTab}
+          activeTab={activeTab}
+          routeInfo={routeInfo}
         />
-      </div>
-      <SummaryCard stats={poolSummary} isLoading={!poolStats || isLoading} />
-      <div className="mt-8 w-full flex space-x-5">
-        <div className="w-[67%] h-fit flex flex-col gap-y-6">
-          <div className="pool-card rounded-lg">
-            <CollateralInfoCard
-              collateralInfo={collateralInfo}
-              accountInfo={accountInfo}
-              marketInfo={marketInfo}
-              isLoading={
-                collateralInfoLoading || marketInfoLoading || accountInfoLoading
-              }
-            />
-          </div>
-          <div className="pool-card rounded-lg">
-            <SuppyAndBorrowChart decimals={poolStats?.asset.decimals} />
-          </div>
-          <div className="pool-card rounded-lg">
-            <InterestRatesChart />
-          </div>
-        </div>
-        <div className="w-[33%] text-white flex flex-col gap-y-6">
-          <div className="pool-card rounded-lg">
-            <MyInformationCard
-              poolStats={poolStats}
-              accountInfo={accountInfo}
-              assetPrice={assetPrice}
-              isLoading={accountInfoLoading}
-              available={available}
-              fetchAccountInfo={fetchAccountInfo}
-            />
-          </div>
-          <div className="pool-card rounded-lg">
-            <MarketInfoCard
-              available={available}
-              poolStats={poolStats}
-              marketInfo={marketInfo}
-              isLoading={marketInfoLoading || availableLoading}
-            />
-          </div>
-        </div>
+        {pageTabs.map((item, index) =>
+          activeTab === item.name ? <div key={index}>{item.tab}</div> : null
+        )}
       </div>
     </div>
   );

@@ -1,0 +1,93 @@
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import StakeTab from "../StakeTab";
+import {
+  useEnvironment,
+  useLpAllowance,
+  useLpAssetValue,
+  useLpDecimals,
+  useLpSymbol,
+  useLpTokenBalance,
+  useStakingBalance,
+  useTokenValue,
+  useTransaction,
+} from "@/hooks";
+import { StaticImageData } from "next/image";
+import { BigNumber } from "ethers";
+import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
+
+// Mocking hooks
+jest.mock("@web3-react/core", () => ({
+  ...jest.requireActual("@web3-react/core"),
+  useWeb3React: jest.fn(() => ({
+    account: "0x123",
+    chainId: 1,
+    isActivating: false,
+  })),
+}));
+jest.mock("../../../../../hooks");
+
+const mockStakeLpToken = jest.fn().mockResolvedValue({ hash: "0x00" });
+const mockApproveLpToken = jest.fn().mockResolvedValue({ hash: "0x00" });
+
+describe("StakeTab Component", () => {
+  beforeEach(() => {
+    (useEnvironment as jest.Mock).mockReturnValue({
+      currentEnvironment: mockCurrentEnvironment,
+      switchEnvironment: jest.fn(),
+    });
+    (useTransaction as jest.Mock).mockImplementation(() => ({
+      borrowTxStatus: {
+        isLoading: false,
+        isAssetBorrowed: false,
+      },
+      stakeLpToken: mockStakeLpToken,
+      approveLpToken: mockApproveLpToken,
+    }));
+    (useStakingBalance as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useLpTokenBalance as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useLpAllowance as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useTokenValue as jest.Mock).mockReturnValue({
+      data: "1000",
+      isLoading: false,
+    });
+    (useLpDecimals as jest.Mock).mockReturnValue({
+      data: 18,
+      isLoading: false,
+    });
+    (useLpAssetValue as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useLpSymbol as jest.Mock).mockReturnValue({
+      data: "ETH",
+      isLoading: false,
+    });
+  });
+  test("renders stake tab with correct data", () => {
+    const asset = {
+      name: "Token3",
+      symbol: "ETH",
+      address: "0xfed321",
+      logo: {} as StaticImageData,
+      decimals: 18,
+      color: "#ffffff",
+    };
+    render(<StakeTab asset={asset} />);
+
+    // Check if stake information header is rendered
+    expect(screen.getByTestId("stake-card")).toBeInTheDocument();
+    expect(screen.getByTestId("stake-container")).toBeInTheDocument();
+    expect(screen.getByTestId("rewards-card")).toBeInTheDocument();
+    expect(screen.getByTestId("stake-information-card")).toBeInTheDocument();
+  });
+});

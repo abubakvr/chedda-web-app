@@ -41,6 +41,7 @@ const mockProps = {
   available: BigNumber.from(utils.parseEther("30")),
   onClose: jest.fn(),
   fetchAccountInfo: jest.fn(),
+  setActivePoolTab: jest.fn(),
 };
 
 jest.spyOn(window, "alert").mockImplementation(() => {});
