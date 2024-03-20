@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React from "react";
 import LinkOut from "@/assets/icon/link-out.svg";
-import { StakeCard } from "@/components/cards";
+import { StakeCard, RewardsCard } from "@/components/cards";
 import {
   useLpAllowance,
   useLpAssetValue,
@@ -60,17 +60,7 @@ const StakeTab = ({ asset }: { asset: IToken | undefined }) => {
         className="pool-card rounded-lg h-72 w-full"
         data-testid="stake-information-card"
       >
-        <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">
-          <div className="text-white text-opacity-50 font-bold text-sm uppercase">
-            STAKE INFORMATION
-          </div>
-          <button className="flex gap-x-1 border-2 rounded-md py-[6px] px-3 border-[#ffffff60] hover:opacity-70">
-            <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-[10px]">
-              Vault Contract
-            </div>
-            <Image src={LinkOut} alt="link out" />
-          </button>
-        </div>
+        <RewardsCard />
       </div>
       <div className="pool-card rounded-lg w-full" data-testid="stake-card">
         <StakeCard
