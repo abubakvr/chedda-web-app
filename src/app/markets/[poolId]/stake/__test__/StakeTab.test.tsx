@@ -1,15 +1,19 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import StakeTab from "../StakeTab";
 import {
   useEnvironment,
   useLpAllowance,
   useLpAssetValue,
   useLpDecimals,
+  useLpStakers,
   useLpSymbol,
   useLpTokenBalance,
   useStakingBalance,
+  useStakingContractAddress,
   useTokenValue,
+  useTotalStaked,
+  useTotalSupply,
   useTransaction,
 } from "@/hooks";
 import { StaticImageData } from "next/image";
@@ -72,6 +76,22 @@ describe("StakeTab Component", () => {
       data: "ETH",
       isLoading: false,
     });
+    (useTotalStaked as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useLpStakers as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useTotalSupply as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useStakingContractAddress as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
   });
   test("renders stake tab with correct data", () => {
     const asset = {
@@ -84,7 +104,6 @@ describe("StakeTab Component", () => {
     };
     render(<StakeTab asset={asset} />);
 
-    // Check if stake information header is rendered
     expect(screen.getByTestId("stake-card")).toBeInTheDocument();
     expect(screen.getByTestId("stake-container")).toBeInTheDocument();
     expect(screen.getByTestId("rewards-card")).toBeInTheDocument();

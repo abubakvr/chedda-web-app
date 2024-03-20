@@ -5,4 +5,4 @@ export * from "./marketInfoCard/MarketInfoCard";
 export * from "./collateralInfoCard/CollateralInfoCard";
 export * from "./routeCard/RouteCard";
 export * from "./stakeCard/StakeCard";
-export * from "./rewardsCard/RewardsCard";
+export * from "./stakingInfoCard/StakingInfoCard";
