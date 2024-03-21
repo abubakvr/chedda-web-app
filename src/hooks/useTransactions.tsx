@@ -109,6 +109,17 @@ export const useTransaction = (asset: string) => {
       return stakingPool?.unStake(amount);
     }, amount);
 
+  const claimRewards = async () =>
+    executeTransaction(async () => {
+      const stakingPoolAddress = await lendingPool?.stakePool();
+      if (!stakingPoolAddress) return;
+      const stakingPool = chedda?.stakingPool(
+        stakingPoolAddress,
+        signer as Signer
+      );
+      return stakingPool?.claim();
+    });
+
   return {
     errorMessage,
     lendingPool,
@@ -122,5 +133,6 @@ export const useTransaction = (asset: string) => {
     approveLpToken,
     stakeLpToken,
     unStakeLpToken,
+    claimRewards,
   };
 };

@@ -178,7 +178,20 @@ const getTokenValue: GetDataFunction<string> = async ({
   const decimals = await priceOracle.decimals();
   const assetPrice = await priceOracle.readPrice(asset);
 
-  return parseBigNumberToFloat(assetPrice, decimals as any, 10);
+  return parseBigNumberToFloat(assetPrice, decimals, 10);
+};
+
+const getTokenPrice: GetDataFunction<string> = async ({
+  asset,
+  chedda,
+  environment,
+}) => {
+  if (!asset) return null;
+  const priceOracle = chedda.priceOracle(environment.contracts.PriceFeed);
+  const decimals = await priceOracle.decimals();
+  const assetPrice = await priceOracle.readPrice(asset);
+
+  return parseBigNumberToFloat(assetPrice, decimals, 10);
 };
 
 export const getAccountCollateral: GetDataFunction<BigNumber> = async ({
@@ -333,6 +346,20 @@ const getStakingPoolAddress: GetDataFunction<string> = async ({
   return await pool.stakePool();
 };
 
+const getClaimableRewards: GetDataFunction<BigNumber> = async ({
+  poolId,
+  signer,
+  chedda,
+  account,
+}) => {
+  if (!account) return null;
+  const pool = chedda.lendingPool(poolId, signer as Signer);
+  const stakePoolContract = await pool.stakePool();
+  const stakingPool = chedda.stakingPool(stakePoolContract, signer as Signer);
+  console.log(await stakingPool.claimable(account));
+  return await stakingPool.claimable(account);
+};
+
 // Exported custom hooks
 export const useAccountInfo = (): HookResult<IAccountInfo> => {
   return useFetcher<IAccountInfo>(getAccountInfo);
@@ -376,6 +403,10 @@ export const useAssetBalance = (asset: string): HookResult<BigNumber> => {
 
 export const useTokenValue = (asset: string): HookResult<string> => {
   return useFetcher<string>(getTokenValue, asset);
+};
+
+export const useTokenPrice = (asset: string): HookResult<string> => {
+  return useFetcher<string>(getTokenPrice, asset);
 };
 
 export const useAccountCollateral = (asset: string): HookResult<BigNumber> => {
@@ -435,4 +466,8 @@ export const useTotalSupply = (): HookResult<BigNumber> => {
 
 export const useStakingContractAddress = (): HookResult<string> => {
   return useFetcher<string>(getStakingPoolAddress);
+};
+
+export const useClaimableRewards = (): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getClaimableRewards);
 };

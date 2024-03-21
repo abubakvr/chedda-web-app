@@ -21,7 +21,7 @@ const Page = () => {
     {
       name: "Stake",
       info: "Stake your LP tokens to earn CHEDDA token rewards. CHEDDA token emissions are directed by how much CHEDDA is locked in a pools gauge.",
-      tab: <StakeTab asset={poolStats?.asset} />,
+      tab: <StakeTab asset={poolStats?.asset} setActiveTab={setActiveTab} />,
     },
     {
       name: "Lock",

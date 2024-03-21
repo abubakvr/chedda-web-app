@@ -1,9 +1,8 @@
 "use client";
-import Image from "next/image";
-import React from "react";
-import LinkOut from "@/assets/icon/link-out.svg";
+import React, { Dispatch, SetStateAction } from "react";
 import { StakeCard, StakingInfoCard } from "@/components/cards";
 import {
+  useClaimableRewards,
   useLpAllowance,
   useLpAssetValue,
   useLpDecimals,
@@ -16,8 +15,15 @@ import {
   useTotalSupply,
 } from "@/hooks";
 import { IToken } from "@/utils/types";
+import { ClaimRewardsCard } from "@/components/cards";
 
-const StakeTab = ({ asset }: { asset: IToken | undefined }) => {
+const StakeTab = ({
+  asset,
+  setActiveTab,
+}: {
+  asset: IToken | undefined;
+  setActiveTab: Dispatch<SetStateAction<string>>;
+}) => {
   const { data: stakingBalance, fetchData: fetchStakingBalance } =
     useStakingBalance();
   const { data: lpTokenBalance, fetchData: fetchLpTokenBalance } =
@@ -39,6 +45,11 @@ const StakeTab = ({ asset }: { asset: IToken | undefined }) => {
     fetchData: fetchTotalStaked,
   } = useTotalStaked();
   const {
+    data: claimableRewards,
+    isLoading: claimableRewardsLoading,
+    fetchData: fetchClaimableRewards,
+  } = useClaimableRewards();
+  const {
     data: lpStakers,
     isLoading: lpStakersLoading,
     fetchData: fetchLpStakers,
@@ -56,6 +67,7 @@ const StakeTab = ({ asset }: { asset: IToken | undefined }) => {
     fetchTotalSupply(false);
     fetchLpStakers(false);
     fetchTotalStaked(false);
+    fetchClaimableRewards(false);
   };
 
   const isLoading =
@@ -66,6 +78,7 @@ const StakeTab = ({ asset }: { asset: IToken | undefined }) => {
     tokenValueLoading ||
     lpStakersLoading ||
     totalStakedLoading ||
+    claimableRewardsLoading ||
     totalSupplyLoading;
 
   if (isLoading) {
@@ -112,20 +125,15 @@ const StakeTab = ({ asset }: { asset: IToken | undefined }) => {
         />
       </div>
       <div
-        className="pool-card rounded-lg h-72 w-full"
+        className="pool-card rounded-lg h-fit w-full"
         data-testid="rewards-card"
       >
-        <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">
-          <div className="text-white text-opacity-50 font-bold text-sm uppercase">
-            Claim Rewards
-          </div>
-          <button className="flex gap-x-1 border-2 rounded-md py-[6px] px-3 border-[#ffffff60] hover:opacity-70">
-            <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-[10px]">
-              Rewards Gauge
-            </div>
-            <Image src={LinkOut} alt="link out" />
-          </button>
-        </div>
+        <ClaimRewardsCard
+          claimableRewards={claimableRewards}
+          decimals={lpDecimals}
+          setActiveTab={setActiveTab}
+          fetchClaimableRewards={fetchClaimableRewards}
+        />
       </div>
     </div>
   );
