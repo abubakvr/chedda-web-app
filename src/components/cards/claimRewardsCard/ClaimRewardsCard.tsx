@@ -59,6 +59,7 @@ export const ClaimRewardsCard = ({
         return null;
       }
 
+      setTxLoading(true);
       claimRewards()
         .then(async (res: any) => {
           if (res) {
@@ -153,7 +154,7 @@ export const ClaimRewardsCard = ({
           <Button
             size="small"
             type="secondary"
-            onClick={handleClaimRewards}
+            onClick={() => handleClaimRewards()}
             className="secondary-button py-3 mt-6 w-full border-red-400"
             isLoading={txLoading}
             disabled={!parsedRewardsValue || parsedRewardsValue === 0}
