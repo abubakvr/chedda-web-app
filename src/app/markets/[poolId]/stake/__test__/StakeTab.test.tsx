@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import StakeTab from "../StakeTab";
 import {
+  useClaimableRewards,
   useEnvironment,
   useLpAllowance,
   useLpAssetValue,
@@ -11,6 +12,7 @@ import {
   useLpTokenBalance,
   useStakingBalance,
   useStakingContractAddress,
+  useTokenPrice,
   useTokenValue,
   useTotalStaked,
   useTotalSupply,
@@ -92,6 +94,14 @@ describe("StakeTab Component", () => {
       data: BigNumber.from("1000"),
       isLoading: false,
     });
+    (useClaimableRewards as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useTokenPrice as jest.Mock).mockReturnValue({
+      data: "1000",
+      isLoading: false,
+    });
   });
   test("renders stake tab with correct data", () => {
     const asset = {
@@ -102,7 +112,7 @@ describe("StakeTab Component", () => {
       decimals: 18,
       color: "#ffffff",
     };
-    render(<StakeTab asset={asset} />);
+    render(<StakeTab asset={asset} setActiveTab={jest.fn()} />);
 
     expect(screen.getByTestId("stake-card")).toBeInTheDocument();
     expect(screen.getByTestId("stake-container")).toBeInTheDocument();
