@@ -16,6 +16,7 @@ import {
 } from "@/hooks";
 import { IToken } from "@/utils/types";
 import { ClaimRewardsCard } from "@/components/cards";
+import { InfoCardSkeleton, SwitchTabSkeleton } from "@/components/ui";
 
 const StakeTab = ({
   asset,
@@ -83,11 +84,22 @@ const StakeTab = ({
 
   if (isLoading) {
     return (
-      <div
-        data-testid="loading-spinner"
-        className="flex justify-center items-center h-full"
-      >
-        <div className="border-t-2 border-b-2 border-white border-solid h-12 w-12 rounded-full animate-spin mt-12"></div>
+      <div className="mt-8 w-full flex space-x-5" data-testid="stake-container">
+        <div
+          className="pool-card rounded-lg h-fit w-full"
+          data-testid="stake-information-card"
+        >
+          <InfoCardSkeleton title="Stake Information" itemCount={3} />
+        </div>
+        <div className="pool-card rounded-lg w-full" data-testid="stake-card">
+          <SwitchTabSkeleton />
+        </div>
+        <div
+          className="pool-card rounded-lg h-fit w-full"
+          data-testid="rewards-card"
+        >
+          <InfoCardSkeleton title="Claim Rewards" itemCount={3} />
+        </div>
       </div>
     );
   }

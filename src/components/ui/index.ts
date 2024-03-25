@@ -6,3 +6,4 @@ export * from "./toast/Toast";
 export * from "./refreshSpinner/RefreshSpinner";
 export * from "./networkSwitchBanner/NetworkSwitchBanner";
 export * from "./blockie/Blockie";
+export * from "./skeleton/SwitchTabSkeleton";
