@@ -8,7 +8,7 @@ interface SwitchTabSkeletonProps {
 export const SwitchTabSkeleton = ({}) => {
   return (
     <div
-      className="w-[470px] text-white px-8 py-6 animate-pulse opacity-20 "
+      className="w-[470px] text-white px-8 py-6 animate-pulse"
       data-testid="info-loading-element"
     >
       <div className="flex bg-[#ffffff50]  h-11 w-full rounded-lg justify-between p-2 opacity-40"></div>
