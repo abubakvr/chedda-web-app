@@ -13,7 +13,7 @@ interface AsyncState<T> {
 }
 
 interface FetchDataParams {
-  hookName: string; // Use the hook name as the identifier
+  hookName: string;
   showLoading?: boolean;
   chedda: Chedda | undefined | null;
   currentEnvironment: IEnvironment | undefined;
@@ -52,6 +52,8 @@ export const fetchData = createAsyncThunk<any, FetchDataParams>(
         currentEnvironment?.contracts.LendingPoolLens,
         signer
       );
+
+      // const pool = chedda?.poolLens(poolId ? poolId : "", signer);
       const data = await getData({
         lens,
         poolId,

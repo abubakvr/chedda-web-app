@@ -7,3 +7,4 @@ export * from "./routeCard/RouteCard";
 export * from "./stakeCard/StakeCard";
 export * from "./stakingInfoCard/StakingInfoCard";
 export * from "./claimRewardsCard/ClaimRewardsCard";
+export * from "./lockCheddaCard/LockCheddaCard";

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useCallback, useMemo } from "react";
+import { useEffect, useCallback } from "react";
 import { AppDispatch, RootState } from "@/redux/store";
 import {
   fetchData,
@@ -8,8 +8,8 @@ import {
 } from "@/redux/api/cheddaSlice";
 import { useEnvironment, useCheddaSdk } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
-import { GetDataFunction } from "@/redux/api/actions";
 import { useParams } from "next/navigation";
+import { GetDataFunction } from "@/utils/types";
 
 export const useFetcher = <T = any,>(
   getData: GetDataFunction<T>,

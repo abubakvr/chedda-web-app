@@ -45,8 +45,8 @@ export const ClaimRewardsCard = ({
     }, [currentEnvironment]) ?? "";
   const { data: assetPrice } = useTokenPrice(cheddaContract);
 
-  const parsedRewardsValue = parseInt(
-    parseBigNumberToFloat(claimableRewards, decimals)
+  const parsedRewardsValue = parseFloat(
+    parseBigNumberToFloat(claimableRewards, 18, 5)
   );
 
   const parsedAssetPrice = Number(assetPrice);

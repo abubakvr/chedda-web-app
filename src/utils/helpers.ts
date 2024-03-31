@@ -101,3 +101,42 @@ export function getErrorMessageFromCode(errorCode: string): string {
       return `Unknown error with code ${errorCode}.`;
   }
 }
+
+export function projectDateTime(days: number): string {
+  let currentDate: Date = new Date();
+
+  let projectedDate: Date = new Date(
+    currentDate.getTime() + days * 24 * 60 * 60 * 1000
+  );
+
+  let formattedProjectedDate: string = formatDate(projectedDate);
+
+  return formattedProjectedDate;
+}
+
+export function formatDate(projectedDate: Date): string {
+  function padZero(num: number): string {
+    return num.toString().padStart(2, "0");
+  }
+
+  function getMonthName(month: number): string {
+    const months: string[] = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    return months[month];
+  }
+
+  const date: string = `${padZero(projectedDate.getDate())}-${getMonthName(projectedDate.getMonth())}-${projectedDate.getFullYear().toString().slice(-2)} ${padZero(projectedDate.getHours())}:${padZero(projectedDate.getMinutes())}${projectedDate.getHours() >= 12 ? "PM" : "AM"}`;
+  return date;
+}
