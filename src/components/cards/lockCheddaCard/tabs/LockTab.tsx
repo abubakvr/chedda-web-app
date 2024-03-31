@@ -130,6 +130,9 @@ export const LockTab: FC<LockTabProps> = ({
               date.
             </div>
           )}
+          <div data-testid="modal-info" className="mt-6 pb-0 ">
+            {modalInfo}
+          </div>
         </>
       ) : (
         <div className="mt-6 text-5xl text-white relative">
@@ -150,20 +153,20 @@ export const LockTab: FC<LockTabProps> = ({
               {formatCurrency(cheddaPrice * Number(lockedChedda))}
             </div>
           </div>
+          <div data-testid="modal-info" className="mt-6 pb-0 ">
+            {modalInfo}
+          </div>
+          <div className="text-xs text-[#ffffff70] flex gap-x-1 mt-6 justify-between items-center">
+            Extend or add more assets to your locked assets
+            <button
+              onClick={() => {}}
+              className="button-gradient-text px-3 font-bold py-3 border border-[#ffffff19] rounded  hover:opacity-80 relative"
+            >
+              MANAGE LOCK
+            </button>
+          </div>
         </div>
       )}
-      <div data-testid="modal-info" className="mt-6 pb-0 ">
-        {modalInfo}
-      </div>
-      <div className="text-xs text-[#ffffff70] flex gap-x-1 mt-6 justify-between items-center">
-        Extend or add more assets to your locked assets
-        <button
-          onClick={() => {}}
-          className="button-gradient-text px-3 font-bold py-3 border border-[#ffffff19] rounded  hover:opacity-80 relative"
-        >
-          MANAGE LOCK
-        </button>
-      </div>
     </div>
   );
 };
