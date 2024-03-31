@@ -78,7 +78,7 @@ export const environmentConfig: IEnvironmentConfig = {
   421614: {
     production: false,
     environmentName: "Arbitrum Sepolia",
-    jsonRpcUrl: `https://arbitrum-sepolia.infura.io/v3/${infuraKey}`,
+    jsonRpcUrl: `https://arb-sepolia.g.alchemy.com/v2/${alchemyKey}`,
     webSocketUrl: `wss://arb-sepolia.g.alchemy.com/v2/${alchemyKey}`,
     txUrlPrefix: "https://sepolia.arbiscan.io/tx",
     contractPrefix: "https://sepolia.arbiscan.io/address",
