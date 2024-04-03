@@ -172,7 +172,7 @@ export const LockCheddaCard: FC<LockCardProps> = ({
   const handleWithdrawChedda = async () => {
     try {
       if (!parsedLockedCheddaAmount) {
-        return alert("You do not have have any chedda locked");
+        return alert(`You do not have have any ${cheddaSymbol} locked`);
       }
 
       handleTransaction(
@@ -187,12 +187,12 @@ export const LockCheddaCard: FC<LockCardProps> = ({
   const handleRelockChedda = async () => {
     try {
       if (!parsedLockedCheddaAmount || !lockedChedda) {
-        return alert("You do not have have any locked chedda");
+        return alert(`You do not have have any locked ${cheddaSymbol}`);
       }
 
       handleTransaction(
         relockCheddaToken(lockedChedda?.lockTime),
-        "You've successfully relocked your unlocked Chedda"
+        `You've successfully relocked ${parsedLockedCheddaAmount} ${cheddaSymbol}`
       );
     } catch (error) {
       handleTransaction(Promise.reject(error), "");
