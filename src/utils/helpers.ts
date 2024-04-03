@@ -116,12 +116,12 @@ export function projectDateTime(days: number): string {
 
 export function formatDate(projectedDate: Date): string {
   const formattedDate = projectedDate.toLocaleString(undefined, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
   });
   return formattedDate;
 }
