@@ -24,7 +24,7 @@ interface LockTabProps {
   isTransactionLoading: boolean;
   lockTime: number | undefined;
   lockedChedda: string | undefined;
-  buttonAction: () => void;
+  lockCheddaToken: (isRelockChedda: boolean) => void;
   setClearInputField: Dispatch<SetStateAction<boolean>>;
   setAmount: Dispatch<SetStateAction<number>>;
   setLockTime: Dispatch<SetStateAction<LockTimeState>>;
@@ -43,7 +43,7 @@ export const LockTab: FC<LockTabProps> = ({
   amount,
   lockTime,
   lockedChedda,
-  buttonAction,
+  lockCheddaToken,
   setClearInputField,
   setAmount,
   setLockTime,
@@ -59,7 +59,7 @@ export const LockTab: FC<LockTabProps> = ({
       setShowWarning(true);
       return;
     } else {
-      buttonAction();
+      lockCheddaToken(false);
     }
   };
 
@@ -106,7 +106,7 @@ export const LockTab: FC<LockTabProps> = ({
                   </span>
                 </div>
                 <div className="text-white text-sm py-3 font-bold">
-                  {item.duration} days
+                  {item.title}
                 </div>
               </button>
             ))}

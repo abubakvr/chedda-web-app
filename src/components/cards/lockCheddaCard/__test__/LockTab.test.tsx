@@ -8,10 +8,28 @@ import {
 } from "@testing-library/react";
 import { LockTab } from "../tabs/LockTab";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
+import { useEnvironment } from "@/hooks";
+import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 
 const mockButtonAction = jest.fn();
 
+jest.mock("../../../../hooks");
+jest.mock("@web3-react/core", () => ({
+  ...jest.requireActual("@web3-react/core"),
+  useWeb3React: jest.fn(() => ({
+    account: "0x123",
+    chainId: 1,
+    isActivating: false,
+  })),
+}));
+
 describe("LockTab Component", () => {
+  beforeEach(() => {
+    (useEnvironment as jest.Mock).mockReturnValue({
+      currentEnvironment: mockCurrentEnvironment,
+      switchEnvironment: jest.fn(),
+    });
+  });
   test("renders LockTab component with unlocked Chedda", async () => {
     const props = {
       title: "Lock",
@@ -26,7 +44,7 @@ describe("LockTab Component", () => {
       isTransactionLoading: false,
       lockTime: 0,
       lockedChedda: undefined,
-      buttonAction: mockButtonAction,
+      lockCheddaToken: mockButtonAction,
       setClearInputField: jest.fn(),
       setAmount: jest.fn(),
       setLockTime: jest.fn(),
@@ -56,7 +74,8 @@ describe("LockTab Component", () => {
     });
 
     await waitFor(() => {
-      expect(props.setLockTime).toHaveBeenCalledWith({ value: 0, days: 30 });
+      expect(mockButtonAction).toHaveBeenCalledTimes(1);
+      expect(props.setLockTime).toHaveBeenCalledWith({ value: 1, days: 30 });
       expect(screen.getByTestId("loading-button-icon")).toBeInTheDocument();
     });
   });
@@ -75,7 +94,7 @@ describe("LockTab Component", () => {
       isTransactionLoading: false,
       lockTime: undefined,
       lockedChedda: "50",
-      buttonAction: jest.fn(),
+      lockCheddaToken: jest.fn(),
       setClearInputField: jest.fn(),
       setAmount: jest.fn(),
       setLockTime: jest.fn(),
