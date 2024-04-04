@@ -3,17 +3,18 @@ import { BigNumber, Signer } from "ethers";
 import { useCheddaSdk } from "./useCheddaSdk";
 import { useParams } from "next/navigation";
 import { getErrorMessageFromCode } from "@/utils/helpers";
-import { useState } from "react";
+import { useEnvironment } from "./useEnvironment";
 
 export const useTransaction = (asset: string) => {
   const { account } = useWeb3React();
   const { chedda, signer } = useCheddaSdk();
+  const { currentEnvironment } = useEnvironment();
   const { poolId } = useParams();
   const strPoolId = poolId.toString();
-
+  const environment = currentEnvironment?.contracts.Chedda || "";
   const token = chedda?.erc20token(asset || strPoolId, signer as Signer);
   const lendingPool = chedda?.lendingPool(strPoolId, signer as Signer);
-  const [errorMessage, setErrorMessage] = useState("");
+  const cheddaToken = chedda?.cheddaToken(environment, signer as Signer);
 
   const executeTransaction = async (
     transaction: (params: {
@@ -120,8 +121,25 @@ export const useTransaction = (asset: string) => {
       return stakingPool?.claim();
     });
 
+  const approveCheddaToken = async (amount: BigNumber) =>
+    executeTransaction(async () => {
+      const gaugeAddress = await lendingPool?.gauge();
+      if (!amount || !gaugeAddress) return;
+      return cheddaToken?.approve(gaugeAddress, amount);
+    }, amount);
+
+  const lockCheddaToken = async (amount: BigNumber, time: number) =>
+    executeTransaction(async () => {
+      const gaugeAddress = await lendingPool?.gauge();
+      if (!amount || !gaugeAddress) return;
+      const cheddaLockingGauge = chedda?.cheddaLockingGauge(
+        gaugeAddress,
+        signer as Signer
+      );
+      return cheddaLockingGauge?.createLock(amount, time);
+    }, amount);
+
   return {
-    errorMessage,
     lendingPool,
     approveAsset,
     depositAsset,
@@ -134,5 +152,7 @@ export const useTransaction = (asset: string) => {
     stakeLpToken,
     unStakeLpToken,
     claimRewards,
+    approveCheddaToken,
+    lockCheddaToken,
   };
 };

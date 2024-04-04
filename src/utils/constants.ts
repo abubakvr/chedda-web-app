@@ -59,3 +59,10 @@ export const vaultHeaderItems = [
   "Borrow APY",
   "Utilization",
 ];
+
+export const LOCKTIMES = [
+  { duration: 30, multiplier: 0.25, value: 0 },
+  { duration: 90, multiplier: 1, value: 1 },
+  { duration: 180, multiplier: 2, value: 2 },
+  { duration: 360, multiplier: 4, value: 3 },
+];

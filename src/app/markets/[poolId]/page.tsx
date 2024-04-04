@@ -4,6 +4,7 @@ import { SummaryHeader } from "@/components/ui";
 import { usePoolStats } from "@/hooks";
 import { getPoolSummaryData } from "@/utils/formatResponse";
 import React, { useState } from "react";
+import LockTab from "./lock/LockTab";
 import PoolTab from "./pool/PoolTab";
 import StakeTab from "./stake/StakeTab";
 
@@ -25,7 +26,8 @@ const Page = () => {
     },
     {
       name: "Lock",
-      info: "Stake your LP tokens to earn CHEDDA token rewards. CHEDDA token emissions are directed by how much CHEDDA is locked in a pools’ gauge.",
+      info: "Lock CHEDDA to direct token emissions and earn locking rewards. Locked tokens are susceptible to slashing in case of a shortfall event in the associated pool.",
+      tab: <LockTab asset={poolStats?.asset} />,
     },
   ];
 

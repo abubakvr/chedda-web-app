@@ -101,3 +101,27 @@ export function getErrorMessageFromCode(errorCode: string): string {
       return `Unknown error with code ${errorCode}.`;
   }
 }
+
+export function projectDateTime(days: number): string {
+  let currentDate: Date = new Date();
+
+  let projectedDate: Date = new Date(
+    currentDate.getTime() + days * 24 * 60 * 60 * 1000
+  );
+
+  let formattedProjectedDate: string = formatDate(projectedDate);
+
+  return formattedProjectedDate;
+}
+
+export function formatDate(projectedDate: Date): string {
+  const formattedDate = projectedDate.toLocaleString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
+  return formattedDate;
+}

@@ -85,10 +85,10 @@ export const environmentConfig: IEnvironmentConfig = {
     chainId: 421614,
     contracts: {
       LendingPool: "0x7de1c0bf2d5a810b98ce9373e8195353ff4dbed1",
-      LendingPoolLens: "0x88A54f177bb9E7e5110c40Eff87Ae91667A88ad9",
+      LendingPoolLens: "0x5BD837be5Db3bDbb0fdb8362e55834762885fc6E",
       InterestRatesProjector: "0x49a4Ad3ADd3eF46a1dA27FEd0280F70276fb3ba6",
       PriceFeed: "0x5D0d03A506F2df4Bcf8fa022027FCcEd7fF639d1",
-      Chedda: "0x8f72AE75bcBd9A36eDDAD1c81f375b27229d255F",
+      Chedda: "0x9AD6FC4F1c6A4CE0838047DA728BCe90a705f54d",
       xChedda: "0x5c35eD563029a9D7B37a60EC2C964fC7d37672E5",
       veChedda: "0xBC03E7E93710b2efFfFaeec29Dc3D325BD89a8dB",
       Faucet: "0x0A5Fe3dd684B1aA04d156d42C259a9feF887255e",

@@ -7,7 +7,7 @@ import {
   IPoolState,
   IPoolStats,
 } from "chedda-sdk";
-import { BigNumber, ethers, Signer } from "ethers";
+import { Signer } from "ethers";
 import { StaticImageData } from "next/image";
 import React from "react";
 

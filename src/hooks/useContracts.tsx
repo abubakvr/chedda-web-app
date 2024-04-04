@@ -4,6 +4,7 @@ import {
   IInterestRatesProjection,
   IMarketInfo,
   IPoolState,
+  Lock,
 } from "chedda-sdk";
 import {
   ISummaryStats,
@@ -177,7 +178,6 @@ const getTokenValue: GetDataFunction<string> = async ({
   const priceOracle = chedda.priceOracle(environment.contracts.PriceFeed);
   const decimals = await priceOracle.decimals();
   const assetPrice = await priceOracle.readPrice(asset);
-
   return parseBigNumberToFloat(assetPrice, decimals, 10);
 };
 
@@ -190,7 +190,6 @@ const getTokenPrice: GetDataFunction<string> = async ({
   const priceOracle = chedda.priceOracle(environment.contracts.PriceFeed);
   const decimals = await priceOracle.decimals();
   const assetPrice = await priceOracle.readPrice(asset);
-
   return parseBigNumberToFloat(assetPrice, decimals, 10);
 };
 
@@ -360,6 +359,55 @@ const getClaimableRewards: GetDataFunction<BigNumber> = async ({
   return await stakingPool.claimable(account);
 };
 
+export const getCheddaBalance: GetDataFunction<BigNumber> = async ({
+  chedda,
+  signer,
+  account,
+  environment,
+}) => {
+  if (!environment || !account) return null;
+  const cheddaToken = chedda.cheddaToken(
+    environment.contracts.Chedda,
+    signer as Signer
+  );
+  return await cheddaToken.balanceOf(account);
+};
+
+export const getCheddaAllowance: GetDataFunction<BigNumber> = async ({
+  chedda,
+  signer,
+  account,
+  environment,
+  poolId,
+}) => {
+  if (!account || !environment) return null;
+  const pool = chedda.lendingPool(poolId, signer as Signer);
+  const gaugeContract = await pool.gauge();
+  const cheddaToken = chedda.cheddaToken(
+    environment.contracts.Chedda,
+    signer as Signer
+  );
+  return await cheddaToken.allowance(account, gaugeContract);
+};
+
+const getLockedAmount: GetDataFunction<Lock> = async ({
+  chedda,
+  signer,
+  account,
+  environment,
+  poolId,
+}) => {
+  if (!account || !environment) return null;
+  const pool = chedda.lendingPool(poolId, signer as Signer);
+  const gaugeAddress = await pool.gauge();
+  const cheddaLockingGauge = chedda?.cheddaLockingGauge(
+    gaugeAddress,
+    signer as Signer
+  );
+  console.log((await cheddaLockingGauge?.getLock(account)).expiry);
+  return await cheddaLockingGauge?.getLock(account);
+};
+
 // Exported custom hooks
 export const useAccountInfo = (): HookResult<IAccountInfo> => {
   return useFetcher<IAccountInfo>(getAccountInfo);
@@ -470,4 +518,16 @@ export const useStakingContractAddress = (): HookResult<string> => {
 
 export const useClaimableRewards = (): HookResult<BigNumber> => {
   return useFetcher<BigNumber>(getClaimableRewards);
+};
+
+export const useCheddaBalance = (): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getCheddaBalance);
+};
+
+export const useCheddaAllowance = (): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getCheddaAllowance);
+};
+
+export const useLockedChedda = (): HookResult<Lock> => {
+  return useFetcher<Lock>(getLockedAmount);
 };

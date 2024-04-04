@@ -75,8 +75,7 @@ export const DepositTab = ({
     tokenBalanceLoading,
     healthFactorLoading,
   } = isLoading;
-  const { errorMessage, depositCollateral, approveAsset } =
-    useTransaction(tokenAddress);
+  const { depositCollateral, approveAsset } = useTransaction(tokenAddress);
 
   const parsedAllowance = parseFloat(
     parseBigNumberToFloat(allowance, decimals)
