@@ -54,6 +54,7 @@ export interface IEnvironment {
     LendingPool: string;
     LendingPoolLens: string;
     InterestRatesProjector: string;
+    LockingGaugeRewardsDistributor: string;
     PriceFeed: string;
     Chedda: string;
     xChedda: string;

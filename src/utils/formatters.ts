@@ -145,12 +145,15 @@ export const formatLargeNumber = (
  *
  * @returns {string|null} The formatted percentage string, or null if the input value is null.
  */
-export const formatAsPercentage = (value?: number | string) => {
+export const formatAsPercentage = (
+  value?: number | string,
+  floatPlaces?: number
+) => {
   if (value === undefined) {
     return "0.00";
   }
 
-  return toFixedTrunc(Number(value) * 100, 2) + "%";
+  return toFixedTrunc(Number(value) * 100, floatPlaces || 2) + "%";
 };
 
 export function toFixedTrunc(x: number, n: number) {

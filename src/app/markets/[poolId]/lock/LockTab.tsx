@@ -1,13 +1,20 @@
 "use client";
 import React from "react";
-import { ClaimRewardsCard, LockCheddaCard } from "@/components/cards";
+import {
+  ClaimRewardsCard,
+  LockCheddaCard,
+  LockingInfoCard,
+} from "@/components/cards";
 import {
   useCheddaAllowance,
   useCheddaBalance,
   useClaimableLockRewards,
   useEnvironment,
+  useTotalWeightSum,
   useLockedChedda,
   useTokenValue,
+  useTotalAmountLocked,
+  useTotalWeight,
 } from "@/hooks";
 import { IToken } from "@/utils/types";
 import { InfoCardSkeleton, SwitchTabSkeleton } from "@/components/ui";
@@ -31,6 +38,24 @@ const LockTab = ({ asset }: { asset: IToken | undefined }) => {
   } = useLockedChedda();
 
   const {
+    data: totalWeight,
+    isLoading: totalWeightLoading,
+    fetchData: fetchTotalWeight,
+  } = useTotalWeight();
+
+  const {
+    data: totalWeightSum,
+    isLoading: totalWeightSumLoading,
+    fetchData: fetchTotalWeightSum,
+  } = useTotalWeightSum();
+
+  const {
+    data: totalAmountLocked,
+    isLoading: totalAmountLockedLoading,
+    fetchData: fetchTotalAmountLocked,
+  } = useTotalAmountLocked();
+
+  const {
     data: claimableRewards,
     isLoading: claimableRewardsLoading,
     fetchData: fetchClaimableRewards,
@@ -41,10 +66,18 @@ const LockTab = ({ asset }: { asset: IToken | undefined }) => {
     fetchCheddaAllowance(false);
     fetchLockedChedaa(false);
     fetchClaimableRewards(false);
+    fetchTotalWeight(false);
+    fetchTotalWeightSum(false);
+    fetchTotalAmountLocked(false);
   };
 
   const isLoading =
-    cheddaPriceLoading || lockedCheddaLoading || claimableRewardsLoading;
+    cheddaPriceLoading ||
+    lockedCheddaLoading ||
+    claimableRewardsLoading ||
+    totalAmountLockedLoading ||
+    totalWeightLoading ||
+    totalWeightSumLoading;
 
   if (isLoading) {
     return (
@@ -76,7 +109,14 @@ const LockTab = ({ asset }: { asset: IToken | undefined }) => {
       <div
         className="pool-card rounded-lg h-72 w-full"
         data-testid="lock-information-card"
-      ></div>
+      >
+        <LockingInfoCard
+          assetSymbol={"CHEDDA"}
+          totalWeight={totalWeight}
+          totalWeightSum={totalWeightSum}
+          totalAmountLocked={totalAmountLocked}
+        />
+      </div>
       <div
         className="pool-card rounded-lg w-full"
         data-testid="lock-chedda-card"
