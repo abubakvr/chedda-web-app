@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import StakeTab from "../StakeTab";
 import {
-  useClaimableRewards,
+  useClaimableStakeRewards,
   useEnvironment,
   useLpAllowance,
   useLpAssetValue,
@@ -94,7 +94,7 @@ describe("StakeTab Component", () => {
       data: BigNumber.from("1000"),
       isLoading: false,
     });
-    (useClaimableRewards as jest.Mock).mockReturnValue({
+    (useClaimableStakeRewards as jest.Mock).mockReturnValue({
       data: BigNumber.from("1000"),
       isLoading: false,
     });
