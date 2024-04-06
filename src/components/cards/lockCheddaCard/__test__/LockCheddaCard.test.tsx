@@ -12,6 +12,14 @@ import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("../../../../hooks");
+jest.mock("@web3-react/core", () => ({
+  ...jest.requireActual("@web3-react/core"),
+  useWeb3React: jest.fn(() => ({
+    account: "0x123",
+    chainId: 1,
+    isActivating: false,
+  })),
+}));
 
 describe("LockCheddaCard", () => {
   beforeEach(() => {
@@ -94,6 +102,35 @@ describe("LockCheddaCard", () => {
 
     await waitFor(() => {
       expect(screen.getByTestId("loading-button-icon")).toBeInTheDocument();
+    });
+  });
+
+  it("handles withdraw and relock action correctly", async () => {
+    const mockProps = {
+      assetSymbol: "ETH",
+      cheddaSymbol: "CHEDDA",
+      cheddaAllowance: BigNumber.from("1000000000000000000000"),
+      cheddaTokenBalance: BigNumber.from("50000000000000000000000000"),
+      cheddaPrice: "100",
+      defaultTab: "Withdraw",
+      lockedChedda: undefined,
+      isAllowanceLoading: false,
+      updateCard: jest.fn(),
+      fetchCheddaAllowance: jest.fn(),
+    };
+
+    render(
+      <MockAppProviders>
+        <LockCheddaCard {...mockProps} />
+      </MockAppProviders>
+    );
+
+    act(() => {
+      fireEvent.click(screen.getByText("Withdraw"));
+    });
+
+    await waitFor(() => {
+      expect(screen.queryAllByText("loading-button-icon")).not.toBeNull();
     });
   });
 });

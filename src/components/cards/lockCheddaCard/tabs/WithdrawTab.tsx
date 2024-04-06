@@ -1,0 +1,98 @@
+import React, { FC, ReactElement, useState } from "react";
+import { Button } from "@/components/common";
+import { formatCurrency } from "@/utils/formatters";
+
+interface LockTabProps {
+  title: string;
+  cheddaSymbol: string | undefined;
+  cheddaPrice: number;
+  subTitle: string;
+  modalInfo: ReactElement<any, any>;
+  isTransactionLoading: boolean;
+  lockedChedda: string | undefined;
+  cheddaExpiry: Date;
+  withdrawChedda: () => void;
+  relockChedda: (isRelockChedda: boolean) => void;
+}
+
+export const WithdrawTab: FC<LockTabProps> = ({
+  title,
+  cheddaSymbol,
+  cheddaPrice,
+  modalInfo,
+  isTransactionLoading,
+  subTitle,
+  lockedChedda,
+  cheddaExpiry,
+  withdrawChedda,
+  relockChedda,
+}) => {
+  const [isWithdrawClicked, setIsWithdrawCliked] = useState(false);
+
+  const currentDate = Date.now();
+  const cheddaExpiryTimestamp = cheddaExpiry.getTime();
+
+  const isLockedExpired = currentDate > cheddaExpiryTimestamp;
+
+  return (
+    <div data-testid="lock-card-content" className="mt-6">
+      <div className="text-xl font-bold">{title} your CHEDDA</div>
+      <div className="text-[#FFFFFF50] text-sm mt-2">{subTitle}</div>
+
+      <div className="mt-6 text-5xl text-white relative">
+        <div className="text-xl text-white  border-[#ffffff19] bg-[#ffffff02] border rounded-lg p-3">
+          <div className="text-sm font-bold text-[#ffffff70]">
+            Locked Assets
+          </div>
+          <div
+            className="mt-2 text-2xl card-gradient-text font-bold"
+            data-testid="locked-chedda-asset"
+          >
+            {lockedChedda} {cheddaSymbol}
+          </div>
+          <div
+            className="text-xs  text-[#ffffff70] mt-2"
+            data-testid="locked-chedda-price"
+          >
+            {formatCurrency(cheddaPrice * Number(lockedChedda))}
+          </div>
+        </div>
+        <Button
+          type="primary"
+          onClick={() => {
+            setIsWithdrawCliked(true);
+            withdrawChedda();
+          }}
+          className="mt-6 h-7"
+          size="large"
+          isLoading={isWithdrawClicked && isTransactionLoading}
+          disabled={!isLockedExpired || !Number(lockedChedda)}
+        >
+          WITHDRAW
+        </Button>
+        <div className="uppercase text-sm text-[#FFFFFF50] my-2 text-center">
+          Or
+        </div>
+        <Button
+          type="secondary"
+          onClick={() => {
+            setIsWithdrawCliked(false);
+            relockChedda(true);
+          }}
+          className="h-7"
+          disabled={!isLockedExpired || !Number(lockedChedda)}
+          isLoading={!isWithdrawClicked && isTransactionLoading}
+          size="large"
+        >
+          RELOCK
+        </Button>
+        <div className="text-warning mt-2 text-xs">
+          Note: You can&apos;t withdraw your locked assets till the end date.
+        </div>
+        <div data-testid="modal-info" className="mt-6 pb-0 ">
+          {modalInfo}
+        </div>
+      </div>
+    </div>
+  );
+};

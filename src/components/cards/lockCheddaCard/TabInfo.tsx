@@ -1,12 +1,12 @@
 import React from "react";
 
 interface TabInfoProps {
-  allowance: string;
-  amountToLock: string;
-  maturityDate: string;
-  lockedAmount: string;
-  projectedMaturityDate: string;
-  isCheddaLocked: boolean;
+  allowance?: string;
+  amountToLock?: string;
+  maturityDate?: string;
+  lockedAmount?: string;
+  projectedMaturityDate?: string;
+  isCheddaLocked?: boolean;
 }
 
 export const TabInfo: React.FC<TabInfoProps> = ({

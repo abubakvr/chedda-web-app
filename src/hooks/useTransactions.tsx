@@ -131,6 +131,7 @@ export const useTransaction = (asset: string) => {
   const lockCheddaToken = async (amount: BigNumber, time: number) =>
     executeTransaction(async () => {
       const gaugeAddress = await lendingPool?.gauge();
+      console.log("gaugeAddress", gaugeAddress);
       if (!amount || !gaugeAddress) return;
       const cheddaLockingGauge = chedda?.cheddaLockingGauge(
         gaugeAddress,
@@ -138,6 +139,30 @@ export const useTransaction = (asset: string) => {
       );
       return cheddaLockingGauge?.createLock(amount, time);
     }, amount);
+
+  const withdrawCheddaToken = async () =>
+    executeTransaction(async () => {
+      const gaugeAddress = await lendingPool?.gauge();
+      if (!gaugeAddress) return;
+      const cheddaLockingGauge = chedda?.cheddaLockingGauge(
+        gaugeAddress,
+        signer as Signer
+      );
+      return cheddaLockingGauge?.withdraw();
+    });
+
+  const relockCheddaToken = async (lockTime: number) =>
+    executeTransaction(async () => {
+      console.log(lockTime);
+      const gaugeAddress = await lendingPool?.gauge();
+      if (!gaugeAddress) return;
+      const cheddaLockingGauge = chedda?.cheddaLockingGauge(
+        gaugeAddress,
+        signer as Signer
+      );
+      console.log(gaugeAddress);
+      return cheddaLockingGauge?.extendLock(lockTime);
+    });
 
   return {
     lendingPool,
@@ -154,5 +179,7 @@ export const useTransaction = (asset: string) => {
     claimRewards,
     approveCheddaToken,
     lockCheddaToken,
+    withdrawCheddaToken,
+    relockCheddaToken,
   };
 };

@@ -8,6 +8,7 @@ import { TabInfo } from "./TabInfo";
 import { useTransaction } from "@/hooks";
 import { formatDate, projectDateTime } from "@/utils/helpers";
 import { Lock } from "chedda-sdk";
+import { WithdrawTab } from "./tabs/WithdrawTab";
 
 interface LockCardProps {
   assetSymbol: string | undefined;
@@ -66,7 +67,6 @@ export const LockCheddaCard: FC<LockCardProps> = ({
     txStatus: "success",
   });
   const [lockAmount, setLockAmount] = useState<number>(0);
-  const [withdrawAmount, setWithdrawAmount] = useState<number>(0);
   const [lockTime, setLockTime] = useState<{
     value: number | undefined;
     days: number | undefined;
@@ -74,7 +74,12 @@ export const LockCheddaCard: FC<LockCardProps> = ({
     value: undefined,
     days: undefined,
   });
-  const { lockCheddaToken, approveCheddaToken } = useTransaction("");
+  const {
+    lockCheddaToken,
+    approveCheddaToken,
+    withdrawCheddaToken,
+    relockCheddaToken,
+  } = useTransaction("");
 
   const parsedAllowance = parseFloat(parseBigNumberToFloat(cheddaAllowance));
   const parsedCheddaBalance = parseBigNumberToFloat(cheddaTokenBalance);
@@ -84,105 +89,44 @@ export const LockCheddaCard: FC<LockCardProps> = ({
   );
 
   const parsedAssetPrice = Number(cheddaPrice);
-  const handleLock = async () => {
+  async function handleTransaction(
+    promise: Promise<any>,
+    successMessage: string,
+    isApprove: boolean = false
+  ) {
     try {
-      if (
-        !lockAmount ||
-        lockTime.value === undefined ||
-        lockAmount > parseFloat(parsedCheddaBalance)
-      ) {
-        return alert("Enter valid amount");
-      }
-
       setTxLoading(true);
       setShowToast(false);
-      const parsedAmount = ethers.utils.parseUnits(lockAmount.toString(), 18);
 
-      if (lockAmount <= parsedAllowance) {
-        lockCheddaToken(parsedAmount, lockTime.value)
-          .then(async (res: any) => {
-            if (res) {
-              const result = await res.wait();
-              if (result.status === 1) {
-                const txMessage = `You've successfully locked ${formatNumber(
-                  lockAmount
-                )} ${cheddaSymbol}`;
-                setTxDetails({
-                  txMessage,
-                  copyText: null,
-                  txHash: res.hash,
-                  txStatus: "success",
-                });
-                setLockAmount(0);
-                setClearInputField(true);
-                setShowToast(true);
-                updateCard();
-              } else {
-                const txMessage = `An error occurred while proccessing your transaction`;
-                setTxDetails({
-                  txMessage,
-                  copyText: null,
-                  txHash: res.hash,
-                  txStatus: "failed",
-                });
-                setShowToast(true);
-              }
-            }
-            setTxLoading(false);
-          })
-          .catch((error: any) => {
-            const errorObject = JSON.parse(error.message);
-            setTxDetails({
-              txMessage: errorObject.errorMessage,
-              copyText: errorObject.fullText,
-              txHash: null,
-              txStatus: "failed",
-            });
-            setShowToast(true);
-            setTxLoading(false);
-          });
-      } else {
-        approveCheddaToken(parsedAmount)
-          .then(async (res: any) => {
-            if (res) {
-              const result = await res.wait();
-              if (result.status === 1) {
-                const txMessage = `You've successfully approved ${formatNumber(
-                  lockAmount
-                )} ${cheddaSymbol}`;
-                setTxDetails({
-                  txMessage,
-                  copyText: null,
-                  txHash: res.hash,
-                  txStatus: "success",
-                });
-                setShowToast(true);
-                fetchCheddaAllowance();
-              } else {
-                const txMessage = `An error occurred while proccessing your transaction`;
-                setTxDetails({
-                  txMessage,
-                  copyText: null,
-                  txHash: res.hash,
-                  txStatus: "failed",
-                });
-                setShowToast(true);
-              }
-            }
-            setTxLoading(false);
-          })
-          .catch((error: any) => {
-            const errorObject = JSON.parse(error.message);
-            setTxDetails({
-              txMessage: errorObject.errorMessage,
-              copyText: errorObject.fullText,
-              txHash: null,
-              txStatus: "failed",
-            });
-            setShowToast(true);
-            setTxLoading(false);
-          });
+      const res = await promise;
+      if (res) {
+        const result = await res.wait();
+        const txMessage =
+          result.status === 1
+            ? successMessage
+            : "An error occurred while processing your transaction";
+        const txStatus = result.status === 1 ? "success" : "failed";
+
+        setTxDetails({
+          txMessage,
+          copyText: null,
+          txHash: res.hash,
+          txStatus,
+        });
+
+        if (result.status === 1) {
+          setShowToast(true);
+          if (isApprove) {
+            fetchCheddaAllowance();
+          } else {
+            updateCard();
+          }
+        } else {
+          setShowToast(true);
+        }
       }
+
+      setTxLoading(false);
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
       setTxDetails({
@@ -194,9 +138,66 @@ export const LockCheddaCard: FC<LockCardProps> = ({
       setShowToast(true);
       setTxLoading(false);
     }
+  }
+
+  const handleLockChedda = async () => {
+    try {
+      if (
+        !lockAmount ||
+        lockTime.value === undefined ||
+        lockAmount > parseFloat(parsedCheddaBalance)
+      ) {
+        return alert("Enter valid amount");
+      }
+
+      const parsedAmount = ethers.utils.parseUnits(lockAmount.toString(), 18);
+
+      if (lockAmount <= parsedAllowance) {
+        handleTransaction(
+          lockCheddaToken(parsedAmount, lockTime.value),
+          `You've successfully locked ${formatNumber(lockAmount)} ${cheddaSymbol}`
+        );
+      } else {
+        handleTransaction(
+          approveCheddaToken(parsedAmount),
+          `You've successfully approved ${formatNumber(lockAmount)} ${cheddaSymbol}`,
+          true
+        );
+      }
+    } catch (error) {
+      handleTransaction(Promise.reject(error), "");
+    }
   };
 
-  const handleWithdraw = async () => {};
+  const handleWithdrawChedda = async () => {
+    try {
+      if (!parsedLockedCheddaAmount) {
+        return alert(`You do not have have any ${cheddaSymbol} locked`);
+      }
+
+      handleTransaction(
+        withdrawCheddaToken(),
+        `You've successfully withdrawn ${formatNumber(parseFloat(parsedLockedCheddaAmount))} ${cheddaSymbol}`
+      );
+    } catch (error) {
+      handleTransaction(Promise.reject(error), "");
+    }
+  };
+
+  const handleRelockChedda = async () => {
+    try {
+      if (!parsedLockedCheddaAmount || !lockedChedda) {
+        return alert(`You do not have have any locked ${cheddaSymbol}`);
+      }
+
+      handleTransaction(
+        relockCheddaToken(lockedChedda?.lockTime),
+        `You've successfully relocked ${parsedLockedCheddaAmount} ${cheddaSymbol}`
+      );
+    } catch (error) {
+      handleTransaction(Promise.reject(error), "");
+    }
+  };
 
   return (
     <>
@@ -226,7 +227,6 @@ export const LockCheddaCard: FC<LockCardProps> = ({
             isActive={activeTab === "Withdraw"}
             onClick={() => {
               setActiveTab("Withdraw");
-              setWithdrawAmount(0);
             }}
             testId="withdraw-tab"
           />
@@ -242,7 +242,7 @@ export const LockCheddaCard: FC<LockCardProps> = ({
               setClearInputField={setClearInputField}
               clearInputField={clearInputField}
               allowance={parsedAllowance}
-              buttonAction={handleLock}
+              lockCheddaToken={handleLockChedda}
               isTransactionLoading={txLoading || isAllowanceLoading}
               setAmount={setLockAmount}
               amount={lockAmount}
@@ -257,6 +257,28 @@ export const LockCheddaCard: FC<LockCardProps> = ({
                   lockedAmount={`${parsedLockedCheddaAmount} ${cheddaSymbol}`}
                   maturityDate={formatDate(parsedLockedCheddaExpiry)}
                   isCheddaLocked={Number(parsedLockedCheddaAmount) > 0}
+                />
+              }
+            />
+          </div>
+        )}
+        {activeTab === "Withdraw" && (
+          <div data-testid="withdraw-content">
+            <WithdrawTab
+              title="Withdraw"
+              subTitle="Or relock your unlocked CHEDDA"
+              cheddaSymbol={cheddaSymbol}
+              cheddaPrice={parsedAssetPrice}
+              withdrawChedda={handleWithdrawChedda}
+              relockChedda={handleRelockChedda}
+              isTransactionLoading={txLoading}
+              lockedChedda={parsedLockedCheddaAmount}
+              cheddaExpiry={parsedLockedCheddaExpiry}
+              modalInfo={
+                <TabInfo
+                  lockedAmount={`${parsedLockedCheddaAmount} ${cheddaSymbol}`}
+                  maturityDate={formatDate(parsedLockedCheddaExpiry)}
+                  isCheddaLocked={true}
                 />
               }
             />
