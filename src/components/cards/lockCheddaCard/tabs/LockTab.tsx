@@ -24,6 +24,7 @@ interface LockTabProps {
   isTransactionLoading: boolean;
   lockTime: number | undefined;
   lockedChedda: string | undefined;
+  openManageLockModal: () => void;
   lockCheddaToken: (isRelockChedda: boolean) => void;
   setClearInputField: Dispatch<SetStateAction<boolean>>;
   setAmount: Dispatch<SetStateAction<number>>;
@@ -43,6 +44,7 @@ export const LockTab: FC<LockTabProps> = ({
   amount,
   lockTime,
   lockedChedda,
+  openManageLockModal,
   lockCheddaToken,
   setClearInputField,
   setAmount,
@@ -159,7 +161,7 @@ export const LockTab: FC<LockTabProps> = ({
           <div className="text-xs text-[#ffffff70] flex gap-x-1 mt-6 justify-between items-center">
             Extend or add more assets to your locked assets
             <button
-              onClick={() => {}}
+              onClick={openManageLockModal}
               className="button-gradient-text px-3 font-bold py-3 border border-[#ffffff19] rounded  hover:opacity-80 relative"
             >
               MANAGE LOCK

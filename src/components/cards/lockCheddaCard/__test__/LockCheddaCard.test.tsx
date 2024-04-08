@@ -43,6 +43,7 @@ describe("LockCheddaCard", () => {
       defaultTab: "Lock",
       lockedChedda: undefined,
       isAllowanceLoading: false,
+      openManageLockModal: jest.fn(),
       updateCard: jest.fn(),
       fetchCheddaAllowance: jest.fn(),
     };
@@ -72,6 +73,7 @@ describe("LockCheddaCard", () => {
       defaultTab: "Lock",
       lockedChedda: undefined,
       isAllowanceLoading: false,
+      openManageLockModal: jest.fn(),
       updateCard: jest.fn(),
       fetchCheddaAllowance: jest.fn(),
     };
@@ -115,6 +117,7 @@ describe("LockCheddaCard", () => {
       defaultTab: "Withdraw",
       lockedChedda: undefined,
       isAllowanceLoading: false,
+      openManageLockModal: jest.fn(),
       updateCard: jest.fn(),
       fetchCheddaAllowance: jest.fn(),
     };

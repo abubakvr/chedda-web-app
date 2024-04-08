@@ -6,7 +6,7 @@ import { LockTab } from "./tabs/LockTab";
 import { formatNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { TabInfo } from "./TabInfo";
 import { useTransaction } from "@/hooks";
-import { formatDate, projectDateTime } from "@/utils/helpers";
+import { formatDate, formatProjectedDate } from "@/utils/helpers";
 import { Lock } from "chedda-sdk";
 import { WithdrawTab } from "./tabs/WithdrawTab";
 
@@ -19,6 +19,7 @@ interface LockCardProps {
   defaultTab: string | null;
   lockedChedda: Lock | undefined;
   isAllowanceLoading: boolean;
+  openManageLockModal: () => void;
   updateCard: () => void;
   fetchCheddaAllowance: () => void;
 }
@@ -48,6 +49,7 @@ export const LockCheddaCard: FC<LockCardProps> = ({
   defaultTab,
   lockedChedda,
   isAllowanceLoading,
+  openManageLockModal,
   updateCard,
   fetchCheddaAllowance,
 }) => {
@@ -120,6 +122,8 @@ export const LockCheddaCard: FC<LockCardProps> = ({
             fetchCheddaAllowance();
           } else {
             updateCard();
+            setLockAmount(0);
+            setClearInputField(true);
           }
         } else {
           setShowToast(true);
@@ -249,11 +253,14 @@ export const LockCheddaCard: FC<LockCardProps> = ({
               lockedChedda={parsedLockedCheddaAmount}
               lockTime={lockTime.value}
               setLockTime={setLockTime}
+              openManageLockModal={openManageLockModal}
               modalInfo={
                 <TabInfo
                   allowance={parsedAllowance.toString()}
                   amountToLock={`${lockAmount || 0} ${cheddaSymbol}`}
-                  projectedMaturityDate={projectDateTime(lockTime?.days || 0)}
+                  projectedMaturityDate={formatProjectedDate(
+                    lockTime?.days || 0
+                  )}
                   lockedAmount={`${parsedLockedCheddaAmount} ${cheddaSymbol}`}
                   maturityDate={formatDate(parsedLockedCheddaExpiry)}
                   isCheddaLocked={Number(parsedLockedCheddaAmount) > 0}

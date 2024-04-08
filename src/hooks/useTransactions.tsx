@@ -172,6 +172,17 @@ export const useTransaction = (asset: string) => {
       return cheddaLockingGauge?.claim();
     });
 
+  const lockMoreCheddaToken = async (amount: BigNumber) =>
+    executeTransaction(async () => {
+      const gaugeAddress = await lendingPool?.gauge();
+      if (!gaugeAddress) return;
+      const cheddaLockingGauge = chedda?.cheddaLockingGauge(
+        gaugeAddress,
+        signer as Signer
+      );
+      return cheddaLockingGauge?.addToLock(amount);
+    }, amount);
+
   return {
     lendingPool,
     approveAsset,
@@ -190,5 +201,6 @@ export const useTransaction = (asset: string) => {
     withdrawCheddaToken,
     relockCheddaToken,
     claimLockRewards,
+    lockMoreCheddaToken,
   };
 };
