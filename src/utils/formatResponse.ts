@@ -8,6 +8,7 @@ import {
   formatAsPercentage,
   formatCurrency,
   formatLargeNumber,
+  formatNumber,
   parseBigNumberToFloat,
 } from "./formatters";
 import {
@@ -105,7 +106,9 @@ export const getAggregateInfo = (
     },
     {
       title: "No. Of Vaults",
-      value: parseBigNumberToFloat(aggregateStats?.numberOfVaults, 0, 0),
+      value: formatNumber(
+        parseBigNumberToFloat(aggregateStats?.numberOfVaults, 0, 0)
+      ),
     },
     {
       title: "Total Earned",
