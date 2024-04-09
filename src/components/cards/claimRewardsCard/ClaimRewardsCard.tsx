@@ -3,6 +3,7 @@ import { BigNumber } from "ethers";
 import { useEnvironment, useTokenPrice, useTransaction } from "@/hooks";
 import {
   formatCurrency,
+  formatLargeNumber,
   formatNumber,
   parseBigNumberToFloat,
 } from "@/utils/formatters";
@@ -43,9 +44,7 @@ export const ClaimRewardsCard = ({
     }, [currentEnvironment]) ?? "";
   const { data: assetPrice } = useTokenPrice(cheddaContract);
 
-  const parsedRewardsValue = parseFloat(
-    parseBigNumberToFloat(claimableRewards, 18, 5)
-  );
+  const parsedRewardsValue = parseBigNumberToFloat(claimableRewards, 18, 5);
 
   const parsedAssetPrice = Number(assetPrice);
 
@@ -123,7 +122,7 @@ export const ClaimRewardsCard = ({
               Claimable Rewards
             </div>
             <div className="mt-2 text-2xl card-gradient-text font-bold">
-              {parsedRewardsValue} CHEDDA
+              {formatLargeNumber(parsedRewardsValue)} CHEDDA
             </div>
             <div className="text-xs  text-[#ffffff70] mt-2">
               {rewardValue ? formatCurrency(rewardValue) : "$0.00"}

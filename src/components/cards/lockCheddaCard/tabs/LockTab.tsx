@@ -17,13 +17,13 @@ interface LockTabProps {
   cheddaSymbol: string | undefined;
   subTitle: string;
   cheddaPrice: number;
-  allowance: string | number;
+  allowance: number;
   modalInfo: ReactElement<any, any>;
   amount: number;
   clearInputField: boolean;
   isTransactionLoading: boolean;
   lockTime: number | undefined;
-  lockedChedda: string | undefined;
+  lockedChedda: number | undefined;
   openManageLockModal: () => void;
   lockCheddaToken: (isRelockChedda: boolean) => void;
   setClearInputField: Dispatch<SetStateAction<boolean>>;
@@ -51,8 +51,7 @@ export const LockTab: FC<LockTabProps> = ({
   setLockTime,
 }) => {
   const [showWarning, setShowWarning] = useState(false);
-  const buttonTitle =
-    parseFloat(allowance.toString()) < amount ? "Approve" : "Lock";
+  const buttonTitle = allowance < amount ? "Approve" : "Lock";
 
   const isCheddaLocked = Number(lockedChedda) > 0;
 
@@ -146,7 +145,7 @@ export const LockTab: FC<LockTabProps> = ({
               className="mt-2 text-2xl card-gradient-text font-bold"
               data-testid="locked-chedda-asset"
             >
-              {lockedChedda} CHEDDA
+              {formatLargeNumber(lockedChedda)} CHEDDA
             </div>
             <div
               className="text-xs  text-[#ffffff70] mt-2"

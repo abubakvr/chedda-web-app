@@ -20,10 +20,10 @@ export interface WithdrawTabProps {
   collaterals: IToken[];
   isLoading: Record<string, boolean>;
   accountCollateralAmount: BigNumber | undefined;
-  totalCollateralValue: string;
+  totalCollateralValue: number;
   healthFactor: BigNumber | undefined;
-  totalBorrowed: string;
-  tokenValue: string | undefined;
+  totalBorrowed: number;
+  tokenValue: number | undefined;
   assetPrice: number;
   tokenCollateralValue: BigNumber | undefined;
   setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
@@ -67,28 +67,23 @@ export const WithdrawTab = ({
   const { accountCollateralLoading, healthFactorLoading } = isLoading;
   const { withdrawCollateral } = useTransaction(tokenAddress);
 
-  const parsedAccountCollateralAmount = parseFloat(
-    parseBigNumberToFloat(accountCollateralAmount, decimals)
-  );
-  const parsedTotalAccountCollateralValue = parseFloat(totalCollateralValue);
-
-  const parsedTotalBorrowed = parseFloat(totalBorrowed);
-
-  const parsedHealthFactor = parseFloat(
-    parseBigNumberToFloat(healthFactor, 18, 10)
+  const parsedAccountCollateralAmount = parseBigNumberToFloat(
+    accountCollateralAmount,
+    decimals
   );
 
-  const parsedTokenCollateralValue = parseFloat(
-    parseBigNumberToFloat(tokenCollateralValue, 18, 10)
+  const parsedHealthFactor = parseBigNumberToFloat(healthFactor, 18, 10);
+  const parsedTokenCollateralValue = parseBigNumberToFloat(
+    tokenCollateralValue,
+    18,
+    10
   );
-
-  const valueOfAssetsBorrowed = parsedTotalBorrowed * assetPrice;
+  const valueOfAssetsBorrowed = totalBorrowed * assetPrice;
 
   const valueOfNewCollateral = inputAmount * parsedTokenCollateralValue;
 
   const projectedHealthFactor =
-    (parsedTotalAccountCollateralValue - valueOfNewCollateral) /
-    valueOfAssetsBorrowed;
+    (totalCollateralValue - valueOfNewCollateral) / valueOfAssetsBorrowed;
 
   const handleWithdrawCollateral = async () => {
     try {
@@ -240,9 +235,9 @@ export const WithdrawTab = ({
             projectedCollateralAmount={`${formatNumber(
               parsedAccountCollateralAmount - (inputAmount || 0)
             )} ${symbol}`}
-            totalCollateralValue={`$${formatNumber(parseFloat(totalCollateralValue))} `}
+            totalCollateralValue={`$${formatNumber(totalCollateralValue)} `}
             projectedTotalCollateralValue={`$${formatNumber(
-              parsedTotalAccountCollateralValue -
+              totalCollateralValue -
                 (inputAmount * parsedTokenCollateralValue || 0)
             )} `}
             healthFactor={`${formatNumber(parsedHealthFactor)}`}

@@ -23,7 +23,7 @@ describe("WithdrawTab", () => {
     subTitle: "Earn more CHEDDA while staking",
     modalInfo: <div>Mock modal info</div>,
     isTransactionLoading: false,
-    lockedChedda: "10",
+    lockedChedda: 10,
     cheddaExpiry: new Date(Date.now() - 86400000),
     withdrawChedda: jest.fn(),
     relockChedda: jest.fn(),

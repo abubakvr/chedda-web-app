@@ -17,12 +17,12 @@ type LockTimeState = { value: number | undefined; days: number | undefined };
 interface LockTabProps {
   isExtendTab: boolean;
   title: string;
-  maxAmount: string;
   cheddaSymbol: string | undefined;
   info: string;
   lockExpiry: Date;
-  cheddaPrice: number;
-  allowance: string | number;
+  maxAmount: number;
+  cheddaPrice: number | undefined;
+  allowance: number;
   modalInfo: ReactElement<any, any>;
   amount: number;
   clearInputField: boolean;
@@ -56,9 +56,7 @@ export const LockTab: FC<LockTabProps> = ({
   const [showWarning, setShowWarning] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
   const buttonTitle =
-    !isExtendTab && parseFloat(allowance.toString()) < amount
-      ? "Approve"
-      : "Add More Chedda";
+    !isExtendTab && allowance < amount ? "Approve" : "Add More Chedda";
 
   const maturityDate = lockExpiry.getTime();
   const projectedMaturityDate = projectDateTime(lockTime?.days || 0).getTime();
@@ -129,8 +127,8 @@ export const LockTab: FC<LockTabProps> = ({
             }}
             clearInputField={clearInputField}
             setClearInputField={setClearInputField}
-            maxValue={maxAmount}
-            assetPrice={cheddaPrice}
+            maxValue={maxAmount.toString()}
+            assetPrice={cheddaPrice || 0}
           />
         </>
       )}

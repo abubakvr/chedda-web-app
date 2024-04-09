@@ -17,8 +17,8 @@ export interface BorrowModalProps {
   isOpen: boolean;
   collaterals: IToken[];
   assetPrice: number;
-  totalBorrowed: string;
-  totalCollateralValue: string;
+  totalBorrowed: number;
+  totalCollateralValue: number;
   availableLiquidity: BigNumber | undefined;
   onClose: () => void;
   fetchAccountInfo: (showLoading?: boolean) => void;

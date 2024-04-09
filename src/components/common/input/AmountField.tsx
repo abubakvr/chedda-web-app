@@ -49,7 +49,7 @@ export const AmountField: FC<InputWithMaxButtonProps> = ({
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setClearInputField(false);
-    if (value > maxValue) setInputValue(maxValue);
+    if (parseFloat(value) > parseFloat(maxValue)) setInputValue(maxValue);
     setInputValue(value);
     onChange(value);
   };

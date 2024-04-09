@@ -98,23 +98,19 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     asset.address
   );
 
-  const parsedAllowance = parseFloat(
-    parseBigNumberToFloat(allowance, asset.decimals)
-  );
-  const parsedSupplied = parseFloat(
-    parseBigNumberToFloat(supplied, asset.decimals)
-  );
-
+  const parsedAllowance = parseBigNumberToFloat(allowance, asset.decimals);
+  const parsedSupplied = parseBigNumberToFloat(supplied, asset.decimals);
   const parsedAssetBalance = parseBigNumberToFloat(
     assetBalance,
     asset.decimals
   );
   const parsedMaxAmount = parseBigNumberToFloat(tokenBalance, asset.decimals);
-  const parsedAvailableLiquidity = parseFloat(
-    parseBigNumberToFloat(available, asset.decimals)
+  const parsedAvailableLiquidity = parseBigNumberToFloat(
+    available,
+    asset.decimals
   );
   const maxWithdrawAmount = Math.min(
-    parseFloat(parsedAssetBalance),
+    parsedAssetBalance,
     parsedAvailableLiquidity
   );
 
@@ -134,7 +130,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
 
   const handleDeposit = async (useAsCollateral: boolean) => {
     try {
-      if (!supplyAmount || supplyAmount > parseFloat(parsedMaxAmount)) {
+      if (!supplyAmount || supplyAmount > parsedMaxAmount) {
         return alert("Enter valid amount");
       }
 
@@ -364,7 +360,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
               <div data-testid="deposit-content">
                 <SupplyModalContent
                   title="Deposit"
-                  maxAmount={parsedMaxAmount}
+                  maxAmount={parsedMaxAmount.toString()}
                   asset={asset}
                   assetPrice={assetPrice}
                   setClearInputField={setClearInputField}

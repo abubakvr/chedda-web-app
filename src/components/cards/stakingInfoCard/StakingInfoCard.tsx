@@ -32,15 +32,9 @@ export const StakingInfoCard = ({
 }: StakingInfoCardProps) => {
   const { currentEnvironment } = useEnvironment();
   const { data: stakingPoolAddress } = useStakingContractAddress();
-  const parsedAssetValue = parseFloat(
-    parseBigNumberToFloat(lpAssetValue, lpDecimals)
-  );
-  const parsedTotalStaked = parseFloat(
-    parseBigNumberToFloat(totalStaked, lpDecimals)
-  );
-  const parsedTotalSupply = parseFloat(
-    parseBigNumberToFloat(totalSupply, assetDecimals)
-  );
+  const parsedAssetValue = parseBigNumberToFloat(lpAssetValue, lpDecimals);
+  const parsedTotalStaked = parseBigNumberToFloat(totalStaked, lpDecimals);
+  const parsedTotalSupply = parseBigNumberToFloat(totalSupply, assetDecimals);
   const underlyingAssetAmount = parsedAssetValue * parsedTotalStaked;
 
   const percentageStaked = underlyingAssetAmount / parsedTotalSupply;

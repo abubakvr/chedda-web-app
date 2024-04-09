@@ -15,7 +15,7 @@ interface StakeModalProps {
   lpAllowance: BigNumber | undefined;
   lpStakingBalance: BigNumber | undefined;
   lpTokenBalance: BigNumber | undefined;
-  assetValue: string | undefined;
+  assetValue: number | undefined;
   defaultTab: string | null;
   updateCard: () => void;
   fetchLpAllowance: (showLoading: boolean) => void;
@@ -70,18 +70,14 @@ export const StakeCard: FC<StakeModalProps> = ({
   const [unStakeAmount, setUnstakeAmount] = useState<number>(0);
   const { stakeLpToken, unStakeLpToken, approveLpToken } = useTransaction("");
 
-  const parsedAllowance = parseFloat(
-    parseBigNumberToFloat(lpAllowance, lpDecimals)
-  );
+  const parsedAllowance = parseBigNumberToFloat(lpAllowance, lpDecimals);
 
   const parsedAssetBalance = parseBigNumberToFloat(lpTokenBalance, lpDecimals);
   const parsedStakingBalance = parseBigNumberToFloat(
     lpStakingBalance,
     lpDecimals
   );
-  const parsedAssetValue = parseFloat(
-    parseBigNumberToFloat(lpAssetValue, lpDecimals)
-  );
+  const parsedAssetValue = parseBigNumberToFloat(lpAssetValue, lpDecimals);
 
   const parsedAssetPrice = Number(assetValue);
 
@@ -90,7 +86,7 @@ export const StakeCard: FC<StakeModalProps> = ({
   const handleStake = async () => {
     console.log("lpDecimals", lpDecimals);
     try {
-      if (!stakeAmount || stakeAmount > parseFloat(parsedAssetBalance)) {
+      if (!stakeAmount || stakeAmount > parsedAssetBalance) {
         return alert("Enter valid amount");
       }
 
@@ -202,7 +198,7 @@ export const StakeCard: FC<StakeModalProps> = ({
   const handleUnStake = async () => {
     console.log("lpDecimals", lpDecimals);
     try {
-      if (!unStakeAmount || unStakeAmount > parseFloat(parsedStakingBalance)) {
+      if (!unStakeAmount || unStakeAmount > parsedStakingBalance) {
         return alert("Enter valid amount");
       }
 
@@ -306,7 +302,7 @@ export const StakeCard: FC<StakeModalProps> = ({
             <StakeCardContent
               title="Stake"
               subTitle="Earn $CHEDDA while staking"
-              maxAmount={parsedAssetBalance}
+              maxAmount={parsedAssetBalance.toString()}
               lpSymbol={lpSymbol}
               assetValue={lpTokenPrice}
               setClearInputField={setClearInputField}
@@ -342,7 +338,7 @@ export const StakeCard: FC<StakeModalProps> = ({
                   exchangeRate={`1 ${lpSymbol} = ${parsedAssetValue} ${assetSymbol}`}
                 />
               }
-              maxAmount={parsedStakingBalance}
+              maxAmount={parsedStakingBalance.toString()}
               setClearInputField={setClearInputField}
               clearInputField={clearInputField}
               buttonAction={handleUnStake}

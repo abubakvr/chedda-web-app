@@ -193,9 +193,9 @@ export const calculateAssetPrice = (
 
   const oraclePrice = parseBigNumberToFloat(
     marketInfo?.oraclePrice,
-    parseFloat(oraclePriceDecimals),
+    oraclePriceDecimals,
     10
   );
 
-  return parseFloat(oraclePrice);
+  return oraclePrice;
 };

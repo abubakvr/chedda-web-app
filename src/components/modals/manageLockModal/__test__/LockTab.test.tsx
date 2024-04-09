@@ -28,7 +28,7 @@ describe("LockTab", () => {
       title: "Lock Information",
       info: "This is a test information.",
       amount: 100,
-      maxAmount: "500",
+      maxAmount: 500.89,
       cheddaSymbol: "ETH",
       cheddaPrice: 200,
       modalInfo: <div>Test Modal Info</div>,
@@ -57,7 +57,7 @@ describe("LockTab", () => {
       expect(getByText("Lock Information")).toBeInTheDocument();
       expect(getByText("This is a test information.")).toBeInTheDocument();
       expect(getByText("Enter amount to Lock")).toBeInTheDocument();
-      expect(getByTestId("max-amount")).toHaveTextContent("Max: 500.00 ETH");
+      expect(getByTestId("max-amount")).toHaveTextContent("Max: 500.89 ETH");
       expect(getByText("Test Modal Info")).toBeInTheDocument();
     });
   });
@@ -69,7 +69,7 @@ describe("LockTab", () => {
       title: "Lock Information",
       info: "This is a test information.",
       amount: 100,
-      maxAmount: "500",
+      maxAmount: 500,
       cheddaSymbol: "ETH",
       cheddaPrice: 200,
       modalInfo: <div>Test Modal Info</div>,
@@ -107,7 +107,7 @@ describe("LockTab", () => {
       title: "Extend Lock",
       info: "This is a test information.",
       amount: 0,
-      maxAmount: "500",
+      maxAmount: 500,
       cheddaSymbol: "ETH",
       cheddaPrice: 200,
       modalInfo: <div>Test Modal Info</div>,
@@ -152,7 +152,7 @@ describe("LockTab", () => {
       title: "Extend Lock",
       info: "This is a test information.",
       amount: 0,
-      maxAmount: "500",
+      maxAmount: 500,
       cheddaSymbol: "ETH",
       cheddaPrice: 200,
       modalInfo: <div>Test Modal Info</div>,

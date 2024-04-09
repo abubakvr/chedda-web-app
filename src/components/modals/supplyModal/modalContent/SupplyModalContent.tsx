@@ -15,7 +15,7 @@ interface DepositSectionProps {
   maxAmount: string;
   asset: IToken;
   assetPrice: number;
-  allowance: string | number;
+  allowance: number;
   modalInfo: ReactElement<any, any>;
   buttonAction: (useAsCollateral: boolean) => void;
   isTransactionLoading: boolean;
@@ -44,9 +44,7 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUseAsCollateral(e.target.checked);
   };
-
-  const buttonTitle =
-    parseFloat(allowance.toString()) < amount ? "Approve" : "Supply";
+  const buttonTitle = allowance < amount ? "Approve" : "Supply";
 
   return (
     <div data-testid="supply-modal-content" className="mt-6">

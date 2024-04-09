@@ -53,12 +53,12 @@ export const utilizationsArray: BigNumber[] = Array.from(
 );
 
 export function displayProjectedHealthFactor(
-  totalBorrowed: string,
+  totalBorrowed: number,
   projectedHealthFactor: number | null | undefined,
   parsedHealthFactor: number
 ): number {
   if (
-    parseFloat(totalBorrowed) !== 0 &&
+    totalBorrowed !== 0 &&
     projectedHealthFactor !== null &&
     projectedHealthFactor !== undefined &&
     projectedHealthFactor < 100 &&

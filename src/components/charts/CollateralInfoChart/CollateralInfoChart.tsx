@@ -23,8 +23,8 @@ export const CollateralInfoChart = ({
         ),
         datasets: [
           {
-            data: collateralInfo.map((item: IFormattedCollateral) =>
-              parseInt(item.value)
+            data: collateralInfo.map(
+              (item: IFormattedCollateral) => item.value
             ),
             borderWidth: 0,
             backgroundColor: collateralInfo.map(

@@ -88,13 +88,13 @@ describe("LockTab Component", () => {
       cheddaSymbol: "CHEDDA",
       subTitle: "Subtitle",
       cheddaPrice: 1,
-      allowance: "",
+      allowance: 0,
       modalInfo: <div>Modal Info</div>,
       amount: 0,
       clearInputField: false,
       isTransactionLoading: false,
       lockTime: undefined,
-      lockedChedda: "50",
+      lockedChedda: 50,
       openManageLockModal: jest.fn(),
       lockCheddaToken: jest.fn(),
       setClearInputField: jest.fn(),
@@ -112,10 +112,10 @@ describe("LockTab Component", () => {
     expect(getByTestId("lock-card-content")).toBeInTheDocument();
     await waitFor(() => {
       expect(screen.getByTestId("locked-chedda-asset")).toHaveTextContent(
-        "50 CHEDDA"
+        "50.00 CHEDDA"
       );
       expect(screen.getByTestId("locked-chedda-price")).toHaveTextContent(
-        "$50.00"
+        "$50"
       );
     });
   });

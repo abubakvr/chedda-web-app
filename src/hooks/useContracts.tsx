@@ -186,7 +186,7 @@ export const getAssetBalance: GetDataFunction<BigNumber> = async ({
   return await lendingPool.assetBalance(account);
 };
 
-const getTokenValue: GetDataFunction<string> = async ({
+const getTokenValue: GetDataFunction<number> = async ({
   asset,
   chedda,
   environment,
@@ -198,7 +198,7 @@ const getTokenValue: GetDataFunction<string> = async ({
   return parseBigNumberToFloat(assetPrice, decimals, 10);
 };
 
-const getTokenPrice: GetDataFunction<string> = async ({
+const getTokenPrice: GetDataFunction<number> = async ({
   asset,
   chedda,
   environment,
@@ -601,12 +601,12 @@ export const useAssetBalance = (asset: string): HookResult<BigNumber> => {
   return useFetcher<BigNumber>(getAssetBalance, asset);
 };
 
-export const useTokenValue = (asset: string): HookResult<string> => {
-  return useFetcher<string>(getTokenValue, asset);
+export const useTokenValue = (asset: string): HookResult<number> => {
+  return useFetcher<number>(getTokenValue, asset);
 };
 
-export const useTokenPrice = (asset: string): HookResult<string> => {
-  return useFetcher<string>(getTokenPrice, asset);
+export const useTokenPrice = (asset: string): HookResult<number> => {
+  return useFetcher<number>(getTokenPrice, asset);
 };
 
 export const useAccountCollateral = (asset: string): HookResult<BigNumber> => {

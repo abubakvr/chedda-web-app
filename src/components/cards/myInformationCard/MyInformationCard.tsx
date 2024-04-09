@@ -3,7 +3,7 @@ import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
 import { IAccountInfo } from "chedda-sdk";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
-import { IPoolStatsResponse, IToken } from "@/utils/types";
+import { IPoolStatsResponse } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
 import { BorrowModal, SupplyModal } from "@/components/modals";
 import { BigNumber } from "ethers";

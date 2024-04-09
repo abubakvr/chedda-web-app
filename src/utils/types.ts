@@ -91,16 +91,16 @@ export interface IPoolStatsResponse {
   pool: string;
   asset: IToken;
   characterization: string;
-  supplied: string;
-  suppliedValue: string | number;
-  borrowed: string | number;
-  borrowedValue: string | number;
-  baseSupplyAPY: string | number;
-  maxSupplyAPY: string | number;
-  baseBorrowAPY: string | number;
-  maxBorrowAPY: string | number;
-  utilization: string | number;
-  feesPaid: string | number;
+  supplied: number;
+  suppliedValue: number;
+  borrowed: number;
+  borrowedValue: number;
+  baseSupplyAPY: number;
+  maxSupplyAPY: number;
+  baseBorrowAPY: number;
+  maxBorrowAPY: number;
+  utilization: number;
+  feesPaid: number;
   tvl: string | number;
   collaterals: IToken[];
 }
@@ -112,7 +112,7 @@ export interface ICollateralInfo extends IPoolCollateralInfo {
 export interface IFormattedCollateral {
   asset: IToken;
   decimals: number;
-  value: string;
+  value: number;
   amountDeposited: string;
   myCollateralValue: string;
   myCollateralAmount: string;
