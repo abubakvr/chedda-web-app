@@ -1,4 +1,5 @@
-import { BigNumber, ethers } from "ethers";
+import { Chedda } from "chedda-sdk";
+import { BigNumber, ethers, Signer } from "ethers";
 
 export function findNearestIndex(sortedArray: number[], targetNumber: number) {
   // Check if the array is empty
@@ -125,3 +126,24 @@ export function formatDate(projectedDate: Date): string {
   });
   return formattedDate;
 }
+
+export const getPoolInstance = async (
+  chedda: Chedda,
+  poolId: string,
+  signer: Signer | undefined,
+  poolType: "lendingPool" | "stakingPool" | "cheddaLockingGauge"
+): Promise<any> => {
+  const lendingPool = chedda.lendingPool(poolId, signer as Signer);
+  switch (poolType) {
+    case "lendingPool":
+      return lendingPool;
+    case "stakingPool":
+      const stakePoolContract = await lendingPool.stakePool();
+      return chedda.stakingPool(stakePoolContract, signer as Signer);
+    case "cheddaLockingGauge":
+      const gaugeAddress = await lendingPool.gauge();
+      return chedda.cheddaLockingGauge(gaugeAddress, signer as Signer);
+    default:
+      throw new Error("Invalid pool type");
+  }
+};

@@ -2,7 +2,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { StakeCard, StakingInfoCard } from "@/components/cards";
 import {
-  useClaimableRewards,
+  useClaimableStakeRewards,
   useLpAllowance,
   useLpAssetValue,
   useLpDecimals,
@@ -49,7 +49,7 @@ const StakeTab = ({
     data: claimableRewards,
     isLoading: claimableRewardsLoading,
     fetchData: fetchClaimableRewards,
-  } = useClaimableRewards();
+  } = useClaimableStakeRewards();
   const {
     data: lpStakers,
     isLoading: lpStakersLoading,
@@ -142,9 +142,9 @@ const StakeTab = ({
       >
         <ClaimRewardsCard
           claimableRewards={claimableRewards}
-          decimals={lpDecimals}
           setActiveTab={setActiveTab}
           fetchClaimableRewards={fetchClaimableRewards}
+          rewardType="Stake"
         />
       </div>
     </div>

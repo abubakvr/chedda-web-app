@@ -4,8 +4,10 @@ import LockTab from "../LockTab";
 import {
   useCheddaAllowance,
   useCheddaBalance,
+  useClaimableLockRewards,
   useEnvironment,
   useLockedChedda,
+  useTokenPrice,
   useTokenValue,
   useTransaction,
 } from "@/hooks";
@@ -51,6 +53,14 @@ describe("LockTab Component", () => {
     });
     (useCheddaAllowance as jest.Mock).mockReturnValue({
       data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useClaimableLockRewards as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useTokenPrice as jest.Mock).mockReturnValue({
+      data: "1000",
       isLoading: false,
     });
   });

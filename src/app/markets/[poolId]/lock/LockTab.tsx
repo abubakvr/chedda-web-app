@@ -1,9 +1,10 @@
 "use client";
 import React from "react";
-import { LockCheddaCard } from "@/components/cards";
+import { ClaimRewardsCard, LockCheddaCard } from "@/components/cards";
 import {
   useCheddaAllowance,
   useCheddaBalance,
+  useClaimableLockRewards,
   useEnvironment,
   useLockedChedda,
   useTokenValue,
@@ -29,13 +30,21 @@ const LockTab = ({ asset }: { asset: IToken | undefined }) => {
     fetchData: fetchLockedChedaa,
   } = useLockedChedda();
 
+  const {
+    data: claimableRewards,
+    isLoading: claimableRewardsLoading,
+    fetchData: fetchClaimableRewards,
+  } = useClaimableLockRewards();
+
   const updateCard = () => {
     fetchCheddaTokenBalance(false);
     fetchCheddaAllowance(false);
     fetchLockedChedaa(false);
+    fetchClaimableRewards(false);
   };
 
-  const isLoading = cheddaPriceLoading || lockedCheddaLoading;
+  const isLoading =
+    cheddaPriceLoading || lockedCheddaLoading || claimableRewardsLoading;
 
   if (isLoading) {
     return (
@@ -86,9 +95,15 @@ const LockTab = ({ asset }: { asset: IToken | undefined }) => {
         />
       </div>
       <div
-        className="pool-card rounded-lg h-72 w-full"
+        className="pool-card rounded-lg h-fit w-full"
         data-testid="lock-rewards-card"
-      ></div>
+      >
+        <ClaimRewardsCard
+          claimableRewards={claimableRewards}
+          fetchClaimableRewards={fetchClaimableRewards}
+          rewardType="Lock"
+        />
+      </div>
     </div>
   );
 };

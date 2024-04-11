@@ -1,8 +1,6 @@
 import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
-import Image from "next/image";
 import { BigNumber } from "ethers";
 import { useEnvironment, useTokenPrice, useTransaction } from "@/hooks";
-import LinkOut from "@/assets/icon/link-out.svg";
 import {
   formatCurrency,
   formatNumber,
@@ -13,14 +11,14 @@ import { Toast } from "@/components/ui";
 
 interface ClaimRewardsCardProps {
   claimableRewards: BigNumber | undefined;
-  decimals: number | undefined;
-  setActiveTab: Dispatch<SetStateAction<string>>;
+  rewardType: "Stake" | "Lock";
+  setActiveTab?: Dispatch<SetStateAction<string>>;
   fetchClaimableRewards: (showLoading: boolean) => void;
 }
 
 export const ClaimRewardsCard = ({
   claimableRewards,
-  decimals,
+  rewardType,
   setActiveTab,
   fetchClaimableRewards,
 }: ClaimRewardsCardProps) => {
@@ -38,7 +36,7 @@ export const ClaimRewardsCard = ({
     txStatus: "success",
   });
   const { currentEnvironment } = useEnvironment();
-  const { claimRewards } = useTransaction("");
+  const { claimStakeRewards, claimLockRewards } = useTransaction("");
   const cheddaContract =
     useMemo(() => {
       return currentEnvironment?.contracts.Chedda;
@@ -53,53 +51,43 @@ export const ClaimRewardsCard = ({
 
   const rewardValue = parsedAssetPrice * parsedRewardsValue;
 
-  const handleClaimRewards = () => {
+  const handleClaimRewards = async () => {
     try {
       if (!parsedRewardsValue || parsedRewardsValue === 0) {
         return null;
       }
 
       setTxLoading(true);
-      claimRewards()
-        .then(async (res: any) => {
-          if (res) {
-            const result = await res.wait();
-            if (result.status === 1) {
-              const txMessage = `You've successfully Claimed ${formatNumber(
-                parsedRewardsValue
-              )} CHEDDA`;
-              setTxDetails({
-                txMessage,
-                copyText: null,
-                txHash: res.hash,
-                txStatus: "success",
-              });
-              setShowToast(true);
-              fetchClaimableRewards(false);
-            } else {
-              const txMessage = `An error occurred while proccessing your transaction`;
-              setTxDetails({
-                txMessage,
-                copyText: null,
-                txHash: res.hash,
-                txStatus: "failed",
-              });
-              setShowToast(true);
-            }
-          }
-          setTxLoading(false);
-        })
-        .catch((error: any) => {
-          const errorObject = JSON.parse(error.message);
+      let res;
+      if (rewardType === "Lock") {
+        res = await claimLockRewards();
+      } else {
+        res = await claimStakeRewards();
+      }
+
+      if (res) {
+        const result = await res.wait();
+        if (result.status === 1) {
+          const txMessage = `You've successfully Claimed ${formatNumber(parsedRewardsValue)} CHEDDA`;
           setTxDetails({
-            txMessage: errorObject.errorMessage,
-            copyText: errorObject.fullText,
-            txHash: null,
+            txMessage,
+            copyText: null,
+            txHash: res.hash,
+            txStatus: "success",
+          });
+          setShowToast(true);
+          fetchClaimableRewards(false);
+        } else {
+          const txMessage = `An error occurred while processing your transaction`;
+          setTxDetails({
+            txMessage,
+            copyText: null,
+            txHash: res.hash,
             txStatus: "failed",
           });
           setShowToast(true);
-          setTxLoading(false);
-        });
+        }
+      }
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
       setTxDetails({
@@ -109,6 +97,7 @@ export const ClaimRewardsCard = ({
         txStatus: "failed",
       });
       setShowToast(true);
+    } finally {
       setTxLoading(false);
     }
   };
@@ -127,19 +116,8 @@ export const ClaimRewardsCard = ({
           <div className="text-white text-opacity-50 font-bold text-sm uppercase">
             CLAIM REWARDS
           </div>
-          <a
-            href={`${currentEnvironment?.contractPrefix}}`}
-            target="_blank"
-            rel="noreferrer"
-            className="flex gap-x-1 border-2 rounded-md py-[6px] px-3 border-[#ffffff60] hover:opacity-70"
-          >
-            <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-[10px]">
-              REWARDS GUAGE
-            </div>
-            <Image src={LinkOut} alt="link out" />
-          </a>
         </div>
-        <div className="p-8 text-5xl text-white relative">
+        <div className="px-8 py-6 text-5xl text-white relative">
           <div className="text-xl text-white  border-[#ffffff19] bg-[#ffffff02] border rounded-lg p-3">
             <div className="text-sm font-bold text-[#ffffff70]">
               Claimable Rewards
@@ -148,7 +126,7 @@ export const ClaimRewardsCard = ({
               {parsedRewardsValue} CHEDDA
             </div>
             <div className="text-xs  text-[#ffffff70] mt-2">
-              {formatCurrency(rewardValue)}
+              {rewardValue ? formatCurrency(rewardValue) : "$0.00"}
             </div>
           </div>
           <Button
@@ -161,15 +139,17 @@ export const ClaimRewardsCard = ({
           >
             Claim
           </Button>
-          <div className="text-xs text-[#ffffff70] flex gap-x-1 mt-6 justify-between items-center">
-            Lock CHEDDA to maximise your rewards
-            <button
-              onClick={() => setActiveTab("Lock")}
-              className="button-gradient-text px-3 font-bold py-3 bg-red-500 border border-[#ffffff19] rounded  hover:opacity-80"
-            >
-              LOCK CHEDDA
-            </button>
-          </div>
+          {setActiveTab && (
+            <div className="text-xs text-[#ffffff70] flex gap-x-1 mt-6 justify-between items-center">
+              Lock CHEDDA to maximise your rewards
+              <button
+                onClick={() => setActiveTab("Lock")}
+                className="button-gradient-text px-3 font-bold py-3 bg-red-500 border border-[#ffffff19] rounded  hover:opacity-80"
+              >
+                LOCK CHEDDA
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>
