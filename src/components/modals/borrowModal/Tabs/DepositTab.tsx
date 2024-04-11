@@ -19,12 +19,12 @@ export interface DepositTabProps {
   selectedCollateral: IToken;
   collaterals: IToken[];
   isLoading: Record<string, boolean>;
-  totalBorrowed: string;
+  totalBorrowed: number;
   assetPrice: number;
-  tokenValue: string | undefined;
+  tokenValue: number | undefined;
   allowance: BigNumber | undefined;
   accountCollateralAmount: BigNumber | undefined;
-  totalCollateralValue: string;
+  totalCollateralValue: number;
   tokenBalance: BigNumber | undefined;
   healthFactor: BigNumber | undefined;
   tokenCollateralValue: BigNumber | undefined;
@@ -77,20 +77,19 @@ export const DepositTab = ({
   } = isLoading;
   const { depositCollateral, approveAsset } = useTransaction(tokenAddress);
 
-  const parsedAllowance = parseFloat(
-    parseBigNumberToFloat(allowance, decimals)
-  );
+  const parsedAllowance = parseBigNumberToFloat(allowance, decimals);
   const parsedAssetBalance = parseBigNumberToFloat(tokenBalance, decimals);
-  const parsedAccountCollateral = parseFloat(
-    parseBigNumberToFloat(accountCollateralAmount, decimals)
+  const parsedAccountCollateral = parseBigNumberToFloat(
+    accountCollateralAmount,
+    decimals
   );
-  const parsedHealthFactor = parseFloat(
-    parseBigNumberToFloat(healthFactor, 18, 10)
+  const parsedHealthFactor = parseBigNumberToFloat(healthFactor, 18, 10);
+  const parsedTokenCollateralValue = parseBigNumberToFloat(
+    tokenCollateralValue,
+    18,
+    10
   );
-  const parsedTokenCollateralValue = parseFloat(
-    parseBigNumberToFloat(tokenCollateralValue, 18, 10)
-  );
-  const valueOfAssetsBorrowed = parseFloat(totalBorrowed) * assetPrice;
+  const valueOfAssetsBorrowed = totalBorrowed * assetPrice;
 
   const valueOfNewCollateral = inputAmount * parsedTokenCollateralValue;
 
@@ -102,7 +101,7 @@ export const DepositTab = ({
 
   const handleDepositCollateral = async () => {
     try {
-      if (!inputAmount || inputAmount > parseFloat(parsedAssetBalance)) {
+      if (!inputAmount || inputAmount > parsedAssetBalance) {
         return alert("Enter valid amount");
       }
 
@@ -256,7 +255,7 @@ export const DepositTab = ({
           }}
           clearInputField={clearInputField}
           setClearInputField={setClearInputField}
-          maxValue={parsedAssetBalance}
+          maxValue={parsedAssetBalance.toString()}
           assetPrice={Number(tokenValue) || 0}
         />
         {selectedCollateral.symbol === asset.symbol && (
@@ -292,7 +291,7 @@ export const DepositTab = ({
             projectedCollateralAmount={`${formatNumber(
               parsedAccountCollateral + (inputAmount || 0)
             )} ${symbol}`}
-            totalCollateralValue={`$${formatNumber(parseFloat(totalCollateralValue))} `}
+            totalCollateralValue={`$${formatNumber(totalCollateralValue)} `}
             projectedTotalCollateralValue={`$${formatNumber(
               Number(totalCollateralValue) +
                 (inputAmount * parsedTokenCollateralValue || 0)

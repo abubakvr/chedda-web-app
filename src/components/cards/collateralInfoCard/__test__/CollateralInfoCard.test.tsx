@@ -29,7 +29,7 @@ describe("CollateralInfoCard", () => {
     expect(collateralInfoContainer).toBeInTheDocument();
     const myCollateralValue = screen.getByTestId("my-collateral-value");
     expect(myCollateralValue).toBeInTheDocument();
-    expect(myCollateralValue).toHaveTextContent("$0.00"); // Replace with the expected content
+    expect(myCollateralValue).toHaveTextContent("$0"); // Replace with the expected content
     const collateralHeaderItems = screen.getAllByTestId(
       /^collateral-header-item-/
     );

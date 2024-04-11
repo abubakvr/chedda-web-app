@@ -17,11 +17,11 @@ export interface BorrowTabProps {
   asset: IToken;
   isLoading: Record<string, boolean>;
   accountCollateralAmount: BigNumber | undefined;
-  totalCollateralValue: string;
+  totalCollateralValue: number;
   healthFactor: BigNumber | undefined;
-  tokenValue: string | undefined;
+  tokenValue: number | undefined;
   availableLiquidity: BigNumber | undefined;
-  totalBorrowed: string;
+  totalBorrowed: number;
   assetPrice: number;
   tokenCollateralValue: BigNumber | undefined;
   fetchAllowance: (showLoading?: boolean) => void;
@@ -41,7 +41,7 @@ export const BorrowTab = ({
 }: BorrowTabProps) => {
   const [clearInputField, setClearInputField] = useState(false);
   const [txLoading, setTxLoading] = useState(false);
-  const [{ txMessage, txHash, txStatus, copyText }, setTxDetails] = useState<{
+  const [{ txMessage, txHash, txStatus }, setTxDetails] = useState<{
     txMessage: string;
     txHash: string | null;
     copyText: string | null;
@@ -58,23 +58,21 @@ export const BorrowTab = ({
   const { accountCollateralLoading, healthFactorLoading } = isLoading;
   const { borrowAsset } = useTransaction(tokenAddress);
 
-  const parsedTotalAccountCollateralValue = parseFloat(totalCollateralValue);
-
-  const parsedAvailableLiquidity = parseFloat(
-    parseBigNumberToFloat(availableLiquidity, decimals)
+  const parsedAvailableLiquidity = parseBigNumberToFloat(
+    availableLiquidity,
+    decimals
   );
 
-  const valueOfAssetsBorrowed = parseFloat(totalBorrowed) * assetPrice;
+  const valueOfAssetsBorrowed = totalBorrowed * assetPrice;
 
   const valueOfNewCollateral = inputAmount * Number(tokenValue);
 
-  const parsedHealthFactor = parseFloat(parseBigNumberToFloat(healthFactor));
+  const parsedHealthFactor = parseBigNumberToFloat(healthFactor);
 
-  const maxInputValue = (parsedTotalAccountCollateralValue * 0.95) / assetPrice;
+  const maxInputValue = (totalCollateralValue * 0.95) / assetPrice;
 
   const projectedHealthFactor =
-    parsedTotalAccountCollateralValue /
-    (valueOfAssetsBorrowed + valueOfNewCollateral);
+    totalCollateralValue / (valueOfAssetsBorrowed + valueOfNewCollateral);
 
   const handleWithdrawCollateral = async () => {
     try {
@@ -194,11 +192,11 @@ export const BorrowTab = ({
         <div data-testid="modal-info" className="mt-6 pb-0">
           <BorrowTabInfo
             isLoading={accountCollateralLoading || healthFactorLoading}
-            totalBorrowed={`${formatNumber(parseFloat(totalBorrowed))} ${symbol}`}
+            totalBorrowed={`${formatNumber(totalBorrowed)} ${symbol}`}
             projectedTotalBorrowed={`${formatNumber(
-              parseFloat(totalBorrowed) + (inputAmount || 0)
+              totalBorrowed + (inputAmount || 0)
             )} ${symbol}`}
-            collateralValue={`$${formatNumber(parseFloat(totalCollateralValue))} `}
+            collateralValue={`$${formatNumber(totalCollateralValue)} `}
             healthFactor={`${formatNumber(parsedHealthFactor)}`}
             projectedHealthFactor={displayProjectedHealthFactor(
               totalBorrowed,

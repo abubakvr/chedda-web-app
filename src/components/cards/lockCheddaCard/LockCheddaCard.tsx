@@ -15,7 +15,7 @@ interface LockCardProps {
   cheddaSymbol: string | undefined;
   cheddaAllowance: BigNumber | undefined;
   cheddaTokenBalance: BigNumber | undefined;
-  cheddaPrice: string | undefined;
+  cheddaPrice: number | undefined;
   defaultTab: string | null;
   lockedChedda: Lock | undefined;
   isAllowanceLoading: boolean;
@@ -83,14 +83,15 @@ export const LockCheddaCard: FC<LockCardProps> = ({
     relockCheddaToken,
   } = useTransaction("");
 
-  const parsedAllowance = parseFloat(parseBigNumberToFloat(cheddaAllowance));
+  const parsedAllowance = parseBigNumberToFloat(cheddaAllowance);
   const parsedCheddaBalance = parseBigNumberToFloat(cheddaTokenBalance);
   const parsedLockedCheddaAmount = parseBigNumberToFloat(lockedChedda?.amount);
   const parsedLockedCheddaExpiry = new Date(
-    parseFloat(parseBigNumberToFloat(lockedChedda?.expiry, 0, 0)) * 1000
+    parseBigNumberToFloat(lockedChedda?.expiry, 0, 0) * 1000
   );
 
   const parsedAssetPrice = Number(cheddaPrice);
+
   async function handleTransaction(
     promise: Promise<any>,
     successMessage: string,
@@ -149,7 +150,7 @@ export const LockCheddaCard: FC<LockCardProps> = ({
       if (
         !lockAmount ||
         lockTime.value === undefined ||
-        lockAmount > parseFloat(parsedCheddaBalance)
+        lockAmount > parsedCheddaBalance
       ) {
         return alert("Enter valid amount");
       }
@@ -181,7 +182,7 @@ export const LockCheddaCard: FC<LockCardProps> = ({
 
       handleTransaction(
         withdrawCheddaToken(),
-        `You've successfully withdrawn ${formatNumber(parseFloat(parsedLockedCheddaAmount))} ${cheddaSymbol}`
+        `You've successfully withdrawn ${formatNumber(parsedLockedCheddaAmount)} ${cheddaSymbol}`
       );
     } catch (error) {
       handleTransaction(Promise.reject(error), "");
@@ -240,7 +241,7 @@ export const LockCheddaCard: FC<LockCardProps> = ({
             <LockTab
               title="Lock"
               subTitle="Earn more CHEDDA while staking"
-              maxAmount={parsedCheddaBalance}
+              maxAmount={parsedCheddaBalance.toString()}
               cheddaSymbol={cheddaSymbol}
               cheddaPrice={parsedAssetPrice}
               setClearInputField={setClearInputField}
@@ -261,7 +262,7 @@ export const LockCheddaCard: FC<LockCardProps> = ({
                   projectedMaturityDate={formatProjectedDate(
                     lockTime?.days || 0
                   )}
-                  lockedAmount={`${parsedLockedCheddaAmount} ${cheddaSymbol}`}
+                  lockedAmount={`${formatNumber(parsedLockedCheddaAmount)} ${cheddaSymbol}`}
                   maturityDate={formatDate(parsedLockedCheddaExpiry)}
                   isCheddaLocked={Number(parsedLockedCheddaAmount) > 0}
                 />
@@ -283,7 +284,7 @@ export const LockCheddaCard: FC<LockCardProps> = ({
               cheddaExpiry={parsedLockedCheddaExpiry}
               modalInfo={
                 <TabInfo
-                  lockedAmount={`${parsedLockedCheddaAmount} ${cheddaSymbol}`}
+                  lockedAmount={`${formatNumber(parsedLockedCheddaAmount)} ${cheddaSymbol}`}
                   maturityDate={formatDate(parsedLockedCheddaExpiry)}
                   isCheddaLocked={true}
                 />

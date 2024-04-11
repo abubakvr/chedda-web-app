@@ -18,7 +18,6 @@ describe("MarketInfoCard", () => {
     render(
       <MarketInfoCard
         marketInfo={mockMarketInfo}
-        available={BigNumber.from(1000)}
         poolStats={mockPoolStats[0]}
         isLoading={false}
       />
@@ -29,9 +28,7 @@ describe("MarketInfoCard", () => {
     expect(screen.getByTestId("market-info-label-1")).toHaveTextContent(
       "Interest Fee"
     );
-    expect(screen.getByTestId("market-info-value-1")).toHaveTextContent(
-      "0.00%"
-    );
+    expect(screen.getByTestId("market-info-value-1")).toHaveTextContent("0%");
   });
 
   it("renders MarketInfoCard component in loading state correctly", () => {
@@ -43,7 +40,6 @@ describe("MarketInfoCard", () => {
     render(
       <MarketInfoCard
         marketInfo={undefined}
-        available={undefined}
         poolStats={undefined}
         isLoading={true}
       />

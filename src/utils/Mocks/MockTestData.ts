@@ -5,7 +5,7 @@ import {
   ISummaryStats,
 } from "../types";
 import { BigNumber } from "ethers";
-import { IAccountInfo, IPoolState, IPoolStats } from "chedda-sdk";
+import { IAccountInfo, IMarketInfo, IPoolState, IPoolStats } from "chedda-sdk";
 
 export const mockPoolStats: IPoolStatsResponse[] = [
   {
@@ -19,7 +19,7 @@ export const mockPoolStats: IPoolStatsResponse[] = [
       color: "#ffffff",
     },
     characterization: "Characterization1",
-    supplied: "1000",
+    supplied: 1000,
     suppliedValue: 5000,
     borrowed: 200,
     borrowedValue: 1000,
@@ -60,7 +60,7 @@ export const mockPoolStats: IPoolStatsResponse[] = [
       color: "#ffffff",
     },
     characterization: "Characterization3",
-    supplied: "1200",
+    supplied: 1200,
     suppliedValue: 6000,
     borrowed: 180,
     borrowedValue: 900,
@@ -224,13 +224,15 @@ export const mockAccountInfo: IAccountInfo = {
   ],
 };
 
-export const mockMarketInfo = {
+export const mockMarketInfo: IMarketInfo = {
   oraclePrice: BigNumber.from("1000000000000000000"),
   oraclePriceDecimals: BigNumber.from("18"),
   interestFee: BigNumber.from("500"),
   supplyCap: BigNumber.from("100000000000000000000"),
   liquidationThreshold: BigNumber.from("7500"),
   liquidationPenalty: BigNumber.from("1500"),
+  liquidity: BigNumber.from("1500"),
+  utilization: BigNumber.from("1500"),
 };
 
 export const mockCollateralInfo: IFormattedCollateral[] = [
@@ -244,7 +246,7 @@ export const mockCollateralInfo: IFormattedCollateral[] = [
       color: "#FFAABB",
     },
     decimals: 18,
-    value: "1000",
+    value: 1000,
     amountDeposited: "500",
     myCollateralValue: "250",
     myCollateralAmount: "50",
@@ -260,7 +262,7 @@ export const mockCollateralInfo: IFormattedCollateral[] = [
       color: "#112233",
     },
     decimals: 18,
-    value: "2000",
+    value: 2000,
     amountDeposited: "1000",
     myCollateralValue: "500",
     myCollateralAmount: "100",

@@ -196,8 +196,8 @@ export const SuppyAndBorrowChart = ({ decimals }: { decimals?: number }) => {
             />
             <Bar
               dataKey={(value) =>
-                parseFloat(parseBigNumberToFloat(value?.supplied, decimals)) -
-                parseFloat(parseBigNumberToFloat(value?.borrowed, decimals))
+                parseBigNumberToFloat(value?.supplied, decimals) -
+                parseBigNumberToFloat(value?.borrowed, decimals)
               }
               name="Supply"
               fill="#6FBFF7"

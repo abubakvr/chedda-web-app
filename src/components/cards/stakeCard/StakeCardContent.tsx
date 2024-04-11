@@ -8,7 +8,7 @@ interface StakeCardContentProps {
   lpSymbol: string | undefined;
   subTitle: string;
   assetValue: number;
-  allowance: string | number;
+  allowance: number;
   modalInfo: ReactElement<any, any>;
   amount: number;
   isTransactionLoading: boolean;
@@ -35,8 +35,7 @@ export const StakeCardContent: FC<StakeCardContentProps> = ({
   amount,
   isLoading,
 }) => {
-  const buttonTitle =
-    parseFloat(allowance.toString()) < amount ? "Approve" : "Stake";
+  const buttonTitle = allowance < amount ? "Approve" : "Stake";
 
   return (
     <div data-testid="stake-card-content" className="mt-6">

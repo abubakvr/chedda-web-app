@@ -17,12 +17,12 @@ export interface RepayTabProps {
   asset: IToken;
   isLoading: Record<string, boolean>;
   accountCollateralAmount: BigNumber | undefined;
-  totalCollateralValue: string;
+  totalCollateralValue: number;
   healthFactor: BigNumber | undefined;
-  tokenValue: string | undefined;
+  tokenValue: number | undefined;
   tokenBalance: BigNumber | undefined;
   availableLiquidity: BigNumber | undefined;
-  totalBorrowed: string;
+  totalBorrowed: number;
   assetPrice: number;
   allowance: BigNumber | undefined;
   tokenCollateralValue: BigNumber | undefined;
@@ -63,30 +63,21 @@ export const RepayTab = ({
   const { accountCollateralLoading, healthFactorLoading } = isLoading;
   const { repayAsset, approveAsset } = useTransaction(tokenAddress);
 
-  const parsedTotalAccountCollateralValue = parseFloat(totalCollateralValue);
-  const parsedAvailableLiquidity = parseFloat(
-    parseBigNumberToFloat(availableLiquidity, decimals)
+  const parsedTotalAccountCollateralValue = totalCollateralValue;
+  const parsedAvailableLiquidity = parseBigNumberToFloat(
+    availableLiquidity,
+    decimals
   );
-
-  const parsedTotalBorrowed = parseFloat(totalBorrowed);
-
   const parsedAssetBalance = parseBigNumberToFloat(tokenBalance, decimals);
 
-  const valueOfAssetsBorrowed = parsedTotalBorrowed * assetPrice;
+  const valueOfAssetsBorrowed = totalBorrowed * assetPrice;
 
   const valueOfNewCollateral = inputAmount * Number(tokenValue);
 
-  const parsedHealthFactor = parseFloat(parseBigNumberToFloat(healthFactor));
+  const parsedHealthFactor = parseBigNumberToFloat(healthFactor);
 
-  const maxInputValue = Math.min(
-    parsedTotalBorrowed,
-    parseFloat(parsedAssetBalance)
-  );
-
-  const parsedAllowance = parseFloat(
-    parseBigNumberToFloat(allowance, decimals)
-  );
-
+  const maxInputValue = Math.min(totalBorrowed, parsedAssetBalance);
+  const parsedAllowance = parseBigNumberToFloat(allowance, decimals);
   const projectedHealthFactor =
     parsedTotalAccountCollateralValue /
     (valueOfAssetsBorrowed - valueOfNewCollateral);
@@ -255,11 +246,11 @@ export const RepayTab = ({
         <div data-testid="modal-info" className="mt-6 pb-0">
           <BorrowTabInfo
             isLoading={accountCollateralLoading || healthFactorLoading}
-            totalBorrowed={`${formatNumber(parsedTotalBorrowed)} ${symbol}`}
+            totalBorrowed={`${formatNumber(totalBorrowed)} ${symbol}`}
             projectedTotalBorrowed={`${formatNumber(
-              parsedTotalBorrowed - (inputAmount || 0)
+              totalBorrowed - (inputAmount || 0)
             )} ${symbol}`}
-            collateralValue={`$${formatNumber(parseFloat(totalCollateralValue))} `}
+            collateralValue={`$${formatNumber(totalCollateralValue)} `}
             healthFactor={`${formatNumber(parsedHealthFactor)}`}
             projectedHealthFactor={displayProjectedHealthFactor(
               totalBorrowed,

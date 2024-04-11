@@ -59,9 +59,9 @@ export const parseBigNumberToFloat = (
   val: BigNumber | undefined,
   decimals: number | string = "ether",
   floatPoint?: number
-): string => {
+): number => {
   if (!val || !ethers.BigNumber.isBigNumber(val)) {
-    return "0.00";
+    return 0.0;
   }
 
   const formatted = utils.formatUnits(val, decimals);
@@ -69,7 +69,7 @@ export const parseBigNumberToFloat = (
   // Use parseFloat directly and add error handling
   const parsedValue = parseFloat(formatted);
   if (isNaN(parsedValue)) {
-    return "0.00";
+    return 0.0;
   }
 
   // Check if floatPoint is a valid number, otherwise default to 2
@@ -94,7 +94,7 @@ export const formatCurrency = (number?: string | number, plain?: boolean) => {
 
   return `${
     plain
-      ? "$" + toFixedTrunc(numericValue, 2)
+      ? "$" + toFixedTruncString(numericValue, 2)
       : "$" + formatLargeNumber(numericValue)
   }`;
 };
@@ -130,7 +130,7 @@ export const formatLargeNumber = (
 
   const num = largerNumber / divisor;
 
-  const formattedNumber = isFloat ? toFixedTrunc(num, 2) : num.toString();
+  const formattedNumber = isFloat ? toFixedTruncString(num, 2) : num.toString();
 
   return (
     formattedNumber +
@@ -153,19 +153,22 @@ export const formatAsPercentage = (
     return "0.00";
   }
 
-  return toFixedTrunc(Number(value) * 100, floatPlaces || 2) + "%";
+  return toFixedTruncString(Number(value) * 100, floatPlaces || 2) + "%";
 };
 
-export function toFixedTrunc(x: number, n: number) {
+export function toFixedTruncString(x: number, n: number) {
   x = toFixed(x);
 
-  // From here on the code is the same than the original answer
   const v = (typeof x === "string" ? x : x.toString()).split(".");
   if (n <= 0) return v[0];
   let f = v[1] || "";
   if (f.length > n) return `${v[0]}.${f.substring(0, n)}`;
   while (f.length < n) f += "0";
   return `${v[0]}.${f}`;
+}
+
+export function toFixedTrunc(x: number, n: number) {
+  return parseFloat(toFixedTruncString(x, n));
 }
 
 function toFixed(x: number): number {

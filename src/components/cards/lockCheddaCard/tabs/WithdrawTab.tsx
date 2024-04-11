@@ -9,7 +9,7 @@ interface LockTabProps {
   subTitle: string;
   modalInfo: ReactElement<any, any>;
   isTransactionLoading: boolean;
-  lockedChedda: string | undefined;
+  lockedChedda: number | undefined;
   cheddaExpiry: Date;
   withdrawChedda: () => void;
   relockChedda: (isRelockChedda: boolean) => void;
@@ -54,7 +54,7 @@ export const WithdrawTab: FC<LockTabProps> = ({
             className="text-xs  text-[#ffffff70] mt-2"
             data-testid="locked-chedda-price"
           >
-            {formatCurrency(cheddaPrice * Number(lockedChedda))}
+            {formatCurrency(cheddaPrice * (lockedChedda || 0))}
           </div>
         </div>
         <Button
@@ -66,7 +66,7 @@ export const WithdrawTab: FC<LockTabProps> = ({
           className="mt-6 h-7"
           size="large"
           isLoading={isWithdrawClicked && isTransactionLoading}
-          disabled={!isLockedExpired || !Number(lockedChedda)}
+          disabled={!isLockedExpired || !lockedChedda}
         >
           WITHDRAW
         </Button>
@@ -80,7 +80,7 @@ export const WithdrawTab: FC<LockTabProps> = ({
             relockChedda(true);
           }}
           className="h-7"
-          disabled={!isLockedExpired || !Number(lockedChedda)}
+          disabled={!isLockedExpired || !lockedChedda}
           isLoading={!isWithdrawClicked && isTransactionLoading}
           size="large"
         >

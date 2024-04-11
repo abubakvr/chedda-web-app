@@ -33,10 +33,7 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
   const formatValue = (value: BigNumber | undefined, decimals?: BigNumber) => {
     const decimalValue = parseBigNumberToFloat(decimals, 0, 5);
     return value !== undefined && decimals !== undefined
-      ? formatCurrency(
-          parseBigNumberToFloat(value, parseInt(decimalValue), 2),
-          true
-        )
+      ? formatCurrency(parseBigNumberToFloat(value, decimalValue, 2), true)
       : "";
   };
 

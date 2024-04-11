@@ -25,13 +25,9 @@ export const LockingInfoCard = ({
   const { currentEnvironment } = useEnvironment();
   const { data: lockingGaugeAddress } = useGaugeAddress();
 
-  const parsedTotalWeight = parseFloat(parseBigNumberToFloat(totalWeight));
-  const parsedTotalAmountLocked = parseFloat(
-    parseBigNumberToFloat(totalAmountLocked)
-  );
-  const parsedTotalWeightSum = parseFloat(
-    parseBigNumberToFloat(totalWeightSum)
-  );
+  const parsedTotalWeight = parseBigNumberToFloat(totalWeight);
+  const parsedTotalAmountLocked = parseBigNumberToFloat(totalAmountLocked);
+  const parsedTotalWeightSum = parseBigNumberToFloat(totalWeightSum);
 
   const weightPercentage = parsedTotalWeight / parsedTotalWeightSum;
 
