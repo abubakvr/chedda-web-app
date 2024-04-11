@@ -103,13 +103,8 @@ export function getErrorMessageFromCode(errorCode: string): string {
   }
 }
 
-export function projectDateTime(days: number): string {
-  let currentDate: Date = new Date();
-
-  let projectedDate: Date = new Date(
-    currentDate.getTime() + days * 24 * 60 * 60 * 1000
-  );
-
+export function formatProjectedDate(days: number): string {
+  let projectedDate = projectDateTime(days);
   let formattedProjectedDate: string = formatDate(projectedDate);
 
   return formattedProjectedDate;
@@ -147,3 +142,8 @@ export const getPoolInstance = async (
       throw new Error("Invalid pool type");
   }
 };
+
+export function projectDateTime(days: number) {
+  const currentDate: Date = new Date();
+  return new Date(currentDate.getTime() + days * 24 * 60 * 60 * 1000);
+}
