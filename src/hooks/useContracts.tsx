@@ -502,6 +502,64 @@ const getClaimableLockRewards: GetDataFunction<BigNumber> = async ({
   return await cheddaLockingGauge.claimable(account);
 };
 
+const getTotalAmountLocked: GetDataFunction<BigNumber> = async ({
+  poolId,
+  signer,
+  chedda,
+}) => {
+  if (!chedda) return null;
+  const cheddaLockingGauge = await getPoolInstance(
+    chedda,
+    poolId,
+    signer,
+    "cheddaLockingGauge"
+  );
+  return await cheddaLockingGauge.totalLocked();
+};
+
+const getTotalWeight: GetDataFunction<BigNumber> = async ({
+  poolId,
+  signer,
+  chedda,
+}) => {
+  if (!chedda) return null;
+  const cheddaLockingGauge = await getPoolInstance(
+    chedda,
+    poolId,
+    signer,
+    "cheddaLockingGauge"
+  );
+  return await cheddaLockingGauge.totalWeight();
+};
+
+const getGaugeAddress: GetDataFunction<string> = async ({
+  poolId,
+  signer,
+  chedda,
+}) => {
+  if (!chedda) return null;
+  const lendingPool = await getPoolInstance(
+    chedda,
+    poolId,
+    signer,
+    "lendingPool"
+  );
+  return await lendingPool.gauge();
+};
+
+const getTotalWeightSum: GetDataFunction<BigNumber> = async ({
+  signer,
+  chedda,
+  environment,
+}) => {
+  if (!chedda) return null;
+  const rewardsDistributor = chedda.lockingGaugeRewardsDistributor(
+    environment.contracts.LockingGaugeRewardsDistributor,
+    signer as Signer
+  );
+  return await rewardsDistributor.totalWeightSum();
+};
+
 // Exported custom hooks
 export const useAccountInfo = (): HookResult<IAccountInfo> => {
   return useFetcher<IAccountInfo>(getAccountInfo);
@@ -628,4 +686,20 @@ export const useLockedChedda = (): HookResult<Lock> => {
 
 export const useClaimableLockRewards = (): HookResult<BigNumber> => {
   return useFetcher<BigNumber>(getClaimableLockRewards);
+};
+
+export const useTotalAmountLocked = (): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getTotalAmountLocked);
+};
+
+export const useTotalWeight = (): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getTotalWeight);
+};
+
+export const useTotalWeightSum = (): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getTotalWeightSum);
+};
+
+export const useGaugeAddress = (): HookResult<string> => {
+  return useFetcher<string>(getGaugeAddress);
 };

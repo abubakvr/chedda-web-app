@@ -26,6 +26,8 @@ export const environmentConfig: IEnvironmentConfig = {
       LendingPoolLens: "0x8b2eAF4193EB3c0345739dfAb1FF56EdeD3A15E8",
       InterestRatesProjector: "0xf9383FfCf943460496D09f5458b1f9ff96559177",
       PriceFeed: "0xdc33C1aFD2060c8D5C14476F4802F2FD850f85C3",
+      LockingGaugeRewardsDistributor:
+        "0x94012e199150A3f738c83c012144395E06aad582",
       Chedda: "0x8f72AE75bcBd9A36eDDAD1c81f375b27229d255F",
       xChedda: "0xB362b1Da2814400740FDF221964631f10Cd34255",
       veChedda: "0x410236c7e9763891A90EE41C47826246348963dA",
@@ -88,6 +90,8 @@ export const environmentConfig: IEnvironmentConfig = {
       LendingPoolLens: "0x5BD837be5Db3bDbb0fdb8362e55834762885fc6E",
       InterestRatesProjector: "0x49a4Ad3ADd3eF46a1dA27FEd0280F70276fb3ba6",
       PriceFeed: "0x5D0d03A506F2df4Bcf8fa022027FCcEd7fF639d1",
+      LockingGaugeRewardsDistributor:
+        "0x94012e199150A3f738c83c012144395E06aad582",
       Chedda: "0x9AD6FC4F1c6A4CE0838047DA728BCe90a705f54d",
       xChedda: "0x5c35eD563029a9D7B37a60EC2C964fC7d37672E5",
       veChedda: "0xBC03E7E93710b2efFfFaeec29Dc3D325BD89a8dB",

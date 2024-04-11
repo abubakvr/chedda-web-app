@@ -6,9 +6,13 @@ import {
   useCheddaBalance,
   useClaimableLockRewards,
   useEnvironment,
+  useGaugeAddress,
   useLockedChedda,
   useTokenPrice,
   useTokenValue,
+  useTotalAmountLocked,
+  useTotalWeight,
+  useTotalWeightSum,
   useTransaction,
 } from "@/hooks";
 import { StaticImageData } from "next/image";
@@ -61,6 +65,22 @@ describe("LockTab Component", () => {
     });
     (useTokenPrice as jest.Mock).mockReturnValue({
       data: "1000",
+      isLoading: false,
+    });
+    (useTotalAmountLocked as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useTotalWeight as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useTotalWeightSum as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useGaugeAddress as jest.Mock).mockReturnValue({
+      data: BigNumber.from("0x00"),
       isLoading: false,
     });
   });
