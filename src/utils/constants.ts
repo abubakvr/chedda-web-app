@@ -20,16 +20,8 @@ export const menuItems: IMenuItem[] = [
     path: "/markets",
   },
   {
-    name: "Rewards",
-    path: "/rewards",
-  },
-  {
     name: "Bridge",
     path: "/bridge",
-  },
-  {
-    name: "More",
-    path: "/more",
   },
 ];
 
