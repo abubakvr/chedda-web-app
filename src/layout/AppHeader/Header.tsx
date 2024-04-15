@@ -10,14 +10,26 @@ import CheddaMiniLogo from "@/assets/logos/chedda-logo.svg";
 import { usePathname } from "next/navigation";
 import { NetworkMenu } from "./components";
 import { ProfileMenu } from "./components";
-import { connectorIdKey, menuItems } from "@/utils/constants";
+import {
+  connectorIdKey,
+  DISCORD_URL,
+  DOCS_URL,
+  menuItems,
+  TWITTER_URL,
+} from "@/utils/constants";
 import { useWeb3React } from "@web3-react/core";
 import { metaMask } from "@/connectors/metaMask";
 import { getName } from "@/connectors/getConnectorName";
 import { walletConnect } from "@/connectors/walletConnect";
 import { coinbaseWallet } from "@/connectors/coinbaseWallet";
-import { NetworkSwitchBanner, NavDropdown, PacmanLogo } from "@/components/ui";
-import { useEnvironment } from "@/hooks";
+import { NavDropdown, NetworkSwitchBanner } from "@/components/ui";
+import { currentEnvironment } from "@/data/environments";
+
+const moreDropdownItems = [
+  { label: "Docs", url: DOCS_URL, icon: DocumentIcon },
+  { label: "Discord", url: DISCORD_URL, icon: DiscordIcon },
+  { label: "Twitter", url: TWITTER_URL, icon: TwitterIcon },
+];
 
 const navMenuItems = [
   {
@@ -39,9 +51,9 @@ const navMenuItems = [
 
 export const HeaderComponent: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [openMoreMenu, setOpenMoreMenu] = useState(false);
   const [showNetworkBanner, setShowNetworkBanner] = useState(false);
   const { account, chainId } = useWeb3React();
-  const { currentEnvironment } = useEnvironment();
   const pathname = usePathname();
 
   const appChainId = currentEnvironment?.chainId;
@@ -55,9 +67,17 @@ export const HeaderComponent: React.FC = () => {
       }
     };
 
+    const onDocumentClick = (event: MouseEvent) => {
+      const targetElement = event.target as HTMLElement;
+      if (!targetElement.closest(".more-container")) {
+        setOpenMoreMenu(false);
+      }
+    };
+    document.addEventListener("click", onDocumentClick);
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("click", onDocumentClick);
     };
   }, []);
 
@@ -138,10 +158,9 @@ export const HeaderComponent: React.FC = () => {
                 ) : null}
               </Link>
             ))}
-            <NavDropdown menuItems={navMenuItems} />
+            <NavDropdown menuItems={moreDropdownItems} />
           </div>
           <div className="flex flex-row gap-2 text-white">
-            <NetworkMenu data-testid="network-menu" />
             <ProfileMenu account={account} data-testid="profile-menu" />
           </div>
         </div>

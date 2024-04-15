@@ -3,7 +3,8 @@ import { useWeb3React } from "@web3-react/core";
 import { ConnectModal } from "@/components/modals";
 import { Dialog } from "../../dialog/Dialog";
 import { LoadingIcon } from "./LoadingIcon";
-import { useEnvironment, useSwitchChain } from "@/hooks";
+import { useSwitchChain } from "@/hooks";
+import { currentEnvironment } from "@/data/environments";
 
 interface ButtonProps {
   children: ReactNode;
@@ -36,7 +37,6 @@ export const Button: FC<ButtonProps> = ({
     actionTitle: "",
   });
   const { account, chainId } = useWeb3React();
-  const { currentEnvironment } = useEnvironment();
   const appChainId = currentEnvironment?.chainId;
   const switchChain = useSwitchChain();
 

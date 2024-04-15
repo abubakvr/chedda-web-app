@@ -2,17 +2,12 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { StakingInfoCard } from "../StakingInfoCard";
 import { BigNumber } from "ethers";
-import { useEnvironment, useStakingContractAddress } from "@/hooks";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
+import { useStakingContractAddress } from "@/hooks";
 
 jest.mock("../../../../hooks");
 
 describe("StakingInfoCard Component", () => {
   beforeEach(() => {
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
     (useStakingContractAddress as jest.Mock).mockReturnValue({
       data: BigNumber.from("1000"),
       isLoading: false,

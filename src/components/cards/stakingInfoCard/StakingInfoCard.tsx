@@ -7,7 +7,8 @@ import {
   parseBigNumberToFloat,
 } from "@/utils/formatters";
 import { BigNumber } from "ethers";
-import { useEnvironment, useStakingContractAddress } from "@/hooks";
+import { useStakingContractAddress } from "@/hooks";
+import { currentEnvironment } from "@/data/environments";
 
 interface StakingInfoCardProps {
   assetSymbol: string | undefined;
@@ -30,7 +31,6 @@ export const StakingInfoCard = ({
   lpAssetValue,
   totalSupply,
 }: StakingInfoCardProps) => {
-  const { currentEnvironment } = useEnvironment();
   const { data: stakingPoolAddress } = useStakingContractAddress();
   const parsedAssetValue = parseBigNumberToFloat(lpAssetValue, lpDecimals);
   const parsedTotalStaked = parseBigNumberToFloat(totalStaked, lpDecimals);

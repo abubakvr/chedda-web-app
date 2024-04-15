@@ -3,7 +3,6 @@ import {
   useAccountInfo,
   useMarketInfo,
   useCollateralInfo,
-  useEnvironment,
   usePoolStats,
   usePoolStatsList,
   useRatesProjector,
@@ -16,7 +15,6 @@ import {
   useAllowance,
 } from "@/hooks";
 import {
-  mockCurrentEnvironment,
   mockAccountInfo,
   mockMarketInfo,
   mockCollateralInfo,
@@ -29,7 +27,6 @@ import { useDispatch } from "react-redux";
 
 jest.mock("ethers");
 jest.mock("react-redux");
-jest.mock("../useEnvironment");
 jest.mock("../useFetcher");
 
 const mockUseDispatch = useDispatch as jest.MockedFunction<typeof useDispatch>;
@@ -40,10 +37,6 @@ jest.mock("@web3-react/core", () => ({
 
 describe("useAccountInfo Hook", () => {
   beforeEach(() => {
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
     mockUseDispatch.mockImplementation(() => jest.fn());
   });
 

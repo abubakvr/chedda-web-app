@@ -7,8 +7,7 @@ import {
 } from "@testing-library/react";
 import { BigNumber } from "ethers";
 import { LockCheddaCard } from "../LockCheddaCard";
-import { useEnvironment, useTransaction } from "@/hooks";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
+import { useTransaction } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("../../../../hooks");
@@ -26,10 +25,6 @@ describe("LockCheddaCard", () => {
     (useTransaction as jest.Mock).mockReturnValue({
       lockCheddaToken: jest.fn(),
       approveCheddaToken: jest.fn(),
-    });
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
     });
   });
 

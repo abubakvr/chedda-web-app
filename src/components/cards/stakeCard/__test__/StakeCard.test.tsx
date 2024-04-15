@@ -12,11 +12,9 @@ import {
   useAllowance,
   useAssetBalance,
   useAvailableLiquidity,
-  useEnvironment,
   useTokenBalance,
   useTransaction,
 } from "@/hooks";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("ethers");
@@ -39,7 +37,7 @@ const mockProps = {
   lpAllowance: BigNumber.from(utils.parseEther("50")),
   lpStakingBalance: BigNumber.from(utils.parseEther("50")),
   lpTokenBalance: BigNumber.from(utils.parseEther("50")),
-  assetValue: "10000",
+  assetValue: 10000,
   defaultTab: "Pool",
   updateCard: jest.fn(),
   fetchLpAllowance: jest.fn(),
@@ -72,11 +70,6 @@ describe("StakeCard", () => {
       approveLpToken: jest.fn(),
       stakeLpToken: jest.fn(),
     }));
-
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
   });
 
   it("renders stake tab content correctly", async () => {

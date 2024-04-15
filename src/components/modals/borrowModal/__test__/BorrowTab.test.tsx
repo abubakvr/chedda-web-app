@@ -10,15 +10,14 @@ import {
 import { BorrowTab, BorrowTabProps } from "../Tabs";
 import { StaticImageData } from "next/image";
 import { BigNumber } from "ethers";
-import { useEnvironment, useTransaction } from "@/hooks";
+import { useTransaction } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 
 jest.mock("@web3-react/core", () => ({
   ...jest.requireActual("@web3-react/core"),
   useWeb3React: jest.fn(() => ({
     account: "0x123",
-    chainId: 1,
+    chainId: 421614,
     isActivating: false,
   })),
 }));
@@ -39,14 +38,14 @@ const mockProps: BorrowTabProps = {
     color: "#ffffff",
   },
   accountCollateralAmount: BigNumber.from("50000000000000000000000"),
-  totalCollateralValue: "50000000000000000000000",
+  totalCollateralValue: 50000000000000000000000,
   healthFactor: BigNumber.from("39000000000000000"),
-  tokenValue: "1000",
+  tokenValue: 1000,
   fetchAllowance: jest.fn(),
   refreshModal: jest.fn(),
   assetPrice: 100,
   tokenCollateralValue: BigNumber.from("390"),
-  totalBorrowed: "1000",
+  totalBorrowed: 1000,
   availableLiquidity: BigNumber.from("390000000000000000000"),
 };
 
@@ -65,10 +64,6 @@ describe("BorrowTab Component", () => {
       },
       borrowAsset: mockBorrowAsset,
     }));
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
   });
   it("renders BorrowTab component", async () => {
     render(

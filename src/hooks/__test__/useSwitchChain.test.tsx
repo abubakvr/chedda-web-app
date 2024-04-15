@@ -2,25 +2,18 @@ import { renderHook, act } from "@testing-library/react";
 import { useWeb3React } from "@web3-react/core";
 import { useSwitchChain } from "../useSwitchChain";
 import { WalletConnect } from "@web3-react/walletconnect-v2";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
-import { useEnvironment } from "../useEnvironment";
 
 jest.mock("ethers");
 jest.mock("@web3-react/core");
-jest.mock("../useEnvironment");
 jest.mock("@web3-react/walletconnect-v2");
 
 const mockUseWeb3React = useWeb3React as jest.MockedFunction<
   typeof useWeb3React
 >;
-const mockUseEnvironment = useEnvironment as jest.MockedFunction<
-  typeof useEnvironment
->;
 
 describe("useSwitchChain Hook", () => {
   beforeEach(() => {
     // Reset mocks before each test
-    mockUseEnvironment.mockReset();
   });
 
   it("switches the chain correctly", async () => {
@@ -80,11 +73,6 @@ describe("useSwitchChain Hook", () => {
       },
     });
 
-    mockUseEnvironment.mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: mockSwitchEnvironment,
-    });
-
     const { result } = renderHook(() => useSwitchChain());
 
     // Call the function that triggers the chain switch
@@ -94,9 +82,6 @@ describe("useSwitchChain Hook", () => {
 
     // Assert that the connector's activate method was called with the correct parameters
     expect(mockConnector.activate).toHaveBeenCalled();
-
-    // Assert that the switchEnvironment function was called with the correct parameter
-    expect(mockSwitchEnvironment).toHaveBeenCalledWith(-1);
   });
 
   it("handles different connector types", async () => {
@@ -150,12 +135,6 @@ describe("useSwitchChain Hook", () => {
         usePriorityENSName: jest.fn(),
       },
     });
-
-    mockUseEnvironment.mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: mockSwitchEnvironment,
-    });
-
     const { result } = renderHook(() => useSwitchChain());
 
     // Call the function that triggers the chain switch
@@ -165,8 +144,5 @@ describe("useSwitchChain Hook", () => {
 
     // Assert that the connector's activate method was called with the correct parameters
     expect(mockConnector.activate).toHaveBeenCalledWith(5);
-
-    // Assert that the switchEnvironment function was called with the correct parameter
-    expect(mockSwitchEnvironment).toHaveBeenCalledWith(5);
   });
 });

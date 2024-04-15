@@ -42,19 +42,6 @@ describe("HeaderComponent", () => {
     });
   });
 
-  it("displays the NetworkMenu component", () => {
-    render(
-      <MockAppProviders>
-        <HeaderComponent />
-      </MockAppProviders>
-    );
-
-    const networkMenu = screen.getByTestId("network-menu-container");
-    waitFor(() => {
-      expect(networkMenu).toBeInTheDocument();
-    });
-  });
-
   it("displays the ProfileMenu component", () => {
     jest.mock("@web3-react/core", () => {
       return {

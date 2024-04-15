@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { BigNumber } from "ethers";
-import { useEnvironment, useTokenPrice, useTransaction } from "@/hooks";
+import { useTokenPrice, useTransaction } from "@/hooks";
 import {
   formatCurrency,
   formatLargeNumber,
@@ -9,6 +9,7 @@ import {
 } from "@/utils/formatters";
 import { Button } from "@/components/common";
 import { Toast } from "@/components/ui";
+import { currentEnvironment } from "@/data/environments";
 
 interface ClaimRewardsCardProps {
   claimableRewards: BigNumber | undefined;
@@ -36,7 +37,6 @@ export const ClaimRewardsCard = ({
     txHash: "",
     txStatus: "success",
   });
-  const { currentEnvironment } = useEnvironment();
   const { claimStakeRewards, claimLockRewards } = useTransaction("");
   const cheddaContract =
     useMemo(() => {

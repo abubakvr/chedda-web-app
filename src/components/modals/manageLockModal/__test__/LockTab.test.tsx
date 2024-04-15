@@ -2,25 +2,26 @@ import React from "react";
 import { render, fireEvent, waitFor, act } from "@testing-library/react";
 import { LockTab } from "../tabs/LockTab";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
-import { useEnvironment } from "@/hooks";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
+import { useWeb3React } from "@web3-react/core";
+const buttonActionMock = jest.fn();
 
 jest.mock("../../../../hooks");
 jest.mock("@web3-react/core", () => ({
   ...jest.requireActual("@web3-react/core"),
   useWeb3React: jest.fn(() => ({
     account: "0x123",
-    chainId: 1,
+    chainId: 421614,
     isActivating: false,
   })),
 }));
 
 describe("LockTab", () => {
   beforeEach(() => {
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
+    (useWeb3React as jest.Mock).mockImplementation(() => ({
+      account: "0x123",
+      chainId: 421614,
+      isActivating: false,
+    }));
   });
   it("renders with provided props", async () => {
     const props = {
@@ -63,7 +64,6 @@ describe("LockTab", () => {
   });
 
   it('displays "Add More Chedda" button if allowance is greater than amount', async () => {
-    const buttonActionMock = jest.fn();
     const props = {
       isExtendTab: false,
       title: "Lock Information",
@@ -118,7 +118,7 @@ describe("LockTab", () => {
         value: 0,
         days: 0.024,
       },
-      lockExpiry: new Date("2024-05-01"),
+      lockExpiry: new Date("2054-05-01"),
       buttonAction: jest.fn(),
       setClearInputField: jest.fn(),
       setAmount: jest.fn(),
@@ -145,8 +145,6 @@ describe("LockTab", () => {
   });
 
   it("calls buttonAction when extending lock", async () => {
-    const buttonActionMock = jest.fn();
-
     const props = {
       isExtendTab: true,
       title: "Extend Lock",

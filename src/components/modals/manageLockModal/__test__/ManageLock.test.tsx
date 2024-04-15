@@ -3,8 +3,7 @@ import { render, fireEvent, waitFor } from "@testing-library/react";
 import { ManageLockCard } from "../ManageLockModal";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 import { BigNumber } from "ethers";
-import { useEnvironment, useTransaction } from "@/hooks";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
+import { useTransaction } from "@/hooks";
 
 jest.mock("../../../../hooks");
 jest.mock("@web3-react/core", () => ({
@@ -35,10 +34,6 @@ describe("ManageLockCard", () => {
     (useTransaction as jest.Mock).mockReturnValue({
       lockCheddaToken: jest.fn(),
       approveCheddaToken: jest.fn(),
-    });
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
     });
   });
 

@@ -2,8 +2,7 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { ClaimRewardsCard } from "../ClaimRewardsCard";
 import { BigNumber } from "ethers";
-import { useEnvironment, useTokenPrice, useTransaction } from "@/hooks";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
+import { useTokenPrice, useTransaction } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("../../../../hooks");
@@ -11,10 +10,6 @@ jest.mock("../../../../hooks");
 const mockClaimRewards = jest.fn();
 describe("ClaimRewardsCard Component", () => {
   beforeEach(() => {
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
     (useTransaction as jest.Mock).mockImplementation(() => ({
       claimRewards: jest.fn(),
     }));
@@ -28,6 +23,7 @@ describe("ClaimRewardsCard Component", () => {
     const props = {
       claimableRewards: BigNumber.from("1000000000000000000"), // 1 CHEDDA
       decimals: 18,
+      rewardType: "Lock" as "Lock",
       setActiveTab: jest.fn(),
       fetchClaimableRewards: jest.fn(),
     };
@@ -52,6 +48,7 @@ describe("ClaimRewardsCard Component", () => {
     const props = {
       claimableRewards: BigNumber.from("0000000000000000000"), // 1 CHEDDA
       decimals: 18,
+      rewardType: "Lock" as "Lock",
       setActiveTab: jest.fn(),
       fetchClaimableRewards: jest.fn(),
     };

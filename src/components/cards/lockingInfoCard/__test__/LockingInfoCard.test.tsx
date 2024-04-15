@@ -2,17 +2,12 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { LockingInfoCard } from "../LockingInfoCard";
 import { BigNumber } from "ethers";
-import { useEnvironment, useGaugeAddress } from "@/hooks";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
+import { useGaugeAddress } from "@/hooks";
 
 jest.mock("../../../../hooks");
 
 describe("StakingInfoCard Component", () => {
   beforeEach(() => {
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
     (useGaugeAddress as jest.Mock).mockReturnValue({
       data: "0x00",
       isLoading: false,
@@ -44,7 +39,7 @@ describe("StakingInfoCard Component", () => {
     const externalLink = getByAltText("link out").closest("a");
     expect(externalLink).toHaveAttribute(
       "href",
-      "http://mockContractPrefix.com/0x00"
+      "https://sepolia.arbiscan.io/address/0x00"
     );
     expect(externalLink).toHaveAttribute("target", "_blank");
     expect(externalLink).toHaveAttribute("rel", "noreferrer");

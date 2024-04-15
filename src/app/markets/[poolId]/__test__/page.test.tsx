@@ -8,7 +8,6 @@ import {
   useTokenBalance,
   useMarketInfo,
   useCollateralInfo,
-  useEnvironment,
   usePoolState,
   useRatesProjector,
   useAvailableLiquidity,
@@ -25,7 +24,6 @@ import { getPoolSummaryData } from "@/utils/formatResponse";
 import {
   mockAccountInfo,
   mockCollateralInfo,
-  mockCurrentEnvironment,
   mockInterestRates,
   mockMarketInfo,
   mockPoolStateEvents,
@@ -36,8 +34,6 @@ import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("ethers");
 jest.mock("chart.js");
-jest.mock("../../../../hooks/useContracts");
-jest.mock("../../../../hooks/useEnvironment");
 jest.mock("../../../../hooks");
 
 jest.mock("next/navigation", () => ({
@@ -51,10 +47,6 @@ jest.mock("../../../../utils/formatResponse", () => ({
   calculateAssetPrice: jest.fn(),
 }));
 
-const mockUseEnvironment = useEnvironment as jest.MockedFunction<
-  typeof useEnvironment
->;
-
 const mockUsePools = usePoolStats as jest.MockedFunction<typeof usePoolStats>;
 
 describe("Pool details component", () => {
@@ -62,10 +54,6 @@ describe("Pool details component", () => {
 
   beforeEach(() => {
     (useParams as jest.Mock).mockReturnValue({ poolId: mockPoolId });
-    (mockUseEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
     (usePoolState as jest.Mock).mockReturnValue({
       isLoading: true,
       data: mockPoolStateEvents,

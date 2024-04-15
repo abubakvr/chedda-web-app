@@ -1,5 +1,3 @@
-import { useEnvironment } from "@/hooks";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 import "@testing-library/jest-dom";
 import {
   render,
@@ -15,13 +13,6 @@ jest.mock("ethers");
 jest.mock("../../../../hooks");
 
 describe("Toast Component", () => {
-  beforeEach(() => {
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
-  });
-
   it("renders without crashing", () => {
     const { container } = render(
       <Toast isOpen={false} toastMessage="Test Message" />

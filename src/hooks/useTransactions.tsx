@@ -3,12 +3,11 @@ import { BigNumber, Signer } from "ethers";
 import { useCheddaSdk } from "./useCheddaSdk";
 import { useParams } from "next/navigation";
 import { getErrorMessageFromCode } from "@/utils/helpers";
-import { useEnvironment } from "./useEnvironment";
+import { currentEnvironment } from "@/data/environments";
 
 export const useTransaction = (asset: string) => {
   const { account } = useWeb3React();
   const { chedda, signer } = useCheddaSdk();
-  const { currentEnvironment } = useEnvironment();
   const { poolId } = useParams();
   const strPoolId = poolId.toString();
   const environment = currentEnvironment?.contracts.Chedda || "";

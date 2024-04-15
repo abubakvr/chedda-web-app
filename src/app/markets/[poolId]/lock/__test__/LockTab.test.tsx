@@ -5,7 +5,6 @@ import {
   useCheddaAllowance,
   useCheddaBalance,
   useClaimableLockRewards,
-  useEnvironment,
   useGaugeAddress,
   useLockedChedda,
   useTokenPrice,
@@ -17,7 +16,6 @@ import {
 } from "@/hooks";
 import { StaticImageData } from "next/image";
 import { BigNumber } from "ethers";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 
 // Mocking hooks
 jest.mock("@web3-react/core", () => ({
@@ -35,10 +33,6 @@ const mockApproveLpToken = jest.fn().mockResolvedValue({ hash: "0x00" });
 
 describe("LockTab Component", () => {
   beforeEach(() => {
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
     (useTransaction as jest.Mock).mockImplementation(() => ({
       lockCheddaToken: mockLockCheddaToken,
       approveCheddaToken: mockApproveLpToken,

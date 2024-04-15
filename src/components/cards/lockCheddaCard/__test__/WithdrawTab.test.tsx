@@ -2,15 +2,13 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { WithdrawTab } from "../tabs/WithdrawTab";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
-import { useEnvironment } from "@/hooks";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 
 jest.mock("../../../../hooks");
 jest.mock("@web3-react/core", () => ({
   ...jest.requireActual("@web3-react/core"),
   useWeb3React: jest.fn(() => ({
     account: "0x123",
-    chainId: 1,
+    chainId: 421614,
     isActivating: false,
   })),
 }));
@@ -28,13 +26,6 @@ describe("WithdrawTab", () => {
     withdrawChedda: jest.fn(),
     relockChedda: jest.fn(),
   };
-
-  beforeEach(() => {
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
-  });
 
   it("renders correctly", async () => {
     render(
