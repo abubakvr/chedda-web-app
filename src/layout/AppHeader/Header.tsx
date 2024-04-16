@@ -8,8 +8,7 @@ import DiscordIcon from "@/assets/icon/discord-icon.svg";
 import DocumentIcon from "@/assets/icon/document-icon.svg";
 import CheddaMiniLogo from "@/assets/logos/chedda-logo.svg";
 import { usePathname } from "next/navigation";
-import { NetworkMenu } from "./components";
-import { ProfileMenu } from "./components";
+import { NetworkIndicator, ProfileMenu } from "./components";
 import {
   connectorIdKey,
   DISCORD_URL,
@@ -22,7 +21,7 @@ import { metaMask } from "@/connectors/metaMask";
 import { getName } from "@/connectors/getConnectorName";
 import { walletConnect } from "@/connectors/walletConnect";
 import { coinbaseWallet } from "@/connectors/coinbaseWallet";
-import { NavDropdown, NetworkSwitchBanner } from "@/components/ui";
+import { NavDropdown, NetworkSwitchBanner, PacmanLogo } from "@/components/ui";
 import { currentEnvironment } from "@/data/environments";
 
 const moreDropdownItems = [
@@ -51,7 +50,6 @@ const navMenuItems = [
 
 export const HeaderComponent: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [openMoreMenu, setOpenMoreMenu] = useState(false);
   const [showNetworkBanner, setShowNetworkBanner] = useState(false);
   const { account, chainId } = useWeb3React();
   const pathname = usePathname();
@@ -67,17 +65,9 @@ export const HeaderComponent: React.FC = () => {
       }
     };
 
-    const onDocumentClick = (event: MouseEvent) => {
-      const targetElement = event.target as HTMLElement;
-      if (!targetElement.closest(".more-container")) {
-        setOpenMoreMenu(false);
-      }
-    };
-    document.addEventListener("click", onDocumentClick);
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      document.removeEventListener("click", onDocumentClick);
     };
   }, []);
 
@@ -143,7 +133,7 @@ export const HeaderComponent: React.FC = () => {
               data-testid="chedda-logo"
             />
           </div>
-          <div className="hidden lg:flex flex-row text-white space-x-10  mt-2 text-lg sm:text-lg font-normal">
+          <div className="hidden lg:flex flex-row text-white space-x-10  mt-2 text-lg sm:text-lg font-bold">
             {menuItems.map((item, index) => (
               <Link
                 key={index}
@@ -153,14 +143,18 @@ export const HeaderComponent: React.FC = () => {
                 <div data-testid={`menu-item-${index}`}>{item.name}</div>
                 {pathname === item.path ? (
                   <div className="mt-1">
-                    <PacmanLogo />{" "}
+                    <PacmanLogo />
                   </div>
                 ) : null}
               </Link>
             ))}
             <NavDropdown menuItems={moreDropdownItems} />
           </div>
-          <div className="flex flex-row gap-2 text-white">
+          <div className="flex flex-row space-x-6 text-white">
+            <NetworkIndicator
+              network={currentEnvironment?.environmentName}
+              account={account}
+            />
             <ProfileMenu account={account} data-testid="profile-menu" />
           </div>
         </div>

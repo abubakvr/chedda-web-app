@@ -12,7 +12,7 @@ export const useCheddaSdk = () => {
     }
 
     return new Chedda(currentEnvironment.jsonRpcUrl);
-  }, [currentEnvironment]);
+  }, []);
 
   const signer = useMemo(() => {
     let signer;

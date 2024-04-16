@@ -34,11 +34,7 @@ export const NavDropdown: React.FC<DropdownMenuProps> = ({ menuItems }) => {
         className="more-container"
         onClick={() => setOpenMoreMenu(!openMoreMenu)}
       >
-<<<<<<< HEAD
         <span className="flex items-center gap-x-1.5 hover:opacity-80">
-=======
-        <span className="flex items-center gap-x-1.5">
->>>>>>> c4dda3a (feat: implement more dropdown)
           More
           <Image
             src={ArrowDownIcon}
@@ -54,7 +50,6 @@ export const NavDropdown: React.FC<DropdownMenuProps> = ({ menuItems }) => {
         {menuItems.map((item, index) => (
           <li
             key={index}
-<<<<<<< HEAD
             className="w-full py-1 px-2 relative flex items-center rounded-sm  hover:bg-[#4c37a740]"
           >
             <a
@@ -72,25 +67,6 @@ export const NavDropdown: React.FC<DropdownMenuProps> = ({ menuItems }) => {
                 />
               </div>
               <div>{item.label}</div>
-=======
-            className="w-full py-1 px-2 relative flex gap-x-2 items-center rounded-sm  hover:bg-[#4c37a740]"
-          >
-            <div>
-              <Image
-                src={item.icon}
-                className="w-4 h-4 self-center"
-                alt={item.label}
-                width={16}
-              />
-            </div>
-            <a
-              href={item.url}
-              className="relative hover:opacity-80"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {item.label}
->>>>>>> c4dda3a (feat: implement more dropdown)
             </a>
           </li>
         ))}
