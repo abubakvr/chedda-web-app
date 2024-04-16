@@ -141,7 +141,7 @@ export const HeaderComponent: React.FC = () => {
                 className="relative hover:opacity-80"
               >
                 <div data-testid={`menu-item-${index}`}>{item.name}</div>
-                {pathname === item.path ? (
+                {pathname.startsWith(item.path) ? (
                   <div className="mt-1">
                     <PacmanLogo />
                   </div>

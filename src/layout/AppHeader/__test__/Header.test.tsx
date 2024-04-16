@@ -1,8 +1,13 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { HeaderComponent } from "../Header";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
+import { usePathname } from "next/navigation";
 
+jest.mock("next/navigation");
 describe("HeaderComponent", () => {
+  beforeEach(() => {
+    (usePathname as jest.Mock).mockImplementation(() => "/home");
+  });
   it("renders the component", () => {
     render(
       <MockAppProviders>
