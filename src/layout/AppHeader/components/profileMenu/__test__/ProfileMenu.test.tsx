@@ -5,7 +5,10 @@ import { mockLocalStorage } from "@/utils/Mocks/MockLocalStorage";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { connectorIdKey } from "@/utils/constants";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
+import { useCheddaBalance } from "@/hooks";
+import { BigNumber } from "ethers";
 
+jest.mock("../../../../../hooks");
 jest.mock("../../../../..//utils/copyToClipboard", () => ({
   copyToClipboard: jest.fn(),
 }));
@@ -14,7 +17,10 @@ jest.mock("react-blockies");
 describe("ProfileMenu", () => {
   beforeAll(() => {
     const originalWarn = console.warn;
-
+    (useCheddaBalance as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
     jest.spyOn(console, "warn").mockImplementation((...args) => {
       if (!args.some((arg) => arg.includes("Identicon"))) {
         originalWarn(...args);
