@@ -274,7 +274,7 @@ export const StakeCard: FC<StakeModalProps> = ({
         copyText={copyText}
       />
       <div
-        className="w-[470px] text-white px-8 py-6"
+        className="min-w-[470px] text-white px-8 py-6"
         data-testid="stake-card-container"
       >
         <div className="flex bg-[#201D47] rounded-lg justify-between p-2">
