@@ -1,12 +1,8 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MyInformationCard } from "../MyInformationCard";
-import {
-  mockAccountInfo,
-  mockCurrentEnvironment,
-  mockPoolStats,
-} from "@/utils/Mocks/MockTestData";
-import { useEnvironment, useTokenBalance } from "@/hooks";
+import { mockAccountInfo, mockPoolStats } from "@/utils/Mocks/MockTestData";
+import { useTokenBalance } from "@/hooks";
 import { ethers } from "ethers";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
@@ -14,12 +10,6 @@ jest.mock("ethers");
 jest.mock("../../../../hooks");
 
 describe("MyInformationCard", () => {
-  beforeEach(() => {
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
-  });
   it("renders MyInformationCard component correctly", () => {
     (useTokenBalance as jest.Mock).mockImplementation(() => ({
       fetchTokenBalance: jest.fn(),
@@ -35,6 +25,7 @@ describe("MyInformationCard", () => {
           assetPrice={1000}
           available={ethers.BigNumber.from("1000")}
           fetchAccountInfo={jest.fn()}
+          setActivePoolTab={jest.fn()}
         />
       </MockAppProviders>
     );
@@ -61,6 +52,7 @@ describe("MyInformationCard", () => {
           isLoading={true}
           assetPrice={0}
           available={undefined}
+          setActivePoolTab={jest.fn()}
           fetchAccountInfo={jest.fn()}
         />
       </MockAppProviders>

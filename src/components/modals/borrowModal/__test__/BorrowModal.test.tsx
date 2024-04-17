@@ -13,14 +13,12 @@ import {
   useAccountHealth,
   useAllowance,
   useAvailableLiquidity,
-  useEnvironment,
   useSelectTokenBalance,
   useTokenCollateralValue,
   useTokenValue,
   useTransaction,
 } from "@/hooks";
 import { BigNumber } from "ethers";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("@web3-react/core", () => ({
@@ -55,12 +53,12 @@ const mockProps: BorrowModalProps = {
       color: "#ffffff",
     },
   ],
-  totalBorrowed: "20000",
+  totalBorrowed: 20000,
   assetPrice: 90,
   fetchAccountInfo: jest.fn(),
   availableLiquidity: BigNumber.from("390"),
   openSupplyModal: jest.fn(),
-  totalCollateralValue: "1000",
+  totalCollateralValue: 1000,
 };
 
 describe("BorrowModal Component", () => {
@@ -96,10 +94,7 @@ describe("BorrowModal Component", () => {
       isLoading: false,
       data: "1000",
     }));
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
+
     (useTransaction as jest.Mock).mockImplementation(() => ({
       borrowTxStatus: {
         isLoading: false,

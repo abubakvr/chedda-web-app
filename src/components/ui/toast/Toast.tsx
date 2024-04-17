@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
 import CopyIcon from "@/assets/icon/copy-icon-line.svg";
-import { useEnvironment } from "@/hooks";
 import { copyToClipboard } from "@/utils/copyToClipboard";
+import { currentEnvironment } from "@/data/environments";
 
 interface ToastProps {
   status?: "success" | "failed";
@@ -24,8 +24,6 @@ export const Toast: React.FC<ToastProps> = ({
 }) => {
   const [toasts, setToasts] = useState([] as any[]);
   const [copyLabel, setCopyLabel] = useState("Copy");
-
-  const { currentEnvironment } = useEnvironment();
 
   const addToast = useCallback(() => {
     const newToast = {

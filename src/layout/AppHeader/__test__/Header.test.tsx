@@ -1,8 +1,13 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { HeaderComponent } from "../Header";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
+import { usePathname } from "next/navigation";
 
+jest.mock("next/navigation");
 describe("HeaderComponent", () => {
+  beforeEach(() => {
+    (usePathname as jest.Mock).mockImplementation(() => "/home");
+  });
   it("renders the component", () => {
     render(
       <MockAppProviders>
@@ -39,19 +44,6 @@ describe("HeaderComponent", () => {
     waitFor(() => {
       const menuItems = screen.getAllByRole("link");
       expect(menuItems).toHaveLength(4);
-    });
-  });
-
-  it("displays the NetworkMenu component", () => {
-    render(
-      <MockAppProviders>
-        <HeaderComponent />
-      </MockAppProviders>
-    );
-
-    const networkMenu = screen.getByTestId("network-menu-container");
-    waitFor(() => {
-      expect(networkMenu).toBeInTheDocument();
     });
   });
 

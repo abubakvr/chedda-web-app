@@ -1,7 +1,7 @@
 import * as redux from "react-redux";
 import { renderHook, act } from "@testing-library/react";
 import { useWeb3React } from "@web3-react/core";
-import { useCheddaSdk, useEnvironment } from "@/hooks";
+import { useCheddaSdk } from "@/hooks";
 import { useParams } from "next/navigation";
 import { useFetcher } from "../useFetcher";
 
@@ -16,7 +16,6 @@ jest.mock("react-redux", () => {
 });
 
 jest.mock("../../hooks", () => ({
-  useEnvironment: jest.fn(),
   useCheddaSdk: jest.fn(),
 }));
 
@@ -39,10 +38,6 @@ describe("useFetcher", () => {
     const mockDispatchFn = jest.fn();
     useDispatchSpy.mockReturnValue(mockDispatchFn);
     useSelectorSpy.mockReturnValue(false);
-
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: "mockEnv",
-    });
     (useCheddaSdk as jest.Mock).mockReturnValue({
       chedda: "mockChedda",
       signer: "mockSigner",

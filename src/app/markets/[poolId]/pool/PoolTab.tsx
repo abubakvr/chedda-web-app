@@ -9,12 +9,12 @@ import {
   useAccountInfo,
   useMarketInfo,
   useCollateralInfo,
-  useEnvironment,
   useAvailableLiquidity,
 } from "@/hooks";
 import { MyInformationCard, CollateralInfoCard } from "@/components/cards";
 import { InterestRatesChart, SuppyAndBorrowChart } from "@/components/charts";
 import { IPoolStatsResponse } from "@/utils/types";
+import { currentEnvironment } from "@/data/environments";
 
 const PoolTab = ({
   poolStats,
@@ -23,7 +23,6 @@ const PoolTab = ({
   poolStats: IPoolStatsResponse | undefined;
   setActivePoolTab: Dispatch<SetStateAction<string>>;
 }) => {
-  const { currentEnvironment } = useEnvironment();
   const {
     data: accountInfo,
     fetchData: fetchAccountInfo,

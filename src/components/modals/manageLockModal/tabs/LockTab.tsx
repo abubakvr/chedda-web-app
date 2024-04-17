@@ -5,11 +5,11 @@ import React, {
   SetStateAction,
   useState,
 } from "react";
+import Image from "next/image";
+import InfoIcon from "@/assets/icon/warning-icon.svg";
 import { AmountField, Button } from "@/components/common";
 import { formatLargeNumber } from "@/utils/formatters";
-import InfoIcon from "@/assets/icon/warning-icon.svg";
 import { LOCKTIMES } from "@/utils/constants";
-import Image from "next/image";
 import { projectDateTime } from "@/utils/helpers";
 
 type LockTimeState = { value: number | undefined; days: number | undefined };

@@ -7,7 +7,8 @@ import {
   parseBigNumberToFloat,
 } from "@/utils/formatters";
 import { BigNumber } from "ethers";
-import { useEnvironment, useGaugeAddress } from "@/hooks";
+import { useGaugeAddress } from "@/hooks";
+import { currentEnvironment } from "@/data/environments";
 
 interface LockingInfoCardProps {
   assetSymbol: string | undefined;
@@ -22,7 +23,6 @@ export const LockingInfoCard = ({
   totalWeightSum,
   totalAmountLocked,
 }: LockingInfoCardProps) => {
-  const { currentEnvironment } = useEnvironment();
   const { data: lockingGaugeAddress } = useGaugeAddress();
 
   const parsedTotalWeight = parseBigNumberToFloat(totalWeight);

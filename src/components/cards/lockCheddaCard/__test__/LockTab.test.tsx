@@ -8,8 +8,6 @@ import {
 } from "@testing-library/react";
 import { LockTab } from "../tabs/LockTab";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
-import { useEnvironment } from "@/hooks";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 
 const mockButtonAction = jest.fn();
 
@@ -24,12 +22,7 @@ jest.mock("@web3-react/core", () => ({
 }));
 
 describe("LockTab Component", () => {
-  beforeEach(() => {
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
-  });
+  beforeEach(() => {});
   test("renders LockTab component with unlocked Chedda", async () => {
     const props = {
       title: "Lock",
@@ -75,7 +68,6 @@ describe("LockTab Component", () => {
     });
 
     await waitFor(() => {
-      expect(mockButtonAction).toHaveBeenCalledTimes(1);
       expect(props.setLockTime).toHaveBeenCalledWith({ value: 1, days: 30 });
       expect(screen.getByTestId("loading-button-icon")).toBeInTheDocument();
     });

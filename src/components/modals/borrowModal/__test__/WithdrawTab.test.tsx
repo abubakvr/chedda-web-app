@@ -8,16 +8,15 @@ import {
 } from "@testing-library/react";
 import { WithdrawTab, WithdrawTabProps } from "../Tabs/WithdrawTab";
 import { StaticImageData } from "next/image";
-import { useEnvironment, useTransaction } from "@/hooks";
+import { useTransaction } from "@/hooks";
 import { BigNumber } from "ethers";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
 
 jest.mock("@web3-react/core", () => ({
   ...jest.requireActual("@web3-react/core"),
   useWeb3React: jest.fn(() => ({
     account: "0x123",
-    chainId: 1,
+    chainId: 421614,
     isActivating: false,
   })),
 }));
@@ -48,11 +47,11 @@ const mockProps: WithdrawTabProps = {
   collaterals: [],
   isLoading: {},
   accountCollateralAmount: BigNumber.from("50000000000000000000000"),
-  totalCollateralValue: "500000000000000000000000000000",
+  totalCollateralValue: 500000000000000000000000000000,
   healthFactor: BigNumber.from("5000000000000000000"),
   assetPrice: 5000,
-  totalBorrowed: "9000",
-  tokenValue: "9000",
+  totalBorrowed: 9000,
+  tokenValue: 9000,
   tokenCollateralValue: BigNumber.from("5000000000000000000"),
   setSelectedCollateral: jest.fn(),
   fetchAllowance: jest.fn(),
@@ -77,10 +76,6 @@ describe("WithdrawTab Component", () => {
       },
       withdrawCollateral: mockWithdrawCollateral,
     }));
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
   });
 
   it("renders WithdrawTab component", async () => {

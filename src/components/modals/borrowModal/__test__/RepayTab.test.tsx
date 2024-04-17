@@ -3,16 +3,16 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { RepayTab, RepayTabProps } from "../Tabs";
 import { StaticImageData } from "next/image";
-import { useEnvironment, useTransaction } from "@/hooks";
+import { useTransaction } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
-import { mockCurrentEnvironment } from "@/utils/Mocks/MockTestData";
+
 import { BigNumber } from "ethers";
 
 jest.mock("@web3-react/core", () => ({
   ...jest.requireActual("@web3-react/core"),
   useWeb3React: jest.fn(() => ({
     account: "0x123",
-    chainId: 1,
+    chainId: 421614,
     isActivating: false,
   })),
 }));
@@ -32,16 +32,16 @@ const mockProps: RepayTabProps = {
     color: "#ffffff",
   },
   accountCollateralAmount: BigNumber.from("50000000000000000000000"),
-  totalCollateralValue: "1000",
+  totalCollateralValue: 1000,
   healthFactor: BigNumber.from("39000000000000000"),
-  tokenValue: "1000",
+  tokenValue: 1000,
   fetchAllowance: jest.fn(),
   refreshModal: jest.fn(),
   assetPrice: 100,
   allowance: BigNumber.from("390000000000000000000000000000000000"),
   tokenBalance: BigNumber.from("3900000000000000000000000000000000000000"),
   tokenCollateralValue: BigNumber.from("39000000000000000000000"),
-  totalBorrowed: "1000",
+  totalBorrowed: 1000,
   availableLiquidity: BigNumber.from("390000000000000000000"),
 };
 const mockRepayAsset = jest.fn().mockResolvedValue({ hash: "0x00" });
@@ -60,10 +60,6 @@ describe("RepayTab Component", () => {
       },
       repayAsset: mockRepayAsset,
     }));
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
   });
   it("renders BorrowTab component", async () => {
     render(<RepayTab {...mockProps} />);

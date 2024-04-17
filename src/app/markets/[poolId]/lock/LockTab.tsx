@@ -9,7 +9,6 @@ import {
   useCheddaAllowance,
   useCheddaBalance,
   useClaimableLockRewards,
-  useEnvironment,
   useTotalWeightSum,
   useLockedChedda,
   useTokenValue,
@@ -19,10 +18,10 @@ import {
 import { IToken } from "@/utils/types";
 import { InfoCardSkeleton, SwitchTabSkeleton } from "@/components/ui";
 import { ManageLockCard } from "@/components/modals/manageLockModal/ManageLockModal";
+import { currentEnvironment } from "@/data/environments";
 
 const LockTab = ({ asset }: { asset: IToken | undefined }) => {
   const [openManageLockModal, setOpenManageLockModal] = useState(false);
-  const { currentEnvironment } = useEnvironment();
   const { data: CheddaTokenBalance, fetchData: fetchCheddaTokenBalance } =
     useCheddaBalance();
   const {

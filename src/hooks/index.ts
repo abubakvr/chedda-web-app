@@ -1,4 +1,3 @@
-export * from "./useEnvironment";
 export * from "./useCheddaSdk";
 export * from "./useSwitchChain";
 export * from "./useContracts";

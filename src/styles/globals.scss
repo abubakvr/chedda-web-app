@@ -152,6 +152,20 @@ body {
   mask-composite: exclude;
 }
 
+.more-dropdown::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  padding: 1px;
+  background: linear-gradient(68.02deg, #19294d 12%, #365aad00 100%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
 .primary-button {
   position: relative;
   background: linear-gradient(168.02deg, #f28e05 -8.86%, #c438ef 100.9%);

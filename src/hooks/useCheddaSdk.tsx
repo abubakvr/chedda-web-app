@@ -1,11 +1,10 @@
 import { Chedda } from "chedda-sdk";
 import { useWeb3React } from "@web3-react/core";
 import { useMemo } from "react";
-import { useEnvironment } from "./useEnvironment";
+import { currentEnvironment } from "@/data/environments";
 
 export const useCheddaSdk = () => {
   const { provider, account } = useWeb3React();
-  const { currentEnvironment } = useEnvironment();
 
   const chedda = useMemo(() => {
     if (!currentEnvironment) {
@@ -13,7 +12,7 @@ export const useCheddaSdk = () => {
     }
 
     return new Chedda(currentEnvironment.jsonRpcUrl);
-  }, [currentEnvironment]);
+  }, []);
 
   const signer = useMemo(() => {
     let signer;

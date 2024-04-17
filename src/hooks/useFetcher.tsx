@@ -6,10 +6,11 @@ import {
   selectCheddaSliceData,
   selectCheddaSliceLoading,
 } from "@/redux/api/cheddaSlice";
-import { useEnvironment, useCheddaSdk } from "@/hooks";
+import { useCheddaSdk } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
 import { useParams } from "next/navigation";
 import { GetDataFunction } from "@/utils/types";
+import { currentEnvironment } from "@/data/environments";
 
 export const useFetcher = <T = any,>(
   getData: GetDataFunction<T>,
@@ -17,7 +18,6 @@ export const useFetcher = <T = any,>(
   decimals?: number
 ) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { currentEnvironment } = useEnvironment();
   const { chedda, signer } = useCheddaSdk();
   const { account } = useWeb3React();
   const { poolId } = useParams();
@@ -45,7 +45,6 @@ export const useFetcher = <T = any,>(
     [
       dispatch,
       chedda,
-      currentEnvironment,
       account,
       strPoolId,
       getData,

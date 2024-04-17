@@ -5,7 +5,6 @@ import {
   useAccountInfo,
   useAvailableLiquidity,
   useCollateralInfo,
-  useEnvironment,
   useMarketInfo,
   usePoolState,
   usePoolStats,
@@ -17,7 +16,6 @@ import { BigNumber } from "ethers";
 import {
   mockAccountInfo,
   mockCollateralInfo,
-  mockCurrentEnvironment,
   mockInterestRates,
   mockMarketInfo,
   mockPoolStateEvents,
@@ -50,10 +48,6 @@ jest.mock("../../../../../utils/formatResponse", () => ({
 
 describe("PoolTab", () => {
   beforeEach(() => {
-    (useEnvironment as jest.Mock).mockReturnValue({
-      currentEnvironment: mockCurrentEnvironment,
-      switchEnvironment: jest.fn(),
-    });
     (useTransaction as jest.Mock).mockImplementation(() => ({
       borrowTxStatus: {
         isLoading: false,

@@ -8,16 +8,27 @@ import DiscordIcon from "@/assets/icon/discord-icon.svg";
 import DocumentIcon from "@/assets/icon/document-icon.svg";
 import CheddaMiniLogo from "@/assets/logos/chedda-logo.svg";
 import { usePathname } from "next/navigation";
-import { NetworkMenu } from "./components";
-import { ProfileMenu } from "./components";
-import { connectorIdKey, menuItems } from "@/utils/constants";
+import { NetworkIndicator, ProfileMenu } from "./components";
+import {
+  connectorIdKey,
+  DISCORD_URL,
+  DOCS_URL,
+  menuItems,
+  TWITTER_URL,
+} from "@/utils/constants";
 import { useWeb3React } from "@web3-react/core";
 import { metaMask } from "@/connectors/metaMask";
 import { getName } from "@/connectors/getConnectorName";
 import { walletConnect } from "@/connectors/walletConnect";
 import { coinbaseWallet } from "@/connectors/coinbaseWallet";
-import { NetworkSwitchBanner, NavDropdown, PacmanLogo } from "@/components/ui";
-import { useEnvironment } from "@/hooks";
+import { NavDropdown, NetworkSwitchBanner, PacmanLogo } from "@/components/ui";
+import { currentEnvironment } from "@/data/environments";
+
+const moreDropdownItems = [
+  { label: "Docs", url: DOCS_URL, icon: DocumentIcon },
+  { label: "Discord", url: DISCORD_URL, icon: DiscordIcon },
+  { label: "Twitter", url: TWITTER_URL, icon: TwitterIcon },
+];
 
 const navMenuItems = [
   {
@@ -41,7 +52,6 @@ export const HeaderComponent: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showNetworkBanner, setShowNetworkBanner] = useState(false);
   const { account, chainId } = useWeb3React();
-  const { currentEnvironment } = useEnvironment();
   const pathname = usePathname();
 
   const appChainId = currentEnvironment?.chainId;
@@ -123,7 +133,7 @@ export const HeaderComponent: React.FC = () => {
               data-testid="chedda-logo"
             />
           </div>
-          <div className="hidden lg:flex flex-row text-white space-x-10  mt-2 text-lg sm:text-lg font-normal">
+          <div className="hidden lg:flex flex-row text-white space-x-10  mt-2 text-lg sm:text-lg font-bold">
             {menuItems.map((item, index) => (
               <Link
                 key={index}
@@ -131,17 +141,20 @@ export const HeaderComponent: React.FC = () => {
                 className="relative hover:opacity-80"
               >
                 <div data-testid={`menu-item-${index}`}>{item.name}</div>
-                {pathname === item.path ? (
+                {pathname.startsWith(item.path) ? (
                   <div className="mt-1">
-                    <PacmanLogo />{" "}
+                    <PacmanLogo />
                   </div>
                 ) : null}
               </Link>
             ))}
-            <NavDropdown menuItems={navMenuItems} />
+            <NavDropdown menuItems={moreDropdownItems} />
           </div>
-          <div className="flex flex-row gap-2 text-white">
-            <NetworkMenu data-testid="network-menu" />
+          <div className="flex flex-row space-x-6 text-white">
+            <NetworkIndicator
+              network={currentEnvironment?.environmentName}
+              account={account}
+            />
             <ProfileMenu account={account} data-testid="profile-menu" />
           </div>
         </div>
