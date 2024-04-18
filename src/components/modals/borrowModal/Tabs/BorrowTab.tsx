@@ -69,14 +69,16 @@ export const BorrowTab = ({
 
   const parsedHealthFactor = parseBigNumberToFloat(healthFactor);
 
-  const maxInputValue = (totalCollateralValue * 0.95) / assetPrice;
+  const totalBorrowable = (totalCollateralValue * 0.95) / assetPrice;
 
   const projectedHealthFactor =
     totalCollateralValue / (valueOfAssetsBorrowed + valueOfNewCollateral);
 
+  const maxBorrowValue = Math.min(totalBorrowable, parsedAvailableLiquidity);
+
   const handleWithdrawCollateral = async () => {
     try {
-      if (!inputAmount || inputAmount > maxInputValue) {
+      if (!inputAmount || inputAmount > maxBorrowValue) {
         return alert("Enter valid amount");
       }
 
@@ -166,7 +168,7 @@ export const BorrowTab = ({
               Max:{" "}
               {isLoading.accountCollateralLoading
                 ? "_"
-                : `${formatLargeNumber(maxInputValue)} ${symbol}`}
+                : `${formatLargeNumber(maxBorrowValue)} ${symbol}`}
             </div>
           </div>
         </div>
@@ -176,7 +178,7 @@ export const BorrowTab = ({
           }}
           clearInputField={clearInputField}
           setClearInputField={setClearInputField}
-          maxValue={maxInputValue.toString()}
+          maxValue={maxBorrowValue.toString()}
           assetPrice={Number(tokenValue) || 0}
         />
         <Button
