@@ -39,7 +39,7 @@ const mockProps = {
   supplied: BigNumber.from(utils.parseEther("50")),
   available: BigNumber.from(utils.parseEther("30")),
   onClose: jest.fn(),
-  fetchAccountInfo: jest.fn(),
+  fetchPoolInfo: jest.fn(),
   setActivePoolTab: jest.fn(),
 };
 

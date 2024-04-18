@@ -20,7 +20,13 @@ import { InfoCardSkeleton, SwitchTabSkeleton } from "@/components/ui";
 import { ManageLockCard } from "@/components/modals/manageLockModal/ManageLockModal";
 import { currentEnvironment } from "@/data/environments";
 
-const LockTab = ({ asset }: { asset: IToken | undefined }) => {
+const LockTab = ({
+  asset,
+  fetchPoolStats,
+}: {
+  asset: IToken | undefined;
+  fetchPoolStats: (showLoading: false) => void;
+}) => {
   const [openManageLockModal, setOpenManageLockModal] = useState(false);
   const { data: CheddaTokenBalance, fetchData: fetchCheddaTokenBalance } =
     useCheddaBalance();
@@ -70,6 +76,7 @@ const LockTab = ({ asset }: { asset: IToken | undefined }) => {
     fetchTotalWeight(false);
     fetchTotalWeightSum(false);
     fetchTotalAmountLocked(false);
+    fetchPoolStats(false);
   };
 
   const isLoading =

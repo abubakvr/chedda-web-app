@@ -106,7 +106,13 @@ describe("StakeTab Component", () => {
       decimals: 18,
       color: "#ffffff",
     };
-    render(<StakeTab asset={asset} setActiveTab={jest.fn()} />);
+    render(
+      <StakeTab
+        asset={asset}
+        setActiveTab={jest.fn()}
+        fetchPoolStats={jest.fn()}
+      />
+    );
 
     expect(screen.getByTestId("stake-card")).toBeInTheDocument();
     expect(screen.getByTestId("stake-container")).toBeInTheDocument();

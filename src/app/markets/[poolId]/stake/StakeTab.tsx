@@ -21,9 +21,11 @@ import { InfoCardSkeleton, SwitchTabSkeleton } from "@/components/ui";
 const StakeTab = ({
   asset,
   setActiveTab,
+  fetchPoolStats,
 }: {
   asset: IToken | undefined;
   setActiveTab: Dispatch<SetStateAction<string>>;
+  fetchPoolStats: (showLoading: false) => void;
 }) => {
   const { data: stakingBalance, fetchData: fetchStakingBalance } =
     useStakingBalance();
@@ -69,6 +71,7 @@ const StakeTab = ({
     fetchLpStakers(false);
     fetchTotalStaked(false);
     fetchClaimableRewards(false);
+    fetchPoolStats(false);
   };
 
   const isLoading =

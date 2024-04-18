@@ -34,7 +34,7 @@ interface SupplyModalProps {
   available: BigNumber | undefined;
   defaultTab?: string | null;
   onClose: () => void;
-  fetchAccountInfo: (showLoading?: boolean) => void;
+  fetchPoolInfo: () => void;
   setActivePoolTab: Dispatch<SetStateAction<string>>;
 }
 
@@ -65,7 +65,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   baseSupplyAPY,
   defaultTab,
   onClose,
-  fetchAccountInfo,
+  fetchPoolInfo,
   setActivePoolTab,
 }) => {
   const [activeTab, setActiveTab] = useState(defaultTab || "Deposit");
@@ -119,13 +119,13 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     fetchAllowance(false);
     fetchTokenBalance(false);
     fetchAvailable(false);
-    fetchAccountInfo(false);
+    fetchPoolInfo();
   }, [
     fetchAssetBalance,
     fetchAllowance,
     fetchTokenBalance,
     fetchAvailable,
-    fetchAccountInfo,
+    fetchPoolInfo,
   ]);
 
   const handleDeposit = async (useAsCollateral: boolean) => {

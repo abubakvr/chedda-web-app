@@ -87,7 +87,7 @@ describe("LockTab Component", () => {
       decimals: 18,
       color: "#ffffff",
     };
-    render(<LockTab asset={asset} />);
+    render(<LockTab asset={asset} fetchPoolStats={jest.fn()} />);
 
     expect(screen.getByTestId("lock-chedda-card")).toBeInTheDocument();
     expect(screen.getByTestId("lock-chedda-container")).toBeInTheDocument();
