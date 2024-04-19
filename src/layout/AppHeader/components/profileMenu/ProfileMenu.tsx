@@ -1,8 +1,8 @@
 import Image from "next/image";
 import React, { useEffect, useState, MouseEvent, useCallback } from "react";
 import ArrowDown from "@/assets/icon/arrow-down.svg";
-import CopyIcon from "@/assets/icon/copy-icon.svg";
-import AccountIcon from "@/assets/logos/account-img.svg";
+import CopyIcon from "@/assets/icon/copy-icon-white.svg";
+import LinkOut from "@/assets/icon/link-out-gradient.svg";
 import { metaMask } from "@/connectors/metaMask";
 import { walletConnect } from "@/connectors/walletConnect";
 import { coinbaseWallet } from "@/connectors/coinbaseWallet";
@@ -10,6 +10,8 @@ import { ConnectButton } from "../connectButton/ConnectButton";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { connectorIdKey } from "@/utils/constants";
 import { Blockie } from "@/components/ui";
+import { useCheddaBalance } from "@/hooks";
+import { formatNumber, parseBigNumberToFloat } from "@/utils/formatters";
 
 interface ProfileMenuProps {
   account: string | undefined;
@@ -19,9 +21,9 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [copyLabel, setCopyLabel] = useState("Copy Address");
+  const { data: cheddaTokenBalance } = useCheddaBalance();
 
-  const cheddaBalance = 123.456;
-  const stakedCheddaBalance = 789.012;
+  const parsedCheddaBalance = parseBigNumberToFloat(cheddaTokenBalance, 18, 5);
 
   const copyAddress = () => {
     copyToClipboard(account ?? "")
@@ -116,30 +118,30 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
           </button>
           {isOpenProfileMenu && (
             <div
-              className={`absolute mt-1 w-56 right-0 bg-[#13161F] menu-bg text-white rounded-md shadow-lg z-10
+              className={`absolute mt-2.5 min-w-[230px] right-0 bg-[#13161F] menu-bg text-white rounded-md shadow-lg z-10
                `}
               id="mySelectMenu"
               data-testid="profile-menu-dropdown"
             >
-              <ul className="list-reset text-center font-semibold">
+              <ul className="more-dropdown list-reset font-semibold px-4">
                 <li
-                  className="py-4 px-2 rounded-t-md border-b border-gray-700"
+                  className="py-4 rounded-t-md border-b border-[#2D2A6B]"
                   onClick={copyAddress}
                 >
-                  <div className="flex gap-3 justify-center items-center">
-                    <Image
-                      src={AccountIcon}
-                      alt="Blockie"
-                      className="rounded-full w-7 h-7"
-                    />
-                    {account?.substring(0, 6)}...
-                    {account?.substring(account?.length - 4)}
+                  <div className="flex gap-3 justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <Blockie accountAddress={account} size={11} />
+                      <span className="text-[18px] font-bold">
+                        {account?.substring(0, 6)}...
+                        {account?.substring(account?.length - 4)}
+                      </span>
+                    </div>
                     <button
                       className="relative address-container hover:opacity-70"
                       data-testid="copy-address-button"
                       onClick={copyAddress}
                     >
-                      <Image src={CopyIcon} width={17} alt="Copy" />
+                      <Image src={CopyIcon} width={21} alt="Copy" />
                       <div
                         className="tooltip"
                         data-testid="address-copy-tooltip"
@@ -150,24 +152,28 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
                   </div>
                 </li>
                 <li
-                  className="py-2 px-2 border-b border-gray-700"
+                  className="pt-2 pb-4 border-b border-[#2D2A6B] font-bold"
                   data-testid="chedda-balance"
                 >
-                  {cheddaBalance.toFixed(4)} CHEDDA
+                  <p className="text-lg text-[#ffffff50]">Balance:</p>
+                  <p className="text-[18px]">
+                    {formatNumber(parsedCheddaBalance)} CHEDDA
+                  </p>
+                  <a
+                    href=""
+                    className="text-xs card-gradient-text relative flex mt-1.5 items-center gap-x-1"
+                  >
+                    <span>Buy CHEDDA</span>
+                    <Image src={LinkOut} width={12} alt="Copy" />
+                  </a>
                 </li>
-                <li
-                  className="py-2 px-2 border-b border-gray-700"
-                  data-testid="staked-chedda-balance"
-                >
-                  {stakedCheddaBalance.toFixed(4)} xCHEDDA
-                </li>
-                <li className="py-4 px-5 rounded-b-md cursor-pointer flex items-center">
+                <li className="py-4 rounded-b-md cursor-pointer flex items-center">
                   <button
                     onClick={disconnectWallet}
-                    className="h-8 primary-button w-full rounded-lg font-bold uppercase text-md hover:opacity-90"
+                    className="h-11 primary-button w-full rounded font-bold uppercase text-lg hover:opacity-90"
                     data-testid="disconnect-button"
                   >
-                    Disconnect
+                    Disconnect Wallet
                   </button>
                 </li>
               </ul>
