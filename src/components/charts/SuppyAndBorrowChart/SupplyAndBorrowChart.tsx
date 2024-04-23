@@ -87,9 +87,15 @@ const CustomTooltip: React.FC<CustomTooltipProps<Payload>> = (props) => {
   );
 };
 
-export const SuppyAndBorrowChart = ({ decimals }: { decimals?: number }) => {
-  const { isLoading, data } = usePoolState();
-
+export const SuppyAndBorrowChart = ({
+  decimals,
+  isLoading,
+  data,
+}: {
+  decimals?: number;
+  isLoading: boolean;
+  data: IPoolStateResponse[] | undefined;
+}) => {
   if (isLoading) {
     return (
       <div

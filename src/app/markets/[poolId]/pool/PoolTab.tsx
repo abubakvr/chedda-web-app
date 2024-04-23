@@ -10,6 +10,7 @@ import {
   useMarketInfo,
   useCollateralInfo,
   useAvailableLiquidity,
+  usePoolState,
 } from "@/hooks";
 import { MyInformationCard, CollateralInfoCard } from "@/components/cards";
 import { InterestRatesChart, SuppyAndBorrowChart } from "@/components/charts";
@@ -41,12 +42,18 @@ const PoolTab = ({
     fetchData: fetchCollateralInfo,
   } = useCollateralInfo();
   const { data: available } = useAvailableLiquidity();
+  const {
+    isLoading: poolStateLoading,
+    data: poolStateData,
+    fetchData: fetchPoolStateData,
+  } = usePoolState();
 
   const fetchPoolInfo = () => {
     fetchPoolStats(false);
     fetchAccountInfo(false);
     fetchMarketInfo(false);
     fetchCollateralInfo(false);
+    fetchPoolStateData(false);
   };
 
   const collateralInfo = formatCollateralInfo(
@@ -74,7 +81,11 @@ const PoolTab = ({
           />
         </div>
         <div className="pool-card rounded-lg">
-          <SuppyAndBorrowChart decimals={poolStats?.asset.decimals} />
+          <SuppyAndBorrowChart
+            decimals={poolStats?.asset.decimals}
+            isLoading={poolStateLoading}
+            data={poolStateData}
+          />
         </div>
         <div className="pool-card rounded-lg">
           <InterestRatesChart />
