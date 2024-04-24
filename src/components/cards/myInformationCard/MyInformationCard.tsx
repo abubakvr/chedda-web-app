@@ -15,7 +15,7 @@ interface MyInformationCardProps {
   available: BigNumber | undefined;
   isLoading: boolean;
   assetPrice: number;
-  fetchAccountInfo: (showLoading?: boolean) => void;
+  fetchPoolInfo: () => void;
   setActivePoolTab: Dispatch<SetStateAction<string>>;
 }
 
@@ -25,7 +25,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
   isLoading,
   assetPrice,
   available,
-  fetchAccountInfo,
+  fetchPoolInfo,
   setActivePoolTab,
 }) => {
   const [isSupplyModalOpen, setIsSupplyModalOpen] = useState(false);
@@ -143,7 +143,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           available={available}
           tokenBalance={accountInfo?.walletAssetBalance}
           baseSupplyAPY={poolStats.baseSupplyAPY}
-          fetchAccountInfo={fetchAccountInfo}
+          fetchPoolInfo={fetchPoolInfo}
           defaultTab={defaultTab}
           setActivePoolTab={setActivePoolTab}
         />
@@ -158,7 +158,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           totalBorrowed={totalBorrowed}
           totalCollateralValue={totalCollateralValue}
           onClose={closeBorrowModal}
-          fetchAccountInfo={fetchAccountInfo}
+          fetchPoolInfo={fetchPoolInfo}
           openSupplyModal={openSupplyModal}
         />
       )}

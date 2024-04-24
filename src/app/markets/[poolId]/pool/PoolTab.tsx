@@ -10,6 +10,7 @@ import {
   useMarketInfo,
   useCollateralInfo,
   useAvailableLiquidity,
+  usePoolState,
 } from "@/hooks";
 import { MyInformationCard, CollateralInfoCard } from "@/components/cards";
 import { InterestRatesChart, SuppyAndBorrowChart } from "@/components/charts";
@@ -19,19 +20,41 @@ import { currentEnvironment } from "@/data/environments";
 const PoolTab = ({
   poolStats,
   setActivePoolTab,
+  fetchPoolStats,
 }: {
   poolStats: IPoolStatsResponse | undefined;
   setActivePoolTab: Dispatch<SetStateAction<string>>;
+  fetchPoolStats: (showLoading: boolean) => void;
 }) => {
   const {
     data: accountInfo,
     fetchData: fetchAccountInfo,
     isLoading: accountInfoLoading,
   } = useAccountInfo();
-  const { data: marketInfo, isLoading: marketInfoLoading } = useMarketInfo();
-  const { data: collateralData, isLoading: collateralInfoLoading } =
-    useCollateralInfo();
+  const {
+    data: marketInfo,
+    isLoading: marketInfoLoading,
+    fetchData: fetchMarketInfo,
+  } = useMarketInfo();
+  const {
+    data: collateralData,
+    isLoading: collateralInfoLoading,
+    fetchData: fetchCollateralInfo,
+  } = useCollateralInfo();
   const { data: available } = useAvailableLiquidity();
+  const {
+    isLoading: poolStateLoading,
+    data: poolStateData,
+    fetchData: fetchPoolStateData,
+  } = usePoolState();
+
+  const fetchPoolInfo = () => {
+    fetchPoolStats(false);
+    fetchAccountInfo(false);
+    fetchMarketInfo(false);
+    fetchCollateralInfo(false);
+    fetchPoolStateData(false);
+  };
 
   const collateralInfo = formatCollateralInfo(
     collateralData,
@@ -58,7 +81,11 @@ const PoolTab = ({
           />
         </div>
         <div className="pool-card rounded-lg">
-          <SuppyAndBorrowChart decimals={poolStats?.asset.decimals} />
+          <SuppyAndBorrowChart
+            decimals={poolStats?.asset.decimals}
+            isLoading={poolStateLoading}
+            data={poolStateData}
+          />
         </div>
         <div className="pool-card rounded-lg">
           <InterestRatesChart />
@@ -72,7 +99,7 @@ const PoolTab = ({
             assetPrice={assetPrice}
             isLoading={accountInfoLoading}
             available={available}
-            fetchAccountInfo={fetchAccountInfo}
+            fetchPoolInfo={fetchPoolInfo}
             setActivePoolTab={setActivePoolTab}
           />
         </div>

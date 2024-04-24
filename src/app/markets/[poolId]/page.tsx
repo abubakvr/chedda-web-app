@@ -10,24 +10,40 @@ import StakeTab from "./stake/StakeTab";
 
 const Page = () => {
   const [activeTab, setActiveTab] = useState("Pool");
-  const { data: poolStats, isLoading } = usePoolStats();
+  const {
+    data: poolStats,
+    isLoading,
+    fetchData: fetchPoolStats,
+  } = usePoolStats();
   const poolSummary = getPoolSummaryData(poolStats);
 
   const pageTabs = [
     {
       name: "Pool",
       info: "Supply your assets to earn interest. Liquidity Providers can also stake LP tokens to earn CHEDDA token rewards.",
-      tab: <PoolTab poolStats={poolStats} setActivePoolTab={setActiveTab} />,
+      tab: (
+        <PoolTab
+          poolStats={poolStats}
+          setActivePoolTab={setActiveTab}
+          fetchPoolStats={fetchPoolStats}
+        />
+      ),
     },
     {
       name: "Stake",
       info: "Stake your LP tokens to earn CHEDDA token rewards. CHEDDA token emissions are directed by how much CHEDDA is locked in a pools gauge.",
-      tab: <StakeTab asset={poolStats?.asset} setActiveTab={setActiveTab} />,
+      tab: (
+        <StakeTab
+          asset={poolStats?.asset}
+          setActiveTab={setActiveTab}
+          fetchPoolStats={fetchPoolStats}
+        />
+      ),
     },
     {
       name: "Lock",
       info: "Lock CHEDDA to direct token emissions and earn locking rewards. Locked tokens are susceptible to slashing in case of a shortfall event in the associated pool.",
-      tab: <LockTab asset={poolStats?.asset} />,
+      tab: <LockTab asset={poolStats?.asset} fetchPoolStats={fetchPoolStats} />,
     },
   ];
 

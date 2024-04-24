@@ -21,7 +21,7 @@ export interface BorrowModalProps {
   totalCollateralValue: number;
   availableLiquidity: BigNumber | undefined;
   onClose: () => void;
-  fetchAccountInfo: (showLoading?: boolean) => void;
+  fetchPoolInfo: () => void;
   openSupplyModal: (activeTab: "Deposit" | "Withdraw") => void;
 }
 
@@ -51,7 +51,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
   totalCollateralValue,
   availableLiquidity,
   onClose,
-  fetchAccountInfo,
+  fetchPoolInfo,
   openSupplyModal,
 }) => {
   const [activeTab, setActiveTab] = useState<
@@ -100,14 +100,14 @@ export const BorrowModal: FC<BorrowModalProps> = ({
     fetchAccountCollateral(false);
     fetchHealthFactor(false);
     fetchTokenBalance(false);
-    fetchAccountInfo(false);
     fetchAvailable(false);
+    fetchPoolInfo();
   }, [
     fetchAllowance,
     fetchAccountCollateral,
     fetchHealthFactor,
     fetchTokenBalance,
-    fetchAccountInfo,
+    fetchPoolInfo,
     fetchAvailable,
   ]);
 

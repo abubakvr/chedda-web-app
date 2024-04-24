@@ -2,10 +2,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { render, screen, waitFor } from "@testing-library/react";
 import { SuppyAndBorrowChart } from "../SupplyAndBorrowChart";
 import { usePoolState } from "@/hooks"; // Import the actual hook implementation
-import {
-  mockCollateralInfo,
-  mockPoolStateEvents,
-} from "@/utils/Mocks/MockTestData";
+import { mockPoolStateEvents } from "@/utils/Mocks/MockTestData";
 
 jest.mock("ethers");
 jest.mock("recharts");
@@ -30,8 +27,8 @@ describe("SuppyAndBorrowChart", () => {
     render(
       <div style={{ width: "500px", height: "300px" }}>
         <SuppyAndBorrowChart
-          collateralInfo={mockCollateralInfo}
-          poolId={mockPoolId}
+          data={undefined}
+          isLoading={false}
           decimals={mockDecimals}
         />
       </div>
@@ -53,8 +50,8 @@ describe("SuppyAndBorrowChart", () => {
     render(
       <div style={{ width: "500px", height: "300px" }}>
         <SuppyAndBorrowChart
-          collateralInfo={mockCollateralInfo}
-          poolId={mockPoolId}
+          data={undefined}
+          isLoading={true}
           decimals={mockDecimals}
         />
       </div>

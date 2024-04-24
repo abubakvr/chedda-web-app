@@ -55,7 +55,7 @@ const mockProps: BorrowModalProps = {
   ],
   totalBorrowed: 20000,
   assetPrice: 90,
-  fetchAccountInfo: jest.fn(),
+  fetchPoolInfo: jest.fn(),
   availableLiquidity: BigNumber.from("390"),
   openSupplyModal: jest.fn(),
   totalCollateralValue: 1000,

@@ -95,13 +95,21 @@ describe("PoolTab", () => {
   });
   it("renders without crashing", () => {
     render(
-      <PoolTab poolStats={mockPoolStats[0]} setActivePoolTab={jest.fn()} />
+      <PoolTab
+        poolStats={mockPoolStats[0]}
+        setActivePoolTab={jest.fn()}
+        fetchPoolStats={jest.fn()}
+      />
     );
   });
 
   it("displays the correct child components", () => {
     render(
-      <PoolTab poolStats={mockPoolStats[0]} setActivePoolTab={jest.fn()} />
+      <PoolTab
+        poolStats={mockPoolStats[0]}
+        setActivePoolTab={jest.fn()}
+        fetchPoolStats={jest.fn()}
+      />
     );
     expect(screen.getByTestId("collateral-info-card")).toBeInTheDocument();
     expect(screen.getByTestId("supply-borrow-chart")).toBeInTheDocument();

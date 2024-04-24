@@ -24,7 +24,7 @@ describe("MyInformationCard", () => {
           isLoading={false}
           assetPrice={1000}
           available={ethers.BigNumber.from("1000")}
-          fetchAccountInfo={jest.fn()}
+          fetchPoolInfo={jest.fn()}
           setActivePoolTab={jest.fn()}
         />
       </MockAppProviders>
@@ -53,7 +53,7 @@ describe("MyInformationCard", () => {
           assetPrice={0}
           available={undefined}
           setActivePoolTab={jest.fn()}
-          fetchAccountInfo={jest.fn()}
+          fetchPoolInfo={jest.fn()}
         />
       </MockAppProviders>
     );
