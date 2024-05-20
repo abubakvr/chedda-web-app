@@ -138,16 +138,13 @@ export const mockCurrentEnvironment = {
   contractPrefix: "http://mockContractPrefix.com",
   chainId: 1,
   contracts: {
-    LendingPool: "mockLendingPoolAddress",
     LendingPoolLens: "mockLendingPoolLensAddress",
     InterestRatesProjector: "mockLendingPoolLensAddress",
     Chedda: "mockCheddaAddress",
     PriceFeed: "mockPriceFeedAddress",
     LockingGaugeRewardsDistributor: "mockLockingGaugeRewardsAddress",
-    xChedda: "mockXCheddaAddress",
     veChedda: "mockVeCheddaAddress",
     Faucet: "mockFaucetAddress",
-    GaugeController: "mockGaugeControllerAddress",
   },
   tokens: {
     4334: {
@@ -167,9 +164,6 @@ export const mockCurrentEnvironment = {
       color: "#FFFFFF",
     },
   },
-};
-const mockProvider = {
-  getSigner: jest.fn(),
 };
 
 export const mockAggregateStats: ISummaryStats[] = [

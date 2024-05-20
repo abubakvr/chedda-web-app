@@ -109,8 +109,8 @@ export const CHAINS: {
     nativeCurrency: ETH,
     blockExplorerUrls: ["https://sepolia.etherscan.io/"],
   },
-  421614: {
-    chainId: "421614",
+  84532: {
+    chainId: "84532",
     urls: [
       infuraKey ? `https://arbitrum-sepolia.infura.io/v3/${infuraKey}` : "",
       "https://sepolia-explorer.arbitrum.io/",

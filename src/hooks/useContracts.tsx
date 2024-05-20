@@ -441,7 +441,7 @@ export const getCheddaBalance: GetDataFunction<BigNumber> = async ({
 }) => {
   if (!environment || !account) return null;
   const cheddaToken = chedda.cheddaToken(
-    environment.contracts.Chedda,
+    environment.contracts.CheddaToken,
     signer as Signer
   );
   return await cheddaToken.balanceOf(account);
@@ -463,7 +463,7 @@ export const getCheddaAllowance: GetDataFunction<BigNumber> = async ({
   );
   const gaugeContract = await lendingPool.gauge();
   const cheddaToken = chedda.cheddaToken(
-    environment.contracts.Chedda,
+    environment.contracts.CheddaToken,
     signer as Signer
   );
   return await cheddaToken.allowance(account, gaugeContract);

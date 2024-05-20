@@ -10,7 +10,7 @@ export const useTransaction = (asset: string) => {
   const { chedda, signer } = useCheddaSdk();
   const { poolId } = useParams();
   const strPoolId = poolId.toString();
-  const environment = currentEnvironment?.contracts.Chedda || "";
+  const environment = currentEnvironment?.contracts.CheddaToken || "";
   const token = chedda?.erc20token(asset || strPoolId, signer as Signer);
   const lendingPool = chedda?.lendingPool(strPoolId, signer as Signer);
   const cheddaToken = chedda?.cheddaToken(environment, signer as Signer);

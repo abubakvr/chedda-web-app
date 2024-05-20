@@ -36,7 +36,7 @@ const LockTab = ({
     isLoading: cheddaAllowanceLoading,
   } = useCheddaAllowance();
   const { data: cheddaPrice, isLoading: cheddaPriceLoading } = useTokenValue(
-    currentEnvironment?.contracts.Chedda || ""
+    currentEnvironment?.contracts.CheddaToken || ""
   );
   const {
     data: lockedChedda,
