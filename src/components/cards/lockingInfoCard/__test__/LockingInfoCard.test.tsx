@@ -39,7 +39,7 @@ describe("StakingInfoCard Component", () => {
     const externalLink = getByAltText("link out").closest("a");
     expect(externalLink).toHaveAttribute(
       "href",
-      "https://sepolia.arbiscan.io/address/0x00"
+      "https://sepolia.basescan.org/address/0x00"
     );
     expect(externalLink).toHaveAttribute("target", "_blank");
     expect(externalLink).toHaveAttribute("rel", "noreferrer");

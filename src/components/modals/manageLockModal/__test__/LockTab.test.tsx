@@ -10,7 +10,7 @@ jest.mock("@web3-react/core", () => ({
   ...jest.requireActual("@web3-react/core"),
   useWeb3React: jest.fn(() => ({
     account: "0x123",
-    chainId: 421614,
+    chainId: 84532,
     isActivating: false,
   })),
 }));
@@ -19,7 +19,7 @@ describe("LockTab", () => {
   beforeEach(() => {
     (useWeb3React as jest.Mock).mockImplementation(() => ({
       account: "0x123",
-      chainId: 421614,
+      chainId: 84532,
       isActivating: false,
     }));
   });
@@ -80,7 +80,7 @@ describe("LockTab", () => {
         value: 30,
         days: 30,
       },
-      lockExpiry: new Date("2024-05-01"),
+      lockExpiry: new Date("2027-05-01"),
       buttonAction: buttonActionMock,
       setClearInputField: jest.fn(),
       setAmount: jest.fn(),

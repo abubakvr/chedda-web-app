@@ -38,7 +38,7 @@ export const ClaimRewardsCard = ({
     txStatus: "success",
   });
   const { claimStakeRewards, claimLockRewards } = useTransaction("");
-  const cheddaContract = currentEnvironment?.contracts.Chedda;
+  const cheddaContract = currentEnvironment?.contracts.CheddaToken;
   const { data: assetPrice } = useTokenPrice(cheddaContract);
 
   const parsedRewardsValue = parseBigNumberToFloat(claimableRewards, 18, 5);

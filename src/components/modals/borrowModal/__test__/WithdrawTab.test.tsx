@@ -16,7 +16,7 @@ jest.mock("@web3-react/core", () => ({
   ...jest.requireActual("@web3-react/core"),
   useWeb3React: jest.fn(() => ({
     account: "0x123",
-    chainId: 421614,
+    chainId: 84532,
     isActivating: false,
   })),
 }));

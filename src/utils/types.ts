@@ -51,16 +51,13 @@ export interface IEnvironment {
   contractPrefix: string;
   chainId: number;
   contracts: {
-    LendingPool: string;
     LendingPoolLens: string;
     InterestRatesProjector: string;
     LockingGaugeRewardsDistributor: string;
     PriceFeed: string;
-    Chedda: string;
-    xChedda: string;
+    CheddaToken: string;
     veChedda: string;
     Faucet: string;
-    GaugeController: string;
   };
   tokens: ITokenConfig;
 }
