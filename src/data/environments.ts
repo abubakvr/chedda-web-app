@@ -9,6 +9,10 @@ import aeroLogo from "@/assets/logos/aero-logo.png";
 import aaveLogo from "@/assets/logos/aave-logo.png";
 import daiLogo from "@/assets/logos/dai-logo.png";
 import compoundLogo from "@/assets/logos/compound-logo.png";
+import cheddaLogo from "@/assets/logos/chedda-logo.png";
+import galaLogo from "@/assets/logos/gala-logo.png";
+import beamLogo from "@/assets/logos/beam-logo.png";
+import sandLogo from "@/assets/logos/sand-logo.png";
 
 import { alchemyKey } from "@/utils/constants";
 import { IEnvironment } from "@/utils/types";
@@ -32,6 +36,19 @@ export const currentEnvironment: IEnvironment = {
     Faucet: "0x0A5Fe3dd684B1aA04d156d42C259a9feF887255e",
   },
   tokens: {
+    "0xeC7D6a60d7367681e42b1c153d38cBCde55f786D": {
+      name: "Chedda Token",
+      symbol: "CHEDDA",
+      address: "0xeC7D6a60d7367681e42b1c153d38cBCde55f786D",
+      logo: cheddaLogo,
+      decimals: 18,
+      color: "#3498db",
+      type: "nonOFT",
+      oftAdapter: "none",
+      nativeChain: "base",
+      source: "base",
+      bridgeToken: true,
+    },
     "0xc349d33292F4958d5E616035241bE2ab2dE85100": {
       name: "USD Coin",
       symbol: "USDC",
@@ -39,6 +56,11 @@ export const currentEnvironment: IEnvironment = {
       logo: usdcLogo,
       decimals: 6,
       color: "#3498db",
+      type: "nonOFT",
+      oftAdapter: "none",
+      nativeChain: "base",
+      source: "base",
+      bridgeToken: false,
     },
     "0xF621E3fF2379d9a64a614A4D8C6b0dD6fa014A18": {
       name: "Tether USD",
@@ -47,6 +69,11 @@ export const currentEnvironment: IEnvironment = {
       logo: usdtLogo,
       decimals: 6,
       color: "#2ecc71",
+      type: "nonOFT",
+      oftAdapter: "none",
+      nativeChain: "base",
+      source: "base",
+      bridgeToken: false,
     },
     "0xF6eea61d35B5A1DdCF7071eC7d5F6a62d649143b": {
       name: "DAI Stablecoin",
@@ -55,6 +82,11 @@ export const currentEnvironment: IEnvironment = {
       logo: daiLogo,
       decimals: 18,
       color: "#FFC26F",
+      type: "nonOFT",
+      oftAdapter: "none",
+      nativeChain: "base",
+      source: "base",
+      bridgeToken: false,
     },
     "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511": {
       name: "Wrapped ETH",
@@ -63,6 +95,11 @@ export const currentEnvironment: IEnvironment = {
       logo: etheruemLogo,
       decimals: 18,
       color: "#687EFF",
+      type: "nonOFT",
+      oftAdapter: "none",
+      nativeChain: "base",
+      source: "base",
+      bridgeToken: false,
     },
     "0x12110BA7e972D03f90fCDe07F92e603f9D1ED982": {
       name: "Wrapped Bitcoin",
@@ -71,6 +108,11 @@ export const currentEnvironment: IEnvironment = {
       logo: bitcoinLogo,
       decimals: 8,
       color: "#FFC436",
+      type: "nonOFT",
+      oftAdapter: "none",
+      nativeChain: "base",
+      source: "base",
+      bridgeToken: false,
     },
     "0x2d5246fcC20Df5Cdf5346254702a7cBD77E7DBC3": {
       name: "Aerodrome",
@@ -79,6 +121,11 @@ export const currentEnvironment: IEnvironment = {
       logo: aeroLogo,
       decimals: 18,
       color: "#D8D8D8",
+      type: "nonOFT",
+      oftAdapter: "none",
+      nativeChain: "base",
+      source: "base",
+      bridgeToken: false,
     },
     "0x0414920Dc0C3Bb615A3d8EAA239D55c4258AAae0": {
       name: "AAVE",
@@ -87,6 +134,11 @@ export const currentEnvironment: IEnvironment = {
       logo: aaveLogo,
       decimals: 18,
       color: "#DDE6ED",
+      type: "nonOFT",
+      oftAdapter: "none",
+      nativeChain: "base",
+      source: "base",
+      bridgeToken: false,
     },
     "0xC58bb755381C43FC8A9505fFa7C44d8737203300": {
       name: "Compound",
@@ -95,6 +147,11 @@ export const currentEnvironment: IEnvironment = {
       logo: compoundLogo,
       decimals: 18,
       color: "#85CDFD",
+      type: "nonOFT",
+      oftAdapter: "none",
+      nativeChain: "base",
+      source: "base",
+      bridgeToken: false,
     },
     "0x8166D0DeFb96900075a667FFb099DE8A493A4DfD": {
       name: "Uniswap",
@@ -103,6 +160,11 @@ export const currentEnvironment: IEnvironment = {
       logo: uniswapLogo,
       decimals: 18,
       color: "#E26EE5",
+      type: "nonOFT",
+      oftAdapter: "none",
+      nativeChain: "base",
+      source: "base",
+      bridgeToken: false,
     },
     "0xFcA37314E6E1e399e7054C14B2746f3BC9F33fEB": {
       name: "Echelon Prime",
@@ -111,6 +173,11 @@ export const currentEnvironment: IEnvironment = {
       logo: primeLogo,
       decimals: 18,
       color: "#0E8388",
+      type: "nonOFT",
+      oftAdapter: "none",
+      nativeChain: "base",
+      source: "base",
+      bridgeToken: false,
     },
     "0xc1e5599f1ac90995762302D946AF619bD9824813": {
       name: "Heroes of Mavia",
@@ -119,6 +186,50 @@ export const currentEnvironment: IEnvironment = {
       logo: maviaLogo,
       decimals: 18,
       color: "#DDE6ED",
+      type: "nonOFT",
+      oftAdapter: "none",
+      nativeChain: "ethereum",
+      source: "ethereum",
+      bridgeToken: false,
+    },
+    "0x74EB135902B4A4B33FB218aff1D7Dd437DcB7186": {
+      name: "Gala",
+      symbol: "GALA",
+      address: "0x74EB135902B4A4B33FB218aff1D7Dd437DcB7186",
+      logo: galaLogo,
+      decimals: 18,
+      color: "#DDE6ED",
+      type: "oftAdapter",
+      oftAdapter: "0x311F0DD563582f7a94ED605429446dCc6bA68bBF",
+      nativeChain: "base",
+      source: "base",
+      bridgeToken: true,
+    },
+    "0xbf2a96C43636bcEE0826168E904CaB6C1072820D": {
+      name: "Beam",
+      symbol: "BEAM",
+      address: "0x0dbb7d305434d01cd9E408b0ddc5A227d563a921",
+      logo: beamLogo,
+      decimals: 18,
+      color: "#DDE6ED",
+      type: "oftAdapter",
+      oftAdapter: "0xbf2a96C43636bcEE0826168E904CaB6C1072820D",
+      nativeChain: "ethereum",
+      source: "ethereum",
+      bridgeToken: true,
+    },
+    "0xAdBCD031E337453a2451f336194F9912Ff3D0893": {
+      name: "The Sandbox",
+      symbol: "SAND",
+      address: "0xAdBCD031E337453a2451f336194F9912Ff3D0893",
+      logo: sandLogo,
+      decimals: 18,
+      color: "#DDE6ED",
+      type: "oftAdapter",
+      oftAdapter: "0xCBfa283cCc60CF5151AAf5f73F9513e7321c8483",
+      nativeChain: "ethereum",
+      source: "ethereum",
+      bridgeToken: true,
     },
   },
 };

@@ -38,8 +38,16 @@ export interface IToken {
   color: string;
 }
 
+export interface IConfigToken extends IToken {
+  bridgeToken: boolean;
+  type: string;
+  oftAdapter: string;
+  nativeChain: string;
+  source: string;
+}
+
 export interface ITokenConfig {
-  [tokenAddress: string]: IToken;
+  [tokenAddress: string]: IConfigToken;
 }
 
 export interface IEnvironment {
@@ -179,4 +187,11 @@ export interface IPoolLens {
 export interface modalInfoItem {
   title: string;
   value: string | number;
+}
+
+export interface IBridgeToken {
+  name: string;
+  logo: StaticImageData;
+  chainId: number;
+  symbol: string;
 }

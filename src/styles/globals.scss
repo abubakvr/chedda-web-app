@@ -394,3 +394,135 @@ input:checked + .slider:before {
 .lock-time-box:hover {
   background: linear-gradient(137deg, #51d5fa 8.34%, #b74af1 95.26%);
 }
+
+.token-select,
+.bridge-box,
+.token-select-active {
+  position: relative;
+}
+
+.token-select:hover,
+.bridge-box:hover {
+  background: linear-gradient(
+    95.05deg,
+    rgba(150, 136, 247, 0.1) 16.92%,
+    rgba(93, 222, 250, 0.1) 89.95%
+  );
+}
+
+.bridge-box-active,
+.token-select {
+  background: linear-gradient(
+    95.05deg,
+    rgba(150, 136, 247, 0.1) 16.92%,
+    rgba(93, 222, 250, 0.1) 89.95%
+  );
+  border-radius: 16px;
+}
+
+.bridge-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1.5px;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0; /* Hide the pseudo-element initially */
+  transition: opacity 0.3s ease; /* Smooth transition for the hover effect */
+}
+
+.bridge-box-active::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1.5px;
+  background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 1; /* Hide the pseudo-element initially */
+}
+
+.token-select::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 2px;
+  background: #ffffff20;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 1; /* Hide the pseudo-element initially */
+  transition: opacity 0.3s ease; /* Smooth transition for the hover effect */
+}
+
+.token-select-active::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 2px;
+  background: #ffffff20;
+  background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 1; /* Hide the pseudo-element initially */
+  transition: opacity 0.3s ease; /* Smooth transition for the hover effect */
+}
+
+.bridge-box:hover::before {
+  opacity: 1; /* Show the pseudo-element on hover */
+}
+
+.token-select:hover::before {
+  background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
+}
+
+.bridge-scroll-element {
+  overflow: auto;
+  position: relative;
+  margin-right: -12px;
+  padding-right: 4px;
+}
+
+.bridge-scroll-element::-webkit-scrollbar {
+  width: 8px;
+  height: 12px;
+  padding-left: 4px;
+  margin-right: -10px;
+}
+
+.bridge-scroll-element::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+  margin-left: 4px;
+  margin-right: -10px;
+}
+
+.bridge-scroll-element::-webkit-scrollbar-thumb {
+  background: linear-gradient(137deg, #51d5fa 8.34%, #b74af1 95.26%);
+  border-radius: 10px;
+  margin-right: -10px;
+}
+
+.bridge-scroll-element::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(137deg, #51d5fa 8.34%, #b74af1 95.26%);
+  opacity: 0.8;
+}
+
+.bridge-scroll-element::-webkit-scrollbar-corner {
+  background: transparent;
+}
