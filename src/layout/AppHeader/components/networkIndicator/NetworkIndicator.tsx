@@ -14,12 +14,10 @@ export const NetworkIndicator = ({
     >
       <div className="text-[#ffffff70] text-lg">Network: </div>
       <div className="flex gap-x-1.5 items-center">
-        {account && (
-          <div
-            className="w-2 h-2 rounded-full bg-success"
-            data-testid="network-status-circle"
-          ></div>
-        )}
+        <div
+          className={`w-2 h-2 rounded-full ${account ? "bg-success" : "bg-transparent w-2 h-2 border-[1.5px] border-error rounded-full"}`}
+          data-testid="network-status-circle"
+        ></div>
         <span className="text-lg">{network}</span>
       </div>
     </div>

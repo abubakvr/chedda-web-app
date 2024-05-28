@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { NetworkIndicator } from "../NetworkIndicator";
 
 describe("NetworkIndicator component", () => {
@@ -51,28 +51,35 @@ describe("NetworkIndicator component", () => {
     expect(accountCircle).toBeInTheDocument();
   });
 
-  test("renders Network Indicator without account circle if account is not provided", () => {
+  test("renders the network and account status correctly", () => {
     // Arrange
-    const network = "Test Network";
-    const { getByText, queryByTestId, getByTestId } = render(
-      <NetworkIndicator network={network} account={undefined} />
-    );
+    const network = "Ethereum";
+    const account = "0x123";
 
     // Act
-    // Check if the main container is rendered
-    const mainContainer = getByTestId("network-indicator");
-    expect(mainContainer).toBeInTheDocument();
+    render(<NetworkIndicator network={network} account={account} />);
 
-    // Check if the text "Network: " is rendered
-    const networkText = getByText(/Network:/);
-    expect(networkText).toBeInTheDocument();
+    // Assert
+    expect(screen.getByText(/Network:/i)).toBeInTheDocument();
+    expect(screen.getByText(network)).toBeInTheDocument();
+    expect(screen.getByTestId("network-status-circle")).toHaveClass(
+      "bg-success"
+    );
+  });
 
-    // Check if the network name is rendered correctly
-    const networkName = getByText(network);
-    expect(networkName).toBeInTheDocument();
+  test("renders the error status correctly when account is undefined", () => {
+    // Arrange
+    const network = "Ethereum";
+    const account = undefined;
 
-    // Check if the account circle is not rendered
-    const accountCircle = queryByTestId("network-status-circle");
-    expect(accountCircle).toBeNull();
+    // Act
+    render(<NetworkIndicator network={network} account={account} />);
+
+    // Assert
+    expect(screen.getByText(/Network:/i)).toBeInTheDocument();
+    expect(screen.getByText(network)).toBeInTheDocument();
+    expect(screen.getByTestId("network-status-circle")).toHaveClass(
+      "border-error"
+    );
   });
 });
