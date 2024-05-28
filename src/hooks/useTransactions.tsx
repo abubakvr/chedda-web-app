@@ -4,12 +4,13 @@ import { useCheddaSdk } from "./useCheddaSdk";
 import { useParams } from "next/navigation";
 import { getErrorMessageFromCode } from "@/utils/helpers";
 import { currentEnvironment } from "@/data/environments";
+import { useCallback } from "react";
 
 export const useTransaction = (asset: string) => {
   const { account } = useWeb3React();
   const { chedda, signer } = useCheddaSdk();
   const { poolId } = useParams();
-  const strPoolId = poolId.toString();
+  const strPoolId = poolId ? poolId.toString() : "0x00";
   const environment = currentEnvironment?.contracts.CheddaToken || "";
   const token = chedda?.erc20token(asset || strPoolId, signer as Signer);
   const lendingPool = chedda?.lendingPool(strPoolId, signer as Signer);
@@ -182,6 +183,17 @@ export const useTransaction = (asset: string) => {
       return cheddaLockingGauge?.addToLock(amount);
     }, amount);
 
+  const getTokenBalance = useCallback(
+    async (tokenAddress: string) => {
+      return executeTransaction(async () => {
+        if (!account || !tokenAddress) return;
+        const token = chedda?.erc20token(tokenAddress, signer as Signer);
+        return token?.balanceOf(account);
+      });
+    },
+    [account, chedda, signer]
+  );
+
   return {
     lendingPool,
     approveAsset,
@@ -201,5 +213,6 @@ export const useTransaction = (asset: string) => {
     relockCheddaToken,
     claimLockRewards,
     lockMoreCheddaToken,
+    getTokenBalance,
   };
 };

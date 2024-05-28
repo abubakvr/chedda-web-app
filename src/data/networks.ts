@@ -86,18 +86,6 @@ export const CHAINS: {
     nativeCurrency: ETH,
     blockExplorerUrls: ["https://goerli.etherscan.io/"],
   },
-  421613: {
-    chainId: "421613",
-    urls: [
-      infuraKey ? `https://arbitrum-goerli.infura.io/v3/${infuraKey}` : "",
-      alchemyKey ? `https://arb-goerli.g.alchemy.com/v2/${alchemyKey}` : "",
-      "https://goerli-rollup.arbitrum.io/rpc",
-    ].filter(Boolean),
-    publicUrls: ["https://goerli-rollup.arbitrum.io/rpc"].filter(Boolean),
-    name: "Arbitrum Goerli",
-    nativeCurrency: ETH,
-    blockExplorerUrls: ["https://testnet.arbiscan.io"],
-  },
   11155111: {
     chainId: "11155111",
     urls: [
@@ -112,13 +100,13 @@ export const CHAINS: {
   84532: {
     chainId: "84532",
     urls: [
-      infuraKey ? `https://arbitrum-sepolia.infura.io/v3/${infuraKey}` : "",
-      "https://sepolia-explorer.arbitrum.io/",
+      infuraKey ? `https://base-sepolia.g.alchemy.com/v2/${alchemyKey}` : "",
+      "https://sepolia-explorer.basescan.org/",
     ].filter(Boolean),
-    publicUrls: ["https://sepolia-explorer.arbitrum.io/"].filter(Boolean),
-    name: "Arbitrum Sepoli",
+    publicUrls: ["https://sepolia.basescan.org/"].filter(Boolean),
+    name: "Base Sepolia",
     nativeCurrency: ETH,
-    blockExplorerUrls: ["https://sepolia.arbiscan.io/"],
+    blockExplorerUrls: ["https://sepolia.basescan.org/"],
   },
 };
 
