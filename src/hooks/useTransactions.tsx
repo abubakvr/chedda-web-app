@@ -185,11 +185,9 @@ export const useTransaction = (asset: string) => {
 
   const getTokenBalance = useCallback(
     async (tokenAddress: string) => {
-      return executeTransaction(async () => {
-        if (!account || !tokenAddress) return;
-        const token = chedda?.erc20token(tokenAddress, signer as Signer);
-        return token?.balanceOf(account);
-      });
+      if (!account || !tokenAddress) return;
+      const token = chedda?.cheddaToken(tokenAddress, signer as Signer);
+      return await token?.balanceOf(account);
     },
     [account, chedda, signer]
   );

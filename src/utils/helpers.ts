@@ -1,5 +1,6 @@
 import { Chedda } from "chedda-sdk";
 import { BigNumber, ethers, Signer } from "ethers";
+import { IBridgeChain, IConfigToken } from "./types";
 
 export function findNearestIndex(sortedArray: number[], targetNumber: number) {
   // Check if the array is empty
@@ -47,9 +48,8 @@ export function createTimestamps(interval: number, stamps: number) {
   return timestamps;
 }
 
-export const utilizationsArray: BigNumber[] = Array.from(
-  { length: 101 },
-  (_, index) => BigNumber.from(BigInt(index) * BigInt(10000000000000000))
+export const utilizationsArray: BigNumber[] = Array.from({ length: 101 }, (_, index) =>
+  BigNumber.from(BigInt(index) * BigInt(10000000000000000))
 );
 
 export function displayProjectedHealthFactor(
@@ -147,3 +147,20 @@ export function projectDateTime(days: number) {
   const currentDate: Date = new Date();
   return new Date(currentDate.getTime() + days * 24 * 60 * 60 * 1000);
 }
+
+export const getTokenBridgeAddress = (selectedToken: IConfigToken, selectedChain: IBridgeChain) => {
+  return selectedToken.source === selectedChain.symbol && selectedToken.type === "OFT"
+    ? selectedToken.address
+    : selectedToken.source === selectedChain.symbol && selectedToken.type === "oftAdapter"
+      ? selectedToken.oftAdapter || ""
+      : selectedToken.bridgedOft;
+};
+
+export const getTokenBalanceAddress = (
+  selectedToken: IConfigToken,
+  selectedChain: IBridgeChain
+) => {
+  return selectedToken.source === selectedChain.symbol
+    ? selectedToken.address
+    : selectedToken.bridgedOft;
+};

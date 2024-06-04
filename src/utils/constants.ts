@@ -1,4 +1,4 @@
-import { IMenuItem, INetworkList } from "./types";
+import { IBridgeChain, IMenuItem, INetworkList } from "./types";
 import Arbitrum_Logo from "@/assets/logos/arbitrum-logo.png";
 import Ethereum_Logo from "@/assets/logos/ethereum-logo.png";
 
@@ -65,12 +65,27 @@ export const LOCKTIMES = [
   { title: "360 days", duration: 360, multiplier: 4, value: 4 },
 ];
 
-export const bridgeChains = [
+export const bridgeChains: IBridgeChain[] = [
+  {
+    name: "Base",
+    symbol: "base",
+    chainId: 84532,
+    logo: baseLogo,
+    endpointId: 40245,
+    jsonRpcUrl: `https://base-sepolia.g.alchemy.com/v2/${alchemyKey}`,
+    priceFeed: "0xFe09e4d727Eda07D5C0e961EbE04c7c0f0B0C2C6",
+    ethAddress: "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511",
+  },
   {
     name: "Ethereum",
     symbol: "ethereum",
     chainId: 11155111,
     logo: ethereumLogo,
+    endpointId: 40161,
+    jsonRpcUrl: `https://sepolia.infura.io/v3/${infuraKey}`,
+    priceFeed: "0xAeD59c7d76d44784493dE6B9ec01f7dBac0632f5",
+    ethAddress: "0xc1e5599f1ac90995762302D946AF619bD9824813",
   },
-  { name: "Base", symbol: "base", chainId: 84532, logo: baseLogo },
 ];
+
+export const ethAddress = "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511";

@@ -21,6 +21,11 @@ jest.mock("@web3-react/core", () => ({
   })),
 }));
 
+jest.mock("next/navigation", () => ({
+  ...jest.requireActual("next/navigation"),
+  usePathname: jest.fn(() => "/bridge"),
+}));
+
 describe("SupplyModalContent Component", () => {
   const mockProps = {
     title: "Deposit",

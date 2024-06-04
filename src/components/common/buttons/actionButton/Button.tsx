@@ -5,6 +5,7 @@ import { Dialog } from "../../dialog/Dialog";
 import { LoadingIcon } from "./LoadingIcon";
 import { useSwitchChain } from "@/hooks";
 import { currentEnvironment } from "@/data/environments";
+import { usePathname } from "next/navigation";
 
 interface ButtonProps {
   children: ReactNode;
@@ -39,6 +40,7 @@ export const Button: FC<ButtonProps> = ({
   const { account, chainId } = useWeb3React();
   const appChainId = currentEnvironment?.chainId;
   const switchChain = useSwitchChain();
+  const pathname = usePathname();
 
   const handleButtonClick = () => {
     if (!account) {
@@ -52,7 +54,11 @@ export const Button: FC<ButtonProps> = ({
         },
         actionTitle: "Connect",
       });
-    } else if (appChainId && appChainId !== chainId) {
+    } else if (
+      appChainId &&
+      appChainId !== chainId &&
+      !pathname.startsWith("/bridge")
+    ) {
       setOpenDialog(true);
       setDialogDetails({
         dialogMessage: "Please switch to the correct network and try again.",

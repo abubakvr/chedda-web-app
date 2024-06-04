@@ -40,10 +40,11 @@ export interface IToken {
 
 export interface IConfigToken extends IToken {
   bridgeToken: boolean;
-  type: string;
-  oftAdapter: string;
-  nativeChain: string;
-  source: string;
+  type?: string;
+  oftAdapter?: string;
+  bridgedOft: string;
+  nativeChain?: string;
+  source?: string;
 }
 
 export interface ITokenConfig {
@@ -189,9 +190,13 @@ export interface modalInfoItem {
   value: string | number;
 }
 
-export interface IBridgeToken {
+export interface IBridgeChain {
   name: string;
   logo: StaticImageData;
   chainId: number;
   symbol: string;
+  endpointId: number;
+  jsonRpcUrl: string;
+  priceFeed: string;
+  ethAddress: string;
 }
