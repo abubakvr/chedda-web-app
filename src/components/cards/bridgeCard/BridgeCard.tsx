@@ -81,12 +81,12 @@ const BridgeCard = () => {
     setFetchTokenBalanceLoading(false);
   }, [selectedChain, getTokenBalance]);
 
-  useEffect(() => {
-    fetchBalances();
-  }, [fetchBalances]);
+  const getEstimatedGas = async () => {
+    const tokenAddress =
+      selectedToken.source === selectedChain.key
+        ? selectedToken.address
+        : selectedToken.bridgedOft;
 
-  const getEstimatedGas = useCallback(async () => {
-    const tokenAddress = getTokenBridgeAddress(selectedToken, selectedChain);
     if (!account) return;
     const amountToSend = ethers.utils.parseUnits("0", selectedToken.decimals);
 
@@ -95,22 +95,13 @@ const BridgeCard = () => {
       destinationChain.endpointId,
       amountToSend
     );
-    if (!nativeFee) return;
     const ethGasPrice = await getEthPrice();
     const parsedNativeFee = parseBigNumberToFloat(nativeFee, 18, 10);
     setEstimatedGas({
       gasETHFee: parsedNativeFee,
       gasUSDFee: parsedNativeFee * (ethGasPrice || 0),
     });
-  }, [
-    account,
-    selectedToken,
-    selectedChain,
-    destinationChain.endpointId,
-    setEstimatedGas,
-    getEthPrice,
-    quoteSend,
-  ]);
+  };
 
   const fetchTokenData = useCallback(async () => {
     setTokenDataLoading(true);
@@ -123,7 +114,7 @@ const BridgeCard = () => {
               balanceAddress,
               selectedToken.oftAdapter ?? ""
             )
-          : null;
+          : undefined;
 
       const price = await getTokenPrice(selectedToken.address);
 
@@ -151,6 +142,18 @@ const BridgeCard = () => {
     }
     replace(`${pathname}?${params.toString()}`);
   }
+
+  useEffect(() => {
+    getEstimatedGas();
+  }, []);
+
+  useEffect(() => {
+    fetchTokenData();
+  }, [fetchTokenData]);
+
+  useEffect(() => {
+    fetchBalances();
+  }, [fetchBalances]);
 
   return (
     <div className="sticky">

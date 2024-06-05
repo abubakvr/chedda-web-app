@@ -34,13 +34,12 @@ jest.mock("@web3-react/core", () => ({
 
 const mockUseBridge = {
   sendOFT: jest.fn(),
-  quoteSend: jest.fn().mockResolvedValue([
-    /* Your iterable value here */
-  ]),
+  quoteSend: jest.fn().mockResolvedValue([]),
   approveAsset: jest.fn(),
   getTokenPrice: jest.fn(),
   getTokenAllowance: jest.fn(),
   getTokenBalance: jest.fn(),
+  getEthPrice: jest.fn(),
 };
 
 jest.mock("next/navigation", () => ({

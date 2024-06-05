@@ -37,22 +37,25 @@ export const useBridge = (selectedChain: IBridgeChain | null) => {
     [account]
   );
 
-  const getSendParam = (endpointId: number, amountToSend: BigNumber) => {
-    if (!account || !chedda || !endpointId || !amountToSend) return null;
-    const options = Options.newOptions()
-      .addExecutorLzReceiveOption(200000, 0)
-      .toHex()
-      .toString();
-    return [
-      endpointId,
-      ethers.utils.zeroPad(account, 32),
-      amountToSend,
-      amountToSend,
-      options,
-      `0x`,
-      `0x`,
-    ] as any;
-  };
+  const getSendParam = useCallback(
+    (endpointId: number, amountToSend: BigNumber) => {
+      if (!account || !chedda || !endpointId || !amountToSend) return null;
+      const options = Options.newOptions()
+        .addExecutorLzReceiveOption(200000, 0)
+        .toHex()
+        .toString();
+      return [
+        endpointId,
+        ethers.utils.zeroPad(account, 32),
+        amountToSend,
+        amountToSend,
+        options,
+        `0x`,
+        `0x`,
+      ] as any;
+    },
+    [account, chedda]
+  );
 
   const approveAsset = async (
     tokenAddress: string,
@@ -65,17 +68,20 @@ export const useBridge = (selectedChain: IBridgeChain | null) => {
       return genericOFT?.approve(oftAddress, amount);
     });
 
-  const quoteSend = async (
-    tokenAddress: string,
-    endpointId: number,
-    amountToSend: BigNumber
-  ) => {
-    if (!account || !chedda || !endpointId || !signer) return;
-    const sendParam = getSendParam(endpointId, amountToSend);
-    if (!sendParam) return;
-    const genericOFT = chedda.genericOFT(tokenAddress, signer);
-    return await genericOFT?.quoteSend(sendParam, false);
-  };
+  const quoteSend = useCallback(
+    async (
+      tokenAddress: string,
+      endpointId: number,
+      amountToSend: BigNumber
+    ) => {
+      if (!account || !chedda || !endpointId || !signer) return;
+      const sendParam = getSendParam(endpointId, amountToSend);
+      if (!sendParam) return;
+      const genericOFT = chedda.genericOFT(tokenAddress, signer);
+      return await genericOFT?.quoteSend(sendParam, false);
+    },
+    [account, chedda, signer, getSendParam]
+  );
 
   const sendOFT = async (
     tokenAddress: string,
@@ -120,23 +126,21 @@ export const useBridge = (selectedChain: IBridgeChain | null) => {
 
   const getTokenAllowance = useCallback(
     async (tokenAddress: string, oftAddress: string) => {
-      return executeTransaction(async () => {
-        if (!account || !tokenAddress || !oftAddress || !chedda || !signer)
-          return;
-        const token = chedda.erc20token(tokenAddress, signer);
-        return token?.allowance(account, oftAddress);
-      });
+      if (!account || !tokenAddress || !oftAddress || !chedda || !signer)
+        return;
+      const token = chedda.erc20token(tokenAddress, signer);
+      return token?.allowance(account, oftAddress);
     },
-    [account, chedda, signer, executeTransaction]
+    [account, chedda, signer]
   );
 
-  const getEthPrice = useCallback(async () => {
+  const getEthPrice = async () => {
     const priceChedda = new Chedda(bridgeChains[0].jsonRpcUrl);
     const priceOracle = priceChedda.priceOracle(bridgeChains[0].priceFeed);
     const decimals = await priceOracle.decimals();
     const assetPrice = await priceOracle.readPrice(ethAddress);
     return parseBigNumberToFloat(assetPrice, decimals, 10);
-  }, []);
+  };
 
   return {
     approveAsset,

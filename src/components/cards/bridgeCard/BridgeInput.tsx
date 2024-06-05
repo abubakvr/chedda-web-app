@@ -244,14 +244,6 @@ export const BridgeInput = ({
     }
   };
 
-  useEffect(() => {
-    fetchTokenData();
-  }, [fetchTokenData]);
-
-  useEffect(() => {
-    getEstimatedGas();
-  }, [getEstimatedGas]);
-
   return !confirmBridge ? (
     <>
       <Toast
