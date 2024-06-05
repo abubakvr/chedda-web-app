@@ -7,12 +7,12 @@ import { BridgeAmountField } from "@/components/common/input/BridgeAmountField";
 import { Button } from "@/components/common";
 import { BridgeCardInfo } from "./BridgeCardInfo";
 import { IBridgeChain, IConfigToken } from "@/utils/types";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useBridge, useSwitchChain } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
-import { formatNumber, parseBigNumberToFloat } from "@/utils/formatters";
+import { formatNumber } from "@/utils/formatters";
 import { ConfirmationScreen } from "./ConfirmationScreen";
-import { getTokenBridgeAddress } from "@/utils/helpers";
+import { getTokenBalanceAddress, getTokenBridgeAddress } from "@/utils/helpers";
 import { Toast } from "@/components/ui";
 
 interface TokenBalances {
@@ -27,10 +27,14 @@ interface BridgeInputProps {
   estimatedGasFee: any;
   destinationChain: IBridgeChain;
   fetchTokenBalanceLoading: boolean;
+  tokenDataLoading: boolean;
+  allowance: number;
+  tokenPrice: number;
   handleActiveScreen: (term: string) => void;
   switchToSelectedChain: (chain: IBridgeChain) => void;
   fetchBalances: () => void;
   getEstimatedGas: () => void;
+  fetchTokenData: () => void;
 }
 
 export const BridgeInput = ({
@@ -40,10 +44,15 @@ export const BridgeInput = ({
   estimatedGasFee,
   destinationChain,
   fetchTokenBalanceLoading,
+  allowance,
+  tokenPrice,
+  tokenDataLoading,
   handleActiveScreen,
   switchToSelectedChain,
   fetchBalances,
   getEstimatedGas,
+
+  fetchTokenData,
 }: BridgeInputProps) => {
   const switchChain = useSwitchChain();
 
@@ -52,9 +61,6 @@ export const BridgeInput = ({
   const { account, chainId } = useWeb3React();
   const [amount, setAmount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [tokenDataLoading, setTokenDataLoading] = useState(false);
-  const [allowance, setAllowance] = useState<number>(0);
-  const [tokenPrice, setTokenPrice] = useState<number>(0);
   const [confirmBridge, setConfirmBridge] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [{ txMessage, txHash, txStatus, copyText }, setTxDetails] = useState<{
@@ -69,10 +75,7 @@ export const BridgeInput = ({
     txStatus: "success",
   });
 
-  const balanceAddress =
-    selectedToken.source === selectedChain.key
-      ? selectedToken.address
-      : selectedToken.bridgedOft;
+  const balanceAddress = getTokenBalanceAddress(selectedToken, selectedChain);
 
   const tokenAddress = getTokenBridgeAddress(selectedToken, selectedChain);
   const wrongChain = (chainId && selectedChain.chainId) !== chainId;
@@ -89,44 +92,6 @@ export const BridgeInput = ({
     switchNetwork(destinationChain);
     fetchBalances();
   };
-
-  const fetchTokenData = useCallback(async () => {
-    setTokenDataLoading(true);
-    try {
-      const tokenAllowance =
-        selectedToken.source === selectedChain.key &&
-        selectedToken.type === "oftAdapter"
-          ? await getTokenAllowance(
-              balanceAddress,
-              selectedToken.oftAdapter ?? ""
-            )
-          : null;
-
-      const price = await getTokenPrice(selectedToken.address);
-
-      const parsedAllowance = parseBigNumberToFloat(
-        tokenAllowance,
-        selectedToken.decimals,
-        10
-      );
-      setAllowance(parsedAllowance);
-      setTokenPrice(price || 0);
-    } catch (error) {
-      console.error("Error fetching token data:", error);
-    } finally {
-      setTokenDataLoading(false);
-    }
-  }, [
-    balanceAddress,
-    getTokenPrice,
-    getTokenAllowance,
-    selectedChain.key,
-    selectedToken.source,
-    selectedToken.address,
-    selectedToken.oftAdapter,
-    selectedToken.decimals,
-    selectedToken.type,
-  ]);
 
   const buttonName =
     selectedToken.source === selectedChain.key &&

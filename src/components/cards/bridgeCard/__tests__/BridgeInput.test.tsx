@@ -85,6 +85,9 @@ const defaultProps = {
   fetchTokenBalanceLoading: false,
   tokenBalances: { "0x123": 1000 },
   estimatedGasFee: { gasETHFee: 0.01, gasUSDFee: 5 },
+  tokenDataLoading: false,
+  allowance: 0,
+  tokenPrice: 120,
   destinationChain: {
     chainId: 5,
     key: "BNB",
@@ -99,6 +102,7 @@ const defaultProps = {
   switchToSelectedChain: jest.fn(),
   fetchBalances: jest.fn(),
   getEstimatedGas: jest.fn(),
+  fetchTokenData: jest.fn(),
 };
 
 const mockApproveAdapter = jest.fn();
@@ -197,7 +201,7 @@ describe("BridgeInput Component", () => {
     fireEvent.change(amountInput, { target: { value: "500" } });
 
     await waitFor(() => {
-      expect(screen.getByText("500 USDT ($0.00)")).toBeInTheDocument();
+      expect(screen.getByText("500 USDT ($60000.00)")).toBeInTheDocument();
       expect(screen.getByText("0.0100 ETH ($5.0000)")).toBeInTheDocument();
     });
   });
@@ -280,8 +284,10 @@ describe("BridgeInput Component", () => {
     const amountInput = screen
       .getByTestId("bridge-input-amount-field")
       .querySelector("input") as HTMLInputElement;
+
     fireEvent.change(amountInput, { target: { value: "500" } });
     fireEvent.click(screen.getByRole("button", { name: /Approve/i }));
+
     await waitFor(() => {
       expect(mockApproveAdapter).toHaveBeenCalled();
     });

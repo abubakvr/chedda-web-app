@@ -1,12 +1,11 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import BridgeCard from "../BridgeCard";
 import { WalletConnect } from "@web3-react/walletconnect-v2";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
-import { useBridge, useSwitchChain } from "@/hooks";
+import { useBridge } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { mockLocalStorage } from "@/utils/Mocks/MockLocalStorage";
+import { useSearchParams } from "next/navigation";
 
 jest.mock("@web3-react/core", () => ({
   useWeb3React: jest.fn(),

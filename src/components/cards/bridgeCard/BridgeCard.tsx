@@ -10,10 +10,9 @@ import { currentEnvironment } from "@/data/environments";
 import { useBridge } from "@/hooks";
 import { parseBigNumberToFloat } from "@/utils/formatters";
 import { PageTitle } from "@/components/common/pageTitle/PageTitle";
-import { getTokenBridgeAddress } from "@/utils/helpers";
+import { getTokenBalanceAddress, getTokenBridgeAddress } from "@/utils/helpers";
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
-import { json } from "stream/consumers";
 
 const tokenList = Object.values(currentEnvironment.tokens);
 const bridgeTokens = tokenList.filter((item) => item.bridgeToken);
@@ -37,7 +36,8 @@ const BridgeCard = () => {
   const [selectedToken, setSelectedToken] = useState<IConfigToken>(
     bridgeTokens[0]
   );
-  const { getTokenBalance } = useBridge(selectedChain);
+  const { getTokenBalance, getTokenPrice, getTokenAllowance } =
+    useBridge(selectedChain);
   const [tokenBalances, setTokenBalances] = useState<{
     [key: string]: number | null;
   }>({});
@@ -45,6 +45,9 @@ const BridgeCard = () => {
     gasETHFee: 0,
     gasUSDFee: 0,
   });
+  const [tokenDataLoading, setTokenDataLoading] = useState(false);
+  const [allowance, setAllowance] = useState<number>(0);
+  const [tokenPrice, setTokenPrice] = useState<number>(0);
   const { quoteSend, getEthPrice } = useBridge(selectedChain);
 
   const destinationChain =
@@ -109,6 +112,36 @@ const BridgeCard = () => {
     quoteSend,
   ]);
 
+  const fetchTokenData = useCallback(async () => {
+    setTokenDataLoading(true);
+    const balanceAddress = getTokenBalanceAddress(selectedToken, selectedChain);
+    try {
+      const tokenAllowance =
+        selectedToken.source === selectedChain.key &&
+        selectedToken.type === "oftAdapter"
+          ? await getTokenAllowance(
+              balanceAddress,
+              selectedToken.oftAdapter ?? ""
+            )
+          : null;
+
+      const price = await getTokenPrice(selectedToken.address);
+
+      const parsedAllowance = parseBigNumberToFloat(
+        tokenAllowance,
+        selectedToken.decimals,
+        10
+      );
+      setAllowance(parsedAllowance);
+      setTokenPrice(price || 0);
+      setTokenDataLoading(false);
+    } catch (error) {
+      console.error("Error fetching token data:", error);
+    } finally {
+      setTokenDataLoading(false);
+    }
+  }, [getTokenPrice, getTokenAllowance, selectedChain, selectedToken]);
+
   function handleActiveScreen(term: string) {
     const params = new URLSearchParams(searchParams);
     if (term) {
@@ -155,6 +188,10 @@ const BridgeCard = () => {
               destinationChain={destinationChain}
               fetchBalances={fetchBalances}
               getEstimatedGas={getEstimatedGas}
+              fetchTokenData={fetchTokenData}
+              tokenDataLoading={tokenDataLoading}
+              allowance={allowance}
+              tokenPrice={tokenPrice}
             />
           )}
         </div>
