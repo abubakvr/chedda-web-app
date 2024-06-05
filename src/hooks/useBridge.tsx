@@ -23,16 +23,19 @@ export const useBridge = (selectedChain: IBridgeChain | null) => {
     return provider.getSigner(account);
   }, [provider, account]);
 
-  const executeTransaction = async (transaction: () => Promise<any>) => {
-    if (!account) return;
-    try {
-      return await transaction();
-    } catch (error: any) {
-      const errorMessage = getErrorMessageFromCode(error.code);
-      console.error(error); // Consider adding more sophisticated logging here
-      throw new Error(JSON.stringify({ errorMessage, fullText: error }));
-    }
-  };
+  const executeTransaction = useCallback(
+    async (transaction: () => Promise<any>) => {
+      if (!account) return;
+      try {
+        return await transaction();
+      } catch (error: any) {
+        const errorMessage = getErrorMessageFromCode(error.code);
+        console.error(error);
+        throw new Error(JSON.stringify({ errorMessage, fullText: error }));
+      }
+    },
+    [account]
+  );
 
   const getSendParam = (endpointId: number, amountToSend: BigNumber) => {
     if (!account || !chedda || !endpointId || !amountToSend) return null;
@@ -112,7 +115,7 @@ export const useBridge = (selectedChain: IBridgeChain | null) => {
         return token?.balanceOf(account);
       });
     },
-    [account, chedda, signer]
+    [account, chedda, signer, executeTransaction]
   );
 
   const getTokenAllowance = useCallback(
@@ -124,7 +127,7 @@ export const useBridge = (selectedChain: IBridgeChain | null) => {
         return token?.allowance(account, oftAddress);
       });
     },
-    [account, chedda, signer]
+    [account, chedda, signer, executeTransaction]
   );
 
   const getEthPrice = useCallback(async () => {
@@ -133,7 +136,7 @@ export const useBridge = (selectedChain: IBridgeChain | null) => {
     const decimals = await priceOracle.decimals();
     const assetPrice = await priceOracle.readPrice(ethAddress);
     return parseBigNumberToFloat(assetPrice, decimals, 10);
-  }, [chedda, selectedChain?.priceFeed]);
+  }, []);
 
   return {
     approveAsset,

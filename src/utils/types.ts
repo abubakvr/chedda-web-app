@@ -194,7 +194,7 @@ export interface IBridgeChain {
   name: string;
   logo: StaticImageData;
   chainId: number;
-  symbol: string;
+  key: string;
   endpointId: number;
   jsonRpcUrl: string;
   priceFeed: string;

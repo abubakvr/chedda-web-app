@@ -68,7 +68,7 @@ export const LOCKTIMES = [
 export const bridgeChains: IBridgeChain[] = [
   {
     name: "Base",
-    symbol: "base",
+    key: "base",
     chainId: 84532,
     logo: baseLogo,
     endpointId: 40245,
@@ -78,7 +78,7 @@ export const bridgeChains: IBridgeChain[] = [
   },
   {
     name: "Ethereum",
-    symbol: "ethereum",
+    key: "ethereum",
     chainId: 11155111,
     logo: ethereumLogo,
     endpointId: 40161,

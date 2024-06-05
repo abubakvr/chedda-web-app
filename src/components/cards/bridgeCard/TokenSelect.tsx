@@ -63,7 +63,6 @@ export const TokenSelect = ({
     const matchesTokenAddress = item.address
       .toLowerCase()
       .includes(normalizedSearchKeyword);
-
     return matchesTokenName || matchesTokenSymbol || matchesTokenAddress;
   };
 
@@ -76,9 +75,9 @@ export const TokenSelect = ({
 
   const renderTokenList = (token: IConfigToken, index: number) => {
     const balanceAddress =
-      token.source === selectedChain.symbol ? token.address : token.bridgedOft;
+      token.source === selectedChain.key ? token.address : token.bridgedOft;
     return (
-      <div key={index}>
+      <div key={index} data-testid={"token-list-item"}>
         <button
           onClick={() => {
             setSelectedToken(token);
@@ -87,6 +86,7 @@ export const TokenSelect = ({
           className={`w-full bridge-box relative flex justify-between items-center px-8 py-3 rounded-xl hover:cursor-pointer ${
             selectedToken?.symbol === token.symbol && "bridge-box-active"
           }`}
+          data-testid={`token-select-item-${token.symbol}`}
         >
           <div className="w-max flex font-bold items-center py-2 px-4 space-x-4">
             <div className="w-max flex relative">
@@ -122,6 +122,7 @@ export const TokenSelect = ({
         <button
           className="relative hover:opacity-75"
           onClick={() => handleActiveScreen("bridge")}
+          data-testid="back-button"
         >
           <Image src={leftIcon} alt="left icon" className="w-8 h-8" />
         </button>
@@ -133,10 +134,11 @@ export const TokenSelect = ({
             key={index}
             className="flex flex-col items-center"
             onClick={() => switchNetwork(chain)}
+            data-testid={`network-button-${chain.key}`}
           >
             <div
               className={`token-select w-20 h-20 flex justify-center items-center ${
-                chain.symbol === selectedChain.symbol && "token-select-active"
+                chain.key === selectedChain.key && "token-select-active"
               }`}
             >
               <Image src={chain.logo} alt="" className="w-8 h-8" />
@@ -149,7 +151,8 @@ export const TokenSelect = ({
       </div>
       <div
         data-testid="search-input"
-        className="pool-card mt-8 flex flex-col justify-center gap-4 rounded-lg focus:border-blue"
+        className="pool-card mt-8 flex flex-col justify-center gap-4 rounded-lg focus
+        "
       >
         <div className="relative p-4">
           <Image
@@ -159,9 +162,11 @@ export const TokenSelect = ({
           />
           <input
             type="text"
-            className="w-full h-full font-bold bg-transparent focus:outline-none text-white pl-10"
+            className="w-full h-full font-bold bg-transparent focus
+        text-white pl-10"
             placeholder="Search token by name or address"
             onChange={(e) => handleSearch(e)}
+            data-testid="search-input-field"
           />
         </div>
       </div>

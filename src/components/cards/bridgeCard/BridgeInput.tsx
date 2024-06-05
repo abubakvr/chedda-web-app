@@ -1,5 +1,7 @@
 "use client";
 import Image from "next/image";
+import layerZeroLogo from "@/assets/logos/layer-zero-logo.svg";
+import refreshIcon from "@/assets/icon/refresh-icon.svg";
 import { ethers } from "ethers";
 import { BridgeAmountField } from "@/components/common/input/BridgeAmountField";
 import { Button } from "@/components/common";
@@ -7,13 +9,12 @@ import { BridgeCardInfo } from "./BridgeCardInfo";
 import { IBridgeChain, IConfigToken } from "@/utils/types";
 import { useCallback, useEffect, useState } from "react";
 import { useBridge, useSwitchChain } from "@/hooks";
-import layerZeroLogo from "@/assets/logos/layer-zero-logo.svg";
-import refreshIcon from "@/assets/icon/refresh-icon.svg";
 import { useWeb3React } from "@web3-react/core";
 import { formatNumber, parseBigNumberToFloat } from "@/utils/formatters";
-import { ConfirmationScreen } from "./Confirmation";
+import { ConfirmationScreen } from "./ConfirmationScreen";
 import { getTokenBridgeAddress } from "@/utils/helpers";
 import { Toast } from "@/components/ui";
+
 interface TokenBalances {
   [key: string]: number | null;
 }
@@ -24,7 +25,8 @@ interface BridgeInputProps {
   tokenList: IConfigToken[];
   tokenBalances: TokenBalances;
   estimatedGasFee: any;
-  destinationChain: any;
+  destinationChain: IBridgeChain;
+  fetchTokenBalanceLoading: boolean;
   handleActiveScreen: (term: string) => void;
   switchToSelectedChain: (chain: IBridgeChain) => void;
   fetchBalances: () => void;
@@ -37,6 +39,7 @@ export const BridgeInput = ({
   tokenBalances,
   estimatedGasFee,
   destinationChain,
+  fetchTokenBalanceLoading,
   handleActiveScreen,
   switchToSelectedChain,
   fetchBalances,
@@ -44,7 +47,8 @@ export const BridgeInput = ({
 }: BridgeInputProps) => {
   const switchChain = useSwitchChain();
 
-  const { sendOFT, approveAsset, getTokenPrice, getTokenAllowance } = useBridge(selectedChain);
+  const { sendOFT, approveAsset, getTokenPrice, getTokenAllowance } =
+    useBridge(selectedChain);
   const { account, chainId } = useWeb3React();
   const [amount, setAmount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -66,7 +70,7 @@ export const BridgeInput = ({
   });
 
   const balanceAddress =
-    selectedToken.source === selectedChain.symbol
+    selectedToken.source === selectedChain.key
       ? selectedToken.address
       : selectedToken.bridgedOft;
 
@@ -90,13 +94,21 @@ export const BridgeInput = ({
     setTokenDataLoading(true);
     try {
       const tokenAllowance =
-        selectedToken.source === selectedChain.symbol && selectedToken.type === "oftAdapter"
-          ? await getTokenAllowance(balanceAddress, selectedToken.oftAdapter ?? "")
+        selectedToken.source === selectedChain.key &&
+        selectedToken.type === "oftAdapter"
+          ? await getTokenAllowance(
+              balanceAddress,
+              selectedToken.oftAdapter ?? ""
+            )
           : null;
 
       const price = await getTokenPrice(selectedToken.address);
 
-      const parsedAllowance = parseBigNumberToFloat(tokenAllowance, selectedToken.decimals, 10);
+      const parsedAllowance = parseBigNumberToFloat(
+        tokenAllowance,
+        selectedToken.decimals,
+        10
+      );
       setAllowance(parsedAllowance);
       setTokenPrice(price || 0);
     } catch (error) {
@@ -105,19 +117,28 @@ export const BridgeInput = ({
       setTokenDataLoading(false);
     }
   }, [
+    balanceAddress,
     getTokenPrice,
     getTokenAllowance,
+    selectedChain.key,
+    selectedToken.source,
     selectedToken.address,
     selectedToken.oftAdapter,
     selectedToken.decimals,
+    selectedToken.type,
   ]);
 
   const buttonName =
-    selectedToken.source === selectedChain.symbol &&
+    selectedToken.source === selectedChain.key &&
     selectedToken.type === "oftAdapter" &&
     allowance < amount
       ? "approve"
       : "bridge";
+
+  const returnToInput = () => {
+    setAmount(0);
+    setConfirmBridge(false);
+  };
 
   const handleSendToken = async () => {
     setShowToast(false);
@@ -128,8 +149,16 @@ export const BridgeInput = ({
         return;
       }
 
-      const amountToSend = ethers.utils.parseUnits(`${amount}`, selectedToken.decimals);
-      const tx = await sendOFT(tokenAddress, destinationChain.endpointId, amountToSend, account);
+      const amountToSend = ethers.utils.parseUnits(
+        `${amount}`,
+        selectedToken.decimals
+      );
+      const tx = await sendOFT(
+        tokenAddress,
+        destinationChain.endpointId,
+        amountToSend,
+        account
+      );
 
       if (tx) {
         const result = await tx.wait();
@@ -145,6 +174,7 @@ export const BridgeInput = ({
           });
           setShowToast(true);
           setConfirmBridge(false);
+          setAmount(0);
         } else {
           const txMessage = `An error occurred while proccessing your transaction`;
           setTxDetails({
@@ -179,7 +209,10 @@ export const BridgeInput = ({
         return;
       }
 
-      const amountToSend = ethers.utils.parseUnits(`${amount}`, selectedToken.decimals);
+      const amountToSend = ethers.utils.parseUnits(
+        `${amount}`,
+        selectedToken.decimals
+      );
 
       const tx = await approveAsset(
         selectedToken.address,
@@ -227,10 +260,13 @@ export const BridgeInput = ({
   };
 
   const handleBridgeToken = () => {
-    if (!amount) return;
+    if (!amount) {
+      alert("Input field cannot be empty");
+      return;
+    }
     try {
       if (
-        selectedToken.source === selectedChain.symbol &&
+        selectedToken.source === selectedChain.key &&
         selectedToken.type === "oftAdapter" &&
         allowance < amount
       ) {
@@ -245,7 +281,7 @@ export const BridgeInput = ({
 
   useEffect(() => {
     fetchTokenData();
-  }, [selectedToken, selectedChain]);
+  }, [fetchTokenData]);
 
   useEffect(() => {
     getEstimatedGas();
@@ -260,21 +296,26 @@ export const BridgeInput = ({
         status={txStatus}
         copyText={copyText}
       />
-      <div className="flex justify-between">
+      <div className="flex justify-between" data-testid="bridge-input-title">
         <h1 className="text-3xl font-bold">Transfer</h1>
         <div className="flex gap-x-2 items-center font-bold text-lg">
           <p>Powered By</p>
           <Image src={layerZeroLogo} alt="layer-zero" className="h-8" />
         </div>
       </div>
-      <div className="mt-6 flex gap-x-2">
+      <div className="mt-6 flex gap-x-2" data-testid="bridge-input-chains">
         <div className="w-full">
           <p className="text-lg text-[#FFFFFF70] font-bold">From</p>
           <button
             onClick={() => handleActiveScreen("tokenselect")}
             className="token-select relative flex w-full rounded-2xl px-7 py-5 mt-2 items-center gap-x-4"
+            data-testid="bridge-input-from-chain"
           >
-            <Image src={selectedChain.logo} alt="icon-logo" className="w-9 h-9" />
+            <Image
+              src={selectedChain.logo}
+              alt="icon-logo"
+              className="w-9 h-9"
+            />
             <span className="text-xl font-bold">{selectedChain.name}</span>
           </button>
         </div>
@@ -282,30 +323,41 @@ export const BridgeInput = ({
           <button
             className="relative mt-6 w-9 h-9 hover:opacity-75"
             onClick={() => handleChainSwitch()}
+            data-testid="bridge-input-refresh-button"
           >
             <Image src={refreshIcon} alt="icon-logo" />
           </button>
         </div>
         <div className="w-full">
           <p className="text-lg text-[#FFFFFF70] font-bold">To</p>
-          <button className="token-select flex w-full px-7 py-5 mt-2 items-center gap-x-4">
-            <Image src={destinationChain?.logo} alt="icon-logo" className="w-9 h-9" />
+          <button
+            className="token-select flex w-full px-7 py-5 mt-2 items-center gap-x-4"
+            data-testid="bridge-input-to-chain"
+          >
+            <Image
+              src={destinationChain?.logo}
+              alt="icon-logo"
+              className="w-9 h-9"
+            />
             <span className="text-xl font-bold">{destinationChain.name}</span>
           </button>
         </div>
       </div>
-      <div className="flex justify-between mt-8">
+      <div
+        className="flex justify-between mt-8"
+        data-testid="bridge-input-amount-section"
+      >
         <p className="text-xs text-[#FFFFFF70] font-bold">Select Amount:</p>
         <p className="text-xs text-[#FFFFFF] font-bold">
           Balance:{" "}
-          {tokenDataLoading
-            ? "Loading..."
+          {fetchTokenBalanceLoading
+            ? "loading..."
             : balanceAddress
               ? `${tokenBalances[balanceAddress] || 0} ${selectedToken.symbol}`
               : `0 ${selectedToken.symbol}`}
         </p>
       </div>
-      <div>
+      <div data-testid="bridge-input-amount-field">
         <BridgeAmountField
           onChange={(value) => {
             setAmount(parseFloat(value));
@@ -319,9 +371,15 @@ export const BridgeInput = ({
         />
       </div>
       {wrongChain && (
-        <div className="mt-4 text-error relative font-bold">
+        <div
+          className="mt-4 text-error relative font-bold"
+          data-testid="bridge-input-wrong-network"
+        >
           You are on the wrong network.{" "}
-          <button onClick={() => switchNetwork(selectedChain)} className="underline">
+          <button
+            onClick={() => switchNetwork(selectedChain)}
+            className="underline"
+          >
             Switch to {selectedChain.name}
           </button>
         </div>
@@ -331,14 +389,20 @@ export const BridgeInput = ({
         size="large"
         onClick={() => handleBridgeToken()}
         className={wrongChain ? "mt-3" : "mt-8"}
-        isLoading={isLoading}
+        isLoading={isLoading || tokenDataLoading}
         disabled={isLoading || wrongChain}
+        data-testid="bridge-input-action-button"
       >
         {buttonName}
       </Button>
       <div>
-        <h2 className="mt-8 text-xl font-bold">Summary</h2>
-        <div className="mt-5">
+        <h2
+          className="mt-8 text-xl font-bold"
+          data-testid="bridge-input-summary-title"
+        >
+          Summary
+        </h2>
+        <div className="mt-5" data-testid="bridge-input-summary">
           <BridgeCardInfo
             amountToreceive={`${amount || 0} ${selectedToken.symbol} ($${((amount || 0) * tokenPrice).toFixed(2)})`}
             gasFee={`${estimatedGasFee.gasETHFee.toFixed(4) || 0} ETH ($${estimatedGasFee.gasUSDFee.toFixed(4)})`}
@@ -357,7 +421,7 @@ export const BridgeInput = ({
         copyText={copyText}
       />
       <ConfirmationScreen
-        setConfirmBridge={setConfirmBridge}
+        returnToInput={returnToInput}
         bridgeToken={handleSendToken}
         selectedToken={selectedToken}
         selectedChain={selectedChain}

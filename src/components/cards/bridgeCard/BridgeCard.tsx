@@ -13,11 +13,14 @@ import { PageTitle } from "@/components/common/pageTitle/PageTitle";
 import { getTokenBridgeAddress } from "@/utils/helpers";
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
+import { json } from "stream/consumers";
 
 const tokenList = Object.values(currentEnvironment.tokens);
 const bridgeTokens = tokenList.filter((item) => item.bridgeToken);
 const savedChain =
-  typeof window !== "undefined" ? window?.localStorage.getItem("selectedBridgeChain") : "";
+  typeof window !== "undefined"
+    ? window?.localStorage.getItem("selectedBridgeChain")
+    : "";
 
 const BridgeCard = () => {
   const { replace } = useRouter();
@@ -26,10 +29,14 @@ const BridgeCard = () => {
   const activeScreen = searchParams.get("screen");
   const { account } = useWeb3React();
   const [selectedChain, setSelectedCain] = useState<IBridgeChain>(
-    bridgeChains.find((item) => item.chainId.toString() === savedChain) || bridgeChains[0]
+    bridgeChains.find((item) => item.chainId.toString() === savedChain) ||
+      bridgeChains[0]
   );
-  const [fetchTokenBalanceLoading, setFetchTokenBalanceLoading] = useState(false);
-  const [selectedToken, setSelectedToken] = useState<IConfigToken>(bridgeTokens[0]);
+  const [fetchTokenBalanceLoading, setFetchTokenBalanceLoading] =
+    useState(false);
+  const [selectedToken, setSelectedToken] = useState<IConfigToken>(
+    bridgeTokens[0]
+  );
   const { getTokenBalance } = useBridge(selectedChain);
   const [tokenBalances, setTokenBalances] = useState<{
     [key: string]: number | null;
@@ -38,12 +45,11 @@ const BridgeCard = () => {
     gasETHFee: 0,
     gasUSDFee: 0,
   });
-  const { quoteSend, getTokenPrice, getEthPrice } = useBridge(selectedChain);
+  const { quoteSend, getEthPrice } = useBridge(selectedChain);
 
   const destinationChain =
-    bridgeChains.find((item) => item.symbol !== selectedChain.symbol) || selectedChain;
-
-  const stableTokenList = JSON.stringify(tokenList);
+    bridgeChains.find((item) => item.key !== selectedChain.key) ||
+    selectedChain;
 
   function switchToSelectedChain(chain: IBridgeChain) {
     setSelectedCain(chain);
@@ -55,7 +61,7 @@ const BridgeCard = () => {
     const newBalances: { [key: string]: number | null } = {};
     for (const token of tokenList) {
       const balanceAddress =
-        token.source === selectedChain.symbol ? token.address : token.bridgedOft;
+        token.source === selectedChain.key ? token.address : token.bridgedOft;
 
       try {
         if (token.bridgeToken && balanceAddress) {
@@ -70,7 +76,7 @@ const BridgeCard = () => {
     }
     setTokenBalances(newBalances);
     setFetchTokenBalanceLoading(false);
-  }, [selectedChain, stableTokenList, getTokenBalance]);
+  }, [selectedChain, getTokenBalance]);
 
   useEffect(() => {
     fetchBalances();
@@ -81,14 +87,27 @@ const BridgeCard = () => {
     if (!account) return;
     const amountToSend = ethers.utils.parseUnits("0", selectedToken.decimals);
 
-    const [nativeFee] = await quoteSend(tokenAddress, destinationChain.endpointId, amountToSend);
+    const [nativeFee] = await quoteSend(
+      tokenAddress,
+      destinationChain.endpointId,
+      amountToSend
+    );
+    if (!nativeFee) return;
     const ethGasPrice = await getEthPrice();
     const parsedNativeFee = parseBigNumberToFloat(nativeFee, 18, 10);
     setEstimatedGas({
       gasETHFee: parsedNativeFee,
       gasUSDFee: parsedNativeFee * (ethGasPrice || 0),
     });
-  }, [account, selectedToken, setEstimatedGas, getTokenPrice]);
+  }, [
+    account,
+    selectedToken,
+    selectedChain,
+    destinationChain.endpointId,
+    setEstimatedGas,
+    getEthPrice,
+    quoteSend,
+  ]);
 
   function handleActiveScreen(term: string) {
     const params = new URLSearchParams(searchParams);
@@ -103,8 +122,8 @@ const BridgeCard = () => {
   return (
     <div className="sticky">
       <PageTitle title="BRIDGE">
-        Bridge assets from other networks to use on Chedda. Bridged assets can supplied or as
-        collateral in Chedda lending pools.
+        Bridge assets from other networks to use on Chedda. Bridged assets can
+        supplied or as collateral in Chedda lending pools.
         <br />
         Bridged assets can be bridged back at any time
       </PageTitle>
@@ -129,6 +148,7 @@ const BridgeCard = () => {
               selectedChain={selectedChain}
               selectedToken={selectedToken}
               tokenList={tokenList}
+              fetchTokenBalanceLoading={fetchTokenBalanceLoading}
               switchToSelectedChain={switchToSelectedChain}
               tokenBalances={tokenBalances}
               estimatedGasFee={estimatedGasFee}

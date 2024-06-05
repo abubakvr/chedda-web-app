@@ -1,16 +1,13 @@
 import Image from "next/image";
 import React, { Dispatch, SetStateAction } from "react";
 import leftIcon from "@/assets/icon/left-icon.svg";
-import arbitrumLogo from "@/assets/logos/arbitrum-logo.png";
-import ethereumLogo from "@/assets/logos/ethereum-logo.png";
-import usdcLogo from "@/assets/logos/usdc-logo.png";
 import arrowLogo from "@/assets/icon/arrow-block-right.svg";
 import { BridgeCardInfo } from "./BridgeCardInfo";
 import { Button } from "@/components/common";
 import { IBridgeChain, IConfigToken } from "@/utils/types";
 
 interface ConfirmationScreenProps {
-  setConfirmBridge: Dispatch<SetStateAction<boolean>>;
+  returnToInput: () => void;
   bridgeToken: () => void;
   selectedToken: IConfigToken;
   selectedChain: IBridgeChain;
@@ -22,7 +19,7 @@ interface ConfirmationScreenProps {
 }
 
 export const ConfirmationScreen = ({
-  setConfirmBridge,
+  returnToInput,
   bridgeToken,
   selectedToken,
   selectedChain,
@@ -35,8 +32,16 @@ export const ConfirmationScreen = ({
   return (
     <div>
       <div className="flex gap-x-6">
-        <button className="relative hover:opacity-75" onClick={() => setConfirmBridge(false)}>
-          <Image src={leftIcon} alt="image-icon" className="w-8 h-8" />
+        <button
+          className="relative hover:opacity-75"
+          onClick={() => returnToInput()}
+        >
+          <Image
+            src={leftIcon}
+            alt="image-icon"
+            className="w-8 h-8"
+            data-testid="back-button"
+          />
         </button>
         <div className="text-3xl font-bold">Confirmation</div>
       </div>
@@ -45,7 +50,11 @@ export const ConfirmationScreen = ({
         <div className="relative flex justify-between items-center py-3">
           <div className="w-max flex  font-bold items-center py-2 space-x-2">
             <div className="w-max flex relative">
-              <Image src={selectedToken.logo} alt="icon image" className="w-12 h-12" />
+              <Image
+                src={selectedToken.logo}
+                alt="icon image"
+                className="w-12 h-12"
+              />
               <Image
                 src={selectedChain.logo}
                 alt="icon image"
@@ -57,14 +66,18 @@ export const ConfirmationScreen = ({
                 {amountToSend} {selectedToken.symbol}
               </p>
               <p className="font-bold text-xs mt-0.5 text-[#FFFFFF70]">
-                ~ ${amountToSend * tokenPrice}
+                ~ ${(amountToSend * tokenPrice).toFixed(4)}
               </p>
             </div>
           </div>
           <Image src={arrowLogo} alt="" className="w-12 h-12" />
           <div className="w-max flex  font-bold items-center py-2 space-x-2">
             <div className="w-max flex relative">
-              <Image src={selectedToken.logo} alt="icon image" className="w-12 h-12" />
+              <Image
+                src={selectedToken.logo}
+                alt="icon image"
+                className="w-12 h-12"
+              />
               <Image
                 src={destinationChain.logo}
                 alt="icon image"
@@ -76,7 +89,7 @@ export const ConfirmationScreen = ({
                 {amountToSend} {selectedToken.symbol}
               </p>
               <p className="font-bold text-xs mt-0.5 text-[#FFFFFF70]">
-                ~ ${amountToSend * tokenPrice}
+                ~ ${(amountToSend * tokenPrice).toFixed(4)}
               </p>
             </div>
           </div>
@@ -95,6 +108,7 @@ export const ConfirmationScreen = ({
         onClick={() => bridgeToken()}
         className="mt-8"
         isLoading={isLoading}
+        data-testid="bridge-button"
       >
         Bridge
       </Button>
