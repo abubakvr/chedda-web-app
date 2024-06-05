@@ -23,6 +23,10 @@ export const useBridge = (selectedChain: IBridgeChain | null) => {
     return provider.getSigner(account);
   }, [provider, account]);
 
+  const priceChedda = useMemo(() => {
+    return new Chedda(bridgeChains[0].jsonRpcUrl);
+  }, []);
+
   const executeTransaction = useCallback(
     async (transaction: () => Promise<any>) => {
       if (!account) return;
@@ -134,13 +138,12 @@ export const useBridge = (selectedChain: IBridgeChain | null) => {
     [account, chedda, signer]
   );
 
-  const getEthPrice = async () => {
-    const priceChedda = new Chedda(bridgeChains[0].jsonRpcUrl);
+  const getEthPrice = useCallback(async () => {
     const priceOracle = priceChedda.priceOracle(bridgeChains[0].priceFeed);
     const decimals = await priceOracle.decimals();
     const assetPrice = await priceOracle.readPrice(ethAddress);
     return parseBigNumberToFloat(assetPrice, decimals, 10);
-  };
+  }, [priceChedda]);
 
   return {
     approveAsset,

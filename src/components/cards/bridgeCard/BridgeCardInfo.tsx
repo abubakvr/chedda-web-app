@@ -2,12 +2,14 @@ export interface BridgeCardInfoProps {
   amountToreceive: string;
   gasFee: string;
   transferTime: string;
+  destination: string;
 }
 
 export const BridgeCardInfo = ({
   amountToreceive,
   gasFee,
   transferTime,
+  destination,
 }: BridgeCardInfoProps) => {
   return (
     <div data-testid="bridge-card-info">
@@ -16,7 +18,7 @@ export const BridgeCardInfo = ({
           className="opacity-50 font-semibold flex gap-x-2"
           data-testid="receive-label"
         >
-          You will receive on Arbitrum
+          You will receive on {destination}
         </div>
         <div
           className="flex items-center font-bold"

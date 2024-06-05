@@ -81,12 +81,8 @@ const BridgeCard = () => {
     setFetchTokenBalanceLoading(false);
   }, [selectedChain, getTokenBalance]);
 
-  const getEstimatedGas = async () => {
-    const tokenAddress =
-      selectedToken.source === selectedChain.key
-        ? selectedToken.address
-        : selectedToken.bridgedOft;
-
+  const getEstimatedGas = useCallback(async () => {
+    const tokenAddress = getTokenBridgeAddress(selectedToken, selectedChain);
     if (!account) return;
     const amountToSend = ethers.utils.parseUnits("0", selectedToken.decimals);
 
@@ -101,7 +97,14 @@ const BridgeCard = () => {
       gasETHFee: parsedNativeFee,
       gasUSDFee: parsedNativeFee * (ethGasPrice || 0),
     });
-  };
+  }, [
+    account,
+    selectedToken,
+    selectedChain,
+    destinationChain,
+    quoteSend,
+    getEthPrice,
+  ]);
 
   const fetchTokenData = useCallback(async () => {
     setTokenDataLoading(true);
@@ -145,7 +148,7 @@ const BridgeCard = () => {
 
   useEffect(() => {
     getEstimatedGas();
-  }, []);
+  }, [getEstimatedGas]);
 
   useEffect(() => {
     fetchTokenData();

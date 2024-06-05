@@ -361,6 +361,7 @@ export const BridgeInput = ({
         </h2>
         <div className="mt-5" data-testid="bridge-input-summary">
           <BridgeCardInfo
+            destination={destinationChain.name}
             amountToreceive={`${amount || 0} ${selectedToken.symbol} ($${((amount || 0) * tokenPrice).toFixed(2)})`}
             gasFee={`${estimatedGasFee.gasETHFee.toFixed(4) || 0} ETH ($${estimatedGasFee.gasUSDFee.toFixed(4)})`}
             transferTime="~ 5 Mintues"

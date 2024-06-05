@@ -4,6 +4,7 @@ import { BridgeCardInfo, BridgeCardInfoProps } from "../BridgeCardInfo";
 
 describe("BridgeCardInfo component", () => {
   const testData: BridgeCardInfoProps = {
+    destination: "Optimism",
     amountToreceive: "100 ARB",
     gasFee: "0.005 ETH",
     transferTime: "30 minutes",
@@ -14,7 +15,7 @@ describe("BridgeCardInfo component", () => {
 
     expect(screen.getByTestId("bridge-card-info")).toBeInTheDocument();
     expect(screen.getByTestId("receive-label")).toHaveTextContent(
-      "You will receive on Arbitrum"
+      "You will receive on Optimism"
     );
     expect(screen.getByTestId("receive-value")).toHaveTextContent("100 ARB");
     expect(screen.getByTestId("gas-fee-label")).toHaveTextContent(

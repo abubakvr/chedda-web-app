@@ -97,6 +97,7 @@ export const ConfirmationScreen = ({
       </div>
       <div className="mt-5">
         <BridgeCardInfo
+          destination={destinationChain.name}
           amountToreceive={`${amountToSend || 0} ${selectedToken.symbol} ($${((amountToSend || 0) * tokenPrice).toFixed(2)})`}
           gasFee={`${estimatedGasFee.gasETHFee.toFixed(4) || 0} ETH ($${estimatedGasFee.gasUSDFee.toFixed(4)})`}
           transferTime="~ 5 Mintues"
