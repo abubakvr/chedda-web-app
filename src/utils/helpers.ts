@@ -149,6 +149,18 @@ export function projectDateTime(days: number) {
   return new Date(currentDate.getTime() + days * 24 * 60 * 60 * 1000);
 }
 
+/**
+ * Retrieves the appropriate token bridge address based on the selected token and chain.
+ *
+ * @param {IConfigToken} selectedToken - The token configuration object.
+ * @param {IBridgeChain} selectedChain - The chain configuration object.
+ * @returns {string} - The token bridge address, which can be the token's address, oftAdapter address, or bridgedOft address.
+ *
+ * The function follows these rules:
+ * - It returns the token's address if the token is an OFT and the source matches the destination.
+ * - It returns the token's OFT adapter address if the token is of type "oftAdapter" and the source matches the destination.
+ * - It returns the token's bridged address if the source does not match the destination.
+ */
 export const getTokenBridgeAddress = (
   selectedToken: IConfigToken,
   selectedChain: IBridgeChain
@@ -162,6 +174,17 @@ export const getTokenBridgeAddress = (
       : selectedToken.bridgedOft;
 };
 
+/**
+ * Retrieves the appropriate token balance address based on the selected token and chain.
+ *
+ * @param {IConfigToken} selectedToken - The token configuration object.
+ * @param {IBridgeChain} selectedChain - The chain configuration object.
+ * @returns {string} - The token balance address, which can be the token's address or bridgedOft address.
+ *
+ * The function follows these rules:
+ * - It returns the token's address if the source matches the destination chain key.
+ * - It returns the token's bridged address if the source does not match the destination chain key.
+ */
 export const getTokenBalanceAddress = (
   selectedToken: IConfigToken,
   selectedChain: IBridgeChain
