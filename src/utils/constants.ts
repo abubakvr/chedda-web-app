@@ -14,6 +14,7 @@ export const savedChainId = "savedChainId";
 export const TWITTER_URL = "https://twitter.com/chedda_crypto";
 export const DISCORD_URL = "https://discord.gg/4ZMWVez73A";
 export const DOCS_URL = "https://docs.chedda.finance";
+export const LAYERZERO_TESTNET = "https://testnet.layerzeroscan.com/tx";
 
 export const menuItems: IMenuItem[] = [
   {
@@ -73,6 +74,7 @@ export const bridgeChains: IBridgeChain[] = [
     logo: baseLogo,
     endpointId: 40245,
     jsonRpcUrl: `https://base-sepolia.g.alchemy.com/v2/${alchemyKey}`,
+    txUrlPrefix: "https://sepolia.basescan.org/tx",
     priceFeed: "0xFe09e4d727Eda07D5C0e961EbE04c7c0f0B0C2C6",
     ethAddress: "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511",
   },
@@ -83,6 +85,7 @@ export const bridgeChains: IBridgeChain[] = [
     logo: ethereumLogo,
     endpointId: 40161,
     jsonRpcUrl: `https://sepolia.infura.io/v3/${infuraKey}`,
+    txUrlPrefix: "https://sepolia.etherscan.io/tx",
     priceFeed: "0xAeD59c7d76d44784493dE6B9ec01f7dBac0632f5",
     ethAddress: "0xc1e5599f1ac90995762302D946AF619bD9824813",
   },

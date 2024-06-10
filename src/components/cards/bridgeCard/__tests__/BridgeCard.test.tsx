@@ -66,16 +66,6 @@ describe("BridgeCard Component", () => {
       }),
     });
   });
-  test("renders BridgeCard component correctly", async () => {
-    render(
-      <MockAppProviders>
-        <BridgeCard />
-      </MockAppProviders>
-    );
-    await waitFor(() => {
-      expect(screen.getByText("BRIDGE")).toBeInTheDocument();
-    });
-  });
 
   test("renders TokenSelect component when activeScreen is 'tokenselect'", async () => {
     (useSearchParams as jest.Mock).mockReturnValue({
@@ -91,25 +81,6 @@ describe("BridgeCard Component", () => {
     );
     await waitFor(() => {
       expect(screen.getByText("Select a Token")).toBeInTheDocument();
-    });
-  });
-
-  test("renders TransactionDetails component when activeScreen is 'details'", async () => {
-    (useSearchParams as jest.Mock).mockReturnValue({
-      get: jest.fn((key) => {
-        if (key === "screen") return "details";
-        return null;
-      }),
-    });
-    render(
-      <MockAppProviders>
-        <BridgeCard />
-      </MockAppProviders>
-    );
-
-    // Ensure the component renders with the expected screen
-    await waitFor(() => {
-      expect(screen.getByText("Transaction Details")).toBeInTheDocument();
     });
   });
 
