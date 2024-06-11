@@ -109,9 +109,9 @@ export const ConfirmationScreen = ({
         onClick={() => bridgeToken()}
         className="mt-8"
         isLoading={isLoading}
-        data-testid="bridge-button"
+        data-testid="confirm-button"
       >
-        Bridge
+        Confirm
       </Button>
     </div>
   );

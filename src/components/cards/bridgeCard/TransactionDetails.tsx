@@ -1,9 +1,10 @@
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import React, { useEffect, useState } from "react";
 import leftIcon from "@/assets/icon/left-icon.svg";
 import linkOut from "@/assets/icon/link-out-grey.svg";
 import loadingIcon from "@/assets/icon/gradient-loading-icon.svg";
 import checkIcon from "@/assets/icon/green-check.svg";
+import failIcon from "@/assets/icon/fail-icon.svg";
 import { Button } from "@/components/common";
 import { useRouter } from "next/navigation";
 import { IBridgeChain, IConfigToken } from "@/utils/types";
@@ -39,30 +40,66 @@ export const TransactionDetails = ({
   tokenPrice,
   txHash,
 }: TransactionDetailsProps) => {
-  const [{ dstTxHash, sourceTxHash, txStatus }, setTxDetails] = useState<{
+  const [txDetails, setTxDetails] = useState<{
     dstTxHash: string | undefined;
-    sourceTxHash: string | undefined;
-    txStatus: MessageStatus;
+    status: MessageStatus;
+    message: string;
+    icon: StaticImageData;
   }>({
     dstTxHash: "",
-    sourceTxHash: "",
-    txStatus: MessageStatus.INFLIGHT,
+    status: MessageStatus.INFLIGHT,
+    message: "Processing Bridge",
+    icon: loadingIcon,
   });
+
   const router = useRouter();
   const navigateToMarkets = () => {
     router.push("/markets");
   };
 
-  const txCompleted = txStatus === MessageStatus.DELIVERED;
+  const txCompleted = txDetails.status === MessageStatus.DELIVERED;
 
   const getTxMessages = async () => {
     const client = createClient("testnet");
     const { messages } = await client.getMessagesBySrcTxHash(txHash);
-    setTxDetails({
-      dstTxHash: messages[0]?.dstTxHash,
-      sourceTxHash: messages[0]?.srcTxHash,
-      txStatus: messages[0]?.status,
-    });
+
+    switch (messages[0]?.status) {
+      case "INFLIGHT":
+        setTxDetails({
+          dstTxHash: messages[0]?.dstTxHash,
+          status: messages[0]?.status,
+          message: "Processing Bridge",
+          icon: loadingIcon,
+        });
+        break;
+
+      case "DELIVERED":
+        setTxDetails({
+          dstTxHash: messages[0]?.dstTxHash,
+          status: messages[0]?.status,
+          message: "Bridged Processed",
+          icon: checkIcon,
+        });
+        break;
+
+      case "FAILED":
+        setTxDetails({
+          dstTxHash: messages[0]?.dstTxHash,
+          status: messages[0]?.status,
+          message: "Bridge Failed",
+          icon: failIcon,
+        });
+        break;
+
+      default:
+        setTxDetails({
+          dstTxHash: messages[0]?.dstTxHash,
+          status: MessageStatus.INFLIGHT,
+          message: "Processing Bridge",
+          icon: loadingIcon,
+        });
+        break;
+    }
   };
 
   useEffect(() => {
@@ -85,7 +122,7 @@ export const TransactionDetails = ({
       clearInterval(intervalId);
       clearTimeout(timeoutId);
     };
-  }, []);
+  });
 
   return (
     <div>
@@ -173,26 +210,18 @@ export const TransactionDetails = ({
         >
           <div className="w-max flex font-bold items-center py-2 space-x-4">
             <div className="w-max flex relative">
-              {txCompleted ? (
-                <Image src={checkIcon} alt="icon image" className="w-12 h-12" />
-              ) : (
-                <Image
-                  src={loadingIcon}
-                  alt="icon image"
-                  className="w-12 h-12 animate-spin-slow"
-                />
-              )}
+              <Image
+                src={txDetails.icon}
+                alt="icon image"
+                className={`w-12 h-12 ${txDetails.status === "INFLIGHT" && "animate-spin-slow"}`}
+              />
             </div>
             <div className="flex items-center">
-              <p className="font-bold text-lg ">
-                {txStatus === MessageStatus.DELIVERED
-                  ? "Bridged Processed"
-                  : "Processing Bridge"}
-              </p>
+              <p className="font-bold text-lg ">{txDetails.message}</p>
             </div>
           </div>
           <a
-            href={`${destinationChain.txUrlPrefix}/${dstTxHash}`}
+            href={`${destinationChain.txUrlPrefix}/${txDetails.dstTxHash}`}
             target="_blank"
             className={`flex flex-col justify-center items-end hover:opacity-70 ${!txCompleted && "hidden"}`}
             data-testid="destination-chain-link"

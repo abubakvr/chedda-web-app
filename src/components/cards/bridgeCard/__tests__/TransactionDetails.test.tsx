@@ -168,7 +168,7 @@ describe("TransactionDetails", () => {
     await waitFor(() => {
       setTimeout(() => {
         expect(screen.getByText("Transaction Confirmed")).toBeInTheDocument();
-        expect(screen.getByText("Bridged Processed")).toBeInTheDocument();
+        expect(screen.getByText("Bridge Processed")).toBeInTheDocument();
       }, 100);
     });
   });

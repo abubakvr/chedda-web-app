@@ -150,6 +150,7 @@ export const BridgeInput = ({
         }
       }
       fetchBalances();
+      fetchTokenData();
       setIsLoading(false);
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
