@@ -309,7 +309,7 @@ export const BridgeInput = ({
           {fetchTokenBalanceLoading
             ? "loading..."
             : balanceAddress
-              ? `${tokenBalances[balanceAddress] || 0} ${selectedToken.symbol}`
+              ? `${formatNumber(tokenBalances[balanceAddress] || 0)} ${selectedToken.symbol}`
               : `0 ${selectedToken.symbol}`}
         </p>
       </div>
@@ -361,7 +361,7 @@ export const BridgeInput = ({
         <div className="mt-5" data-testid="bridge-input-summary">
           <BridgeCardInfo
             destination={destinationChain.name}
-            amountToreceive={`${amount || 0} ${selectedToken.symbol} ($${((amount || 0) * tokenPrice).toFixed(2)})`}
+            amountToreceive={`${formatNumber(amount || 0)} ${selectedToken.symbol} ($${formatNumber((amount || 0) * tokenPrice)})`}
             gasFee={`${estimatedGasFee.gasETHFee.toFixed(4) || 0} ETH ($${estimatedGasFee.gasUSDFee.toFixed(4)})`}
             transferTime="~ 5 Mintues"
           />

@@ -5,6 +5,8 @@ import linkOut from "@/assets/icon/link-out-grey.svg";
 import loadingIcon from "@/assets/icon/gradient-loading-icon.svg";
 import checkIcon from "@/assets/icon/green-check.svg";
 import failIcon from "@/assets/icon/fail-icon.svg";
+import errorIcon from "@/assets/icon/error-icon.svg";
+import blockIcon from "@/assets/icon/blocked-icon.svg";
 import { Button } from "@/components/common";
 import { useRouter } from "next/navigation";
 import { IBridgeChain, IConfigToken } from "@/utils/types";
@@ -42,12 +44,12 @@ export const TransactionDetails = ({
 }: TransactionDetailsProps) => {
   const [txDetails, setTxDetails] = useState<{
     dstTxHash: string | undefined;
-    status: MessageStatus;
+    status: MessageStatus | undefined;
     message: string;
     icon: StaticImageData;
   }>({
     dstTxHash: "",
-    status: MessageStatus.INFLIGHT,
+    status: undefined,
     message: "Processing Bridge",
     icon: loadingIcon,
   });
@@ -57,48 +59,69 @@ export const TransactionDetails = ({
     router.push("/markets");
   };
 
-  const txCompleted = txDetails.status === MessageStatus.DELIVERED;
+  const txCompleted =
+    txDetails.status === MessageStatus.DELIVERED ||
+    txDetails.status === MessageStatus.FAILED;
 
   const getTxMessages = async () => {
-    const client = createClient("testnet");
-    const { messages } = await client.getMessagesBySrcTxHash(txHash);
+    try {
+      const client = createClient("testnet");
+      const { messages } = await client.getMessagesBySrcTxHash(txHash);
+      const status = messages[0]?.status;
+      const dstTxHash = messages[0]?.dstTxHash;
 
-    switch (messages[0]?.status) {
-      case "INFLIGHT":
-        setTxDetails({
-          dstTxHash: messages[0]?.dstTxHash,
-          status: messages[0]?.status,
-          message: "Processing Bridge",
-          icon: loadingIcon,
-        });
-        break;
+      let message = "Processing Transaction";
+      let icon = errorIcon;
 
-      case "DELIVERED":
-        setTxDetails({
-          dstTxHash: messages[0]?.dstTxHash,
-          status: messages[0]?.status,
-          message: "Bridged Processed",
-          icon: checkIcon,
-        });
-        break;
+      switch (status as MessageStatus) {
+        case MessageStatus.INFLIGHT:
+          message = "Transaction Inflight";
+          icon = loadingIcon;
+          break;
+        case MessageStatus.DELIVERED:
+          message = "Transaction Delivered";
+          icon = checkIcon;
+          break;
+        case MessageStatus.FAILED:
+          message = "Transaction Failed";
+          icon = failIcon;
+          break;
+        case MessageStatus.BLOCKED:
+          message = "Transaction Blocked";
+          icon = blockIcon;
+          break;
+        case MessageStatus.CONFIRMING:
+          message = "Confirming Transaction";
+          icon = loadingIcon;
+          break;
+        case MessageStatus.PAYLOAD_STORED:
+          message = "Transaction Error";
+          icon = errorIcon;
+          break;
+        case undefined:
+          message = "Processing Transaction";
+          icon = loadingIcon;
+          break;
+        default:
+          message = "Transaction Error";
+          icon = errorIcon;
+          break;
+      }
 
-      case "FAILED":
-        setTxDetails({
-          dstTxHash: messages[0]?.dstTxHash,
-          status: messages[0]?.status,
-          message: "Bridge Failed",
-          icon: failIcon,
-        });
-        break;
-
-      default:
-        setTxDetails({
-          dstTxHash: messages[0]?.dstTxHash,
-          status: MessageStatus.INFLIGHT,
-          message: "Processing Bridge",
-          icon: loadingIcon,
-        });
-        break;
+      setTxDetails({
+        dstTxHash,
+        status: status || MessageStatus.INFLIGHT,
+        message,
+        icon,
+      });
+    } catch (error) {
+      console.error("Error fetching transaction messages:", error);
+      setTxDetails({
+        dstTxHash: undefined,
+        status: MessageStatus.FAILED,
+        message: "Transaction Error",
+        icon: errorIcon,
+      });
     }
   };
 
@@ -116,6 +139,12 @@ export const TransactionDetails = ({
 
     const timeoutId = setTimeout(() => {
       clearInterval(intervalId);
+      setTxDetails({
+        dstTxHash: undefined,
+        status: MessageStatus.PAYLOAD_STORED,
+        message: "Transaction timed out. Check History",
+        icon: errorIcon,
+      });
     }, maxPollingTime);
 
     return () => {
@@ -213,7 +242,7 @@ export const TransactionDetails = ({
               <Image
                 src={txDetails.icon}
                 alt="icon image"
-                className={`w-12 h-12 ${txDetails.status === "INFLIGHT" && "animate-spin-slow"}`}
+                className={`w-12 h-12 ${txDetails.icon === loadingIcon && "animate-spin-slow"}`}
               />
             </div>
             <div className="flex items-center">
@@ -266,7 +295,7 @@ export const TransactionDetails = ({
         <a
           href={`${LAYERZERO_TESTNET}/${txHash}`}
           target="_blank"
-          className="text-[#C142F0]"
+          className="text-[#C142F0] hover:opacity-70"
           data-testid="layerzero-link"
         >
           LayerZero
