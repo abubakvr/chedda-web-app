@@ -6,13 +6,13 @@ export const RouteCard = ({
   setActiveTab,
   activeTab,
   routeInfo,
+  routhPaths,
 }: {
   setActiveTab: Dispatch<SetStateAction<string>>;
   activeTab: string;
-  routeInfo: string;
+  routeInfo: string | undefined;
+  routhPaths: string[];
 }) => {
-  const routhPaths = ["Pool", "Stake", "Lock"];
-
   const handleTabButton = (tab: string) => {
     setActiveTab(tab);
     localStorage.setItem("savedPoolTab", tab);
@@ -20,7 +20,7 @@ export const RouteCard = ({
 
   return (
     <div
-      className="pool-card rounded-lg w-full mt-6 px-10 pb-6 pt-8"
+      className={`pool-card rounded-lg w-full mt-6 px-10 ${routeInfo && "pb-6"} pt-8`}
       data-testid="route-card-container"
     >
       <div className="relative flex gap-x-20 items-center text-white text-xl font-bold border-b border-[#51D5FA30]">
@@ -44,10 +44,12 @@ export const RouteCard = ({
           );
         })}
       </div>
-      <div className="flex gap-x-4 mt-6">
-        <Image src={InfoIcon} alt="info icon" />
-        <p className="text-[#B5B5B5] text-lg">{routeInfo}</p>
-      </div>
+      {routeInfo && (
+        <div className={`flex gap-x-4 mt-6`}>
+          <Image src={InfoIcon} alt="info icon" />
+          <p className="text-[#B5B5B5] text-lg">{routeInfo}</p>
+        </div>
+      )}
     </div>
   );
 };

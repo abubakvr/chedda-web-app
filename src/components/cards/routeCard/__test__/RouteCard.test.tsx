@@ -6,12 +6,14 @@ describe("RouteCard", () => {
   const mockSetActiveTab = jest.fn();
   const mockRouteInfo = "This is a route info";
   const mockActiveTab = "Pool";
+  const routePaths = ["Stake", "About"];
 
   it("renders without crashing", () => {
     render(
       <RouteCard
         setActiveTab={mockSetActiveTab}
         activeTab={mockActiveTab}
+        routhPaths={routePaths}
         routeInfo={mockRouteInfo}
       />
     );
@@ -23,6 +25,7 @@ describe("RouteCard", () => {
         setActiveTab={mockSetActiveTab}
         activeTab={mockActiveTab}
         routeInfo={mockRouteInfo}
+        routhPaths={routePaths}
       />
     );
 
@@ -37,6 +40,7 @@ describe("RouteCard", () => {
         setActiveTab={mockSetActiveTab}
         activeTab={mockActiveTab}
         routeInfo={mockRouteInfo}
+        routhPaths={routePaths}
       />
     );
 

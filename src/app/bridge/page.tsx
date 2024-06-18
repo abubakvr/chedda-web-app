@@ -1,5 +1,5 @@
 "use client";
-import PageContainer from "@/components/common/container/PageContainer";
+import { PageContainer } from "@/components/common";
 import dynamic from "next/dynamic";
 
 const BridgeCard = dynamic(
