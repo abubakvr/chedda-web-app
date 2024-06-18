@@ -3,7 +3,11 @@ import React, { useState } from "react";
 import { RouteCard } from "@/components/cards";
 import { PositionSummary } from "./PositionSummary";
 
-export const PositionInfo = () => {
+interface PositionInfoProps {
+  isWalletConnected: boolean;
+}
+
+export const PositionInfo = ({ isWalletConnected }: PositionInfoProps) => {
   const [activeTab, setActiveTab] = useState("Position Overview");
   const routePaths = ["Position Overview", "Transaction History"];
 
@@ -11,7 +15,7 @@ export const PositionInfo = () => {
     {
       name: "Position Overview",
       info: "",
-      tab: <PositionSummary />,
+      tab: <PositionSummary isWalletConnected={isWalletConnected} />,
     },
     {
       name: "Transaction History",

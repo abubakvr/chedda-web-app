@@ -7,6 +7,7 @@ import { usePoolStatsList } from "@/hooks";
 import { VaultSkeleton } from "@/components/ui";
 import { vaultHeaderItems } from "@/utils/constants";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
+import { ConnectWalletBox } from "./ConnectWalletBox";
 
 const positionsHeaderItem = [
   "Pools",
@@ -18,7 +19,11 @@ const positionsHeaderItem = [
   "Lock/Earn",
 ];
 
-export const MyPositions = () => {
+interface MyPositionsProps {
+  isWalletConnected: boolean;
+}
+
+export const MyPositions = ({ isWalletConnected }: MyPositionsProps) => {
   const [searchKeyword, setSearchKeyword] = useState<string>();
   const { data: poolStatsList, isLoading } = usePoolStatsList();
 
@@ -72,49 +77,57 @@ export const MyPositions = () => {
             </div>
           </div>
         </div>
-        <div className="mt-2 pb-4 sm:mt-10 hidden md:grid grid-cols-7 border-b border-gray-500 border-opacity-20">
-          {positionsHeaderItem.map((item: string, index: number) => (
-            <div
-              key={index}
-              className={`flex  ${
-                index < 2 ? "justify-start" : "justify-end"
-              } ${index === 2 && "justify-center"} `}
-            >
+        {isWalletConnected && (
+          <div className="mt-2 pb-4 sm:mt-10 hidden md:grid grid-cols-7 border-b border-gray-500 border-opacity-20">
+            {positionsHeaderItem.map((item: string, index: number) => (
               <div
-                className={`text-white ${
-                  index < 2 ? "w-max" : "w-[100px]"
-                }  col-span-1 opacity-50 flex font-open-sans text-xs font-semibold leading-6 tracking-wide`}
-                data-testid={`vault-header-item-${index}`}
+                key={index}
+                className={`flex  ${
+                  index < 2 ? "justify-start" : "justify-end"
+                } ${index === 2 && "justify-center"} `}
               >
-                {item}
+                <div
+                  className={`text-white ${
+                    index < 2 ? "w-max" : "w-[100px]"
+                  }  col-span-1 opacity-50 flex font-open-sans text-xs font-semibold leading-6 tracking-wide`}
+                  data-testid={`vault-header-item-${index}`}
+                >
+                  {item}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div>
-        {!isLoading &&
-          poolStatsList?.map((item: IPoolStatsResponse, index: number) => (
-            <div key={index}>
-              <div className="vault-item">
-                {searchKeyword && matchSearchItem(item, searchKeyword) && (
-                  <VaultItem pool={item} />
-                )}
-                {!searchKeyword && <VaultItem pool={item} />}
-              </div>
-              <div
-                className={
-                  index !== poolStatsList.length - 1
-                    ? "w-5/4 mx-7 border-b border-gray-500 border-opacity-20"
-                    : ""
-                }
-              />
-            </div>
-          ))}
-        {isLoading && (
-          <VaultSkeleton itemCount={4} data-testid="loading-skeleton" />
+            ))}
+          </div>
         )}
       </div>
+      {isWalletConnected ? (
+        <div>
+          {!isLoading &&
+            poolStatsList?.map((item: IPoolStatsResponse, index: number) => (
+              <div key={index}>
+                <div className="vault-item">
+                  {searchKeyword && matchSearchItem(item, searchKeyword) && (
+                    <VaultItem pool={item} />
+                  )}
+                  {!searchKeyword && <VaultItem pool={item} />}
+                </div>
+                <div
+                  className={
+                    index !== poolStatsList.length - 1
+                      ? "w-5/4 mx-7 border-b border-gray-500 border-opacity-20"
+                      : ""
+                  }
+                />
+              </div>
+            ))}
+          {isLoading && (
+            <VaultSkeleton itemCount={4} data-testid="loading-skeleton" />
+          )}
+        </div>
+      ) : (
+        <div className="p-8">
+          <ConnectWalletBox title="active positions" />
+        </div>
+      )}
     </div>
   );
 };
