@@ -93,12 +93,12 @@ export const HeaderComponent: React.FC = () => {
 
   useEffect(() => {
     if (!chainId || !appChainId) return;
-    if (appChainId !== chainId) {
+    if (appChainId !== chainId && !pathname.startsWith("/bridge")) {
       setShowNetworkBanner(true);
     } else {
       setShowNetworkBanner(false);
     }
-  }, [chainId, appChainId]);
+  }, [chainId, appChainId, pathname]);
 
   return (
     <div>

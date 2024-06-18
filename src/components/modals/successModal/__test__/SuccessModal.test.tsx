@@ -15,6 +15,11 @@ jest.mock("@web3-react/core", () => ({
   })),
 }));
 
+jest.mock("next/navigation", () => ({
+  ...jest.requireActual("next/navigation"),
+  usePathname: jest.fn(() => "/bridge"),
+}));
+
 describe("SuccessModal", () => {
   const onCloseMock = jest.fn();
   const continueActionMock = jest.fn();

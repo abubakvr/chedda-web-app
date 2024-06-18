@@ -8,6 +8,12 @@ const mockConnector = new WalletConnect({
   },
   defaultChainId: 5,
   options: {
+    metadata: {
+      name: "Chedda Finance",
+      description: "Cross-chain money market hub",
+      url: "www.chedda.finance",
+      icons: [],
+    },
     projectId: "string",
     showQrModal: false,
     optionalChains: [5, 1],

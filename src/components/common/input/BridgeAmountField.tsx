@@ -10,7 +10,7 @@ import React, {
   SetStateAction,
   useEffect,
 } from "react";
-import { IBridgeToken, IConfigToken } from "@/utils/types";
+import { IBridgeChain, IConfigToken } from "@/utils/types";
 
 interface InputWithMaxButtonProps {
   onChange: (value: string) => void;
@@ -18,7 +18,7 @@ interface InputWithMaxButtonProps {
   clearInputField: boolean;
   assetPrice: number;
   selectedToken: IConfigToken | undefined;
-  selectedChain: IBridgeToken;
+  selectedChain: IBridgeChain;
   setClearInputField: Dispatch<SetStateAction<boolean>>;
 }
 

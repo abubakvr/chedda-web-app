@@ -12,6 +12,12 @@ export const [walletConnect, hooks] = initializeConnector<WalletConnect>(
     new WalletConnect({
       actions,
       options: {
+        metadata: {
+          name: "Chedda Finance",
+          description: "Cross-chain money market hub",
+          url: "www.chedda.finance",
+          icons: [],
+        },
         projectId: projectId,
         chains: [mainnet],
         optionalChains,

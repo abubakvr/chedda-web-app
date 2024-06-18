@@ -19,6 +19,10 @@ jest.mock("@web3-react/core", () => ({
     isActivating: false,
   })),
 }));
+jest.mock("next/navigation", () => ({
+  ...jest.requireActual("next/navigation"),
+  usePathname: jest.fn(() => "/bridge"),
+}));
 
 describe("LockCheddaCard", () => {
   beforeEach(() => {

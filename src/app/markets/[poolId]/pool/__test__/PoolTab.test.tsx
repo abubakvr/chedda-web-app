@@ -39,6 +39,10 @@ jest.mock("next/navigation", () => ({
   useParams: jest.fn(),
   useRouter: jest.fn(),
 }));
+jest.mock("next/navigation", () => ({
+  ...jest.requireActual("next/navigation"),
+  usePathname: jest.fn(() => "/bridge"),
+}));
 
 jest.mock("../../../../../utils/formatResponse", () => ({
   getPoolSummaryData: jest.fn(),
