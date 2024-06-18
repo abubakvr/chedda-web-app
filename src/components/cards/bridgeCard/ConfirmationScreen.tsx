@@ -5,6 +5,7 @@ import arrowLogo from "@/assets/icon/arrow-block-right.svg";
 import { BridgeCardInfo } from "./BridgeCardInfo";
 import { Button } from "@/components/common";
 import { IBridgeChain, IConfigToken } from "@/utils/types";
+import { formatNumber } from "@/utils/formatters";
 
 interface ConfirmationScreenProps {
   returnToInput: () => void;
@@ -63,10 +64,10 @@ export const ConfirmationScreen = ({
             </div>
             <div>
               <p className="font-bold text-lg uppercase">
-                {amountToSend} {selectedToken.symbol}
+                {formatNumber(amountToSend)} {selectedToken.symbol}
               </p>
               <p className="font-bold text-xs mt-0.5 text-[#FFFFFF70]">
-                ~ ${(amountToSend * tokenPrice).toFixed(4)}
+                ~ ${formatNumber(amountToSend * tokenPrice)}
               </p>
             </div>
           </div>
@@ -86,10 +87,10 @@ export const ConfirmationScreen = ({
             </div>
             <div>
               <p className="font-bold text-lg uppercase">
-                {amountToSend} {selectedToken.symbol}
+                {formatNumber(amountToSend)} {selectedToken.symbol}
               </p>
               <p className="font-bold text-xs mt-0.5 text-[#FFFFFF70]">
-                ~ ${(amountToSend * tokenPrice).toFixed(4)}
+                ~ ${formatNumber(amountToSend * tokenPrice)}
               </p>
             </div>
           </div>
@@ -98,7 +99,7 @@ export const ConfirmationScreen = ({
       <div className="mt-5">
         <BridgeCardInfo
           destination={destinationChain.name}
-          amountToreceive={`${amountToSend || 0} ${selectedToken.symbol} ($${((amountToSend || 0) * tokenPrice).toFixed(2)})`}
+          amountToreceive={`${formatNumber(amountToSend || 0)} ${selectedToken.symbol} ($${formatNumber((amountToSend || 0) * tokenPrice)})`}
           gasFee={`${estimatedGasFee.gasETHFee.toFixed(4) || 0} ETH ($${estimatedGasFee.gasUSDFee.toFixed(4)})`}
           transferTime="~ 5 Mintues"
         />
@@ -109,9 +110,9 @@ export const ConfirmationScreen = ({
         onClick={() => bridgeToken()}
         className="mt-8"
         isLoading={isLoading}
-        data-testid="bridge-button"
+        data-testid="confirm-button"
       >
-        Bridge
+        Confirm
       </Button>
     </div>
   );

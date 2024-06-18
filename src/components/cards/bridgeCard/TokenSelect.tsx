@@ -5,6 +5,7 @@ import SearchIcon from "@/assets/icon/search-icon.svg";
 import { IBridgeChain, IConfigToken } from "@/utils/types";
 import { bridgeChains } from "@/utils/constants";
 import { useSwitchChain } from "@/hooks";
+import { formatNumber } from "@/utils/formatters";
 
 interface TokenBalances {
   [key: string]: number | null;
@@ -107,7 +108,7 @@ export const TokenSelect = ({
               {fetchTokenBalanceLoading
                 ? "Loading..."
                 : tokenBalances[balanceAddress]
-                  ? tokenBalances[balanceAddress]
+                  ? formatNumber(tokenBalances[balanceAddress] || 0)
                   : 0}
             </p>
           </div>

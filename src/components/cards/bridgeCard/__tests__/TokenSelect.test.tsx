@@ -52,6 +52,7 @@ const mockSelectedChain = {
   name: "Ethereum",
   logo: {} as StaticImageData,
   endpointId: 100,
+  txUrlPrefix: "https://sepolia.io/tx",
   jsonRpcUrl: "https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID",
   priceFeed: "https://api.etherscan.io/api?module=stats&action=ethprice",
   ethAddress: "0x0000000000000000000000000000000000000000",
@@ -77,23 +78,6 @@ const mockSwitchToSelectedChain = jest.fn();
 const mockSetSelectedToken = jest.fn();
 
 describe("TokenSelect component", () => {
-  //   it("renders without crashing", () => {
-  //     render(
-  //       <MockAppProviders>
-  //         <TokenSelect
-  //           selectedChain={mockSelectedChain}
-  //           tokenList={mockTokenList}
-  //           selectedToken={mockSelectedToken}
-  //           fetchTokenBalanceLoading={mockFetchTokenBalanceLoading}
-  //           tokenBalances={mockTokenBalances}
-  //           handleActiveScreen={mockHandleActiveScreen}
-  //           switchToSelectedChain={mockSwitchToSelectedChain}
-  //           setSelectedToken={mockSetSelectedToken}
-  //         />
-  //       </MockAppProviders>
-  //     );
-  //   });
-
   it("renders back button", async () => {
     const { getByTestId } = render(
       <MockAppProviders>

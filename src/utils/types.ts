@@ -197,6 +197,7 @@ export interface IBridgeChain {
   key: string;
   endpointId: number;
   jsonRpcUrl: string;
+  txUrlPrefix: string;
   priceFeed: string;
   ethAddress: string;
 }

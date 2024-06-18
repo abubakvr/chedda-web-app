@@ -69,7 +69,8 @@ const BridgeCard = () => {
       try {
         if (token.bridgeToken && balanceAddress) {
           const balance = await getTokenBalance(balanceAddress);
-          newBalances[balanceAddress] = parseBigNumberToFloat(balance) ?? 0;
+          newBalances[balanceAddress] =
+            parseBigNumberToFloat(balance, token.decimals) ?? 0;
         }
       } catch (err) {
         setFetchTokenBalanceLoading(false);
@@ -160,12 +161,12 @@ const BridgeCard = () => {
 
   return (
     <div className="sticky">
-      <PageTitle title="BRIDGE">
+      {/* <PageTitle title="BRIDGE">
         Bridge assets from other networks to use on Chedda. Bridged assets can
         supplied or as collateral in Chedda lending pools.
         <br />
         Bridged assets can be bridged back at any time
-      </PageTitle>
+      </PageTitle> */}
       <div className="flex justify-center mt-6">
         <div className=" pool-card rounded-xl w-[580px] min-w-[470px] text-white px-8 py-8">
           {activeScreen === "tokenselect" ? (
@@ -179,8 +180,6 @@ const BridgeCard = () => {
               tokenList={tokenList}
               tokenBalances={tokenBalances}
             />
-          ) : activeScreen === "details" ? (
-            <TransactionDetails handleActiveScreen={handleActiveScreen} />
           ) : (
             <BridgeInput
               handleActiveScreen={handleActiveScreen}

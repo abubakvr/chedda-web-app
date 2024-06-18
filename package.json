@@ -16,6 +16,7 @@
   "dependencies": {
     "@coinbase/wallet-sdk": "^3.7.2",
     "@layerzerolabs/lz-v2-utilities": "^2.3.19",
+    "@layerzerolabs/scan-client": "^0.0.8",
     "@reduxjs/toolkit": "^2.0.1",
     "@types/node": "20.6.0",
     "@types/recharts": "^1.8.29",
