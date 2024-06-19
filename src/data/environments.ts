@@ -31,7 +31,7 @@ export const currentEnvironment: IEnvironment = {
     PriceFeed: "0xFe09e4d727Eda07D5C0e961EbE04c7c0f0B0C2C6",
     LockingGaugeRewardsDistributor:
       "0x09116D3De0D2A5ef27e36599f4Ed81F444e00Dba",
-    CheddaToken: "0xeC7D6a60d7367681e42b1c153d38cBCde55f786D",
+    CheddaToken: "0x28041a8147eB37509BDd8aAFc7006f15E0746bbD",
     veChedda: "0x0",
     Faucet: "0x0A5Fe3dd684B1aA04d156d42C259a9feF887255e",
   },
