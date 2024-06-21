@@ -526,3 +526,14 @@ input:checked + .slider:before {
 .bridge-scroll-element::-webkit-scrollbar-corner {
   background: transparent;
 }
+
+.hazy-bg {
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.bridge-assets-bg {
+  background-image: url("../assets/images/bridge-assets-bg.png");
+  background-position: top left;
+}

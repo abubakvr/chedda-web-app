@@ -1,3 +1,4 @@
+"use client";
 import React, { FC, ReactNode, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { ConnectModal } from "@/components/modals";
@@ -90,7 +91,7 @@ export const Button: FC<ButtonProps> = ({
       />
       <button
         data-testid="custom-button"
-        className={`${className} ${
+        className={`${
           type === "primary"
             ? "primary-button"
             : type === "secondary"
@@ -102,7 +103,7 @@ export const Button: FC<ButtonProps> = ({
           isLoading || disabled
             ? "opacity-50 hover:opacity-50"
             : "hover:opacity-80 "
-        } uppercase font-bold text-xl flex justify-center gap-x-3 `}
+        } uppercase font-bold text-xl flex justify-center gap-x-3 ${className} `}
         onClick={handleButtonClick}
         disabled={isLoading || disabled}
       >

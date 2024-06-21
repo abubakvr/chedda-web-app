@@ -17,6 +17,8 @@ const Page = () => {
   } = usePoolStats();
   const poolSummary = getPoolSummaryData(poolStats);
 
+  const routhPaths = ["Pool", "Stake", "Lock"];
+
   const pageTabs = [
     {
       name: "Pool",
@@ -66,6 +68,7 @@ const Page = () => {
           setActiveTab={setActiveTab}
           activeTab={activeTab}
           routeInfo={routeInfo}
+          routhPaths={routhPaths}
         />
         {pageTabs.map((item, index) =>
           activeTab === item.name ? <div key={index}>{item.tab}</div> : null
