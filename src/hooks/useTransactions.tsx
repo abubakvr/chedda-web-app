@@ -11,10 +11,15 @@ export const useTransaction = (asset: string) => {
   const { chedda, signer } = useCheddaSdk();
   const { poolId } = useParams();
   const strPoolId = poolId ? poolId.toString() : "0x00";
-  const environment = currentEnvironment?.contracts.CheddaToken || "";
+  const cheddaTokenAddress = currentEnvironment.contracts.CheddaToken;
+  const accountActorAddress = currentEnvironment.contracts.AccountActor;
   const token = chedda?.erc20token(asset || strPoolId, signer as Signer);
   const lendingPool = chedda?.lendingPool(strPoolId, signer as Signer);
-  const cheddaToken = chedda?.cheddaToken(environment, signer as Signer);
+  const cheddaToken = chedda?.cheddaToken(cheddaTokenAddress, signer as Signer);
+  const accountActor = chedda?.accountActor(
+    accountActorAddress,
+    signer as Signer
+  );
 
   const executeTransaction = async (
     transaction: (params: {
@@ -192,6 +197,12 @@ export const useTransaction = (asset: string) => {
     [account, chedda, signer]
   );
 
+  const claimAllRewards = async () =>
+    executeTransaction(async () => {
+      if (!account) return;
+      return await accountActor?.claimAllRewards(account);
+    });
+
   return {
     lendingPool,
     approveAsset,
@@ -212,5 +223,6 @@ export const useTransaction = (asset: string) => {
     claimLockRewards,
     lockMoreCheddaToken,
     getTokenBalance,
+    claimAllRewards,
   };
 };

@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 
 interface ButtonProps {
   children: ReactNode;
-  type: "primary" | "secondary";
+  type: "primary" | "secondary" | "tertiary";
   className?: string;
   size?: "small" | "large";
   isLoading?: boolean;
@@ -93,24 +93,29 @@ export const Button: FC<ButtonProps> = ({
         data-testid="custom-button"
         className={`${
           type === "primary"
-            ? "primary-button"
+            ? "primary-button text-xl uppercase"
             : type === "secondary"
-              ? "secondary-button button-gradient-text"
-              : ""
+              ? "secondary-button button-gradient-text text-xl uppercase"
+              : type === "tertiary"
+                ? "modal-button"
+                : ""
         } w-full text-center ${
           size === "large" ? "h-[56px]" : size === "small" ? "h-12" : ""
         } items-center rounded-lg text-white text-opacity-100 ${
           isLoading || disabled
             ? "opacity-50 hover:opacity-50"
             : "hover:opacity-80 "
-        } uppercase font-bold text-xl flex justify-center gap-x-3 ${className} `}
+        }  font-bold flex justify-center gap-x-3 ${className} `}
         onClick={handleButtonClick}
         disabled={isLoading || disabled}
       >
         <div data-testid="loading-button-icon" role="status">
-          {isLoading && <LoadingIcon />}
+          {isLoading ? (
+            <LoadingIcon size={type === "tertiary" ? "small" : "large"} />
+          ) : (
+            children
+          )}
         </div>
-        {children}
       </button>
     </>
   );

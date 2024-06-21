@@ -62,6 +62,7 @@ export interface IEnvironment {
   contracts: {
     LendingPoolLens: string;
     InterestRatesProjector: string;
+    AccountActor: string;
     LockingGaugeRewardsDistributor: string;
     PriceFeed: string;
     CheddaToken: string;

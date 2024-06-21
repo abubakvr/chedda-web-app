@@ -573,6 +573,20 @@ const getTotalWeightSum: GetDataFunction<BigNumber> = async ({
   return await rewardsDistributor.totalWeightSum();
 };
 
+const getAllClaimableRewards: GetDataFunction<BigNumber[]> = async ({
+  signer,
+  chedda,
+  environment,
+  account,
+}) => {
+  if (!chedda || !account) return null;
+  const accountActor = chedda.accountActor(
+    environment.contracts.AccountActor,
+    signer as Signer
+  );
+  return await accountActor.allClaimableRewards(account);
+};
+
 // Exported custom hooks
 export const useAccountInfo = (): HookResult<IAccountInfo> => {
   return useFetcher<IAccountInfo>(getAccountInfo);
@@ -719,4 +733,8 @@ export const useGaugeAddress = (): HookResult<string> => {
 
 export const useCheddaTotalSupply = (): HookResult<BigNumber> => {
   return useFetcher<BigNumber>(getCheddaTotalSupply);
+};
+
+export const useAllClaimableRewards = (): HookResult<BigNumber[]> => {
+  return useFetcher<BigNumber[]>(getAllClaimableRewards);
 };
