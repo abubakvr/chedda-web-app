@@ -109,7 +109,7 @@ export const ClaimRewards = ({ isWalletConnected }: ClaimRewardsProps) => {
         status={txStatus}
         copyText={copyText}
       />
-      <Card title="CHEDDA INFO" data-test-id="custom-card">
+      <Card title="CLAIM REWARDS" data-test-id="custom-card">
         {isWalletConnected ? (
           <>
             <div className="hazy-bg flex justif-between gap-x-2">
