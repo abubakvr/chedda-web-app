@@ -1,9 +1,11 @@
 import { BigNumber, ethers, Signer } from "ethers";
 import {
   IAccountInfo,
+  IAccountSummary,
   IInterestRatesProjection,
   IMarketInfo,
   IPoolState,
+  IPosition,
   Lock,
 } from "chedda-sdk";
 import {
@@ -13,6 +15,7 @@ import {
   IPoolStatsResponse,
   GetDataFunction,
   HookResult,
+  IPositionResponse,
 } from "@/utils/types";
 import {
   createTimestamps,
@@ -23,6 +26,7 @@ import {
 import {
   formatPoolStats,
   formatPoolStatsList,
+  formatPositionsList,
   getAggregateInfo,
 } from "@/utils/formatResponse";
 import { useFetcher } from "./useFetcher";
@@ -587,6 +591,35 @@ const getAllClaimableRewards: GetDataFunction<BigNumber[]> = async ({
   return await accountActor.allClaimableRewards(account);
 };
 
+const getAccountSummary: GetDataFunction<IAccountSummary> = async ({
+  signer,
+  chedda,
+  environment,
+  account,
+}) => {
+  if (!chedda || !account) return null;
+  const accountActor = chedda.accountActor(
+    environment.contracts.AccountActor,
+    signer as Signer
+  );
+  return await accountActor.accountSummary(account);
+};
+
+const getAllPositions: GetDataFunction<IPositionResponse[]> = async ({
+  signer,
+  chedda,
+  environment,
+  account,
+}) => {
+  if (!chedda || !account) return null;
+  const accountActor = chedda.accountActor(
+    environment.contracts.AccountActor,
+    signer as Signer
+  );
+  const allPositions = await accountActor.allPositions(account, true);
+  return formatPositionsList(allPositions);
+};
+
 // Exported custom hooks
 export const useAccountInfo = (): HookResult<IAccountInfo> => {
   return useFetcher<IAccountInfo>(getAccountInfo);
@@ -737,4 +770,12 @@ export const useCheddaTotalSupply = (): HookResult<BigNumber> => {
 
 export const useAllClaimableRewards = (): HookResult<BigNumber[]> => {
   return useFetcher<BigNumber[]>(getAllClaimableRewards);
+};
+
+export const usePositionSummary = (): HookResult<IAccountSummary> => {
+  return useFetcher<IAccountSummary>(getAccountSummary);
+};
+
+export const useAllPositions = (): HookResult<IPositionResponse[]> => {
+  return useFetcher<IPositionResponse[]>(getAllPositions);
 };
