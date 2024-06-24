@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { BigNumber } from "ethers";
 import PositionSummary from "../PositionSummary";
 import { usePositionSummary } from "@/hooks";
-import { formatNumber } from "@/utils/formatters";
+import { formatCurrency, formatNumber } from "@/utils/formatters";
 import { IPositionResponse } from "@/utils/types";
 import { StaticImageData } from "next/image";
 
@@ -185,10 +185,10 @@ describe("PositionSummary", () => {
       />
     );
 
-    expect(screen.getByText("$1")).toBeInTheDocument(); // netValue
-    expect(screen.getByText("$2")).toBeInTheDocument(); // suppliedValue
-    expect(screen.getByText("$0.5")).toBeInTheDocument(); // borrowedValue
-    expect(screen.getByText("$0.3")).toBeInTheDocument(); // lockedValue
+    expect(screen.getByText("$1.00")).toBeInTheDocument(); // netValue
+    expect(screen.getByText("$2.00")).toBeInTheDocument(); // suppliedValue
+    expect(screen.getByText("$0.50")).toBeInTheDocument(); // borrowedValue
+    expect(screen.getByText("$0.30")).toBeInTheDocument(); // lockedValue
 
     // Check if the bars are rendered correctly
     mockAllPositions.forEach((position, index) => {
@@ -202,11 +202,23 @@ describe("PositionSummary", () => {
         `${formatNumber(position.supplied)} ${position.asset.symbol}`
       );
       const suppliedValueText = screen.getByText(
-        `$${formatNumber(position.suppliedValue)}`
+        `${formatCurrency(position.suppliedValue)}`
       );
       expect(suppliedText).toBeInTheDocument();
       expect(suppliedValueText).toBeInTheDocument();
     });
+  });
+
+  test("show supply asset text when position list is empty", () => {
+    render(
+      <PositionSummary
+        isWalletConnected={true}
+        allPositions={[]}
+        allPositionsLoading={false}
+      />
+    );
+
+    expect(screen.getByTestId("no-open-positions")).toBeInTheDocument();
   });
 
   test("renders ConnectWalletBox when wallet is not connected", () => {

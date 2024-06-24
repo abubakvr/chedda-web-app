@@ -2,8 +2,14 @@ import React from "react";
 import { BigNumber } from "ethers";
 import { ConnectWalletBox } from "./ConnectWalletBox";
 import { usePositionSummary } from "@/hooks";
-import { formatNumber, parseBigNumberToFloat } from "@/utils/formatters";
+import {
+  formatCurrency,
+  formatNumber,
+  parseBigNumberToFloat,
+} from "@/utils/formatters";
 import { IPositionResponse } from "@/utils/types";
+import { getAccountPositions } from "@/utils/helpers";
+import Link from "next/link";
 
 interface PositionSummaryProps {
   isWalletConnected: boolean;
@@ -63,7 +69,7 @@ export const PositionSummary = ({
                   ></div>
                 ) : (
                   <p className="text-xl card-gradient-text mt-1 font-bold">
-                    {`$${formatNumber(parsedNetValue)}`}
+                    {`${formatCurrency(parsedNetValue)}`}
                   </p>
                 )}
               </div>
@@ -78,7 +84,7 @@ export const PositionSummary = ({
                   ></div>
                 ) : (
                   <p className="text-xl mt-1 font-bold">
-                    {`$${formatNumber(parsedSuppliedValue)}`}
+                    {`${formatCurrency(parsedSuppliedValue)}`}
                   </p>
                 )}
               </div>
@@ -94,7 +100,7 @@ export const PositionSummary = ({
                   ></div>
                 ) : (
                   <p className="text-xl font-bold mt-1">
-                    {`$${formatNumber(parsedBorrowedValue)}`}
+                    {`${formatCurrency(parsedBorrowedValue)}`}
                   </p>
                 )}
               </div>
@@ -107,7 +113,7 @@ export const PositionSummary = ({
                   ></div>
                 ) : (
                   <p className="text-xl font-bold">
-                    {`$${formatNumber(parsedLockedValue)}`}
+                    {`${formatCurrency(parsedLockedValue)}`}
                   </p>
                 )}
               </div>
@@ -118,39 +124,45 @@ export const PositionSummary = ({
                   className="h-1 w-full rounded bg-blue-200 opacity-10 animate-pulse"
                   data-testid="bar-chart-loading"
                 ></div>
+              ) : getAccountPositions(allPositions).length ? (
+                getAccountPositions(allPositions)?.map(
+                  ({ asset, suppliedValue }, i) => (
+                    <div
+                      className="h-1"
+                      key={`bar-${i}`}
+                      style={{
+                        backgroundColor: asset.color,
+                        width: `${(suppliedValue / totalSuppliedValue) * 100}%`,
+                      }}
+                      data-testid={`bar-${i}`}
+                    ></div>
+                  )
+                )
               ) : (
-                allPositions?.map(({ asset, suppliedValue }, i) => (
-                  <div
-                    className="h-1"
-                    key={`bar-${i}`}
-                    style={{
-                      backgroundColor: asset.color,
-                      width: `${(suppliedValue / totalSuppliedValue) * 100}%`,
-                    }}
-                    data-testid={`bar-${i}`}
-                  ></div>
-                ))
+                <div className="w-full h-1 bg-[#5ED1F6] opacity-50"></div>
               )}
             </div>
             <div
               className="flex justify-around items-center text-center mt-5"
               data-testid="position-list"
             >
-              {allPositionsLoading
-                ? [1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="flex font-bold text-sm gap-x-1.5"
-                      data-testid={`position-item-loading-${i}`}
-                    >
-                      <div className="mt-1 w-3 h-3 rounded-full bg-blue-200 opacity-10 animate-pulse"></div>
-                      <div className="flex flex-col justify-around">
-                        <div className="h-4 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
-                        <div className="h-4 w-20 rounded bg-blue-200 opacity-10 animate-pulse mt-1.5"></div>
-                      </div>
+              {allPositionsLoading ? (
+                [1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="flex font-bold text-sm gap-x-1.5"
+                    data-testid={`position-item-loading-${i}`}
+                  >
+                    <div className="mt-1 w-3 h-3 rounded-full bg-blue-200 opacity-10 animate-pulse"></div>
+                    <div className="flex flex-col justify-around">
+                      <div className="h-4 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
+                      <div className="h-4 w-20 rounded bg-blue-200 opacity-10 animate-pulse mt-1.5"></div>
                     </div>
-                  ))
-                : allPositions?.map(({ asset, suppliedValue, supplied }, i) => (
+                  </div>
+                ))
+              ) : getAccountPositions(allPositions).length ? (
+                getAccountPositions(allPositions)?.map(
+                  ({ asset, suppliedValue, supplied }, i) => (
                     <div
                       className="flex font-bold text-sm gap-x-1.5"
                       key={`info-${i}`}
@@ -172,11 +184,24 @@ export const PositionSummary = ({
                           className="text-[#FFFFFF50] mt-0.5"
                           data-testid={`position-supplied-value-${i}`}
                         >
-                          ${formatNumber(suppliedValue)}
+                          {formatCurrency(suppliedValue)}
                         </p>
                       </div>
                     </div>
-                  ))}
+                  )
+                )
+              ) : (
+                <p className="text-[#B5B5B5]" data-testid="no-open-positions">
+                  You do not have any open positions. Supply assets{" "}
+                  <Link
+                    href={"/markets"}
+                    className="card-gradient-text relative hover:opacity-80"
+                  >
+                    here
+                  </Link>{" "}
+                  to start earning interest and rewards.
+                </p>
+              )}
             </div>
           </div>
         </div>
