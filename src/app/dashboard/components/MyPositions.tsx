@@ -2,31 +2,32 @@
 import React, { ChangeEvent, useState } from "react";
 import Image from "next/image";
 import SearchIcon from "@/assets/icon/search-icon.svg";
-import { VaultItem } from "./PositionItem";
-import { usePoolStatsList } from "@/hooks";
+import { PositionItem } from "./PositionItem";
 import { VaultSkeleton } from "@/components/ui";
-import { IPoolStatsResponse, IToken } from "@/utils/types";
+import { IPositionResponse } from "@/utils/types";
 import { ConnectWalletBox } from "./ConnectWalletBox";
-
-const positionsHeaderItem = [
-  "Pools",
-  "Supplied",
-  "Borrowed",
-  "Collateral Value",
-  "Health Factor",
-  "Stake/Earn",
-  "Lock/Earn",
-];
+import { positionsHeaderItem } from "@/utils/constants";
+import { getAccountPositions } from "@/utils/helpers";
+import { EmptyPositionCard } from "./EmptyPositionCard";
 
 interface MyPositionsProps {
   isWalletConnected: boolean;
+  allPositions: IPositionResponse[] | undefined;
+  allPositionsLoading: boolean;
+  cheddaTokenPrice: number | undefined;
+  cheddaTokenPriceLoading: boolean;
 }
 
-export const MyPositions = ({ isWalletConnected }: MyPositionsProps) => {
+export const MyPositions = ({
+  isWalletConnected,
+  allPositions,
+  allPositionsLoading,
+  cheddaTokenPrice,
+  cheddaTokenPriceLoading,
+}: MyPositionsProps) => {
   const [searchKeyword, setSearchKeyword] = useState<string>();
-  const { data: poolStatsList, isLoading } = usePoolStatsList();
 
-  const matchSearchItem = (item: IPoolStatsResponse, searchKeyword: string) => {
+  const matchSearchItem = (item: IPositionResponse, searchKeyword: string) => {
     const normalizedSearchKeyword = searchKeyword?.toLowerCase() || "";
 
     const matchesAssetName = item.asset.name
@@ -37,18 +38,14 @@ export const MyPositions = ({ isWalletConnected }: MyPositionsProps) => {
       .toLowerCase()
       .includes(normalizedSearchKeyword);
 
-    const matchesCollaterals = item.collaterals.some((collateral: IToken) =>
-      collateral.symbol.toLowerCase().includes(normalizedSearchKeyword)
-    );
-
-    return matchesAssetName || matchesAssetSymbol || matchesCollaterals;
+    return matchesAssetName || matchesAssetSymbol;
   };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) =>
     setSearchKeyword(e.target.value);
 
   return (
-    <div className="card-bg rounded-lg">
+    <div className="card-bg rounded-lg" data-testid="my-positions">
       <div data-testid="vault-card" className="w-full p-3 pb-0 sm:p-7 sm:pb-0">
         <div className="flex justify-between">
           <div
@@ -76,19 +73,12 @@ export const MyPositions = ({ isWalletConnected }: MyPositionsProps) => {
             </div>
           </div>
         </div>
-        {isWalletConnected && (
-          <div className="mt-2 pb-4 sm:mt-10 hidden md:grid grid-cols-7 border-b border-gray-500 border-opacity-20">
+        {isWalletConnected && getAccountPositions(allPositions).length > 0 && (
+          <div className="mt-2 pb-4 sm:mt-10 hidden md:grid grid-cols-7 border-b  gap-x-20  border-gray-500 border-opacity-20">
             {positionsHeaderItem.map((item: string, index: number) => (
-              <div
-                key={index}
-                className={`flex  ${
-                  index < 2 ? "justify-start" : "justify-end"
-                } ${index === 2 && "justify-center"} `}
-              >
+              <div key={index} className={`flex  justify-start`}>
                 <div
-                  className={`text-white ${
-                    index < 2 ? "w-max" : "w-[100px]"
-                  }  col-span-1 opacity-50 flex font-open-sans text-xs font-semibold leading-6 tracking-wide`}
+                  className={`text-white  col-span-1 opacity-50 flex font-open-sans text-xs font-bold leading-6 tracking-wide`}
                   data-testid={`vault-header-item-${index}`}
                 >
                   {item}
@@ -100,26 +90,38 @@ export const MyPositions = ({ isWalletConnected }: MyPositionsProps) => {
       </div>
       {isWalletConnected ? (
         <div>
-          {!isLoading &&
-            poolStatsList?.map((item: IPoolStatsResponse, index: number) => (
-              <div key={index}>
-                <div className="vault-item">
-                  {searchKeyword && matchSearchItem(item, searchKeyword) && (
-                    <VaultItem pool={item} />
-                  )}
-                  {!searchKeyword && <VaultItem pool={item} />}
-                </div>
-                <div
-                  className={
-                    index !== poolStatsList.length - 1
-                      ? "w-5/4 mx-7 border-b border-gray-500 border-opacity-20"
-                      : ""
-                  }
-                />
+          {!allPositionsLoading ? (
+            getAccountPositions(allPositions).length ? (
+              getAccountPositions(allPositions)?.map(
+                (item: IPositionResponse, index: number) => {
+                  const isMatch = searchKeyword
+                    ? matchSearchItem(item, searchKeyword)
+                    : true;
+                  return (
+                    isMatch && (
+                      <div key={index} data-testid={`position-item-${index}`}>
+                        <div className="vault-item">
+                          <PositionItem
+                            pool={item}
+                            cheddaTokenPrice={cheddaTokenPrice || 0}
+                          />
+                        </div>
+                        {index !==
+                          getAccountPositions(allPositions).length - 1 && (
+                          <div className="w-5/4 mx-7 border-b border-gray-500 border-opacity-20" />
+                        )}
+                      </div>
+                    )
+                  );
+                }
+              )
+            ) : (
+              <div className="p-8">
+                <EmptyPositionCard />
               </div>
-            ))}
-          {isLoading && (
-            <VaultSkeleton itemCount={2} data-testid="loading-skeleton" />
+            )
+          ) : (
+            <VaultSkeleton itemCount={2} data-testid="vault-skeleton" />
           )}
         </div>
       ) : (

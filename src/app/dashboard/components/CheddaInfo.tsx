@@ -3,12 +3,13 @@ import Image from "next/image";
 import linkOut from "@/assets/icon/link-out-white.svg";
 import { Card } from "@/components/common";
 import { ConnectWalletBox } from "./ConnectWalletBox";
-import { useCheddaBalance, useCheddaTotalSupply, useTokenValue } from "@/hooks";
+import { useCheddaBalance, useCheddaTotalSupply } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
-import { currentEnvironment } from "@/data/environments";
 
 interface CheddaInfoProps {
   isWalletConnected: boolean;
+  cheddaTokenPrice: number | undefined;
+  cheddaTokenPriceLoading: boolean;
 }
 
 interface InfoItemProps {
@@ -40,12 +41,14 @@ const InfoItem = ({ title, value, isLoading, subValue }: InfoItemProps) => (
   </div>
 );
 
-export const CheddaInfo = ({ isWalletConnected }: CheddaInfoProps) => {
+export const CheddaInfo = ({
+  isWalletConnected,
+  cheddaTokenPrice,
+  cheddaTokenPriceLoading,
+}: CheddaInfoProps) => {
   const { data: cheddaTokenBalance, isLoading: cheddaTokenBalanceLoading } =
     useCheddaBalance();
-  const { data: cheddaPrice, isLoading: cheddaPriceLoading } = useTokenValue(
-    currentEnvironment?.contracts.CheddaToken || ""
-  );
+
   const { data: cheddaTotalSupply, isLoading: cheddaTotalSupplyLoading } =
     useCheddaTotalSupply();
 
@@ -55,11 +58,13 @@ export const CheddaInfo = ({ isWalletConnected }: CheddaInfoProps) => {
     18,
     5
   );
-  const parsedCheddaPrice = Number(cheddaPrice);
-  const marketCap = parsedCheddaTotalSupply * parsedCheddaPrice;
+  const parsedCheddaTokenPrice = Number(cheddaTokenPrice);
+  const marketCap = parsedCheddaTotalSupply * parsedCheddaTokenPrice;
 
   const isLoading =
-    cheddaTokenBalanceLoading || cheddaPriceLoading || cheddaTotalSupplyLoading;
+    cheddaTokenBalanceLoading ||
+    cheddaTokenPriceLoading ||
+    cheddaTotalSupplyLoading;
 
   return (
     <Card title="CHEDDA INFO">
@@ -72,12 +77,12 @@ export const CheddaInfo = ({ isWalletConnected }: CheddaInfoProps) => {
             <InfoItem
               title="CHEDDA BALANCE"
               value={formatLargeNumber(parsedCheddaBalance)}
-              subValue={`$${formatLargeNumber(parsedCheddaPrice * parsedCheddaBalance)}`}
+              subValue={`$${formatLargeNumber(parsedCheddaTokenPrice * parsedCheddaBalance)}`}
               isLoading={isLoading}
             />
             <InfoItem
               title="CHEDDA PRICE"
-              value={`$${formatLargeNumber(parsedCheddaPrice)}`}
+              value={`$${formatLargeNumber(parsedCheddaTokenPrice)}`}
               subValue={
                 <span className="underline card-gradient-text">
                   See market trend

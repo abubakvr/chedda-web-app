@@ -24,7 +24,13 @@ describe("CheddaInfo", () => {
   });
 
   it("renders without crashing", () => {
-    render(<CheddaInfo isWalletConnected={true} />);
+    render(
+      <CheddaInfo
+        isWalletConnected={true}
+        cheddaTokenPrice={1000}
+        cheddaTokenPriceLoading={false}
+      />
+    );
     expect(screen.getByTestId("chedda-info-card")).toBeInTheDocument();
   });
 
@@ -42,7 +48,13 @@ describe("CheddaInfo", () => {
       isLoading: true,
     });
 
-    render(<CheddaInfo isWalletConnected={true} />);
+    render(
+      <CheddaInfo
+        isWalletConnected={true}
+        cheddaTokenPrice={undefined}
+        cheddaTokenPriceLoading={true}
+      />
+    );
     expect(screen.getByTestId("info-item-chedda-balance")).toHaveTextContent(
       "CHEDDA BALANCE"
     );
@@ -55,19 +67,37 @@ describe("CheddaInfo", () => {
   });
 
   it("displays correct values when data is loaded", () => {
-    render(<CheddaInfo isWalletConnected={true} />);
+    render(
+      <CheddaInfo
+        isWalletConnected={true}
+        cheddaTokenPrice={1000}
+        cheddaTokenPriceLoading={false}
+      />
+    );
     expect(screen.getByText("CHEDDA BALANCE")).toBeInTheDocument();
     expect(screen.getByText("$200.00")).toBeInTheDocument();
     expect(screen.getByText("MARKET CAP")).toBeInTheDocument();
   });
 
   it("shows connect wallet box when wallet is not connected", () => {
-    render(<CheddaInfo isWalletConnected={false} />);
+    render(
+      <CheddaInfo
+        isWalletConnected={false}
+        cheddaTokenPrice={1000}
+        cheddaTokenPriceLoading={false}
+      />
+    );
     expect(screen.getByTestId("connect-wallet-box")).toBeInTheDocument();
   });
 
   it("displays the buy Chedda link", () => {
-    render(<CheddaInfo isWalletConnected={true} />);
+    render(
+      <CheddaInfo
+        isWalletConnected={true}
+        cheddaTokenPrice={1000}
+        cheddaTokenPriceLoading={false}
+      />
+    );
     expect(screen.getByTestId("buy-chedda-link")).toHaveTextContent(
       "Buy CHEDDA"
     );

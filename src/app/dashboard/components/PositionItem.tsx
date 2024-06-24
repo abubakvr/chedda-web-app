@@ -1,48 +1,28 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import InfoIcon from "@/assets/icon/info-icon.svg";
+import arrowForward from "@/assets/icon/arrow-forward.svg";
 import {
-  formatAsPercentage,
   formatCurrency,
   formatLargeNumber,
+  formatNumber,
 } from "@/utils/formatters";
-import { IPoolStatsResponse, IToken } from "@/utils/types";
+import { IPositionResponse } from "@/utils/types";
+import { getHealthFactorColor } from "@/utils/helpers";
 
-export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
-  const elementRef = useRef<HTMLDivElement | null>(null);
-  const [showEllipses, setShowEllipses] = useState(false);
+interface PositionItemProps {
+  pool: IPositionResponse;
+  cheddaTokenPrice: number;
+}
 
-  useEffect(() => {
-    const element = elementRef.current;
-
-    const handleShowEllipses = () => {
-      if (element) {
-        const hasVerticalOverflow = element.scrollHeight > element.clientHeight;
-
-        if (hasVerticalOverflow) {
-          setShowEllipses(true);
-        } else {
-          setShowEllipses(false);
-        }
-      }
-    };
-
-    handleShowEllipses();
-    window.addEventListener("resize", handleShowEllipses);
-
-    return () => {
-      window.removeEventListener("resize", handleShowEllipses);
-    };
-  }, []);
-
+export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
   return (
     <React.Fragment>
       <Link href={`/markets/${pool.pool}`} passHref>
         <div
-          data-testid="vault-item"
-          className="h-28 w-full px-7 py-5 hidden md:grid grid-cols-7 grid-row-bg justify-between text-white hover:opacity-80 hover:bg-blue-200 hover:bg-opacity-10 cursor-pointer"
+          data-testid="position-item"
+          className="h-28 w-full px-7 py-5 hidden md:grid grid-cols-7 grid-row-bg gap-x-20 text-white hover:opacity-80 hover:bg-blue-200 hover:bg-opacity-10 cursor-pointer"
         >
           <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-2">
             <div className="flex items-center">
@@ -50,7 +30,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                 src={pool.asset?.logo}
                 className="h-8 w-8 "
                 alt={pool.asset?.symbol}
-                data-testid="asset-name"
+                data-testid="asset-icon"
               />
               <div
                 className="ml-2 tracking-widest text-lg font-bold"
@@ -59,13 +39,13 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                 {pool.asset?.symbol}
               </div>
             </div>
-            <div className="defi-box uppercase h-6 w-20 mt-3 flex items-center justify-center text-[10px] font-bold">
+            {/* <div className="defi-box uppercase h-6 w-20 mt-3 flex items-center justify-center text-[10px] font-bold">
               {pool.characterization}
-            </div>
+            </div> */}
           </div>
           <div className="flex justify-left items-center">
-            <div className="text-sm flex flex-col font-semibold md:col-span-1 w-[100px]">
-              <div data-testid="supplied">
+            <div className="text-sm flex flex-col font-semibold md:col-span-1">
+              <div data-testid="supplied-amount">
                 {formatLargeNumber(pool.supplied)} {pool.asset?.symbol}
               </div>
               <div className="opacity-50 mt-1.5" data-testid="supplied-value">
@@ -73,51 +53,49 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
               </div>
             </div>
           </div>
-          <React.Fragment>
-            <div className="flex justify-center items-center">
-              <div className="text-sm flex flex-col font-semibold md:col-span-1 w-[100px]">
-                <div data-testid="supplied">
-                  {formatLargeNumber(pool.supplied)} {pool.asset?.symbol}
-                </div>
-                <div className="opacity-50 mt-1.5" data-testid="supplied-value">
-                  {formatCurrency(pool.suppliedValue)}
-                </div>
+          <div className="flex justify-start items-center">
+            <div className="text-sm flex flex-col font-semibold md:col-span-1">
+              <div data-testid="borrowed-amount">
+                {formatLargeNumber(pool.borrowed)} {pool.asset?.symbol}
+              </div>
+              <div className="opacity-50 mt-1.5" data-testid="borrowed-value">
+                {formatCurrency(pool.borrowedValue)}
               </div>
             </div>
-            <div className="flex justify-end ">
-              <div className="text-sm flex items-center space-x-2 font-semibold md:col-span-1 w-[100px]">
-                <div data-testid="max-supply-apy">
-                  {formatAsPercentage(pool.maxSupplyAPY)}
-                </div>
-                <Image src={InfoIcon} alt="Info Icon" />
+          </div>
+          <div className="flex justify-start">
+            <div className="text-sm flex items-center font-semibold md:col-span-1">
+              <div
+                data-testid="health-factor-value"
+                className={getHealthFactorColor(pool.healthFactor)}
+              >
+                {formatNumber(pool.healthFactor)}
               </div>
             </div>
-            <div className="flex justify-end items-center">
-              <div className="text-sm flex flex-col font-semibold md:col-span-1 w-[100px]">
-                <div data-testid="borrowed">
-                  {formatLargeNumber(pool.borrowed)} {pool.asset?.symbol}
-                </div>
-                <div className="opacity-50 mt-1.5" data-testid="borrowed-value">
-                  {formatCurrency(pool.borrowedValue)}
-                </div>
+          </div>
+          <div className="flex justify-start items-center">
+            <div className="text-sm flex flex-col font-semibold md:col-span-1">
+              <div data-testid="staked-amount">
+                {formatLargeNumber(pool.staked)} CHEDDA
+              </div>
+              <div className="opacity-50 mt-1.5" data-testid="staked-value">
+                {formatCurrency(pool.staked * cheddaTokenPrice)}
               </div>
             </div>
-            <div className="flex justify-end">
-              <div className="text-sm flex items-center space-x-2 font-semibold md:col-span-1 w-[100px]">
-                <div data-testid="max-borrow-apy">
-                  {formatAsPercentage(pool.maxBorrowAPY)}
-                </div>
-                <Image src={InfoIcon} alt="Info Icon" />
+          </div>
+          <div className="flex justify-start items-center">
+            <div className="text-sm flex flex-col font-semibold md:col-span-1">
+              <div data-testid="locked-amount">
+                {formatLargeNumber(pool.locked)} CHEDDA
+              </div>
+              <div className="opacity-50 mt-1.5" data-testid="locked-value">
+                {formatCurrency(pool.locked * cheddaTokenPrice)}
               </div>
             </div>
-            <div className="flex justify-end">
-              <div className="text-sm flex items-center space-x-2 font-semibold md:col-span-1 w-[100px]">
-                <div data-testid="utilization">
-                  {formatAsPercentage(pool.utilization)}
-                </div>
-              </div>
-            </div>
-          </React.Fragment>
+          </div>
+          <div className="flex items-center" data-testid="arrow-forward">
+            <Image src={arrowForward} alt="arrow forward" />
+          </div>
         </div>
       </Link>
     </React.Fragment>

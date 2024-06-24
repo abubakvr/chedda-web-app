@@ -1,16 +1,21 @@
 import { useState } from "react";
 import { Button, Card } from "@/components/common";
 import { Toast } from "@/components/ui";
-import { currentEnvironment } from "@/data/environments";
-import { useAllClaimableRewards, useTokenValue, useTransaction } from "@/hooks";
+import { useAllClaimableRewards, useTransaction } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { ConnectWalletBox } from "./ConnectWalletBox";
 
 interface ClaimRewardsProps {
   isWalletConnected: boolean;
+  cheddaTokenPrice: number | undefined;
+  cheddaTokenPriceLoading: boolean;
 }
 
-export const ClaimRewards = ({ isWalletConnected }: ClaimRewardsProps) => {
+export const ClaimRewards = ({
+  isWalletConnected,
+  cheddaTokenPrice,
+  cheddaTokenPriceLoading,
+}: ClaimRewardsProps) => {
   const [showToast, setShowToast] = useState(false);
   const [txLoading, setTxLoading] = useState(false);
   const [{ txMessage, txHash, txStatus, copyText }, setTxDetails] = useState<{
@@ -24,9 +29,7 @@ export const ClaimRewards = ({ isWalletConnected }: ClaimRewardsProps) => {
     txHash: "",
     txStatus: "success",
   });
-  const { data: cheddaPrice, isLoading: cheddaPriceLoading } = useTokenValue(
-    currentEnvironment.contracts.CheddaToken
-  );
+
   const {
     data: claimableRewards,
     isLoading: claimableRewardsLoading,
@@ -34,7 +37,7 @@ export const ClaimRewards = ({ isWalletConnected }: ClaimRewardsProps) => {
   } = useAllClaimableRewards();
   const { claimAllRewards } = useTransaction("");
 
-  const parsedCheddaPrice = Number(cheddaPrice);
+  const parsedCheddaTokenPrice = Number(cheddaTokenPrice);
   const parsedLockRewards = parseBigNumberToFloat(claimableRewards?.[1], 18, 5);
   const parsedStakeRewards = parseBigNumberToFloat(
     claimableRewards?.[0],
@@ -42,7 +45,7 @@ export const ClaimRewards = ({ isWalletConnected }: ClaimRewardsProps) => {
     5
   );
 
-  const isDataLoading = cheddaPriceLoading || claimableRewardsLoading;
+  const isDataLoading = cheddaTokenPriceLoading || claimableRewardsLoading;
 
   const handleClaimAllRewards = async () => {
     try {
@@ -139,7 +142,9 @@ export const ClaimRewards = ({ isWalletConnected }: ClaimRewardsProps) => {
                       data-testid="lock-rewards-value"
                     >
                       $
-                      {formatLargeNumber(parsedLockRewards * parsedCheddaPrice)}
+                      {formatLargeNumber(
+                        parsedLockRewards * parsedCheddaTokenPrice
+                      )}
                     </p>
                   </div>
                 )}
@@ -172,7 +177,7 @@ export const ClaimRewards = ({ isWalletConnected }: ClaimRewardsProps) => {
                     >
                       $
                       {formatLargeNumber(
-                        parsedStakeRewards * parsedCheddaPrice
+                        parsedStakeRewards * parsedCheddaTokenPrice
                       )}
                     </p>
                   </div>

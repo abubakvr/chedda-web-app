@@ -1,6 +1,6 @@
 import { Chedda } from "chedda-sdk";
 import { BigNumber, ethers, Signer } from "ethers";
-import { IBridgeChain, IConfigToken } from "./types";
+import { IBridgeChain, IConfigToken, IPositionResponse } from "./types";
 
 export function findNearestIndex(sortedArray: number[], targetNumber: number) {
   // Check if the array is empty
@@ -193,3 +193,31 @@ export const getTokenBalanceAddress = (
     ? selectedToken.address
     : selectedToken.bridgedOft;
 };
+
+/**
+ * Returns a color code based on the given health factor.
+ * @param healthFactor - The health factor to evaluate.
+ * @returns The corresponding color code as a string.
+ */
+export function getHealthFactorColor(healthFactor: number): string {
+  if (healthFactor < 1.5) {
+    return "text-error";
+  } else if (healthFactor >= 1.5 && healthFactor <= 3.0) {
+    return "text-warning";
+  } else {
+    return "text-success";
+  }
+}
+
+export function getAccountPositions(
+  allPositions: IPositionResponse[] | undefined
+): IPositionResponse[] {
+  if (!allPositions) return [];
+  return allPositions.filter(
+    (position) =>
+      position.staked > 0 ||
+      position.locked > 0 ||
+      position.supplied > 0 ||
+      position.borrowed > 0
+  );
+}
