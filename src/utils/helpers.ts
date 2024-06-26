@@ -194,6 +194,21 @@ export const getTokenBalanceAddress = (
     : selectedToken.bridgedOft;
 };
 
+/**
+ * Returns a color code based on the given health factor.
+ * @param healthFactor - The health factor to evaluate.
+ * @returns The corresponding color code as a string.
+ */
+export function getHealthFactorColor(healthFactor: number): string {
+  if (healthFactor < 1.5) {
+    return "text-error";
+  } else if (healthFactor >= 1.5 && healthFactor <= 3.0) {
+    return "text-warning";
+  } else {
+    return "text-success";
+  }
+}
+
 export function getAccountPositions(
   allPositions: IPositionResponse[] | undefined
 ): IPositionResponse[] {

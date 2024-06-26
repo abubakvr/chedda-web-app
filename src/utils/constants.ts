@@ -58,6 +58,15 @@ export const vaultHeaderItems = [
   "Utilization",
 ];
 
+export const positionsHeaderItem = [
+  "Pools",
+  "Supplied",
+  "Borrowed",
+  "Health Factor",
+  "Stake/Earn",
+  "Lock/Earn",
+];
+
 export const LOCKTIMES = [
   { title: "1 hr", duration: 0.0418, multiplier: 0, value: 0 },
   { title: "30 days", duration: 30, multiplier: 0.25, value: 1 },

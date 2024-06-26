@@ -7,7 +7,8 @@ import { ClaimRewards } from "./components/ClaimRewards";
 import { CheddaInfo } from "./components/CheddaInfo";
 import { useWeb3React } from "@web3-react/core";
 import { PositionSummary } from "./components/PositionSummary";
-import { useAllPositions } from "@/hooks";
+import { useAllPositions, useTokenValue } from "@/hooks";
+import { currentEnvironment } from "@/data/environments";
 
 const Page = () => {
   const { account } = useWeb3React();
@@ -16,6 +17,9 @@ const Page = () => {
   const { data: allPositions, isLoading: allPositionsLoading } =
     useAllPositions();
 
+  const { data: cheddaTokenPrice, isLoading: cheddaTokenPriceLoading } =
+    useTokenValue(currentEnvironment?.contracts.CheddaToken || "");
+
   return (
     <PageContainer>
       <PageTitle title="DASHBOARD">
@@ -23,10 +27,18 @@ const Page = () => {
       </PageTitle>
       <div className="mt-6 flex justify-between w-full space-x-6">
         <div className="w-[62%]">
-          <CheddaInfo isWalletConnected={isWalletConnected} />
+          <CheddaInfo
+            isWalletConnected={isWalletConnected}
+            cheddaTokenPrice={cheddaTokenPrice}
+            cheddaTokenPriceLoading={cheddaTokenPriceLoading}
+          />
         </div>
         <div className="w-[38%]">
-          <ClaimRewards isWalletConnected={isWalletConnected} />
+          <ClaimRewards
+            isWalletConnected={isWalletConnected}
+            cheddaTokenPrice={cheddaTokenPrice}
+            cheddaTokenPriceLoading={cheddaTokenPriceLoading}
+          />
         </div>
       </div>
       <div className="mt-6">
@@ -37,7 +49,13 @@ const Page = () => {
         />
       </div>
       <div className="mt-6">
-        <MyPositions isWalletConnected={isWalletConnected} />
+        <MyPositions
+          isWalletConnected={isWalletConnected}
+          allPositions={allPositions}
+          allPositionsLoading={allPositionsLoading}
+          cheddaTokenPrice={cheddaTokenPrice}
+          cheddaTokenPriceLoading={cheddaTokenPriceLoading}
+        />
       </div>
       <div className="mt-6">
         <BridgeAssets />

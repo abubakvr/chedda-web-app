@@ -42,7 +42,13 @@ describe("ClaimRewards Component", () => {
   });
 
   it("renders lock rewards and stake rewards correctly when wallet is connected", () => {
-    render(<ClaimRewards isWalletConnected={true} />);
+    render(
+      <ClaimRewards
+        isWalletConnected={true}
+        cheddaTokenPrice={3}
+        cheddaTokenPriceLoading={false}
+      />
+    );
 
     waitFor(() => {
       expect(screen.getByTestId("lock-rewards")).toHaveTextContent("5.00");
@@ -57,7 +63,13 @@ describe("ClaimRewards Component", () => {
   });
 
   it("renders ConnectWalletBox when wallet is not connected", () => {
-    render(<ClaimRewards isWalletConnected={false} />);
+    render(
+      <ClaimRewards
+        isWalletConnected={false}
+        cheddaTokenPrice={3}
+        cheddaTokenPriceLoading={false}
+      />
+    );
 
     waitFor(() => {
       expect(screen.getByTestId("connect-wallet-box")).toBeInTheDocument();
@@ -65,7 +77,13 @@ describe("ClaimRewards Component", () => {
   });
 
   it("calls handleClaimAllRewards when claim all button is clicked", async () => {
-    render(<ClaimRewards isWalletConnected={true} />);
+    render(
+      <ClaimRewards
+        isWalletConnected={true}
+        cheddaTokenPrice={3}
+        cheddaTokenPriceLoading={false}
+      />
+    );
 
     fireEvent.click(screen.getByTestId("custom-button"));
 

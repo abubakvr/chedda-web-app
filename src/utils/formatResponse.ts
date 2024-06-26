@@ -223,7 +223,7 @@ export const formatPositionsList = (
       borrowedValue: parseBigNumberToFloat(item.borrowedValue),
       collateralValue: parseBigNumberToFloat(item.collateralValue, 18, 10),
       healthFactor: parseBigNumberToFloat(item.healthFactor, 18, 10),
-      staked: parseBigNumberToFloat(item.staked, 18, 10),
+      staked: parseBigNumberToFloat(item.staked, decimals, 10),
       locked: parseBigNumberToFloat(item.locked, 18, 10),
       stakeRewardsClaimable: parseBigNumberToFloat(
         item.stakeRewardsClaimable,
