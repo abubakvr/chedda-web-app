@@ -2,7 +2,7 @@
 import React from "react";
 import { PageTitle, PageContainer } from "@/components/common";
 import { MyPositions } from "./components/MyPositions";
-import { BridgeAssets } from "./components/BridgeAssetInfo";
+import { BridgeSection } from "./components/BridgeSection";
 import { ClaimRewards } from "./components/ClaimRewards";
 import { CheddaInfo } from "./components/CheddaInfo";
 import { useWeb3React } from "@web3-react/core";
@@ -58,7 +58,7 @@ const Page = () => {
         />
       </div>
       <div className="mt-6">
-        <BridgeAssets />
+        <BridgeSection />
       </div>
     </PageContainer>
   );
