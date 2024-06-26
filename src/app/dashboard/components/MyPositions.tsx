@@ -120,7 +120,7 @@ export const MyPositions = ({ isWalletConnected }: MyPositionsProps) => {
               </div>
             ))}
           {isLoading && (
-            <VaultSkeleton itemCount={4} data-testid="loading-skeleton" />
+            <VaultSkeleton itemCount={2} data-testid="loading-skeleton" />
           )}
         </div>
       ) : (

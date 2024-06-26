@@ -18,10 +18,10 @@ const Page = () => {
         Track all your positions in one place.
       </PageTitle>
       <div className="mt-6 flex justify-between w-full space-x-6">
-        <div className="w-[58%]">
+        <div className="w-[62%]">
           <CheddaInfo isWalletConnected={isWalletConnected} />
         </div>
-        <div className="w-[42%]">
+        <div className="w-[38%]">
           <ClaimRewards isWalletConnected={isWalletConnected} />
         </div>
       </div>

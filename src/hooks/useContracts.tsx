@@ -447,6 +447,19 @@ export const getCheddaBalance: GetDataFunction<BigNumber> = async ({
   return await cheddaToken.balanceOf(account);
 };
 
+export const getCheddaTotalSupply: GetDataFunction<BigNumber> = async ({
+  chedda,
+  signer,
+  environment,
+}) => {
+  if (!environment) return null;
+  const cheddaToken = chedda.cheddaToken(
+    environment.contracts.CheddaToken,
+    signer as Signer
+  );
+  return await cheddaToken.totalSupply();
+};
+
 export const getCheddaAllowance: GetDataFunction<BigNumber> = async ({
   chedda,
   signer,
@@ -702,4 +715,8 @@ export const useTotalWeightSum = (): HookResult<BigNumber> => {
 
 export const useGaugeAddress = (): HookResult<string> => {
   return useFetcher<string>(getGaugeAddress);
+};
+
+export const useCheddaTotalSupply = (): HookResult<BigNumber> => {
+  return useFetcher<BigNumber>(getCheddaTotalSupply);
 };
