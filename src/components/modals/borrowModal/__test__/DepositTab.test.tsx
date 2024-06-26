@@ -154,7 +154,7 @@ describe("DepositTab Component", () => {
 
     await waitFor(() => {
       expect(screen.getByTestId("loading-button-icon")).toBeInTheDocument();
-      expect(screen.getByText("Deposit T1")).toHaveAttribute("disabled");
+      expect(screen.getByTestId("custom-button")).toHaveAttribute("disabled");
     });
   });
 

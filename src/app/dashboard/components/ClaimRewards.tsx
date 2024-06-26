@@ -1,5 +1,9 @@
-import { Card } from "@/components/common";
-import React from "react";
+import { useState } from "react";
+import { Button, Card } from "@/components/common";
+import { Toast } from "@/components/ui";
+import { currentEnvironment } from "@/data/environments";
+import { useAllClaimableRewards, useTokenValue, useTransaction } from "@/hooks";
+import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { ConnectWalletBox } from "./ConnectWalletBox";
 
 interface ClaimRewardsProps {
@@ -7,41 +11,196 @@ interface ClaimRewardsProps {
 }
 
 export const ClaimRewards = ({ isWalletConnected }: ClaimRewardsProps) => {
+  const [showToast, setShowToast] = useState(false);
+  const [txLoading, setTxLoading] = useState(false);
+  const [{ txMessage, txHash, txStatus, copyText }, setTxDetails] = useState<{
+    txMessage: string;
+    txHash: string | null;
+    copyText: string | null;
+    txStatus: "success" | "failed";
+  }>({
+    copyText: "",
+    txMessage: "",
+    txHash: "",
+    txStatus: "success",
+  });
+  const { data: cheddaPrice, isLoading: cheddaPriceLoading } = useTokenValue(
+    currentEnvironment.contracts.CheddaToken
+  );
+  const {
+    data: claimableRewards,
+    isLoading: claimableRewardsLoading,
+    fetchData: fetchAllClaimableRewards,
+  } = useAllClaimableRewards();
+  const { claimAllRewards } = useTransaction("");
+
+  const parsedCheddaPrice = Number(cheddaPrice);
+  const parsedLockRewards = parseBigNumberToFloat(claimableRewards?.[1], 18, 5);
+  const parsedStakeRewards = parseBigNumberToFloat(
+    claimableRewards?.[0],
+    18,
+    5
+  );
+
+  const isDataLoading = cheddaPriceLoading || claimableRewardsLoading;
+
+  const handleClaimAllRewards = async () => {
+    try {
+      if (parsedLockRewards || parsedStakeRewards) {
+        setTxLoading(true);
+        setShowToast(false);
+        claimAllRewards()
+          .then(async (res: any) => {
+            if (res) {
+              const result = await res.wait();
+              if (result.status === 1) {
+                const txMessage = "You've successfully claimed all rewards";
+                setTxDetails({
+                  txMessage,
+                  copyText: null,
+                  txHash: res.hash,
+                  txStatus: "success",
+                });
+                setShowToast(true);
+                fetchAllClaimableRewards(false);
+              } else {
+                const txMessage = `An error occurred while proccessing your transaction`;
+                setTxDetails({
+                  txMessage,
+                  copyText: null,
+                  txHash: res.hash,
+                  txStatus: "failed",
+                });
+                setShowToast(true);
+              }
+            }
+            setTxLoading(false);
+          })
+          .catch((error: any) => {
+            const errorObject = JSON.parse(error.message);
+            setTxDetails({
+              txMessage: errorObject.errorMessage,
+              copyText: errorObject.fullText,
+              txHash: null,
+              txStatus: "failed",
+            });
+            setShowToast(true);
+            setTxLoading(false);
+          });
+      }
+    } catch (error: any) {
+      const errorObject = JSON.parse(error.message);
+      setTxDetails({
+        txMessage: errorObject.errorMessage,
+        copyText: errorObject.fullText,
+        txHash: null,
+        txStatus: "failed",
+      });
+      setShowToast(true);
+      setTxLoading(false);
+    }
+  };
   return (
-    <Card title="CHEDDA INFO">
-      {isWalletConnected ? (
-        <>
-          <div className="hazy-bg flex justif-between gap-x-2">
-            <div className="flex flex-col items-center p-4 w-full space-y-1">
-              <p className="text-sm text-[#FFFFFF70] font-semibold">
-                Lock Rewards
-              </p>
-              <p className="text-3xl font-bold card-gradient-text">0.758</p>
-              <p className="text-sm font-bold card-gradient-text">CHEDDA</p>
-              <p className="text-sm text-[#FFFFFF70]">$14.23</p>
+    <>
+      <Toast
+        isOpen={showToast}
+        toastMessage={txMessage}
+        txHash={txHash}
+        status={txStatus}
+        copyText={copyText}
+      />
+      <Card title="CLAIM REWARDS" data-test-id="custom-card">
+        {isWalletConnected ? (
+          <>
+            <div className="hazy-bg flex justif-between gap-x-2">
+              <div className="flex flex-col items-center p-4 w-full">
+                <p className="text-sm text-[#FFFFFF70] font-semibold">
+                  Lock Rewards
+                </p>
+                {isDataLoading ? (
+                  <div className="flex flex-col items-center">
+                    <div className="mt-2 h-7 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
+                    <div className="mt-2 h-5 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
+                    <div className="mt-2 h-4 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center space-y-1">
+                    <p
+                      className="text-3xl font-bold card-gradient-text"
+                      data-testid="lock-rewards"
+                    >
+                      {formatLargeNumber(parsedLockRewards)}
+                    </p>
+                    <p className="text-sm font-bold card-gradient-text">
+                      CHEDDA
+                    </p>
+                    <p
+                      className="text-sm text-[#FFFFFF70]"
+                      data-testid="lock-rewards-value"
+                    >
+                      $
+                      {formatLargeNumber(parsedLockRewards * parsedCheddaPrice)}
+                    </p>
+                  </div>
+                )}
+              </div>
+              <div className="border-0.5 border-l border-[#7F56D9] h-10/12 my-3 opacity-70"></div>
+              <div className="flex flex-col items-center p-4 w-full space-y-1">
+                <p className="text-sm text-[#FFFFFF70] font-semibold">
+                  Stake Rewards
+                </p>
+                {isDataLoading ? (
+                  <div className="flex flex-col items-center">
+                    <div className="mt-2 h-7 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
+                    <div className="mt-2 h-5 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
+                    <div className="mt-2 h-3 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center space-y-1">
+                    <p
+                      className="text-3xl font-bold card-gradient-text"
+                      data-testid="stake-rewards"
+                    >
+                      {formatLargeNumber(parsedStakeRewards)}
+                    </p>
+                    <p className="text-sm font-bold card-gradient-text">
+                      CHEDDA
+                    </p>
+                    <p
+                      className="text-sm text-[#FFFFFF70]"
+                      data-testid="stake-rewards-value"
+                    >
+                      $
+                      {formatLargeNumber(
+                        parsedStakeRewards * parsedCheddaPrice
+                      )}
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="border-0.5 border-l border-[#7F56D9] h-10/12 my-3 opacity-70"></div>
-            <div className="flex flex-col items-center p-4 w-full space-y-1">
-              <p className="text-sm text-[#FFFFFF70] font-semibold">
-                Stake Rewards
-              </p>
-              <p className="text-3xl font-bold card-gradient-text">1.282</p>
-              <p className="text-sm font-bold card-gradient-text">CHEDDA</p>
-              <p className="text-sm text-[#FFFFFF70]">$26.35</p>
+            <div className="mt-4 flex items-center justify-between relative">
+              <div className="text-xs text-[#FFFFFF70]">
+                Claim all your rewards on the protocol in one place
+              </div>
+              <div className="w-32">
+                <Button
+                  type="tertiary"
+                  onClick={() => handleClaimAllRewards()}
+                  className="h-10 text-sm"
+                  isLoading={txLoading}
+                  disabled={!parsedLockRewards && !parsedStakeRewards}
+                  data-testid="custom-button"
+                >
+                  Claim all
+                </Button>
+              </div>
             </div>
-          </div>
-          <div className="mt-4 flex items-center justify-between">
-            <div className="text-xs text-[#FFFFFF70]">
-              Claim all your rewards on the protocol in one place
-            </div>
-            <button className="modal-button text-white rounded-lg p-2.5 px-6 text-sm font-bold">
-              Claim all
-            </button>
-          </div>
-        </>
-      ) : (
-        <ConnectWalletBox title="rewards" />
-      )}
-    </Card>
+          </>
+        ) : (
+          <ConnectWalletBox title="rewards" data-testid="connect-wallet-box" />
+        )}
+      </Card>
+    </>
   );
 };
