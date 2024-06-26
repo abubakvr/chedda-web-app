@@ -7,7 +7,7 @@ import {
   IPoolState,
   IPoolStats,
 } from "chedda-sdk";
-import { Signer } from "ethers";
+import { BigNumber, Signer } from "ethers";
 import { StaticImageData } from "next/image";
 import React from "react";
 
@@ -201,4 +201,22 @@ export interface IBridgeChain {
   txUrlPrefix: string;
   priceFeed: string;
   ethAddress: string;
+}
+
+export interface IPositionResponse {
+  account: string;
+  pool: string;
+  asset: IConfigToken;
+  decimals: number;
+  supplied: number;
+  borrowed: number;
+  suppliedValue: number;
+  borrowedValue: number;
+  collateralValue: number;
+  healthFactor: number;
+  staked: number;
+  locked: number;
+  stakeRewardsClaimable: number;
+  lockRewardsClaimable: number;
+  exposure: number;
 }

@@ -5,7 +5,6 @@ import SearchIcon from "@/assets/icon/search-icon.svg";
 import { VaultItem } from "./PositionItem";
 import { usePoolStatsList } from "@/hooks";
 import { VaultSkeleton } from "@/components/ui";
-import { vaultHeaderItems } from "@/utils/constants";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { ConnectWalletBox } from "./ConnectWalletBox";
 

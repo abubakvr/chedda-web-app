@@ -1,8 +1,10 @@
+import { currentEnvironment } from "@/data/environments";
 import {
   IAccountCollateralDeposited,
   IAggregateStats,
   IMarketInfo,
   IPoolStats,
+  IPosition,
 } from "chedda-sdk";
 import {
   formatAsPercentage,
@@ -15,6 +17,7 @@ import {
   ICollateralInfo,
   IFormattedCollateral,
   IPoolStatsResponse,
+  IPositionResponse,
   ISummaryStats,
   IToken,
   ITokenConfig,
@@ -201,4 +204,40 @@ export const calculateAssetPrice = (
   );
 
   return oraclePrice;
+};
+
+export const formatPositionsList = (
+  response: IPosition[]
+): IPositionResponse[] => {
+  const data = response.map((item: IPosition) => {
+    const tokens = currentEnvironment.tokens;
+    const decimals = item.decimals;
+    return {
+      account: item.account,
+      pool: item.pool,
+      asset: tokens[item.asset],
+      decimals: item.decimals,
+      supplied: parseBigNumberToFloat(item.supplied, decimals),
+      suppliedValue: parseBigNumberToFloat(item.suppliedValue),
+      borrowed: parseBigNumberToFloat(item.borrowed, decimals),
+      borrowedValue: parseBigNumberToFloat(item.borrowedValue),
+      collateralValue: parseBigNumberToFloat(item.collateralValue, 18, 10),
+      healthFactor: parseBigNumberToFloat(item.healthFactor, 18, 10),
+      staked: parseBigNumberToFloat(item.staked, 18, 10),
+      locked: parseBigNumberToFloat(item.locked, 18, 10),
+      stakeRewardsClaimable: parseBigNumberToFloat(
+        item.stakeRewardsClaimable,
+        18,
+        10
+      ),
+      lockRewardsClaimable: parseBigNumberToFloat(
+        item.lockRewardsClaimable,
+        18,
+        10
+      ),
+      exposure: parseBigNumberToFloat(item.exposure),
+    };
+  });
+
+  return data;
 };

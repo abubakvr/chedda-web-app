@@ -1,6 +1,6 @@
 import { Chedda } from "chedda-sdk";
 import { BigNumber, ethers, Signer } from "ethers";
-import { IBridgeChain, IConfigToken } from "./types";
+import { IBridgeChain, IConfigToken, IPositionResponse } from "./types";
 
 export function findNearestIndex(sortedArray: number[], targetNumber: number) {
   // Check if the array is empty
@@ -193,3 +193,16 @@ export const getTokenBalanceAddress = (
     ? selectedToken.address
     : selectedToken.bridgedOft;
 };
+
+export function getAccountPositions(
+  allPositions: IPositionResponse[] | undefined
+): IPositionResponse[] {
+  if (!allPositions) return [];
+  return allPositions.filter(
+    (position) =>
+      position.staked > 0 ||
+      position.locked > 0 ||
+      position.supplied > 0 ||
+      position.borrowed > 0
+  );
+}
