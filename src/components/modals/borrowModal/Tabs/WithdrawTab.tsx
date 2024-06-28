@@ -27,7 +27,7 @@ export interface WithdrawTabProps {
   assetPrice: number;
   tokenCollateralValue: BigNumber | undefined;
   setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
-  fetchAllowance: (showLoading?: boolean) => void;
+  fetchAllowance: () => void;
   refreshModal: () => void;
   openSupplyModal: (activeTab: "Deposit" | "Withdraw") => void;
 }
@@ -64,7 +64,8 @@ export const WithdrawTab = ({
   const [showToast, setShowToast] = useState(false);
   const [inputAmount, setInputAmount] = useState(0);
   const { address: tokenAddress, decimals, symbol } = selectedCollateral;
-  const { accountCollateralLoading, healthFactorLoading } = isLoading;
+  const { accountCollateralLoading, healthFactorLoading, tokenBalanceLoading } =
+    isLoading;
   const { withdrawCollateral } = useTransaction(tokenAddress);
 
   const parsedAccountCollateralAmount = parseBigNumberToFloat(
@@ -185,10 +186,10 @@ export const WithdrawTab = ({
             data-testid="max-amount"
             className="font-bold flex items-center gap-x-1"
           >
-            <RefreshSpinner isOpen={isLoading.accountCollateralLoading} />
+            <RefreshSpinner isOpen={tokenBalanceLoading} />
             <div data-testid="max-amount">
               Max:{" "}
-              {isLoading.accountCollateralLoading
+              {tokenBalanceLoading
                 ? "_"
                 : `${formatLargeNumber(parsedAccountCollateralAmount)} ${symbol}`}
             </div>
@@ -229,7 +230,7 @@ export const WithdrawTab = ({
         </Button>
         <div data-testid="modal-info" className="mt-6 pb-0">
           <DepositTabInfo
-            isLoading={accountCollateralLoading || healthFactorLoading}
+            isLoading={accountCollateralLoading || tokenBalanceLoading}
             symbol={symbol}
             collateralAmount={`${formatNumber(parsedAccountCollateralAmount)} ${symbol}`}
             projectedCollateralAmount={`${formatNumber(

@@ -19,6 +19,20 @@ import {
   useLpAllowance,
   useLpTokenBalance,
   useTransaction,
+  useCheddaBalance,
+  useTotalStaked,
+  useClaimableStakeRewards,
+  useLpStakers,
+  useTotalSupply,
+  useStakingContractAddress,
+  useTokenPrice,
+  useCheddaAllowance,
+  useLockedChedda,
+  useTotalWeight,
+  useTotalWeightSum,
+  useTotalAmountLocked,
+  useClaimableLockRewards,
+  useGaugeAddress,
 } from "@/hooks";
 import { getPoolSummaryData } from "@/utils/formatResponse";
 import {
@@ -89,6 +103,62 @@ describe("Pool details component", () => {
     });
     (useLpSymbol as jest.Mock).mockReturnValue({
       data: "ETH",
+      isLoading: false,
+    });
+    (useCheddaBalance as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useTotalStaked as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useLpStakers as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useClaimableStakeRewards as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useTotalSupply as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useStakingContractAddress as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useTokenPrice as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useCheddaAllowance as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useLockedChedda as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useTotalWeight as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useTotalWeightSum as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useTotalAmountLocked as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useClaimableLockRewards as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
+      isLoading: false,
+    });
+    (useGaugeAddress as jest.Mock).mockReturnValue({
+      data: BigNumber.from("1000"),
       isLoading: false,
     });
     (useTransaction as jest.Mock).mockImplementation(() => ({

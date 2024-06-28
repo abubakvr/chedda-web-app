@@ -29,7 +29,7 @@ export interface DepositTabProps {
   healthFactor: BigNumber | undefined;
   tokenCollateralValue: BigNumber | undefined;
   setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
-  fetchAllowance: (showLoading?: boolean) => void;
+  fetchAllowance: () => void;
   refreshModal: () => void;
   openSupplyModal: (activeTab: "Deposit" | "Withdraw") => void;
 }
@@ -170,7 +170,7 @@ export const DepositTab = ({
                   txStatus: "success",
                 });
                 setShowToast(true);
-                fetchAllowance(false);
+                fetchAllowance();
                 setTxLoading(false);
               } else {
                 const txMessage = `An error occurred while proccessing your transaction`;
@@ -285,7 +285,7 @@ export const DepositTab = ({
         </Button>
         <div data-testid="modal-info" className="mt-6 pb-0">
           <DepositTabInfo
-            isLoading={accountCollateralLoading || healthFactorLoading}
+            isLoading={accountCollateralLoading || tokenBalanceLoading}
             symbol={symbol}
             collateralAmount={`${formatNumber(parsedAccountCollateral)} ${symbol}`}
             projectedCollateralAmount={`${formatNumber(

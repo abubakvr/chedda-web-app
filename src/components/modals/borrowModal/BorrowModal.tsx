@@ -96,11 +96,11 @@ export const BorrowModal: FC<BorrowModalProps> = ({
   };
 
   const refreshModal = useCallback(() => {
-    fetchAllowance(false);
-    fetchAccountCollateral(false);
-    fetchHealthFactor(false);
-    fetchTokenBalance(false);
-    fetchAvailable(false);
+    fetchAllowance();
+    fetchAccountCollateral();
+    fetchHealthFactor();
+    fetchTokenBalance();
+    fetchAvailable();
     fetchPoolInfo();
   }, [
     fetchAllowance,

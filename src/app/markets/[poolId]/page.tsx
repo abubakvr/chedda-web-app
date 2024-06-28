@@ -1,7 +1,12 @@
 "use client";
 import { RouteCard, SummaryCard } from "@/components/cards";
 import { SummaryHeader } from "@/components/ui";
-import { usePoolStats } from "@/hooks";
+import {
+  useAccountInfo,
+  useCheddaBalance,
+  useLpTokenBalance,
+  usePoolStats,
+} from "@/hooks";
 import { getPoolSummaryData } from "@/utils/formatResponse";
 import React, { useState } from "react";
 import LockTab from "./lock/LockTab";
@@ -15,9 +20,18 @@ const Page = () => {
     isLoading,
     fetchData: fetchPoolStats,
   } = usePoolStats();
+  const {
+    data: accountInfo,
+    fetchData: fetchAccountInfo,
+    isLoading: accountInfoLoading,
+  } = useAccountInfo();
   const poolSummary = getPoolSummaryData(poolStats);
+  const { data: lpTokenBalance, fetchData: fetchLpTokenBalance } =
+    useLpTokenBalance();
+  const { data: CheddaTokenBalance, fetchData: fetchCheddaTokenBalance } =
+    useCheddaBalance();
 
-  const routhPaths = ["Pool", "Stake", "Lock"];
+  const routePaths = ["Pool", "Stake", "Lock"];
 
   const pageTabs = [
     {
@@ -28,6 +42,10 @@ const Page = () => {
           poolStats={poolStats}
           setActivePoolTab={setActiveTab}
           fetchPoolStats={fetchPoolStats}
+          accountInfo={accountInfo}
+          fetchAccountInfo={fetchAccountInfo}
+          accountInfoLoading={accountInfoLoading}
+          fetchLpTokenBalance={fetchLpTokenBalance}
         />
       ),
     },
@@ -39,13 +57,24 @@ const Page = () => {
           asset={poolStats?.asset}
           setActiveTab={setActiveTab}
           fetchPoolStats={fetchPoolStats}
+          lpTokenBalance={lpTokenBalance}
+          fetchLpTokenBalance={fetchLpTokenBalance}
+          fetchAccountInfo={fetchAccountInfo}
+          fetchCheddaTokenBalance={fetchCheddaTokenBalance}
         />
       ),
     },
     {
       name: "Lock",
       info: "Lock CHEDDA to direct token emissions and earn locking rewards. Locked tokens are susceptible to slashing in case of a shortfall event in the associated pool.",
-      tab: <LockTab asset={poolStats?.asset} fetchPoolStats={fetchPoolStats} />,
+      tab: (
+        <LockTab
+          asset={poolStats?.asset}
+          fetchPoolStats={fetchPoolStats}
+          CheddaTokenBalance={CheddaTokenBalance}
+          fetchCheddaTokenBalance={fetchCheddaTokenBalance}
+        />
+      ),
     },
   ];
 
@@ -68,11 +97,16 @@ const Page = () => {
           setActiveTab={setActiveTab}
           activeTab={activeTab}
           routeInfo={routeInfo}
-          routhPaths={routhPaths}
+          routhPaths={routePaths}
         />
-        {pageTabs.map((item, index) =>
-          activeTab === item.name ? <div key={index}>{item.tab}</div> : null
-        )}
+        {pageTabs.map((item, index) => (
+          <div
+            key={index}
+            style={{ display: activeTab === item.name ? "block" : "none" }}
+          >
+            {item.tab}
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -1,7 +1,9 @@
+"use client";
 import Image from "next/image";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ArrowDownIcon from "@/assets/icon/arrow-down.svg";
 import { IToken } from "@/utils/types";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 interface SelectMenuProps {
   setSelectedCollateral: Dispatch<SetStateAction<IToken>>;

@@ -7,7 +7,6 @@ import {
 } from "@/components/cards";
 import {
   useCheddaAllowance,
-  useCheddaBalance,
   useClaimableLockRewards,
   useTotalWeightSum,
   useLockedChedda,
@@ -19,17 +18,20 @@ import { IToken } from "@/utils/types";
 import { InfoCardSkeleton, SwitchTabSkeleton } from "@/components/ui";
 import { ManageLockCard } from "@/components/modals/manageLockModal/ManageLockModal";
 import { currentEnvironment } from "@/data/environments";
+import { BigNumber } from "ethers";
 
 const LockTab = ({
   asset,
+  CheddaTokenBalance,
   fetchPoolStats,
+  fetchCheddaTokenBalance,
 }: {
   asset: IToken | undefined;
-  fetchPoolStats: (showLoading: false) => void;
+  CheddaTokenBalance: BigNumber | undefined;
+  fetchPoolStats: () => void;
+  fetchCheddaTokenBalance: () => void;
 }) => {
   const [openManageLockModal, setOpenManageLockModal] = useState(false);
-  const { data: CheddaTokenBalance, fetchData: fetchCheddaTokenBalance } =
-    useCheddaBalance();
   const {
     data: cheddaAllowance,
     fetchData: fetchCheddaAllowance,
@@ -69,14 +71,14 @@ const LockTab = ({
   } = useClaimableLockRewards();
 
   const updateCard = () => {
-    fetchCheddaTokenBalance(false);
-    fetchCheddaAllowance(false);
-    fetchLockedChedaa(false);
-    fetchClaimableRewards(false);
-    fetchTotalWeight(false);
-    fetchTotalWeightSum(false);
-    fetchTotalAmountLocked(false);
-    fetchPoolStats(false);
+    fetchCheddaTokenBalance();
+    fetchCheddaAllowance();
+    fetchLockedChedaa();
+    fetchClaimableRewards();
+    fetchTotalWeight();
+    fetchTotalWeightSum();
+    fetchTotalAmountLocked();
+    fetchPoolStats();
   };
 
   const isLoading =
@@ -151,6 +153,7 @@ const LockTab = ({
           <ClaimRewardsCard
             claimableRewards={claimableRewards}
             fetchClaimableRewards={fetchClaimableRewards}
+            fetchCheddaTokenBalance={fetchCheddaTokenBalance}
             rewardType="Lock"
           />
         </div>

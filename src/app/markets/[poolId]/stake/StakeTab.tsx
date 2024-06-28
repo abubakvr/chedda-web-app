@@ -8,7 +8,6 @@ import {
   useLpDecimals,
   useLpStakers,
   useLpSymbol,
-  useLpTokenBalance,
   useStakingBalance,
   useTokenValue,
   useTotalStaked,
@@ -17,20 +16,27 @@ import {
 import { IToken } from "@/utils/types";
 import { ClaimRewardsCard } from "@/components/cards";
 import { InfoCardSkeleton, SwitchTabSkeleton } from "@/components/ui";
+import { BigNumber } from "ethers";
 
 const StakeTab = ({
   asset,
+  lpTokenBalance,
   setActiveTab,
   fetchPoolStats,
+  fetchAccountInfo,
+  fetchLpTokenBalance,
+  fetchCheddaTokenBalance,
 }: {
   asset: IToken | undefined;
+  lpTokenBalance: BigNumber | undefined;
   setActiveTab: Dispatch<SetStateAction<string>>;
-  fetchPoolStats: (showLoading: false) => void;
+  fetchPoolStats: () => void;
+  fetchAccountInfo: () => void;
+  fetchLpTokenBalance: () => void;
+  fetchCheddaTokenBalance: () => void;
 }) => {
   const { data: stakingBalance, fetchData: fetchStakingBalance } =
     useStakingBalance();
-  const { data: lpTokenBalance, fetchData: fetchLpTokenBalance } =
-    useLpTokenBalance();
   const {
     data: lpAllowance,
     fetchData: fetchLpAllowance,
@@ -64,14 +70,15 @@ const StakeTab = ({
   } = useTotalSupply();
 
   const updateCard = () => {
-    fetchStakingBalance(false);
-    fetchLpTokenBalance(false);
-    fetchLpAllowance(false);
-    fetchTotalSupply(false);
-    fetchLpStakers(false);
-    fetchTotalStaked(false);
-    fetchClaimableRewards(false);
-    fetchPoolStats(false);
+    fetchStakingBalance();
+    fetchLpTokenBalance();
+    fetchLpAllowance();
+    fetchTotalSupply();
+    fetchLpStakers();
+    fetchTotalStaked();
+    fetchClaimableRewards();
+    fetchPoolStats();
+    fetchAccountInfo();
   };
 
   const isLoading =
@@ -147,6 +154,7 @@ const StakeTab = ({
           claimableRewards={claimableRewards}
           setActiveTab={setActiveTab}
           fetchClaimableRewards={fetchClaimableRewards}
+          fetchCheddaTokenBalance={fetchCheddaTokenBalance}
           rewardType="Stake"
         />
       </div>

@@ -9,7 +9,6 @@ import { bridgeChains } from "@/utils/constants";
 import { currentEnvironment } from "@/data/environments";
 import { useBridge } from "@/hooks";
 import { parseBigNumberToFloat } from "@/utils/formatters";
-import { PageTitle } from "@/components/common/pageTitle/PageTitle";
 import { getTokenBalanceAddress, getTokenBridgeAddress } from "@/utils/helpers";
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
@@ -161,12 +160,6 @@ const BridgeCard = () => {
 
   return (
     <div className="sticky">
-      {/* <PageTitle title="BRIDGE">
-        Bridge assets from other networks to use on Chedda. Bridged assets can
-        supplied or as collateral in Chedda lending pools.
-        <br />
-        Bridged assets can be bridged back at any time
-      </PageTitle> */}
       <div className="flex justify-center mt-6">
         <div className=" pool-card rounded-xl w-[580px] min-w-[470px] text-white px-8 py-8">
           {activeScreen === "tokenselect" ? (
