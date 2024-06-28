@@ -15,6 +15,8 @@ export const TWITTER_URL = "https://twitter.com/chedda_crypto";
 export const DISCORD_URL = "https://discord.gg/4ZMWVez73A";
 export const DOCS_URL = "https://docs.chedda.finance";
 export const LAYERZERO_TESTNET = "https://testnet.layerzeroscan.com/tx";
+export const BRIDGE_DOC_URL =
+  "https://docs.chedda.finance/chedda/protocol/cross-chain-tokens";
 
 export const menuItems: IMenuItem[] = [
   {
