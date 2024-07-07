@@ -5,7 +5,6 @@ import {
   IInterestRatesProjection,
   IMarketInfo,
   IPoolState,
-  IPosition,
   Lock,
 } from "chedda-sdk";
 import {

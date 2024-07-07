@@ -121,10 +121,10 @@ export const ClaimRewards = ({
                   Lock Rewards
                 </p>
                 {isDataLoading ? (
-                  <div className="flex flex-col items-center">
-                    <div className="mt-2 h-7 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
-                    <div className="mt-2 h-5 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
-                    <div className="mt-2 h-4 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
+                  <div className="flex flex-col items-center animate-pulse">
+                    <div className="mt-2 h-7 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                    <div className="mt-2 h-5 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                    <div className="mt-2 h-4 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center space-y-1">
@@ -155,10 +155,10 @@ export const ClaimRewards = ({
                   Stake Rewards
                 </p>
                 {isDataLoading ? (
-                  <div className="flex flex-col items-center">
-                    <div className="mt-2 h-7 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
-                    <div className="mt-2 h-5 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
-                    <div className="mt-2 h-3 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
+                  <div className="flex flex-col items-center animate-pulse">
+                    <div className="mt-2 h-7 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                    <div className="mt-2 h-5 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                    <div className="mt-2 h-3 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center space-y-1">

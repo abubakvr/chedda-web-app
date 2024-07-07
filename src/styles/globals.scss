@@ -50,6 +50,12 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+input::placeholder {
+  color: #ffffff70;
+  font-size: 14px;
+  font-weight: 500;
+}
+
 body {
   background-color: black;
   background: radial-gradient(
@@ -97,6 +103,7 @@ body {
 .card-bg {
   position: relative;
   background: var(--card-bg);
+  z-index: 1;
 }
 
 .card-header-bg {
@@ -122,6 +129,7 @@ body {
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
+  z-index: -1;
 }
 
 .success-toast::before {
@@ -397,6 +405,7 @@ input:checked + .slider:before {
 
 .token-select,
 .bridge-box,
+.market-card,
 .token-select-active {
   position: relative;
 }
@@ -487,6 +496,31 @@ input:checked + .slider:before {
   opacity: 1; /* Show the pseudo-element on hover */
 }
 
+.filter-box {
+  position: relative;
+  border-radius: 8px;
+  background: linear-gradient(
+    95.05deg,
+    rgba(150, 136, 247, 0.1) 16.92%,
+    rgba(93, 222, 250, 0.1) 89.95%
+  );
+}
+
+.filter-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1.5px;
+  background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 1; /* Hide the pseudo-element initially */
+}
+
 .token-select:hover::before {
   background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
 }
@@ -536,4 +570,13 @@ input:checked + .slider:before {
 .bridge-assets-bg {
   background-image: url("../assets/images/bridge-assets-bg.png");
   background-position: top left;
+}
+
+.search-box-bg {
+  background: linear-gradient(137deg, #6257f237 8.34%, #5ddefa27 95.26%);
+}
+
+.market-card:hover::before {
+  background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
+  transition: opacity 0.7s ease; /* Smooth transition for the hover effect */
 }

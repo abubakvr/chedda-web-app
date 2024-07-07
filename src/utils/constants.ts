@@ -1,9 +1,21 @@
-import { IBridgeChain, IMenuItem, INetworkList } from "./types";
-import Arbitrum_Logo from "@/assets/logos/arbitrum-logo.png";
-import Ethereum_Logo from "@/assets/logos/ethereum-logo.png";
+import {
+  IBridgeChain,
+  IMenuItem,
+  IPoolCategories,
+  IPoolCategory,
+} from "./types";
 
 import baseLogo from "@/assets/logos/base-logo.png";
 import ethereumLogo from "@/assets/logos/ethereum-logo.png";
+
+import stackIcon from "@/assets/icon/stack.svg";
+import stackIconActive from "@/assets/icon/stack-active.svg";
+import deFiIcon from "@/assets/icon/deFi.svg";
+import deFiIconActive from "@/assets/icon/deFi-active.svg";
+import stableIcon from "@/assets/icon/stable-coin.svg";
+import stableIconActive from "@/assets/icon/stable-coin-active.svg";
+import gameFiIcon from "@/assets/icon/gameFi.svg";
+import gameFiIconActive from "@/assets/icon/gameFi-active.svg";
 
 export const infuraKey = process.env.NEXT_PUBLIC_INFURA_KEY;
 export const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_KEY;
@@ -18,6 +30,8 @@ export const LAYERZERO_TESTNET = "https://testnet.layerzeroscan.com/tx";
 export const BRIDGE_DOC_URL =
   "https://docs.chedda.finance/chedda/protocol/cross-chain-tokens";
 
+export const ethAddress = "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511";
+
 export const menuItems: IMenuItem[] = [
   {
     name: "Dashboard",
@@ -30,23 +44,6 @@ export const menuItems: IMenuItem[] = [
   {
     name: "Bridge",
     path: "/bridge",
-  },
-];
-
-export const supportedNetworksConfig: INetworkList[] = [
-  {
-    name: "Ethereum",
-    chainId: "11155111",
-    faucetUrl: "https://goerlifaucet.com/",
-    txUrlPrefix: "https://sepolia.etherscan.io/tx/",
-    icon: Ethereum_Logo,
-  },
-  {
-    name: "Arbitrum",
-    chainId: "84532",
-    faucetUrl: "https://goerlifaucet.com/",
-    txUrlPrefix: "https://sepolia.arbiscan.io/tx/",
-    icon: Arbitrum_Logo,
   },
 ];
 
@@ -102,4 +99,54 @@ export const bridgeChains: IBridgeChain[] = [
   },
 ];
 
-export const ethAddress = "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511";
+export const poolCategories: IPoolCategory[] = [
+  {
+    label: "ALL",
+    keyword: undefined,
+    itemCount: 0,
+    icon: stackIcon,
+    activeIcon: stackIconActive,
+    activeClass: "filter-box border-none px-[13px] h-[37px] bg-[#51D5FA12]",
+  },
+  {
+    label: "#STABLE",
+    keyword: "Stable Coin",
+    itemCount: 0,
+    icon: stableIcon,
+    activeIcon: stableIconActive,
+    activeClass: "border-[#C142F0] bg-[#2D142D68] h-9 px-3",
+  },
+  {
+    label: "#DEFI",
+    keyword: "Defi",
+    itemCount: 0,
+    icon: deFiIcon,
+    activeIcon: deFiIconActive,
+    activeClass: "border-[#00F0FF] bg-[#01212864] h-9 px-3",
+  },
+  {
+    label: "#GAMEFI",
+    keyword: "Base Gaming",
+    itemCount: 0,
+    icon: gameFiIcon,
+    activeIcon: gameFiIconActive,
+    activeClass: "border-[#66DBBB] bg-[#142E2664] h-9 px-3",
+  },
+  {
+    label: "#Bluechip",
+    keyword: "Bluechip",
+    itemCount: 0,
+    icon: stackIcon,
+    activeIcon: stackIconActive,
+    activeClass: "border-[#C142F0] bg-[#2D142D68] h-9 px-3",
+  },
+];
+
+export const poolFilters: IPoolCategories = {
+  "0x40cf99BDD816a691CB0bb2c674ADc06577b21964": {
+    categories: ["bluechip"],
+  },
+  "0xcFDD95d6f98FF9db4A7a35b9b49822E1b381147b": {
+    categories: ["defi"],
+  },
+};
