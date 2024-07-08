@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import InfoIcon from "@/assets/icon/info-icon.svg";
+import GradientInfoIcon from "@/assets/icon/gradient-info-icon.svg";
 import stableIcon from "@/assets/icon/stable-icon.svg";
 import defiIcon from "@/assets/icon/defi-icon.svg";
 import gamefiIcon from "@/assets/icon/gamefi-icon.svg";
@@ -118,11 +119,11 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
             <div className="colspan-1">
               <div>
                 <p className="text-xs text-[#FFFFFF70]">Supply APR</p>
-                <div className="mt-2 text-lg flex items-center space-x-2 font-bold">
+                <div className="mt-2 text-lg flex items-center space-x-1 font-bold">
                   <div data-testid="max-supply-apy">
                     {formatAsPercentage(pool.maxSupplyAPY)}
                   </div>
-                  <Image src={InfoIcon} className="w-4 h-4" alt="Info Icon" />
+                  <Image src={InfoIcon} className="w-3 h-3" alt="Info Icon" />
                 </div>
               </div>
               <div className="mt-6">
@@ -135,7 +136,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                     className="opacity-50 text-xs mt-0.5"
                     data-testid="supplied-value"
                   >
-                    {formatCurrency(pool.suppliedValue)}
+                    ({formatCurrency(pool.suppliedValue)})
                   </div>
                 </div>
               </div>
@@ -151,11 +152,11 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
             <div className="colspan-1">
               <div>
                 <p className="text-xs text-[#FFFFFF70]">Borrow APR</p>
-                <div className="mt-2 text-lg flex items-center space-x-2 font-bold">
+                <div className="mt-2 text-lg flex items-center space-x-1 font-bold">
                   <div data-testid="max-borrow-apy">
                     {formatAsPercentage(pool.maxBorrowAPY)}
                   </div>
-                  <Image src={InfoIcon} className="w-4 h-4" alt="Info Icon" />
+                  <Image src={InfoIcon} className="w-3 h-3" alt="Info Icon" />
                 </div>
               </div>
               <div className="mt-6">
@@ -168,16 +169,21 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                     className="opacity-50 text-xs mt-0.5"
                     data-testid="borrowed-value"
                   >
-                    {formatCurrency(pool.borrowedValue)}
+                    ({formatCurrency(pool.borrowedValue)})
                   </div>
                 </div>
               </div>
               <div className="mt-6">
                 <p className="text-xs text-[#FFFFFF70]">Rewards APR</p>
-                <div className="mt-2 text-lg flex items-center font-bold card-gradient-text ">
+                <div className="mt-2 text-lg flex items-center space-x-1 font-bold card-gradient-text ">
                   <div data-testid="rewards">
                     {formatAsPercentage(pool.rewardsAPY)}
                   </div>
+                  <Image
+                    src={GradientInfoIcon}
+                    className="w-3 h-3"
+                    alt="Info Icon"
+                  />
                 </div>
               </div>
             </div>
