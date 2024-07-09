@@ -5,7 +5,11 @@ import { NetworkIndicator } from "../NetworkIndicator";
 describe("NetworkIndicator component", () => {
   test("renders Network Indicator with correct content", () => {
     const { getByText, getByTestId } = render(
-      <NetworkIndicator network="Arbitrum" account="0x55" />
+      <NetworkIndicator
+        network="Arbitrum"
+        account="0x55"
+        isWrongNetwork={false}
+      />
     );
 
     // Check if the main container is rendered
@@ -17,8 +21,8 @@ describe("NetworkIndicator component", () => {
     expect(networkText).toBeInTheDocument();
 
     // Check if the network name "Arbitrum" is rendered
-    const networkName = getByText(/Arbitrum/);
-    expect(networkName).toBeInTheDocument();
+    const networkName = getByTestId("app-network");
+    expect(networkName).toHaveTextContent(/Arbitrum/);
 
     // Check if the circle element for network status is rendered
     const networkCircle = getByTestId("network-status-circle");
@@ -30,7 +34,11 @@ describe("NetworkIndicator component", () => {
     const network = "Test Network";
     const account = "test_account";
     const { getByText, getByTestId } = render(
-      <NetworkIndicator network={network} account={account} />
+      <NetworkIndicator
+        network={network}
+        account={account}
+        isWrongNetwork={false}
+      />
     );
 
     // Act
@@ -57,7 +65,13 @@ describe("NetworkIndicator component", () => {
     const account = "0x123";
 
     // Act
-    render(<NetworkIndicator network={network} account={account} />);
+    render(
+      <NetworkIndicator
+        network={network}
+        account={account}
+        isWrongNetwork={false}
+      />
+    );
 
     // Assert
     expect(screen.getByText(/Network:/i)).toBeInTheDocument();
@@ -73,7 +87,13 @@ describe("NetworkIndicator component", () => {
     const account = undefined;
 
     // Act
-    render(<NetworkIndicator network={network} account={account} />);
+    render(
+      <NetworkIndicator
+        network={network}
+        account={account}
+        isWrongNetwork={false}
+      />
+    );
 
     // Assert
     expect(screen.getByText(/Network:/i)).toBeInTheDocument();

@@ -50,7 +50,7 @@ const navMenuItems = [
 
 export const HeaderComponent: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [showNetworkBanner, setShowNetworkBanner] = useState(false);
+  const [isWrongNetwork, setIsWrongNetwork] = useState(false);
   const { account, chainId } = useWeb3React();
   const pathname = usePathname();
 
@@ -94,9 +94,9 @@ export const HeaderComponent: React.FC = () => {
   useEffect(() => {
     if (!chainId || !appChainId) return;
     if (appChainId !== chainId && !pathname.startsWith("/bridge")) {
-      setShowNetworkBanner(true);
+      setIsWrongNetwork(true);
     } else {
-      setShowNetworkBanner(false);
+      setIsWrongNetwork(false);
     }
   }, [chainId, appChainId, pathname]);
 
@@ -108,7 +108,7 @@ export const HeaderComponent: React.FC = () => {
         }`}
         data-testid="header-component"
       >
-        {showNetworkBanner && (
+        {isWrongNetwork && (
           <NetworkSwitchBanner
             currentChain={appChainId}
             chainName={currentEnvironment?.environmentName}
@@ -154,12 +154,13 @@ export const HeaderComponent: React.FC = () => {
             <NetworkIndicator
               network={currentEnvironment?.environmentName}
               account={account}
+              isWrongNetwork={isWrongNetwork}
             />
             <ProfileMenu account={account} data-testid="profile-menu" />
           </div>
         </div>
       </div>
-      {showNetworkBanner && <div className="w-full h-12"></div>}
+      {isWrongNetwork && <div className="w-full h-12"></div>}
     </div>
   );
 };
