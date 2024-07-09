@@ -26,10 +26,10 @@ const InfoItem = ({ title, value, isLoading, subValue }: InfoItemProps) => (
   >
     <p className="text-sm text-[#FFFFFF70] font-semibold">{title}</p>
     {isLoading ? (
-      <div className="space-y-4">
-        <div className="mt-1 h-7 w-24 rounded-md bg-blue-200 opacity-10 animate-pulse"></div>
+      <div className="space-y-4 animate-pulse">
+        <div className="mt-1 h-7 w-24 rounded-md bg-gray-300 dark:bg-blue-200 opacity-10"></div>
         {subValue && (
-          <div className="mt-4 h-4 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
+          <div className="mt-4 h-4 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
         )}
       </div>
     ) : (

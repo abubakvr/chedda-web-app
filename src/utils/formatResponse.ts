@@ -6,6 +6,7 @@ import {
   IPoolStats,
   IPosition,
 } from "chedda-sdk";
+import { poolFilters } from "./constants";
 import {
   formatAsPercentage,
   formatCurrency,
@@ -29,6 +30,7 @@ export const formatPoolStatsList = (
 ): IPoolStatsResponse[] => {
   const data = response.map((item: IPoolStats) => {
     const decimals = tokens[item.asset]?.decimals;
+    const categories = poolFilters[item.pool].categories;
     return {
       pool: item.pool,
       asset: tokens[item.asset],
@@ -42,9 +44,11 @@ export const formatPoolStatsList = (
       baseBorrowAPY: parseBigNumberToFloat(item.baseBorrowAPY, 18, 10),
       maxBorrowAPY: parseBigNumberToFloat(item.maxBorrowAPY, 18, 10),
       utilization: parseBigNumberToFloat(item.utilization, 18, 10),
+      rewardsAPY: parseBigNumberToFloat(item.rewardsAPY, 18, 10),
       feesPaid: parseBigNumberToFloat(item.feesPaid),
       tvl: parseBigNumberToFloat(item.tvl),
       collaterals: mapCollateralsToTokens(item.collaterals, tokens),
+      categories,
     };
   });
 
@@ -56,6 +60,7 @@ export const formatPoolStats = (
   tokens: ITokenConfig
 ): IPoolStatsResponse => {
   const decimals = tokens[response.asset]?.decimals;
+  const categories = poolFilters[response.pool].categories;
   return {
     pool: response.pool,
     asset: tokens[response.asset],
@@ -69,9 +74,11 @@ export const formatPoolStats = (
     baseBorrowAPY: parseBigNumberToFloat(response.baseBorrowAPY, 18, 10),
     maxBorrowAPY: parseBigNumberToFloat(response.maxBorrowAPY, 18, 10),
     utilization: parseBigNumberToFloat(response.utilization, 18, 10),
+    rewardsAPY: parseBigNumberToFloat(response.rewardsAPY, 18, 10),
     feesPaid: parseBigNumberToFloat(response.feesPaid),
     tvl: parseBigNumberToFloat(response.tvl),
     collaterals: mapCollateralsToTokens(response.collaterals, tokens),
+    categories,
   };
 };
 

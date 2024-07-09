@@ -51,6 +51,12 @@ export interface ITokenConfig {
   [tokenAddress: string]: IConfigToken;
 }
 
+export interface IPoolCategories {
+  [poolAddress: string]: {
+    categories: string[];
+  };
+}
+
 export interface IEnvironment {
   production: boolean;
   environmentName: string;
@@ -110,6 +116,8 @@ export interface IPoolStatsResponse {
   feesPaid: number;
   tvl: string | number;
   collaterals: IToken[];
+  categories: string[];
+  rewardsAPY: number;
 }
 
 export interface ICollateralInfo extends IPoolCollateralInfo {
@@ -219,4 +227,13 @@ export interface IPositionResponse {
   stakeRewardsClaimable: number;
   lockRewardsClaimable: number;
   exposure: number;
+}
+
+export interface IPoolCategory {
+  label: string;
+  keyword?: string;
+  itemCount: number;
+  icon: StaticImageData;
+  activeIcon: StaticImageData;
+  activeClass: string;
 }

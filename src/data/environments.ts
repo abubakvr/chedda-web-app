@@ -26,7 +26,7 @@ export const currentEnvironment: IEnvironment = {
   contractPrefix: "https://sepolia.basescan.org/address",
   chainId: 84532,
   contracts: {
-    LendingPoolLens: "0xfCd7f50b9E7117Ef7f0664D87f3823C55eeee6A1",
+    LendingPoolLens: "0xb810CFC6dD8B5f2951dE5071155E2f7344b72450",
     AccountActor: "0x87d60889D6BCBBe773805D6663A255d8a8aB85D9",
     InterestRatesProjector: "0x94562B7899fdFd58fDD3a7cc98Ec928568e19aD6",
     PriceFeed: "0xFe09e4d727Eda07D5C0e961EbE04c7c0f0B0C2C6",
