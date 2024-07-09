@@ -20,7 +20,9 @@ export const NetworkIndicator = ({
           className={`w-2 h-2 rounded-full ${account && !isWrongNetwork ? "bg-success" : "bg-transparent w-2 h-2 border-[1.5px] border-error rounded-full"}`}
           data-testid="network-status-circle"
         ></div>
-        <span className="text-lg">{network}</span>
+        <span className="text-lg" data-testid="app-network">
+          {network}
+        </span>
         <div className="tooltip">
           {isWrongNetwork
             ? `Not Conected to ${network}`
