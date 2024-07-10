@@ -141,7 +141,7 @@ describe("TransactionDetails", () => {
       expect(screen.getByText("Transaction Details")).toBeInTheDocument();
       expect(screen.findAllByText("USDT")).toBeTruthy();
       expect(
-        screen.getByText("~ $100.0000 • USDT on Ethereum")
+        screen.getByText("~ $100.00 • USDT on Ethereum")
       ).toBeInTheDocument();
     });
   });

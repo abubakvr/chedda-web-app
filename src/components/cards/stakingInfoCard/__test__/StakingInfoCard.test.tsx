@@ -30,9 +30,9 @@ describe("StakingInfoCard Component", () => {
     expect(getByText("Annual Percentage Rate")).toBeInTheDocument();
     expect(getByText("5.52%")).toBeInTheDocument();
     expect(getByText("Total Staked")).toBeInTheDocument();
-    expect(getByText("20 chETH")).toBeInTheDocument();
+    expect(getByText("20.00 chETH")).toBeInTheDocument();
     expect(getByText("Underlying Asset Amount")).toBeInTheDocument();
-    expect(getByText("20 ETH")).toBeInTheDocument();
+    expect(getByText("20.00 ETH")).toBeInTheDocument();
     expect(getByText("Percentage of LP Staked")).toBeInTheDocument();
     expect(getByText("20.00%")).toBeInTheDocument();
     expect(getByText("Stakers")).toBeInTheDocument();
