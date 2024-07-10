@@ -39,7 +39,7 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
 
   return (
     <div
-      className="flex flex-col justify-between"
+      className="flex flex-col justify-between z-1"
       data-testid="market-info-card"
     >
       <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">

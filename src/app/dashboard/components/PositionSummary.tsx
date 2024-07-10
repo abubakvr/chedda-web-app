@@ -53,7 +53,7 @@ export const PositionSummary = ({
         >
           <div className="mb-4 px-8 w-max flex-grow">
             <h2 className="text-2xl font-bold">Position Summary</h2>
-            <p className="text-lg text-gray-400 mt-6">
+            <p className="text-lg text-[#FFFFFF70] mt-6">
               Review your overall portfolio value here. <br />
               You can manage positions from the Markets page.
             </p>
@@ -61,7 +61,9 @@ export const PositionSummary = ({
           <div className="px-7 flex-grow">
             <div className="flex justify-between items-center text-center pt-4 text-[#F9FAFB]">
               <div data-testid="net-value">
-                <p className="text-sm text-[#FFFFFF70] font-bold">Net Value</p>
+                <p className="text-sm text-[#FFFFFF70] font-semibold">
+                  Net Value
+                </p>
                 {positionSummaryLoading ? (
                   <div className=" animate-pulse">
                     <div
@@ -76,7 +78,7 @@ export const PositionSummary = ({
                 )}
               </div>
               <div data-testid="total-supplied">
-                <p className="text-sm text-[#FFFFFF70] font-bold">
+                <p className="text-sm text-[#FFFFFF70] font-semibold">
                   Total Supplied
                 </p>
                 {positionSummaryLoading ? (
@@ -93,7 +95,7 @@ export const PositionSummary = ({
                 )}
               </div>
               <div data-testid="total-borrowed">
-                <p className="text-sm text-[#FFFFFF70] font-bold">
+                <p className="text-sm text-[#FFFFFF70] font-semibold">
                   Total Borrowed
                 </p>
 
@@ -111,7 +113,7 @@ export const PositionSummary = ({
                 )}
               </div>
               <div data-testid="locked">
-                <p className="text-sm text-[#FFFFFF70] font-bold">Locked</p>
+                <p className="text-sm text-[#FFFFFF70] font-semibold">Locked</p>
                 {positionSummaryLoading ? (
                   <div className=" animate-pulse">
                     <div
@@ -201,7 +203,7 @@ export const PositionSummary = ({
                   )
                 )
               ) : (
-                <p className="text-[#B5B5B5]" data-testid="no-open-positions">
+                <p className="text-[#FFFFFF70]" data-testid="no-open-positions">
                   You do not have any open positions. Supply assets{" "}
                   <Link
                     href={"/markets"}

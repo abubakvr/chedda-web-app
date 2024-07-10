@@ -51,9 +51,7 @@ input[type="number"] {
 }
 
 input::placeholder {
-  color: #ffffff70;
-  font-size: 14px;
-  font-weight: 500;
+  color: #ffffff60;
 }
 
 body {
@@ -109,7 +107,6 @@ body {
 .card-bg {
   position: relative;
   background: var(--card-bg);
-  z-index: 1;
 }
 
 .card-header-bg {
@@ -135,7 +132,6 @@ body {
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  z-index: -1;
 }
 
 .success-toast::before {
@@ -578,8 +574,14 @@ input:checked + .slider:before {
   background-position: top left;
 }
 
-.search-box-bg {
+.search-box {
   background: linear-gradient(137deg, #6257f237 8.34%, #5ddefa27 95.26%);
+}
+
+.search-box input::placeholder {
+  color: #ffffff70;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .market-card:hover::before {

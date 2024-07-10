@@ -127,7 +127,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
         <div className="px-8 mt-4">
           {collateralInfo?.map((item, index) => (
             <div
-              className="flex justify-between text-white text-sm font-bold mt-3"
+              className="flex justify-between text-white text-sm mt-3"
               key={index}
               data-testid={`collateral-item-${index}`}
             >
@@ -136,14 +136,14 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                   <Image
                     src={item.asset.logo}
                     alt={item.asset.name}
-                    className="w-6 h-6"
+                    className="w-10 h-10"
                     data-testid={`collateral-item-logo-${index}`}
                   />
                   <div className="font-bold text-sm">{item.asset.symbol}</div>
                 </div>
               </div>
               <div className="flex flex-col w-28">
-                <span>
+                <span className="font-bold">
                   {item.amountDeposited} {item.asset.symbol}
                 </span>
                 <span className="text-[#ffffff50] mt-1">
@@ -151,7 +151,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                 </span>
               </div>
               <div className="flex flex-col w-28">
-                <span>
+                <span className="font-bold">
                   {item.myCollateralAmount} {item.asset.symbol}
                 </span>
                 <span className="text-[#ffffff50] mt-1">
@@ -162,7 +162,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                 className="w-28 pl-1"
                 data-testid={`collateral-factor-${index}`}
               >
-                <span>{item.collateralFactor}</span>
+                <span className="font-bold">{item.collateralFactor}</span>
               </div>
             </div>
           ))}

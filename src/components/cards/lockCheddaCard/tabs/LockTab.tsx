@@ -66,7 +66,7 @@ export const LockTab: FC<LockTabProps> = ({
 
   return (
     <div data-testid="lock-card-content" className="mt-6">
-      <div className="text-xl font-bold">{title} your CHEDDA</div>
+      <div className="text-2xl font-bold">{title} your CHEDDA</div>
       <div className="text-[#FFFFFF50] text-sm mt-2">{subTitle}</div>
       {!isCheddaLocked ? (
         <>
