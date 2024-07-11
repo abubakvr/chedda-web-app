@@ -2,7 +2,7 @@ import React from "react";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { ConfirmationScreen } from "../ConfirmationScreen";
 import { StaticImageData } from "next/image";
-import { IBridgeChain, IConfigToken } from "@/utils/types";
+import { ISourceChain, IToken } from "@/utils/types";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 import { WalletConnect } from "@web3-react/walletconnect-v2";
 import { useWeb3React } from "@web3-react/core";
@@ -19,7 +19,7 @@ const mockProps = {
     jsonRpcUrl: "https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID",
     priceFeed: "https://api.etherscan.io/api?module=stats&action=ethprice",
     ethAddress: "0x0000000000000000000000000000000000000000",
-  } as IBridgeChain,
+  } as ISourceChain,
   selectedToken: {
     address: "0x123",
     symbol: "USDT",
@@ -32,7 +32,7 @@ const mockProps = {
     name: "Tether USD",
     logo: {} as StaticImageData,
     color: "#26a17b",
-  } as IConfigToken,
+  } as IToken,
   tokenList: [
     {
       address: "0x123",
@@ -47,7 +47,7 @@ const mockProps = {
       logo: {} as StaticImageData,
       color: "#26a17b",
     },
-  ] as IConfigToken[],
+  ] as IToken[],
   destinationChain: {
     chainId: 5,
     key: "BNB",
@@ -57,7 +57,7 @@ const mockProps = {
     jsonRpcUrl: "https://bsc-dataseed.binance.org/",
     priceFeed: "https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT",
     ethAddress: "0x0000000000000000000000000000000000000000",
-  } as IBridgeChain,
+  } as ISourceChain,
   amountToSend: 0,
   tokenPrice: 3000,
   estimatedGasFee: { gasETHFee: 0.01, gasUSDFee: 30 },

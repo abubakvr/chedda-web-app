@@ -4,15 +4,15 @@ import leftIcon from "@/assets/icon/left-icon.svg";
 import arrowLogo from "@/assets/icon/arrow-block-right.svg";
 import { BridgeCardInfo } from "./BridgeCardInfo";
 import { Button } from "@/components/common";
-import { IBridgeChain, IConfigToken } from "@/utils/types";
+import { ISourceChain, IToken } from "@/utils/types";
 import { formatNumber } from "@/utils/formatters";
 
 interface ConfirmationScreenProps {
   returnToInput: () => void;
   bridgeToken: () => void;
-  selectedToken: IConfigToken;
-  selectedChain: IBridgeChain;
-  destinationChain: IBridgeChain;
+  selectedToken: IToken;
+  selectedChain: ISourceChain;
+  destinationChain: ISourceChain;
   amountToSend: number;
   tokenPrice: number;
   estimatedGasFee: any;
