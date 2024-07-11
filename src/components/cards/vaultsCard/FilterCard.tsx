@@ -85,7 +85,7 @@ export const FilterCard: React.FC<FilterCardProps> = ({
           </div>
           <div
             data-testid="search-input"
-            className="search-box-bg bg-opacity-10 flex flex-col justify-center items-center gap-4 h-8 sm:h-11 rounded-md border border-[#5B5BBD] focus:border-blue mt-1"
+            className="search-box bg-opacity-10 flex flex-col justify-center items-center gap-4 h-8 sm:h-11 rounded-md border border-[#5B5BBD] focus:border-blue mt-1"
           >
             <div className="relative">
               <input

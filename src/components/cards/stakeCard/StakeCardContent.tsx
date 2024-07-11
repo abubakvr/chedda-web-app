@@ -39,7 +39,7 @@ export const StakeCardContent: FC<StakeCardContentProps> = ({
 
   return (
     <div data-testid="stake-card-content" className="mt-6">
-      <div className="text-xl font-bold">{title} your LP Tokens</div>
+      <div className="text-2xl font-bold">{title} your LP Tokens</div>
       <div className="text-[#FFFFFF50] text-sm mt-2">{subTitle}</div>
       <div className="flex justify-between mt-6 items-center text-xs">
         <div data-testid="amount-label" className="text-[#DEDEDE]">

@@ -103,7 +103,7 @@ const PoolTab = ({
             setActivePoolTab={setActivePoolTab}
           />
         </div>
-        <div className="pool-card rounded-lg">
+        <div className="pool-card rounded-lg z-5">
           <MarketInfoCard
             poolStats={poolStats}
             marketInfo={marketInfo}

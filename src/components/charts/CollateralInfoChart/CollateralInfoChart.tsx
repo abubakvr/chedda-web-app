@@ -41,6 +41,9 @@ export const CollateralInfoChart = ({
             display: false, // Hide the legend
           },
         },
+        animation: {
+          duration: 0, // Disable animations
+        },
       };
 
       chartInstance.current = new Chart(chartContainer.current, {

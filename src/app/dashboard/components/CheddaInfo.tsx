@@ -21,10 +21,10 @@ interface InfoItemProps {
 
 const InfoItem = ({ title, value, isLoading, subValue }: InfoItemProps) => (
   <div
-    className="hazy-bg p-6 w-full space-y-2"
+    className="hazy-bg p-6 pb-[51px] w-full space-y-2"
     data-testid={`info-item-${title.replace(" ", "-").toLowerCase()}`}
   >
-    <p className="text-sm text-[#FFFFFF70] font-semibold">{title}</p>
+    <p className="text-xs text-[#FFFFFF70] font-semibold">{title}</p>
     {isLoading ? (
       <div className="space-y-4 animate-pulse">
         <div className="mt-1 h-7 w-24 rounded-md bg-gray-300 dark:bg-blue-200 opacity-10"></div>
@@ -96,7 +96,7 @@ export const CheddaInfo = ({
               isLoading={isLoading}
             />
           </div>
-          <div className="mt-5 flex items-center justify-between relative">
+          <div className="mt-4 flex items-center justify-between relative">
             <div className="text-xs text-[#FFFFFF70]">
               Overview of CHEDDA Info
             </div>

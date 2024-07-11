@@ -41,7 +41,7 @@ export const SummaryHeader = ({ logoSrc, assetName }: SummaryProps) => {
             priority={true}
           />
           <div
-            className="text-white text-2xl font-bold"
+            className="text-white text-[32px] font-bold"
             data-testid="asset-name"
           >
             {assetName}
