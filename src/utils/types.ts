@@ -42,6 +42,7 @@ export interface IToken {
   bridgedOft: string;
   nativeChain?: string;
   source?: string;
+  sourceLogo: StaticImageData;
 }
 
 export interface ITokenConfig {

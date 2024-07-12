@@ -2,14 +2,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { BridgeInput } from "./BridgeInput";
 import { TokenSelect } from "./TokenSelect";
-import { TransactionDetails } from "./TransactionDetails";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { ISourceChain, IToken } from "@/utils/types";
 import { sourceChains } from "@/utils/constants";
 import { currentEnvironment } from "@/data/environments";
 import { useBridge } from "@/hooks";
 import { parseBigNumberToFloat } from "@/utils/formatters";
-import { PageTitle } from "@/components/common/pageTitle/PageTitle";
 import { getTokenBalanceAddress, getTokenBridgeAddress } from "@/utils/helpers";
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
