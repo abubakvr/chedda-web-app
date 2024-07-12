@@ -99,14 +99,9 @@ const Page = () => {
           routeInfo={routeInfo}
           routhPaths={routePaths}
         />
-        {pageTabs.map((item, index) => (
-          <div
-            key={index}
-            style={{ display: activeTab === item.name ? "block" : "none" }}
-          >
-            {item.tab}
-          </div>
-        ))}
+        {pageTabs.map((item, index) =>
+          activeTab === item.name ? <div key={index}>{item.tab}</div> : null
+        )}
       </div>
     </div>
   );
