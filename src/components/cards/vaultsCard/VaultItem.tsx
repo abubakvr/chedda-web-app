@@ -14,7 +14,6 @@ import {
 } from "@/utils/formatters";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { MobileVaultItem } from "./MobileVaultItem";
-import { sourceChains } from "@/utils/constants";
 
 const poolFilters = [
   { keyword: "Stable Coin", icon: stableIcon },
@@ -26,10 +25,6 @@ const poolFilters = [
 export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
   const itemFilter = poolFilters.find(
     (filter) => filter.keyword?.toLowerCase() === pool.categories[0]
-  );
-
-  const assetSourceNetwork = sourceChains.find(
-    (item) => item.key === pool.asset.source
   );
 
   return (
@@ -49,7 +44,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                   data-testid="asset-name"
                 />
                 <Image
-                  src={assetSourceNetwork?.logo ?? ""}
+                  src={pool.asset?.sourceLogo}
                   alt="icon image"
                   className="absolute w-[18px] h-[18px] top-0 left-0"
                 />
@@ -71,12 +66,8 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           <div className="mt-4">
             <p className="text-xs text-[#FFFFFF70]">Collateral</p>
             <div className="flex gap-x-3 items-center">
-              <div className="flex w-max mt-2">
+              <div className="flex w-max mt-2 ml-1">
                 {pool.collaterals?.map((collateral: IToken, i: number) => {
-                  const collateralSourceNetwork = sourceChains.find(
-                    (item) => item.key === collateral.source
-                  );
-
                   return (
                     <div
                       key={i}
@@ -89,7 +80,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                         data-testid="collateral-logo"
                       />
                       <Image
-                        src={collateralSourceNetwork?.logo ?? ""}
+                        src={collateral.sourceLogo}
                         alt="icon image"
                         className="absolute w-[18px] h-[18px] top-0 left-0"
                       />

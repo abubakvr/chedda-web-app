@@ -13,6 +13,7 @@ import cheddaLogo from "@/assets/logos/chedda-logo.png";
 import galaLogo from "@/assets/logos/gala-logo.png";
 import beamLogo from "@/assets/logos/beam-logo.png";
 import sandLogo from "@/assets/logos/sand-logo.png";
+import baseLogo from "@/assets/logos/base-logo.png";
 
 import { alchemyKey } from "@/utils/constants";
 import { IEnvironment } from "@/utils/types";
@@ -49,6 +50,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0x0C9942D770527A54C803C60789B59D13CfbCde3a",
       nativeChain: "base",
       source: "base",
+      sourceLogo: baseLogo,
       bridgeToken: true,
     },
     "0xc349d33292F4958d5E616035241bE2ab2dE85100": {
@@ -63,6 +65,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0x00",
       nativeChain: "base",
       source: "base",
+      sourceLogo: baseLogo,
       bridgeToken: false,
     },
     "0xF621E3fF2379d9a64a614A4D8C6b0dD6fa014A18": {
@@ -77,6 +80,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0x00",
       nativeChain: "base",
       source: "base",
+      sourceLogo: baseLogo,
       bridgeToken: false,
     },
     "0xF6eea61d35B5A1DdCF7071eC7d5F6a62d649143b": {
@@ -91,6 +95,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0x00",
       nativeChain: "base",
       source: "base",
+      sourceLogo: baseLogo,
       bridgeToken: false,
     },
     "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511": {
@@ -105,6 +110,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0x00",
       nativeChain: "base",
       source: "base",
+      sourceLogo: baseLogo,
       bridgeToken: false,
     },
     "0x12110BA7e972D03f90fCDe07F92e603f9D1ED982": {
@@ -119,6 +125,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0x00",
       nativeChain: "base",
       source: "base",
+      sourceLogo: baseLogo,
       bridgeToken: false,
     },
     "0x2d5246fcC20Df5Cdf5346254702a7cBD77E7DBC3": {
@@ -133,6 +140,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0x00",
       nativeChain: "base",
       source: "base",
+      sourceLogo: baseLogo,
       bridgeToken: false,
     },
     "0x0414920Dc0C3Bb615A3d8EAA239D55c4258AAae0": {
@@ -147,6 +155,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0x00",
       nativeChain: "base",
       source: "base",
+      sourceLogo: baseLogo,
       bridgeToken: false,
     },
     "0xC58bb755381C43FC8A9505fFa7C44d8737203300": {
@@ -161,6 +170,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0x00",
       nativeChain: "base",
       source: "base",
+      sourceLogo: baseLogo,
       bridgeToken: false,
     },
     "0x8166D0DeFb96900075a667FFb099DE8A493A4DfD": {
@@ -175,6 +185,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0x00",
       nativeChain: "base",
       source: "base",
+      sourceLogo: baseLogo,
       bridgeToken: false,
     },
     "0xFcA37314E6E1e399e7054C14B2746f3BC9F33fEB": {
@@ -189,6 +200,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0x00",
       nativeChain: "base",
       source: "base",
+      sourceLogo: baseLogo,
       bridgeToken: false,
     },
     "0xc1e5599f1ac90995762302D946AF619bD9824813": {
@@ -203,6 +215,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0x00",
       nativeChain: "ethereum",
       source: "ethereum",
+      sourceLogo: etheruemLogo,
       bridgeToken: false,
     },
     "0x74EB135902B4A4B33FB218aff1D7Dd437DcB7186": {
@@ -217,6 +230,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0xf66312E6e525271C4d8F65353a24bA593079739c",
       nativeChain: "ethereum",
       source: "ethereum",
+      sourceLogo: baseLogo,
       bridgeToken: true,
     },
     "0xbf2a96C43636bcEE0826168E904CaB6C1072820D": {
@@ -231,6 +245,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0x85b21815bCe36a8AD51E8cba234E7A746FE1d41a",
       nativeChain: "ethereum",
       source: "ethereum",
+      sourceLogo: baseLogo,
       bridgeToken: true,
     },
     "0xAdBCD031E337453a2451f336194F9912Ff3D0893": {
@@ -245,6 +260,7 @@ export const currentEnvironment: IEnvironment = {
       bridgedOft: "0x9eb80c8E7b37bbbA9024D400F38Df6eC95d7D9AD",
       nativeChain: "ethereum",
       source: "ethereum",
+      sourceLogo: baseLogo,
       bridgeToken: true,
     },
   },

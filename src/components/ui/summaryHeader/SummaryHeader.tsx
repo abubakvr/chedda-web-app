@@ -1,9 +1,8 @@
 import React from "react";
 import backIcon from "@/assets/icon/back-icon.svg";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { IToken } from "@/utils/types";
-import { sourceChains } from "@/utils/constants";
 
 interface SummaryProps {
   asset: IToken | undefined;
@@ -17,9 +16,6 @@ export const SummaryHeader = ({ asset, poolName }: SummaryProps) => {
     router.push("/markets");
   };
 
-  const assetSourceNetwork = sourceChains.find(
-    (item) => item.key === asset?.source
-  );
   return (
     <div className="flex items-center" data-testid="summary-header">
       <button
@@ -47,7 +43,7 @@ export const SummaryHeader = ({ asset, poolName }: SummaryProps) => {
               priority={true}
             />
             <Image
-              src={assetSourceNetwork?.logo ?? ""}
+              src={asset.sourceLogo}
               alt="icon image"
               className="absolute w-[18px] h-[18px] top-0 left-0"
             />

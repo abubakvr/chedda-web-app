@@ -2,7 +2,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { BridgeInput } from "./BridgeInput";
 import { TokenSelect } from "./TokenSelect";
-import { TransactionDetails } from "./TransactionDetails";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { ISourceChain, IToken } from "@/utils/types";
 import { sourceChains } from "@/utils/constants";

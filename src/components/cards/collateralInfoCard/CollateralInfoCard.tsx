@@ -10,7 +10,6 @@ import { IAccountInfo, IMarketInfo } from "chedda-sdk";
 import { CollateralInfoSkeleton } from "@/components/ui";
 import { IFormattedCollateral } from "@/utils/types";
 import { CollateralInfoChart } from "@/components/charts";
-import { sourceChains } from "@/utils/constants";
 
 const collateralHeaderItems = [
   "Collateral",
@@ -126,10 +125,6 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
         </div>
         <div className="px-8 mt-4">
           {collateralInfo?.map((item, index) => {
-            const collateralSourceNetwork = sourceChains.find(
-              (network) => network.key === item.asset.source
-            );
-
             return (
               <div
                 className="flex justify-between text-white text-sm mt-3"
@@ -146,7 +141,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                         data-testid={`collateral-item-logo-${index}`}
                       />
                       <Image
-                        src={collateralSourceNetwork?.logo ?? ""}
+                        src={item.asset?.sourceLogo}
                         alt="icon image"
                         className="absolute w-[18px] h-[18px] top-0 left-0"
                       />
