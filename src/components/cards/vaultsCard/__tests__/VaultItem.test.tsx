@@ -62,5 +62,9 @@ describe("VaultItem Component", () => {
     expect(screen.getByTestId("utilization")).toHaveTextContent(
       formatAsPercentage(mockPool.utilization)
     );
+
+    expect(screen.getByTestId("rewards")).toHaveTextContent(
+      formatAsPercentage(mockPool.rewardsAPY)
+    );
   });
 });

@@ -193,7 +193,7 @@ export const TransactionDetails = ({
                 {amountToSend} {selectedToken.symbol}
               </p>
               <p className="font-bold text-xs mt-0.5 text-[#FFFFFF70]">
-                ~ ${(amountToSend * tokenPrice).toFixed(4)} •{" "}
+                ~ ${(amountToSend * tokenPrice).toFixed(2)} •{" "}
                 {selectedToken.symbol} on {selectedChain.name}
               </p>
             </div>
@@ -283,7 +283,7 @@ export const TransactionDetails = ({
                 {amountToSend} {selectedToken.symbol}
               </p>
               <p className="font-bold text-xs mt-0.5 text-[#FFFFFF70]">
-                ~ ${(amountToSend * tokenPrice).toFixed(4)} •{" "}
+                ~ ${(amountToSend * tokenPrice).toFixed(2)} •{" "}
                 {selectedToken.symbol} on {destinationChain.name}
               </p>
             </div>

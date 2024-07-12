@@ -192,6 +192,8 @@ function toFixed(x: number): number {
 export function formatNumber(amount: number): string {
   const formatter = new Intl.NumberFormat("en-US", {
     style: "decimal",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   });
 
   // Get the formatted number string

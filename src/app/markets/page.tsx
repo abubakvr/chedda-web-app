@@ -2,6 +2,7 @@
 import React from "react";
 import { VaultCard, SummaryCard } from "@/components/cards";
 import { useAggregateStats } from "@/hooks";
+import { PageTitle } from "@/components/common";
 
 const Page = () => {
   const { data: aggregateStats, isLoading } = useAggregateStats();
@@ -11,18 +12,17 @@ const Page = () => {
       className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto"
       data-testid="page-container"
     >
-      <div
-        className="text-white py-8 font-open-sans text-2xl xl:text-3xl font-bold tracking-normal uppercase"
-        data-testid="markets-heading"
-      >
-        MARKETS
+      <PageTitle title="MARKETS">
+        Supply assets to earn interest and token rewards.
+      </PageTitle>
+      <div className="mt-6">
+        <SummaryCard
+          stats={aggregateStats}
+          isLoading={isLoading}
+          data-testid="market-info-card"
+        />
       </div>
-      <SummaryCard
-        stats={aggregateStats}
-        isLoading={isLoading}
-        data-testid="market-info-card"
-      />
-      <div className="mt-8" data-testid="vault-card-container">
+      <div className="mt-6" data-testid="vault-card-container">
         <VaultCard data-testid="vault-card" />
       </div>
     </div>

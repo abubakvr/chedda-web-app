@@ -116,20 +116,20 @@ export const ClaimRewards = ({
         {isWalletConnected ? (
           <>
             <div className="hazy-bg flex justif-between gap-x-2">
-              <div className="flex flex-col items-center p-4 w-full">
-                <p className="text-sm text-[#FFFFFF70] font-semibold">
+              <div className="flex flex-col items-center p-7 w-full">
+                <p className="text-xs text-[#FFFFFF70] font-semibold">
                   Lock Rewards
                 </p>
                 {isDataLoading ? (
-                  <div className="flex flex-col items-center">
-                    <div className="mt-2 h-7 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
-                    <div className="mt-2 h-5 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
-                    <div className="mt-2 h-4 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
+                  <div className="flex flex-col items-center animate-pulse">
+                    <div className="mt-2 h-7 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                    <div className="mt-2 h-5 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                    <div className="mt-2 h-4 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center space-y-1">
                     <p
-                      className="text-3xl font-bold card-gradient-text"
+                      className="mt-2 text-2xl font-bold card-gradient-text"
                       data-testid="lock-rewards"
                     >
                       {formatLargeNumber(parsedLockRewards)}
@@ -138,7 +138,7 @@ export const ClaimRewards = ({
                       CHEDDA
                     </p>
                     <p
-                      className="text-sm text-[#FFFFFF70]"
+                      className="mt-2 text-xs text-[#FFFFFF70]"
                       data-testid="lock-rewards-value"
                     >
                       $
@@ -150,20 +150,20 @@ export const ClaimRewards = ({
                 )}
               </div>
               <div className="border-0.5 border-l border-[#7F56D9] h-10/12 my-3 opacity-70"></div>
-              <div className="flex flex-col items-center p-4 w-full space-y-1">
-                <p className="text-sm text-[#FFFFFF70] font-semibold">
+              <div className="flex flex-col items-center p-7 w-full space-y-1">
+                <p className="text-xs text-[#FFFFFF70] font-semibold">
                   Stake Rewards
                 </p>
                 {isDataLoading ? (
-                  <div className="flex flex-col items-center">
-                    <div className="mt-2 h-7 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
-                    <div className="mt-2 h-5 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
-                    <div className="mt-2 h-3 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
+                  <div className="flex flex-col items-center animate-pulse">
+                    <div className="mt-2 h-7 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                    <div className="mt-2 h-5 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                    <div className="mt-2 h-3 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center space-y-1">
                     <p
-                      className="text-3xl font-bold card-gradient-text"
+                      className="mt-2 text-2xl font-bold card-gradient-text"
                       data-testid="stake-rewards"
                     >
                       {formatLargeNumber(parsedStakeRewards)}
@@ -172,7 +172,7 @@ export const ClaimRewards = ({
                       CHEDDA
                     </p>
                     <p
-                      className="text-sm text-[#FFFFFF70]"
+                      className="mt-2 text-xs text-[#FFFFFF70]"
                       data-testid="stake-rewards-value"
                     >
                       $

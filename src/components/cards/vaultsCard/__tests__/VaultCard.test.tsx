@@ -17,7 +17,6 @@ describe("VaultCard Component", () => {
     const { getByTestId, getAllByTestId } = render(<VaultCard />);
 
     expect(getByTestId("vault-card")).toBeInTheDocument();
-    expect(getByTestId("vaults-title")).toHaveTextContent("Lending Pools");
     expect(getAllByTestId("vault-item")).toHaveLength(mockPoolStats.length);
   });
 

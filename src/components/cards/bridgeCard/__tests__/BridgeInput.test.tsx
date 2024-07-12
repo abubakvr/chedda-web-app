@@ -201,8 +201,8 @@ describe("BridgeInput Component", () => {
     fireEvent.change(amountInput, { target: { value: "500" } });
 
     await waitFor(() => {
-      expect(screen.getByText("500 USDT ($60,000)")).toBeInTheDocument();
-      expect(screen.getByText("0.0100 ETH ($5.0000)")).toBeInTheDocument();
+      expect(screen.getByText("500.00 USDT ($60,000.00)")).toBeInTheDocument();
+      expect(screen.getByText("0.01 ETH ($5.00)")).toBeInTheDocument();
     });
   });
 
@@ -213,7 +213,7 @@ describe("BridgeInput Component", () => {
       </MockAppProviders>
     );
     await waitFor(() => {
-      expect(screen.getByText("Balance: 1,000 USDT")).toBeInTheDocument();
+      expect(screen.getByText("Balance: 1,000.00 USDT")).toBeInTheDocument();
     });
   });
 

@@ -48,6 +48,8 @@ export const mockPoolStats: IPoolStatsResponse[] = [
         color: "#ffffff",
       },
     ],
+    categories: ["defi", "bluechip"],
+    rewardsAPY: 90909,
   },
   {
     pool: "Pool3",
@@ -89,6 +91,8 @@ export const mockPoolStats: IPoolStatsResponse[] = [
         color: "#ffffff",
       },
     ],
+    categories: ["defi"],
+    rewardsAPY: 90909,
   },
 ];
 
@@ -109,6 +113,8 @@ export const mockGetPoolStats: IPoolStats[] = [
     feesPaid: BigNumber.from(1),
     tvl: BigNumber.from(300),
     collaterals: ["Collateral1", "Collateral2"],
+    dailyRewards: BigNumber.from(89),
+    rewardsAPY: BigNumber.from(89),
   },
   {
     pool: "Pool1",
@@ -126,6 +132,8 @@ export const mockGetPoolStats: IPoolStats[] = [
     feesPaid: BigNumber.from(1),
     tvl: BigNumber.from(300),
     collaterals: ["Collateral1", "Collateral2"],
+    dailyRewards: BigNumber.from(89),
+    rewardsAPY: BigNumber.from(89),
   },
 ];
 

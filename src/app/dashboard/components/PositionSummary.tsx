@@ -53,7 +53,7 @@ export const PositionSummary = ({
         >
           <div className="mb-4 px-8 w-max flex-grow">
             <h2 className="text-2xl font-bold">Position Summary</h2>
-            <p className="text-lg text-gray-400 mt-6">
+            <p className="text-lg text-[#FFFFFF70] mt-6">
               Review your overall portfolio value here. <br />
               You can manage positions from the Markets page.
             </p>
@@ -61,12 +61,16 @@ export const PositionSummary = ({
           <div className="px-7 flex-grow">
             <div className="flex justify-between items-center text-center pt-4 text-[#F9FAFB]">
               <div data-testid="net-value">
-                <p className="text-sm text-[#FFFFFF70] font-bold">Net Value</p>
+                <p className="text-sm text-[#FFFFFF70] font-semibold">
+                  Net Value
+                </p>
                 {positionSummaryLoading ? (
-                  <div
-                    className=" mt-1.5 h-6 w-24 rounded bg-blue-200 opacity-10 animate-pulse"
-                    data-testid="net-value-loading"
-                  ></div>
+                  <div className=" animate-pulse">
+                    <div
+                      className=" mt-1.5 h-6 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"
+                      data-testid="net-value-loading"
+                    ></div>
+                  </div>
                 ) : (
                   <p className="text-xl card-gradient-text mt-1 font-bold">
                     {`${formatCurrency(parsedNetValue)}`}
@@ -74,14 +78,16 @@ export const PositionSummary = ({
                 )}
               </div>
               <div data-testid="total-supplied">
-                <p className="text-sm text-[#FFFFFF70] font-bold">
+                <p className="text-sm text-[#FFFFFF70] font-semibold">
                   Total Supplied
                 </p>
                 {positionSummaryLoading ? (
-                  <div
-                    className=" mt-1.5 h-6 w-24 rounded bg-blue-200 opacity-10 animate-pulse"
-                    data-testid="total-supplied-loading"
-                  ></div>
+                  <div className=" animate-pulse">
+                    <div
+                      className=" mt-1.5 h-6 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"
+                      data-testid="total-supplied-loading"
+                    ></div>
+                  </div>
                 ) : (
                   <p className="text-xl mt-1 font-bold">
                     {`${formatCurrency(parsedSuppliedValue)}`}
@@ -89,15 +95,17 @@ export const PositionSummary = ({
                 )}
               </div>
               <div data-testid="total-borrowed">
-                <p className="text-sm text-[#FFFFFF70] font-bold">
+                <p className="text-sm text-[#FFFFFF70] font-semibold">
                   Total Borrowed
                 </p>
 
                 {positionSummaryLoading ? (
-                  <div
-                    className=" mt-1.5 h-6 w-24 rounded bg-blue-200 opacity-10 animate-pulse"
-                    data-testid="total-borrowed-loading"
-                  ></div>
+                  <div className=" animate-pulse">
+                    <div
+                      className=" mt-1.5 h-6 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"
+                      data-testid="total-borrowed-loading"
+                    ></div>
+                  </div>
                 ) : (
                   <p className="text-xl font-bold mt-1">
                     {`${formatCurrency(parsedBorrowedValue)}`}
@@ -105,12 +113,14 @@ export const PositionSummary = ({
                 )}
               </div>
               <div data-testid="locked">
-                <p className="text-sm text-[#FFFFFF70] font-bold">Locked</p>
+                <p className="text-sm text-[#FFFFFF70] font-semibold">Locked</p>
                 {positionSummaryLoading ? (
-                  <div
-                    className=" mt-1.5 h-6 w-24 rounded bg-blue-200 opacity-10 animate-pulse"
-                    data-testid="locked-loading"
-                  ></div>
+                  <div className=" animate-pulse">
+                    <div
+                      className=" mt-1.5 h-6 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"
+                      data-testid="locked-loading"
+                    ></div>
+                  </div>
                 ) : (
                   <p className="text-xl font-bold">
                     {`${formatCurrency(parsedLockedValue)}`}
@@ -120,10 +130,12 @@ export const PositionSummary = ({
             </div>
             <div className="w-full mt-11 flex" data-testid="bar-chart">
               {allPositionsLoading ? (
-                <div
-                  className="h-1 w-full rounded bg-blue-200 opacity-10 animate-pulse"
-                  data-testid="bar-chart-loading"
-                ></div>
+                <div className="animate-pulse">
+                  <div
+                    className="h-1 w-full rounded bg-gray-300 dark:bg-blue-200 opacity-10"
+                    data-testid="bar-chart-loading"
+                  ></div>
+                </div>
               ) : getAccountPositions(allPositions).length ? (
                 getAccountPositions(allPositions)?.map(
                   ({ asset, suppliedValue }, i) => (
@@ -150,13 +162,13 @@ export const PositionSummary = ({
                 [1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
-                    className="flex font-bold text-sm gap-x-1.5"
+                    className="flex font-bold text-sm gap-x-1.5 animate-pulse"
                     data-testid={`position-item-loading-${i}`}
                   >
-                    <div className="mt-1 w-3 h-3 rounded-full bg-blue-200 opacity-10 animate-pulse"></div>
+                    <div className="mt-1 w-3 h-3 rounded-full bg-gray-300 dark:bg-blue-200 opacity-10"></div>
                     <div className="flex flex-col justify-around">
-                      <div className="h-4 w-24 rounded bg-blue-200 opacity-10 animate-pulse"></div>
-                      <div className="h-4 w-20 rounded bg-blue-200 opacity-10 animate-pulse mt-1.5"></div>
+                      <div className="h-4 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                      <div className="h-4 w-20 rounded bg-gray-300 dark:bg-blue-200 opacity-10 mt-1.5"></div>
                     </div>
                   </div>
                 ))
@@ -191,7 +203,7 @@ export const PositionSummary = ({
                   )
                 )
               ) : (
-                <p className="text-[#B5B5B5]" data-testid="no-open-positions">
+                <p className="text-[#FFFFFF70]" data-testid="no-open-positions">
                   You do not have any open positions. Supply assets{" "}
                   <Link
                     href={"/markets"}

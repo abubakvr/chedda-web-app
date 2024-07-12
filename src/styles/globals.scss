@@ -50,6 +50,10 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+input::placeholder {
+  color: #ffffff60;
+}
+
 body {
   background-color: black;
   background: radial-gradient(
@@ -78,7 +82,7 @@ body {
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  padding: 4px;
+  padding: 6px;
   background-color: #000;
   color: #fff;
   border-radius: 4px;
@@ -86,9 +90,15 @@ body {
   transition: opacity 0.3s;
   pointer-events: none;
   font-size: 10px;
+  text-align: center;
+  width: max-content;
 }
 
 .address-container:hover .tooltip {
+  opacity: 1;
+}
+
+.network-indicator:hover .tooltip {
   opacity: 1;
 }
 
@@ -397,6 +407,7 @@ input:checked + .slider:before {
 
 .token-select,
 .bridge-box,
+.market-card,
 .token-select-active {
   position: relative;
 }
@@ -487,6 +498,31 @@ input:checked + .slider:before {
   opacity: 1; /* Show the pseudo-element on hover */
 }
 
+.filter-box {
+  position: relative;
+  border-radius: 8px;
+  background: linear-gradient(
+    95.05deg,
+    rgba(150, 136, 247, 0.1) 16.92%,
+    rgba(93, 222, 250, 0.1) 89.95%
+  );
+}
+
+.filter-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1.5px;
+  background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 1; /* Hide the pseudo-element initially */
+}
+
 .token-select:hover::before {
   background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
 }
@@ -536,4 +572,19 @@ input:checked + .slider:before {
 .bridge-assets-bg {
   background-image: url("../assets/images/bridge-assets-bg.png");
   background-position: top left;
+}
+
+.search-box {
+  background: linear-gradient(137deg, #6257f237 8.34%, #5ddefa27 95.26%);
+}
+
+.search-box input::placeholder {
+  color: #ffffff70;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.market-card:hover::before {
+  background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
+  transition: opacity 0.7s ease; /* Smooth transition for the hover effect */
 }

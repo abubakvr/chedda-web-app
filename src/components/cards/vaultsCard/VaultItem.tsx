@@ -2,6 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import InfoIcon from "@/assets/icon/info-icon.svg";
+import GradientInfoIcon from "@/assets/icon/gradient-info-icon.svg";
+import stableIcon from "@/assets/icon/stable-icon.svg";
+import defiIcon from "@/assets/icon/defi-icon.svg";
+import gamefiIcon from "@/assets/icon/gamefi-icon.svg";
+import bluechipIcon from "@/assets/icon/stable-icon.svg";
 import {
   formatAsPercentage,
   formatCurrency,
@@ -9,6 +14,13 @@ import {
 } from "@/utils/formatters";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { MobileVaultItem } from "./MobileVaultItem";
+
+const poolFilters = [
+  { keyword: "Stable Coin", icon: stableIcon },
+  { keyword: "Defi", icon: defiIcon },
+  { keyword: "Gamefi", icon: gamefiIcon },
+  { keyword: "Bluechip", icon: bluechipIcon },
+];
 
 export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
   const elementRef = useRef<HTMLDivElement | null>(null);
@@ -37,15 +49,19 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
     };
   }, []);
 
+  const itemFilter = poolFilters.find(
+    (filter) => filter.keyword?.toLowerCase() === pool.categories[0]
+  );
+
   return (
     <React.Fragment>
       <Link href={`/markets/${pool.pool}`} passHref>
         <div
           data-testid="vault-item"
-          className="h-28 w-full px-7 py-5 hidden md:grid grid-cols-7 grid-row-bg justify-between text-white hover:opacity-80 hover:bg-blue-200 hover:bg-opacity-10 cursor-pointer"
+          className="market-card pool-card rounded-lg w-full px-7 py-5 text-white hover:opacity-90 cursor-pointer p-6 transition-all"
         >
-          <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-2">
-            <div className="flex items-center">
+          <div className="flex justify-between">
+            <div className="flex items-center space-x-2">
               <Image
                 src={pool.asset?.logo}
                 className="h-8 w-8 "
@@ -53,36 +69,40 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                 data-testid="asset-name"
               />
               <div
-                className="ml-2 tracking-widest text-lg font-bold"
+                className="tracking-widest text-lg font-bold"
                 data-testid="asset-symbol"
               >
                 {pool.asset?.symbol}
               </div>
+              <div className="defi-box uppercase h-6 w-20 flex items-center justify-center text-[10px] font-bold">
+                {pool.characterization}
+              </div>
             </div>
-            <div className="defi-box uppercase h-6 w-20 mt-3 flex items-center justify-center text-[10px] font-bold">
-              {pool.characterization}
+            <div>
+              <Image src={itemFilter?.icon} alt="characterization" />
             </div>
           </div>
-          <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-1">
-            <div className="flex ml-1">
-              {pool.collaterals?.map((collateral: IToken, i: number) => (
-                <div key={i} className="logo-cascade round-image">
-                  <Image
-                    src={collateral?.logo}
-                    className="cascade-img h-8 w-8 round-image"
-                    alt={collateral?.symbol}
-                    data-testid="collateral-logo"
-                  />
-                </div>
-              ))}
-            </div>
-            <div
-              ref={elementRef}
-              className={`max-h-10 w-fit font-bold flex flex-wrap m-0 gap-x-1 text-ellipsis overflow-hidden`}
-              data-testid="collaterals-list"
-            >
-              {!showEllipses &&
-                pool.collaterals?.map((collateral: IToken, i: number) => (
+          <div className="mt-4">
+            <p className="text-xs text-[#FFFFFF70]">Collateral</p>
+            <div className="flex gap-x-3 items-center">
+              <div className="flex w-max mt-2">
+                {pool.collaterals?.map((collateral: IToken, i: number) => (
+                  <div key={i} className="-ml-[4px] round-image w-max">
+                    <Image
+                      src={collateral?.logo}
+                      className="h-10 w-10 round-image"
+                      alt={collateral?.symbol}
+                      data-testid="collateral-logo"
+                    />
+                  </div>
+                ))}
+              </div>
+              <div
+                ref={elementRef}
+                className={`w-full font-bold flex flex-wrap gap-x-1 text-ellipsis overflow-hidden`}
+                data-testid="collaterals-list"
+              >
+                {pool.collaterals?.map((collateral: IToken, i: number) => (
                   <div
                     className="flex text-sm font-bold justify-start items-start text-ellipsis"
                     key={i}
@@ -91,66 +111,83 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                     {i !== pool?.collaterals.length - 1 && <span>,</span>}
                   </div>
                 ))}
-              {showEllipses &&
-                pool?.collaterals
-                  .slice(0, 4)
-                  .map((collateral: IToken, i: number) => (
-                    <div
-                      className="flex justify-start items-start text-ellipsis"
-                      key={i}
-                    >
-                      {collateral?.symbol}
-                      {i !== pool.collaterals.length - 1 && <span>,</span>}
-                    </div>
-                  ))}
-              <div>{showEllipses && "..."}</div>
+              </div>
             </div>
           </div>
-          <React.Fragment>
-            <div className="flex justify-center items-center">
-              <div className="text-sm flex flex-col font-semibold md:col-span-1 w-[100px]">
-                <div data-testid="supplied">
-                  {formatLargeNumber(pool.supplied)} {pool.asset?.symbol}
+          <div className="my-4 opacity-90 border-b border-[#7F56D9]"></div>
+          <div className="grid grid-cols-2">
+            <div className="colspan-1">
+              <div>
+                <p className="text-xs text-[#FFFFFF70]">Supply APR</p>
+                <div className="mt-2 text-lg flex items-center space-x-1 font-bold">
+                  <div data-testid="max-supply-apy">
+                    {formatAsPercentage(pool.maxSupplyAPY)}
+                  </div>
+                  <Image src={InfoIcon} className="w-3 h-3" alt="Info Icon" />
                 </div>
-                <div className="opacity-50 mt-1.5" data-testid="supplied-value">
-                  {formatCurrency(pool.suppliedValue)}
+              </div>
+              <div className="mt-6">
+                <p className="text-xs text-[#FFFFFF70]">Supplied</p>
+                <div className="mt-2 text-lg items-center font-bold">
+                  <div data-testid="supplied">
+                    {formatLargeNumber(pool.supplied)} {pool.asset?.symbol}
+                  </div>
+                  <div
+                    className="opacity-50 text-xs mt-0.5"
+                    data-testid="supplied-value"
+                  >
+                    ({formatCurrency(pool.suppliedValue)})
+                  </div>
+                </div>
+              </div>
+              <div className="mt-6">
+                <p className="text-xs text-[#FFFFFF70]">Utilization</p>
+                <div className="mt-2 text-lg flex items-center font-bold">
+                  <div data-testid="utilization">
+                    {formatAsPercentage(pool.utilization)}
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="flex justify-end ">
-              <div className="text-sm flex items-center space-x-2 font-semibold md:col-span-1 w-[100px]">
-                <div data-testid="max-supply-apy">
-                  {formatAsPercentage(pool.maxSupplyAPY)}
-                </div>
-                <Image src={InfoIcon} alt="Info Icon" />
-              </div>
-            </div>
-            <div className="flex justify-end items-center">
-              <div className="text-sm flex flex-col font-semibold md:col-span-1 w-[100px]">
-                <div data-testid="borrowed">
-                  {formatLargeNumber(pool.borrowed)} {pool.asset?.symbol}
-                </div>
-                <div className="opacity-50 mt-1.5" data-testid="borrowed-value">
-                  {formatCurrency(pool.borrowedValue)}
+            <div className="colspan-1">
+              <div>
+                <p className="text-xs text-[#FFFFFF70]">Borrow APR</p>
+                <div className="mt-2 text-lg flex items-center space-x-1 font-bold">
+                  <div data-testid="max-borrow-apy">
+                    {formatAsPercentage(pool.maxBorrowAPY)}
+                  </div>
+                  <Image src={InfoIcon} className="w-3 h-3" alt="Info Icon" />
                 </div>
               </div>
-            </div>
-            <div className="flex justify-end">
-              <div className="text-sm flex items-center space-x-2 font-semibold md:col-span-1 w-[100px]">
-                <div data-testid="max-borrow-apy">
-                  {formatAsPercentage(pool.maxBorrowAPY)}
+              <div className="mt-6">
+                <p className="text-xs text-[#FFFFFF70]">Borrowed</p>
+                <div className="mt-2 text-lg items-center font-bold7tt ">
+                  <div data-testid="borrowed">
+                    {formatLargeNumber(pool.borrowed)} {pool.asset?.symbol}
+                  </div>
+                  <div
+                    className="opacity-50 text-xs mt-0.5"
+                    data-testid="borrowed-value"
+                  >
+                    ({formatCurrency(pool.borrowedValue)})
+                  </div>
                 </div>
-                <Image src={InfoIcon} alt="Info Icon" />
+              </div>
+              <div className="mt-6">
+                <p className="text-xs text-[#FFFFFF70]">Rewards APR</p>
+                <div className="mt-2 text-lg flex items-center space-x-1 font-bold card-gradient-text ">
+                  <div data-testid="rewards">
+                    {formatAsPercentage(pool.rewardsAPY)}
+                  </div>
+                  <Image
+                    src={GradientInfoIcon}
+                    className="w-3 h-3"
+                    alt="Info Icon"
+                  />
+                </div>
               </div>
             </div>
-            <div className="flex justify-end">
-              <div className="text-sm flex items-center space-x-2 font-semibold md:col-span-1 w-[100px]">
-                <div data-testid="utilization">
-                  {formatAsPercentage(pool.utilization)}
-                </div>
-              </div>
-            </div>
-          </React.Fragment>
+          </div>
         </div>
       </Link>
       <MobileVaultItem pool={pool} />

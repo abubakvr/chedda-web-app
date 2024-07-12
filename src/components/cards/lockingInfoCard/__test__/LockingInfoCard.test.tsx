@@ -32,8 +32,8 @@ describe("StakingInfoCard Component", () => {
     expect(getByText("Max Slashing")).toBeInTheDocument();
 
     expect(getByText("0.0% - 5.5%")).toBeInTheDocument();
-    expect(getByText("200 ETH")).toBeInTheDocument();
-    expect(getByText("50")).toBeInTheDocument();
+    expect(getByText("200.00 ETH")).toBeInTheDocument();
+    expect(getByText("50.00")).toBeInTheDocument();
     expect(getByText("20%")).toBeInTheDocument();
 
     const externalLink = getByAltText("link out").closest("a");
