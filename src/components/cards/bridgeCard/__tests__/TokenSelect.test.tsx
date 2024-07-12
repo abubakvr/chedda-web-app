@@ -1,5 +1,5 @@
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
-import { IConfigToken } from "@/utils/types";
+import { IToken } from "@/utils/types";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { StaticImageData } from "next/image";
 import { TokenSelect } from "../TokenSelect";
@@ -70,7 +70,7 @@ const mockSelectedToken = {
   name: "Tether USD",
   logo: {} as StaticImageData,
   color: "#26a17b",
-} as IConfigToken; // Assuming the first token is selected initially
+} as IToken; // Assuming the first token is selected initially
 const mockFetchTokenBalanceLoading = false;
 const mockTokenBalances = { "0x...": 100 }; // Mock token balances
 const mockHandleActiveScreen = jest.fn();

@@ -9,16 +9,16 @@ import errorIcon from "@/assets/icon/error-icon.svg";
 import blockIcon from "@/assets/icon/blocked-icon.svg";
 import { Button } from "@/components/common";
 import { useRouter } from "next/navigation";
-import { IBridgeChain, IConfigToken } from "@/utils/types";
+import { ISourceChain, IToken } from "@/utils/types";
 import { createClient } from "@layerzerolabs/scan-client";
 import { LAYERZERO_TESTNET } from "@/utils/constants";
 
 interface TransactionDetailsProps {
   handleActiveScreen: (term: string) => void;
   returnToInput: () => void;
-  selectedToken: IConfigToken;
-  selectedChain: IBridgeChain;
-  destinationChain: IBridgeChain;
+  selectedToken: IToken;
+  selectedChain: ISourceChain;
+  destinationChain: ISourceChain;
   amountToSend: number;
   tokenPrice: number;
   txHash: string;

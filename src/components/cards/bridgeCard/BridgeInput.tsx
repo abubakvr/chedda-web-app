@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import { BridgeAmountField } from "@/components/common/input/BridgeAmountField";
 import { Button } from "@/components/common";
 import { BridgeCardInfo } from "./BridgeCardInfo";
-import { IBridgeChain, IConfigToken } from "@/utils/types";
+import { ISourceChain, IToken } from "@/utils/types";
 import { useState } from "react";
 import { useBridge, useSwitchChain } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
@@ -21,18 +21,18 @@ interface TokenBalances {
 }
 
 interface BridgeInputProps {
-  selectedChain: IBridgeChain;
-  selectedToken: IConfigToken;
-  tokenList: IConfigToken[];
+  selectedChain: ISourceChain;
+  selectedToken: IToken;
+  tokenList: IToken[];
   tokenBalances: TokenBalances;
   estimatedGasFee: any;
-  destinationChain: IBridgeChain;
+  destinationChain: ISourceChain;
   fetchTokenBalanceLoading: boolean;
   tokenDataLoading: boolean;
   allowance: number;
   tokenPrice: number;
   handleActiveScreen: (term: string) => void;
-  switchToSelectedChain: (chain: IBridgeChain) => void;
+  switchToSelectedChain: (chain: ISourceChain) => void;
   fetchBalances: () => void;
   getEstimatedGas: () => void;
   fetchTokenData: () => void;
@@ -77,7 +77,7 @@ export const BridgeInput = ({
   const tokenAddress = getTokenBridgeAddress(selectedToken, selectedChain);
   const wrongChain = (chainId && selectedChain.chainId) !== chainId;
 
-  const switchNetwork = (chain: IBridgeChain) => {
+  const switchNetwork = (chain: ISourceChain) => {
     if (chain !== undefined && chain !== null) {
       switchChain(chain.chainId);
       switchToSelectedChain(chain);
@@ -270,7 +270,7 @@ export const BridgeInput = ({
             <Image
               src={selectedChain.logo}
               alt="icon-logo"
-              className="w-9 h-9"
+              className="w-10 h-10"
             />
             <span className="text-xl font-bold">{selectedChain.name}</span>
           </button>
@@ -293,7 +293,7 @@ export const BridgeInput = ({
             <Image
               src={destinationChain?.logo}
               alt="icon-logo"
-              className="w-9 h-9"
+              className="w-10 h-10"
             />
             <span className="text-xl font-bold">{destinationChain.name}</span>
           </button>

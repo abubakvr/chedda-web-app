@@ -4,7 +4,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { TransactionDetails } from "../TransactionDetails";
 import { useRouter } from "next/navigation";
 import { createClient } from "@layerzerolabs/scan-client";
-import { IBridgeChain, IConfigToken } from "@/utils/types";
+import { ISourceChain, IToken } from "@/utils/types";
 import { StaticImageData } from "next/image";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 import { WalletConnect } from "@web3-react/walletconnect-v2";
@@ -54,7 +54,7 @@ const props = {
     jsonRpcUrl: "https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID",
     priceFeed: "https://api.etherscan.io/api?module=stats&action=ethprice",
     ethAddress: "0x0000000000000000000000000000000000000000",
-  } as IBridgeChain,
+  } as ISourceChain,
   selectedToken: {
     address: "0x123",
     symbol: "USDT",
@@ -67,7 +67,7 @@ const props = {
     name: "Tether USD",
     logo: {} as StaticImageData,
     color: "#26a17b",
-  } as IConfigToken,
+  } as IToken,
   tokenList: [
     {
       address: "0x123",
@@ -82,7 +82,7 @@ const props = {
       logo: {} as StaticImageData,
       color: "#26a17b",
     },
-  ] as IConfigToken[],
+  ] as IToken[],
   destinationChain: {
     chainId: 5,
     key: "BNB",
@@ -92,7 +92,7 @@ const props = {
     jsonRpcUrl: "https://bsc-dataseed.binance.org/",
     priceFeed: "https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT",
     ethAddress: "0x0000000000000000000000000000000000000000",
-  } as IBridgeChain,
+  } as ISourceChain,
   amountToSend: 100,
   tokenPrice: 1.0,
   txHash: "sample-tx-hash",

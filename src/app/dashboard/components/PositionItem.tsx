@@ -10,6 +10,7 @@ import {
 } from "@/utils/formatters";
 import { IPositionResponse } from "@/utils/types";
 import { getHealthFactorColor } from "@/utils/helpers";
+import { sourceChains } from "@/utils/constants";
 
 interface PositionItemProps {
   pool: IPositionResponse;
@@ -17,6 +18,9 @@ interface PositionItemProps {
 }
 
 export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
+  const assetSourceNetwork = sourceChains.find(
+    (item) => item.key === pool.asset.source
+  );
   return (
     <React.Fragment>
       <Link href={`/markets/${pool.pool}`} passHref>
@@ -26,12 +30,19 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
         >
           <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-2">
             <div className="flex items-center">
-              <Image
-                src={pool.asset?.logo}
-                className="h-8 w-8 "
-                alt={pool.asset?.symbol}
-                data-testid="asset-icon"
-              />
+              <div className="flex relative">
+                <Image
+                  src={pool.asset?.logo}
+                  className="h-10 w-10 round-image"
+                  alt={pool.asset?.symbol}
+                  data-testid="asset-icon"
+                />
+                <Image
+                  src={assetSourceNetwork?.logo ?? ""}
+                  alt="icon image"
+                  className="absolute w-[18px] h-[18px] top-0 left-0"
+                />
+              </div>
               <div
                 className="ml-2 tracking-widest text-lg font-bold"
                 data-testid="asset-symbol"

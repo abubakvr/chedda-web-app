@@ -1,5 +1,5 @@
 import {
-  IBridgeChain,
+  ISourceChain,
   IMenuItem,
   IPoolCategories,
   IPoolCategory,
@@ -74,7 +74,7 @@ export const LOCKTIMES = [
   { title: "360 days", duration: 360, multiplier: 4, value: 4 },
 ];
 
-export const bridgeChains: IBridgeChain[] = [
+export const sourceChains: ISourceChain[] = [
   {
     name: "Base",
     key: "base",
