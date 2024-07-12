@@ -362,7 +362,7 @@ export const BridgeInput = ({
           <BridgeCardInfo
             destination={destinationChain.name}
             amountToreceive={`${formatNumber(amount || 0)} ${selectedToken.symbol} ($${formatNumber((amount || 0) * tokenPrice)})`}
-            gasFee={`${estimatedGasFee.gasETHFee.toFixed(4) || 0} ETH ($${estimatedGasFee.gasUSDFee.toFixed(4)})`}
+            gasFee={`${estimatedGasFee.gasETHFee.toFixed(2) || 0} ETH ($${estimatedGasFee.gasUSDFee.toFixed(2)})`}
             transferTime="~ 5 Mintues"
           />
         </div>
