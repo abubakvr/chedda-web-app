@@ -15,7 +15,8 @@ interface ClaimRewardsCardProps {
   claimableRewards: BigNumber | undefined;
   rewardType: "Stake" | "Lock";
   setActiveTab?: Dispatch<SetStateAction<string>>;
-  fetchClaimableRewards: (showLoading: boolean) => void;
+  fetchClaimableRewards: () => void;
+  fetchCheddaTokenBalance: () => void;
 }
 
 export const ClaimRewardsCard = ({
@@ -23,6 +24,7 @@ export const ClaimRewardsCard = ({
   rewardType,
   setActiveTab,
   fetchClaimableRewards,
+  fetchCheddaTokenBalance,
 }: ClaimRewardsCardProps) => {
   const [showToast, setShowToast] = useState(false);
   const [txLoading, setTxLoading] = useState(false);
@@ -72,7 +74,8 @@ export const ClaimRewardsCard = ({
             txStatus: "success",
           });
           setShowToast(true);
-          fetchClaimableRewards(false);
+          fetchClaimableRewards();
+          fetchCheddaTokenBalance();
         } else {
           const txMessage = `An error occurred while processing your transaction`;
           setTxDetails({

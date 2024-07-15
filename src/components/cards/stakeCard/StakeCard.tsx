@@ -18,7 +18,7 @@ interface StakeModalProps {
   assetValue: number | undefined;
   defaultTab: string | null;
   updateCard: () => void;
-  fetchLpAllowance: (showLoading: boolean) => void;
+  fetchLpAllowance: () => void;
 }
 
 const Tab: FC<{
@@ -156,7 +156,7 @@ export const StakeCard: FC<StakeModalProps> = ({
                   txStatus: "success",
                 });
                 setShowToast(true);
-                fetchLpAllowance(false);
+                fetchLpAllowance();
               } else {
                 const txMessage = `An error occurred while proccessing your transaction`;
                 setTxDetails({

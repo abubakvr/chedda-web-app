@@ -24,7 +24,7 @@ export interface BorrowTabProps {
   totalBorrowed: number;
   assetPrice: number;
   tokenCollateralValue: BigNumber | undefined;
-  fetchAllowance: (showLoading?: boolean) => void;
+  fetchAllowance: () => void;
   refreshModal: () => void;
 }
 

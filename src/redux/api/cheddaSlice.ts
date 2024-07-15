@@ -14,6 +14,7 @@ interface AsyncState<T> {
 
 interface FetchDataParams {
   hookName: string;
+  pathname: string;
   showLoading?: boolean;
   chedda: Chedda | undefined | null;
   currentEnvironment: IEnvironment | undefined;
@@ -35,6 +36,7 @@ export const fetchData = createAsyncThunk<any, FetchDataParams>(
     try {
       const {
         hookName,
+        pathname,
         showLoading,
         chedda,
         currentEnvironment,
@@ -64,7 +66,7 @@ export const fetchData = createAsyncThunk<any, FetchDataParams>(
         decimals,
         environment: currentEnvironment,
       });
-      return { showLoading, hookName, data };
+      return { showLoading, hookName, pathname, data };
     } catch (error) {
       console.error("Error fetching data:", error);
       throw error;
@@ -80,19 +82,31 @@ export const cheddaSlice = createSlice({
     builder
       .addCase(fetchData.pending, (state, action) => {
         const hookName = action.meta.arg.hookName;
-        const showLoading = action.meta.arg.showLoading ?? true;
-        const existingData = state.fetchDataStates[hookName]?.data;
+        const pathname = action.meta.arg.pathname;
+        const existingData =
+          state.fetchDataStates[`${hookName} + ${pathname}`]?.data;
+        const showLoading =
+          hookName === "getSelectTokenBalance"
+            ? true
+            : action.meta.arg.showLoading || !existingData;
 
-        state.fetchDataStates[hookName] = {
+        state.fetchDataStates[`${hookName} + ${pathname}`] = {
           data: existingData ?? undefined,
-          isLoading: showLoading ? true : false,
+          isLoading: showLoading,
         };
       })
       .addCase(
         fetchData.fulfilled,
-        (state, action: PayloadAction<{ hookName: string; data: any }>) => {
-          const { hookName, data } = action.payload || {};
-          state.fetchDataStates[hookName] = {
+        (
+          state,
+          action: PayloadAction<{
+            hookName: string;
+            pathname: string;
+            data: any;
+          }>
+        ) => {
+          const { hookName, pathname, data } = action.payload || {};
+          state.fetchDataStates[`${hookName} + ${pathname}`] = {
             data,
             isLoading: false,
           };
@@ -100,7 +114,8 @@ export const cheddaSlice = createSlice({
       )
       .addCase(fetchData.rejected, (state, action) => {
         const hookName = action.meta.arg.hookName;
-        state.fetchDataStates[hookName] = {
+        const pathname = action.meta.arg.pathname;
+        state.fetchDataStates[`${hookName} + ${pathname}`] = {
           data: undefined,
           isLoading: false,
         };

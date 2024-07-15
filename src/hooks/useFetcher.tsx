@@ -8,7 +8,7 @@ import {
 } from "@/redux/api/cheddaSlice";
 import { useCheddaSdk } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { GetDataFunction } from "@/utils/types";
 import { currentEnvironment } from "@/data/environments";
 
@@ -19,6 +19,7 @@ export const useFetcher = <T = any,>(
 ) => {
   const dispatch = useDispatch<AppDispatch>();
   const { chedda, signer } = useCheddaSdk();
+  const pathname = usePathname();
   const { account } = useWeb3React();
   const { poolId } = useParams();
 
@@ -30,6 +31,7 @@ export const useFetcher = <T = any,>(
       dispatch(
         fetchData({
           hookName,
+          pathname,
           showLoading,
           chedda,
           currentEnvironment,
@@ -44,23 +46,27 @@ export const useFetcher = <T = any,>(
     },
     [
       dispatch,
+      getData,
       chedda,
       account,
       strPoolId,
-      getData,
       signer,
       hookName,
+      pathname,
       asset,
       decimals,
     ]
   );
 
   const isLoading = useSelector((state: RootState) =>
-    selectCheddaSliceLoading(hookName)(state)
+    selectCheddaSliceLoading(`${hookName} + ${pathname}`)(state)
   );
   const data = useSelector((state: RootState) =>
-    selectCheddaSliceData(hookName)(state)
+    selectCheddaSliceData(`${hookName} + ${pathname}`)(state)
   );
+
+  const fetchHookData = (showLoading: boolean = false) =>
+    fetchDataCallback(showLoading);
 
   useEffect(() => {
     fetchDataCallback();
@@ -69,6 +75,6 @@ export const useFetcher = <T = any,>(
   return {
     data: data,
     isLoading: isLoading,
-    fetchData: fetchDataCallback,
+    fetchData: fetchHookData,
   };
 };

@@ -16,21 +16,25 @@ import { MyInformationCard, CollateralInfoCard } from "@/components/cards";
 import { InterestRatesChart, SuppyAndBorrowChart } from "@/components/charts";
 import { IPoolStatsResponse } from "@/utils/types";
 import { currentEnvironment } from "@/data/environments";
+import { IAccountInfo } from "chedda-sdk";
 
 const PoolTab = ({
   poolStats,
+  accountInfo,
+  accountInfoLoading,
+  fetchAccountInfo,
   setActivePoolTab,
   fetchPoolStats,
+  fetchLpTokenBalance,
 }: {
+  accountInfo: IAccountInfo | undefined;
   poolStats: IPoolStatsResponse | undefined;
+  accountInfoLoading: boolean;
+  fetchAccountInfo: () => void;
   setActivePoolTab: Dispatch<SetStateAction<string>>;
-  fetchPoolStats: (showLoading: boolean) => void;
+  fetchPoolStats: () => void;
+  fetchLpTokenBalance: () => void;
 }) => {
-  const {
-    data: accountInfo,
-    fetchData: fetchAccountInfo,
-    isLoading: accountInfoLoading,
-  } = useAccountInfo();
   const {
     data: marketInfo,
     isLoading: marketInfoLoading,
@@ -49,11 +53,12 @@ const PoolTab = ({
   } = usePoolState();
 
   const fetchPoolInfo = () => {
-    fetchPoolStats(false);
-    fetchAccountInfo(false);
-    fetchMarketInfo(false);
-    fetchCollateralInfo(false);
-    fetchPoolStateData(false);
+    fetchPoolStats();
+    fetchAccountInfo();
+    fetchMarketInfo();
+    fetchCollateralInfo();
+    fetchPoolStateData();
+    fetchLpTokenBalance();
   };
 
   const collateralInfo = formatCollateralInfo(

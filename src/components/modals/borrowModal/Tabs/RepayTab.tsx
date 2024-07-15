@@ -26,7 +26,7 @@ export interface RepayTabProps {
   assetPrice: number;
   allowance: BigNumber | undefined;
   tokenCollateralValue: BigNumber | undefined;
-  fetchAllowance: (showLoading?: boolean) => void;
+  fetchAllowance: () => void;
   refreshModal: () => void;
 }
 
@@ -155,7 +155,7 @@ export const RepayTab = ({
                   txStatus: "success",
                 });
                 setShowToast(true);
-                fetchAllowance(false);
+                fetchAllowance();
               } else {
                 const txMessage = `An error occurred while proccessing your transaction`;
                 setTxDetails({

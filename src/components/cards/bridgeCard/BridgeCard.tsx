@@ -157,12 +157,6 @@ const BridgeCard = () => {
 
   return (
     <div className="sticky">
-      {/* <PageTitle title="BRIDGE">
-        Bridge assets from other networks to use on Chedda. Bridged assets can
-        supplied or as collateral in Chedda lending pools.
-        <br />
-        Bridged assets can be bridged back at any time
-      </PageTitle> */}
       <div className="flex justify-center mt-6">
         <div className=" pool-card rounded-xl w-[580px] min-w-[470px] text-white px-8 py-8">
           {activeScreen === "tokenselect" ? (

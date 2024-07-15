@@ -25,6 +25,7 @@ jest.mock("@web3-react/core", () => ({
 
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),
+  usePathname: jest.fn(() => "/markets"),
 }));
 
 describe("useFetcher", () => {
