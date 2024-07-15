@@ -2,8 +2,8 @@ import Image from "next/image";
 import React, { ChangeEvent, useState } from "react";
 import leftIcon from "@/assets/icon/left-icon.svg";
 import SearchIcon from "@/assets/icon/search-icon.svg";
-import { IBridgeChain, IConfigToken } from "@/utils/types";
-import { bridgeChains } from "@/utils/constants";
+import { ISourceChain, IToken } from "@/utils/types";
+import { sourceChains } from "@/utils/constants";
 import { useSwitchChain } from "@/hooks";
 import { formatNumber } from "@/utils/formatters";
 
@@ -12,14 +12,14 @@ interface TokenBalances {
 }
 
 interface TokenSelectProps {
-  selectedChain: IBridgeChain;
-  selectedToken: IConfigToken;
-  tokenList: IConfigToken[];
+  selectedChain: ISourceChain;
+  selectedToken: IToken;
+  tokenList: IToken[];
   fetchTokenBalanceLoading: boolean;
   tokenBalances: TokenBalances;
   handleActiveScreen: (term: string) => void;
-  switchToSelectedChain: (chain: IBridgeChain) => void;
-  setSelectedToken: React.Dispatch<React.SetStateAction<IConfigToken>>;
+  switchToSelectedChain: (chain: ISourceChain) => void;
+  setSelectedToken: React.Dispatch<React.SetStateAction<IToken>>;
 }
 
 export const TokenSelect = ({
@@ -50,7 +50,7 @@ export const TokenSelect = ({
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) =>
     setSearchKeyword(e.target.value);
 
-  const matchSearchItem = (item: IConfigToken, searchKeyword: string) => {
+  const matchSearchItem = (item: IToken, searchKeyword: string) => {
     const normalizedSearchKeyword = searchKeyword?.toLowerCase() || "";
 
     const matchesTokenName = item.name
@@ -67,14 +67,14 @@ export const TokenSelect = ({
     return matchesTokenName || matchesTokenSymbol || matchesTokenAddress;
   };
 
-  const switchNetwork = (chain: IBridgeChain) => {
+  const switchNetwork = (chain: ISourceChain) => {
     if (chain !== undefined && chain !== null) {
       switchChain(chain.chainId);
       switchToSelectedChain(chain);
     }
   };
 
-  const renderTokenList = (token: IConfigToken, index: number) => {
+  const renderTokenList = (token: IToken, index: number) => {
     const balanceAddress =
       token.source === selectedChain.key ? token.address : token.bridgedOft;
     return (
@@ -91,11 +91,11 @@ export const TokenSelect = ({
         >
           <div className="w-max flex font-bold items-center py-2 px-4 space-x-4">
             <div className="w-max flex relative">
-              <Image src={token.logo} alt="icon image" className="w-8 h-8" />
+              <Image src={token.logo} alt="icon image" className="w-10 h-10" />
               <Image
                 src={selectedChain.logo}
                 alt="icon image"
-                className="absolute w-4 bottom-0 -right-0.5"
+                className="absolute w-4 h-4 top-0 left-0"
               />
             </div>
             <div className="flex flex-col justify-start items-start">
@@ -130,7 +130,7 @@ export const TokenSelect = ({
         <div className="text-3xl font-bold">Select a Token</div>
       </div>
       <div className="flex gap-x-6 mt-8">
-        {bridgeChains.map((chain, index) => (
+        {sourceChains.map((chain, index) => (
           <button
             key={index}
             className="flex flex-col items-center"

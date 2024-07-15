@@ -14,7 +14,7 @@ jest.mock("next/navigation", () => ({
 describe("SummaryHeader component", () => {
   const mockNavigateBack = jest.fn();
   const mockIcon = backIcon;
-  const mockAssetName = "Mock Asset";
+  const mockPoolName = "Mock Asset";
 
   beforeEach(() => {
     (useRouter as jest.Mock).mockReturnValue({
@@ -23,17 +23,17 @@ describe("SummaryHeader component", () => {
 
     const props = {
       navigateBack: mockNavigateBack,
-      logoSrc: mockIcon,
-      assetName: mockAssetName,
+      asset: mockIcon,
+      poolName: mockPoolName,
     };
 
     render(<SummaryHeader {...props} />);
   });
 
   it("renders the component with correct props", () => {
-    expect(screen.getByTestId("asset-name")).toHaveTextContent(mockAssetName);
+    expect(screen.getByTestId("asset-name")).toHaveTextContent(mockPoolName);
 
-    expect(screen.getByText(mockAssetName)).toBeInTheDocument();
+    expect(screen.getByText(mockPoolName)).toBeInTheDocument();
   });
 
   it("calls navigateBack when the back button is clicked", () => {

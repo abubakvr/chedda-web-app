@@ -2,13 +2,13 @@ import { Chedda } from "chedda-sdk";
 import { useWeb3React } from "@web3-react/core";
 import { BigNumber, ethers } from "ethers";
 import { getErrorMessageFromCode } from "@/utils/helpers";
-import { IBridgeChain } from "@/utils/types";
+import { ISourceChain } from "@/utils/types";
 import { useCallback, useMemo } from "react";
 import { parseBigNumberToFloat } from "@/utils/formatters";
 import { Options } from "@layerzerolabs/lz-v2-utilities";
-import { bridgeChains, ethAddress } from "@/utils/constants";
+import { sourceChains, ethAddress } from "@/utils/constants";
 
-export const useBridge = (selectedChain: IBridgeChain | null) => {
+export const useBridge = (selectedChain: ISourceChain | null) => {
   const { provider, account } = useWeb3React();
 
   const chedda = useMemo(() => {
@@ -24,7 +24,7 @@ export const useBridge = (selectedChain: IBridgeChain | null) => {
   }, [provider, account]);
 
   const priceChedda = useMemo(() => {
-    return new Chedda(bridgeChains[0].jsonRpcUrl);
+    return new Chedda(sourceChains[0].jsonRpcUrl);
   }, []);
 
   const executeTransaction = useCallback(
@@ -139,7 +139,7 @@ export const useBridge = (selectedChain: IBridgeChain | null) => {
   );
 
   const getEthPrice = useCallback(async () => {
-    const priceOracle = priceChedda.priceOracle(bridgeChains[0].priceFeed);
+    const priceOracle = priceChedda.priceOracle(sourceChains[0].priceFeed);
     const decimals = await priceOracle.decimals();
     const assetPrice = await priceOracle.readPrice(ethAddress);
     return parseBigNumberToFloat(assetPrice, decimals, 10);

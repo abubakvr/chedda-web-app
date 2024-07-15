@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import InfoIcon from "@/assets/icon/info-icon.svg";
@@ -23,32 +23,6 @@ const poolFilters = [
 ];
 
 export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
-  const elementRef = useRef<HTMLDivElement | null>(null);
-  const [showEllipses, setShowEllipses] = useState(false);
-
-  useEffect(() => {
-    const element = elementRef.current;
-
-    const handleShowEllipses = () => {
-      if (element) {
-        const hasVerticalOverflow = element.scrollHeight > element.clientHeight;
-
-        if (hasVerticalOverflow) {
-          setShowEllipses(true);
-        } else {
-          setShowEllipses(false);
-        }
-      }
-    };
-
-    handleShowEllipses();
-    window.addEventListener("resize", handleShowEllipses);
-
-    return () => {
-      window.removeEventListener("resize", handleShowEllipses);
-    };
-  }, []);
-
   const itemFilter = poolFilters.find(
     (filter) => filter.keyword?.toLowerCase() === pool.categories[0]
   );
@@ -61,13 +35,20 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           className="market-card pool-card rounded-lg w-full px-7 py-5 text-white hover:opacity-90 cursor-pointer p-6 transition-all"
         >
           <div className="flex justify-between">
-            <div className="flex items-center space-x-2">
-              <Image
-                src={pool.asset?.logo}
-                className="h-8 w-8 "
-                alt={pool.asset?.symbol}
-                data-testid="asset-name"
-              />
+            <div className="flex items-center gap-x-2">
+              <div className="flex relative">
+                <Image
+                  src={pool.asset?.logo}
+                  className="h-10 w-10 round-image"
+                  alt={pool.asset?.symbol}
+                  data-testid="asset-name"
+                />
+                <Image
+                  src={pool.asset?.sourceLogo}
+                  alt="icon image"
+                  className="absolute w-[18px] h-[18px] top-0 left-0"
+                />
+              </div>
               <div
                 className="tracking-widest text-lg font-bold"
                 data-testid="asset-symbol"
@@ -85,20 +66,29 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           <div className="mt-4">
             <p className="text-xs text-[#FFFFFF70]">Collateral</p>
             <div className="flex gap-x-3 items-center">
-              <div className="flex w-max mt-2">
-                {pool.collaterals?.map((collateral: IToken, i: number) => (
-                  <div key={i} className="-ml-[4px] round-image w-max">
-                    <Image
-                      src={collateral?.logo}
-                      className="h-10 w-10 round-image"
-                      alt={collateral?.symbol}
-                      data-testid="collateral-logo"
-                    />
-                  </div>
-                ))}
+              <div className="flex w-max mt-2 ml-1">
+                {pool.collaterals?.map((collateral: IToken, i: number) => {
+                  return (
+                    <div
+                      key={i}
+                      className="-ml-[4px] round-image w-max relative"
+                    >
+                      <Image
+                        src={collateral?.logo}
+                        className="h-10 w-10 round-image"
+                        alt={collateral?.symbol}
+                        data-testid="collateral-logo"
+                      />
+                      <Image
+                        src={collateral.sourceLogo}
+                        alt="icon image"
+                        className="absolute w-[18px] h-[18px] top-0 left-0"
+                      />
+                    </div>
+                  );
+                })}
               </div>
               <div
-                ref={elementRef}
                 className={`w-full font-bold flex flex-wrap gap-x-1 text-ellipsis overflow-hidden`}
                 data-testid="collaterals-list"
               >

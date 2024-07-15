@@ -2,14 +2,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { BridgeInput } from "./BridgeInput";
 import { TokenSelect } from "./TokenSelect";
-import { TransactionDetails } from "./TransactionDetails";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { IBridgeChain, IConfigToken } from "@/utils/types";
-import { bridgeChains } from "@/utils/constants";
+import { ISourceChain, IToken } from "@/utils/types";
+import { sourceChains } from "@/utils/constants";
 import { currentEnvironment } from "@/data/environments";
 import { useBridge } from "@/hooks";
 import { parseBigNumberToFloat } from "@/utils/formatters";
-import { PageTitle } from "@/components/common/pageTitle/PageTitle";
 import { getTokenBalanceAddress, getTokenBridgeAddress } from "@/utils/helpers";
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
@@ -27,15 +25,13 @@ const BridgeCard = () => {
   const pathname = usePathname();
   const activeScreen = searchParams.get("screen");
   const { account } = useWeb3React();
-  const [selectedChain, setSelectedCain] = useState<IBridgeChain>(
-    bridgeChains.find((item) => item.chainId.toString() === savedChain) ||
-      bridgeChains[0]
+  const [selectedChain, setSelectedCain] = useState<ISourceChain>(
+    sourceChains.find((item) => item.chainId.toString() === savedChain) ||
+      sourceChains[0]
   );
   const [fetchTokenBalanceLoading, setFetchTokenBalanceLoading] =
     useState(false);
-  const [selectedToken, setSelectedToken] = useState<IConfigToken>(
-    bridgeTokens[0]
-  );
+  const [selectedToken, setSelectedToken] = useState<IToken>(bridgeTokens[0]);
   const { getTokenBalance, getTokenPrice, getTokenAllowance } =
     useBridge(selectedChain);
   const [tokenBalances, setTokenBalances] = useState<{
@@ -51,10 +47,10 @@ const BridgeCard = () => {
   const { quoteSend, getEthPrice } = useBridge(selectedChain);
 
   const destinationChain =
-    bridgeChains.find((item) => item.key !== selectedChain.key) ||
+    sourceChains.find((item) => item.key !== selectedChain.key) ||
     selectedChain;
 
-  function switchToSelectedChain(chain: IBridgeChain) {
+  function switchToSelectedChain(chain: ISourceChain) {
     setSelectedCain(chain);
     localStorage.setItem("selectedBridgeChain", `${chain.chainId}`);
   }

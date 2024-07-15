@@ -10,15 +10,15 @@ import React, {
   SetStateAction,
   useEffect,
 } from "react";
-import { IBridgeChain, IConfigToken } from "@/utils/types";
+import { ISourceChain, IToken } from "@/utils/types";
 
 interface InputWithMaxButtonProps {
   onChange: (value: string) => void;
   maxValue: string;
   clearInputField: boolean;
   assetPrice: number;
-  selectedToken: IConfigToken | undefined;
-  selectedChain: IBridgeChain;
+  selectedToken: IToken | undefined;
+  selectedChain: ISourceChain;
   setClearInputField: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -80,15 +80,15 @@ export const BridgeAmountField: FC<InputWithMaxButtonProps> = ({
               <Image
                 src={selectedToken.logo}
                 alt="icon image"
-                className="w-8 h-8"
+                className="w-10 h-10"
               />
               <Image
                 src={selectedChain?.logo}
                 alt="icon image"
-                className="absolute w-4 bottom-0 -right-0.5"
+                className="absolute w-4 h-4 top-0 left-0"
               />
             </div>
-            <p className="font-bold text-lg">{selectedToken?.symbol}</p>
+            <p className="font-bold text-xl">{selectedToken?.symbol}</p>
           </>
         )}
       </div>

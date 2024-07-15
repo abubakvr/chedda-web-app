@@ -36,19 +36,17 @@ export interface IToken {
   logo: StaticImageData;
   decimals: number;
   color: string;
-}
-
-export interface IConfigToken extends IToken {
   bridgeToken: boolean;
   type?: string;
   oftAdapter?: string;
   bridgedOft: string;
   nativeChain?: string;
   source?: string;
+  sourceLogo: StaticImageData;
 }
 
 export interface ITokenConfig {
-  [tokenAddress: string]: IConfigToken;
+  [tokenAddress: string]: IToken;
 }
 
 export interface IPoolCategories {
@@ -199,7 +197,7 @@ export interface modalInfoItem {
   value: string | number;
 }
 
-export interface IBridgeChain {
+export interface ISourceChain {
   name: string;
   logo: StaticImageData;
   chainId: number;
@@ -214,7 +212,7 @@ export interface IBridgeChain {
 export interface IPositionResponse {
   account: string;
   pool: string;
-  asset: IConfigToken;
+  asset: IToken;
   decimals: number;
   supplied: number;
   borrowed: number;

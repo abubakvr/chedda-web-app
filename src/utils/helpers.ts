@@ -1,6 +1,6 @@
 import { Chedda } from "chedda-sdk";
 import { BigNumber, ethers, Signer } from "ethers";
-import { IBridgeChain, IConfigToken, IPositionResponse } from "./types";
+import { ISourceChain, IToken, IPositionResponse } from "./types";
 
 export function findNearestIndex(sortedArray: number[], targetNumber: number) {
   // Check if the array is empty
@@ -152,8 +152,8 @@ export function projectDateTime(days: number) {
 /**
  * Retrieves the appropriate token bridge address based on the selected token and chain.
  *
- * @param {IConfigToken} selectedToken - The token configuration object.
- * @param {IBridgeChain} selectedChain - The chain configuration object.
+ * @param {IToken} selectedToken - The token configuration object.
+ * @param {ISourceChain} selectedChain - The chain configuration object.
  * @returns {string} - The token bridge address, which can be the token's address, oftAdapter address, or bridgedOft address.
  *
  * The function follows these rules:
@@ -162,8 +162,8 @@ export function projectDateTime(days: number) {
  * - It returns the token's bridged address if the source does not match the destination.
  */
 export const getTokenBridgeAddress = (
-  selectedToken: IConfigToken,
-  selectedChain: IBridgeChain
+  selectedToken: IToken,
+  selectedChain: ISourceChain
 ) => {
   return selectedToken.source === selectedChain.key &&
     selectedToken.type === "OFT"
@@ -177,8 +177,8 @@ export const getTokenBridgeAddress = (
 /**
  * Retrieves the appropriate token balance address based on the selected token and chain.
  *
- * @param {IConfigToken} selectedToken - The token configuration object.
- * @param {IBridgeChain} selectedChain - The chain configuration object.
+ * @param {IToken} selectedToken - The token configuration object.
+ * @param {ISourceChain} selectedChain - The chain configuration object.
  * @returns {string} - The token balance address, which can be the token's address or bridgedOft address.
  *
  * The function follows these rules:
@@ -186,8 +186,8 @@ export const getTokenBridgeAddress = (
  * - It returns the token's bridged address if the source does not match the destination chain key.
  */
 export const getTokenBalanceAddress = (
-  selectedToken: IConfigToken,
-  selectedChain: IBridgeChain
+  selectedToken: IToken,
+  selectedChain: ISourceChain
 ) => {
   return selectedToken.source === selectedChain.key
     ? selectedToken.address

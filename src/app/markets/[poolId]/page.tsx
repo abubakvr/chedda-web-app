@@ -59,8 +59,8 @@ const Page = () => {
       >
         <div className="my-7">
           <SummaryHeader
-            logoSrc={poolStats?.asset.logo}
-            assetName={poolStats?.characterization}
+            asset={poolStats?.asset}
+            poolName={poolStats?.characterization}
           />
         </div>
         <SummaryCard stats={poolSummary} isLoading={!poolStats || isLoading} />

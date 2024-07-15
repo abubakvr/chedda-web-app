@@ -11,6 +11,12 @@ import { CollateralInfoSkeleton } from "@/components/ui";
 import { IFormattedCollateral } from "@/utils/types";
 import { CollateralInfoChart } from "@/components/charts";
 
+const collateralHeaderItems = [
+  "Collateral",
+  "Deposited",
+  "My Deposits",
+  "Collateral Factor",
+];
 interface CollateralInfoCardProps {
   collateralInfo: IFormattedCollateral[] | undefined;
   accountInfo: IAccountInfo | undefined;
@@ -27,13 +33,6 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
   if (isLoading) {
     return <CollateralInfoSkeleton />;
   }
-
-  const collateralHeaderItems = [
-    "Collateral",
-    "Deposited",
-    "My Deposits",
-    "Collateral Factor",
-  ];
 
   return (
     <div
@@ -125,47 +124,56 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
           })}
         </div>
         <div className="px-8 mt-4">
-          {collateralInfo?.map((item, index) => (
-            <div
-              className="flex justify-between text-white text-sm mt-3"
-              key={index}
-              data-testid={`collateral-item-${index}`}
-            >
-              <div className="w-28">
-                <div className="flex items-center gap-x-2">
-                  <Image
-                    src={item.asset.logo}
-                    alt={item.asset.name}
-                    className="w-10 h-10"
-                    data-testid={`collateral-item-logo-${index}`}
-                  />
-                  <div className="font-bold text-sm">{item.asset.symbol}</div>
+          {collateralInfo?.map((item, index) => {
+            return (
+              <div
+                className="flex justify-between text-white text-sm mt-3"
+                key={index}
+                data-testid={`collateral-item-${index}`}
+              >
+                <div className="w-28">
+                  <div className="flex items-center gap-x-2">
+                    <div className="flex relative">
+                      <Image
+                        src={item.asset.logo}
+                        alt={item.asset.name}
+                        className="w-10 h-10"
+                        data-testid={`collateral-item-logo-${index}`}
+                      />
+                      <Image
+                        src={item.asset?.sourceLogo}
+                        alt="icon image"
+                        className="absolute w-[18px] h-[18px] top-0 left-0"
+                      />
+                    </div>
+                    <div className="font-bold text-sm">{item.asset.symbol}</div>
+                  </div>
+                </div>
+                <div className="flex flex-col w-28">
+                  <span className="font-bold">
+                    {item.amountDeposited} {item.asset.symbol}
+                  </span>
+                  <span className="text-[#ffffff50] mt-1">
+                    {formatCurrency(item.value)}
+                  </span>
+                </div>
+                <div className="flex flex-col w-28">
+                  <span className="font-bold">
+                    {item.myCollateralAmount} {item.asset.symbol}
+                  </span>
+                  <span className="text-[#ffffff50] mt-1">
+                    {item.myCollateralValue}
+                  </span>
+                </div>
+                <div
+                  className="w-28 pl-1"
+                  data-testid={`collateral-factor-${index}`}
+                >
+                  <span className="font-bold">{item.collateralFactor}</span>
                 </div>
               </div>
-              <div className="flex flex-col w-28">
-                <span className="font-bold">
-                  {item.amountDeposited} {item.asset.symbol}
-                </span>
-                <span className="text-[#ffffff50] mt-1">
-                  {formatCurrency(item.value)}
-                </span>
-              </div>
-              <div className="flex flex-col w-28">
-                <span className="font-bold">
-                  {item.myCollateralAmount} {item.asset.symbol}
-                </span>
-                <span className="text-[#ffffff50] mt-1">
-                  {item.myCollateralValue}
-                </span>
-              </div>
-              <div
-                className="w-28 pl-1"
-                data-testid={`collateral-factor-${index}`}
-              >
-                <span className="font-bold">{item.collateralFactor}</span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
