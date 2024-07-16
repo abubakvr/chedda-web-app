@@ -251,6 +251,7 @@ export const BridgeInput = ({
         txHash={txHash}
         status={txStatus}
         copyText={copyText}
+        txPrefix={selectedChain.txUrlPrefix}
       />
       <div className="flex justify-between" data-testid="bridge-input-title">
         <h1 className="text-3xl font-bold">Transfer</h1>

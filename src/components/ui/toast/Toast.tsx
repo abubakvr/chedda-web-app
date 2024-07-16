@@ -11,6 +11,7 @@ interface ToastProps {
   txHash?: string | null;
   copyText?: string | null;
   duration?: number;
+  txPrefix?: string;
   toastMessage: string;
 }
 
@@ -20,6 +21,7 @@ export const Toast: React.FC<ToastProps> = ({
   isOpen,
   txHash,
   toastMessage,
+  txPrefix,
   copyText,
 }) => {
   const [toasts, setToasts] = useState([] as any[]);
@@ -137,7 +139,7 @@ export const Toast: React.FC<ToastProps> = ({
                   </div>
                   {txHash && (
                     <a
-                      href={`${currentEnvironment?.txUrlPrefix}/${txHash}`}
+                      href={`${txPrefix ? txPrefix : currentEnvironment?.txUrlPrefix}/${txHash}`}
                       target="_blank"
                       rel="noreferrer"
                       className="text-xs text-[#ffffff] flex justify-end items-center gap-x-1 mt-2 opacity-50 hover:opacity-90"
