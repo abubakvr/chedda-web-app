@@ -8,6 +8,7 @@ import { InfoCardSkeleton } from "@/components/ui";
 import { BorrowModal, SupplyModal } from "@/components/modals";
 import { BigNumber } from "ethers";
 import { Button } from "@/components/common";
+import { currentEnvironment } from "@/data/environments";
 
 interface MyInformationCardProps {
   poolStats: IPoolStatsResponse | undefined;
@@ -73,12 +74,17 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
         <div className="text-white text-opacity-50 font-bold text-sm uppercase">
           My Information
         </div>
-        <button className="flex gap-x-1 border-2 rounded-md py-[6px] px-3 border-[#ffffff60] hover:opacity-70">
+        <a
+          href={`${currentEnvironment?.contractPrefix}/${poolStats?.pool}`}
+          target="_blank"
+          rel="noreferrer"
+          className="flex gap-x-1 border-2 rounded-md py-[6px] px-3 border-[#ffffff60] hover:opacity-70"
+        >
           <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-[10px]">
             Vault Contract
           </div>
           <Image src={LinkOut} alt="link out" />
-        </button>
+        </a>
       </div>
       <div className="p-8 pb-0">
         <div className="flex justify-between text-sm pb-5">
