@@ -8,7 +8,7 @@ import {
 import { BorrowTabInfo } from "../TabInfo";
 import { IToken } from "@/utils/types";
 import { useTransaction } from "@/hooks";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { Toast } from "@/components/ui";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
 import { displayProjectedHealthFactor } from "@/utils/helpers";
@@ -16,14 +16,14 @@ import { displayProjectedHealthFactor } from "@/utils/helpers";
 export interface BorrowTabProps {
   asset: IToken;
   isLoading: Record<string, boolean>;
-  accountCollateralAmount: BigNumber | undefined;
+  accountCollateralAmount: bigint | undefined;
   totalCollateralValue: number;
-  healthFactor: BigNumber | undefined;
+  healthFactor: bigint | undefined;
   tokenValue: number | undefined;
-  availableLiquidity: BigNumber | undefined;
+  availableLiquidity: bigint | undefined;
   totalBorrowed: number;
   assetPrice: number;
-  tokenCollateralValue: BigNumber | undefined;
+  tokenCollateralValue: bigint | undefined;
   fetchAllowance: () => void;
   refreshModal: () => void;
 }
@@ -84,52 +84,37 @@ export const BorrowTab = ({
 
       setTxLoading(true);
       setShowToast(false);
-      const parsedAmount = ethers.utils.parseUnits(
-        inputAmount.toString(),
-        decimals
-      );
-      borrowAsset(parsedAmount)
-        .then(async (res) => {
-          if (res) {
-            const result = await res.wait();
-            if (result.status === 1) {
-              const txMessage = `You've successfully borrowed ${formatNumber(
-                inputAmount
-              )} ${symbol}`;
-              setTxDetails({
-                copyText: null,
-                txMessage,
-                txHash: res.hash,
-                txStatus: "success",
-              });
-              setInputAmount(0);
-              setClearInputField(true);
-              setShowToast(true);
-              refreshModal();
-            } else {
-              const txMessage = `An error occurred while proccessing your transaction`;
-              setTxDetails({
-                copyText: null,
-                txMessage,
-                txHash: res.hash,
-                txStatus: "failed",
-              });
-              setShowToast(true);
-            }
-          }
-          setTxLoading(false);
-        })
-        .catch((error) => {
-          const errorObject = JSON.parse(error.message);
+      const parsedAmount = ethers.parseUnits(inputAmount.toString(), decimals);
+      const tx = await borrowAsset(parsedAmount);
+      if (tx) {
+        const result = await tx.wait();
+        console.log(result);
+        if (result.status === 1) {
+          const txMessage = `You've successfully borrowed ${formatNumber(
+            inputAmount
+          )} ${symbol}`;
           setTxDetails({
-            txMessage: errorObject.errorMessage,
-            copyText: errorObject.fullText,
-            txHash: null,
+            copyText: null,
+            txMessage,
+            txHash: tx.hash,
+            txStatus: "success",
+          });
+          setInputAmount(0);
+          setClearInputField(true);
+          setShowToast(true);
+          refreshModal();
+        } else {
+          const txMessage = `An error occurred while proccessing your transaction`;
+          setTxDetails({
+            copyText: null,
+            txMessage,
+            txHash: tx.hash,
             txStatus: "failed",
           });
           setShowToast(true);
-          setTxLoading(false);
-        });
+        }
+      }
+      setTxLoading(false);
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
       setTxDetails({

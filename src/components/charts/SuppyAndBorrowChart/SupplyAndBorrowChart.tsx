@@ -10,7 +10,6 @@ import {
   Line,
 } from "recharts";
 import { CustomTooltipProps, IPoolStateResponse } from "@/utils/types";
-import { usePoolState } from "@/hooks";
 import {
   formatAsPercentage,
   formatLargeNumber,

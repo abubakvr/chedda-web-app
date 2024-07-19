@@ -1,5 +1,4 @@
 import { useWeb3React } from "@web3-react/core";
-import { BigNumber, Signer } from "ethers";
 import { useCheddaSdk } from "./useCheddaSdk";
 import { useParams } from "next/navigation";
 import { getErrorMessageFromCode } from "@/utils/helpers";
@@ -13,21 +12,18 @@ export const useTransaction = (asset: string) => {
   const strPoolId = poolId ? poolId.toString() : "0x00";
   const cheddaTokenAddress = currentEnvironment.contracts.CheddaToken;
   const accountActorAddress = currentEnvironment.contracts.AccountActor;
-  const token = chedda?.erc20token(asset || strPoolId, signer as Signer);
-  const lendingPool = chedda?.lendingPool(strPoolId, signer as Signer);
-  const cheddaToken = chedda?.cheddaToken(cheddaTokenAddress, signer as Signer);
-  const accountActor = chedda?.accountActor(
-    accountActorAddress,
-    signer as Signer
-  );
+  const token = chedda?.erc20token(asset || strPoolId, signer as any);
+  const lendingPool = chedda?.lendingPool(strPoolId, signer as any);
+  const cheddaToken = chedda?.cheddaToken(cheddaTokenAddress, signer as any);
+  const accountActor = chedda?.accountActor(accountActorAddress, signer as any);
 
   const executeTransaction = async (
     transaction: (params: {
       lendingPool: any;
       token: any;
-      amount?: BigNumber;
+      amount?: bigint;
     }) => Promise<any>,
-    amount?: BigNumber
+    amount?: bigint
   ) => {
     if (!account) return;
 
@@ -44,73 +40,81 @@ export const useTransaction = (asset: string) => {
     }
   };
 
-  const approveAsset = async (amount: BigNumber) =>
+  const approveAsset = async (amount: bigint) =>
     executeTransaction(async () => {
       if (!amount) return;
       return token?.approve(strPoolId, amount);
     }, amount);
 
-  const depositAsset = async (amount: BigNumber, useAsCollateral: boolean) =>
+  const depositAsset = async (amount: bigint, useAsCollateral: boolean) =>
     executeTransaction(async () => {
       if (!account) return;
       return lendingPool?.supply(amount, account, useAsCollateral);
     }, amount);
 
-  const withdrawAsset = async (amount: BigNumber) =>
+  const withdrawAsset = async (amount: bigint) =>
     executeTransaction(async () => {
       if (!account) return;
       return lendingPool?.withdraw(amount, account, account);
     }, amount);
 
-  const depositCollateral = async (amount: BigNumber) =>
+  const depositCollateral = async (amount: bigint) =>
     executeTransaction(async () => {
       if (!account) return;
       return lendingPool?.addCollateral(asset, amount);
     }, amount);
 
-  const approveLpToken = async (amount: BigNumber) =>
+  const approveLpToken = async (amount: bigint) =>
     executeTransaction(async () => {
       const stakingPoolAddress = await lendingPool?.stakePool();
       if (!amount || !stakingPoolAddress) return;
       return lendingPool?.approve(stakingPoolAddress, amount);
     }, amount);
 
-  const withdrawCollateral = async (amount: BigNumber) =>
+  const withdrawCollateral = async (amount: bigint) =>
     executeTransaction(async () => {
       if (!account) return;
       return lendingPool?.removeCollateral(asset, amount);
     }, amount);
 
-  const borrowAsset = async (amount: BigNumber) =>
-    executeTransaction(async () => {
+  const borrowAsset = async (amount: bigint) => {
+    try {
       if (!account) return;
       return lendingPool?.take(amount);
-    }, amount);
+    } catch (error: any) {
+      const errorMessage = getErrorMessageFromCode(error.code);
+      const errorObject = {
+        errorMessage,
+        fullText: error,
+      };
+      throw new Error(JSON.stringify(errorObject));
+    }
+  };
 
-  const repayAsset = async (amount: BigNumber) =>
+  const repayAsset = async (amount: bigint) =>
     executeTransaction(async () => {
       if (!account) return;
       return lendingPool?.putAmount(amount);
     }, amount);
 
-  const stakeLpToken = async (amount: BigNumber) =>
+  const stakeLpToken = async (amount: bigint) =>
     executeTransaction(async () => {
       const stakingPoolAddress = await lendingPool?.stakePool();
       if (!amount || !stakingPoolAddress) return;
       const stakingPool = chedda?.stakingPool(
         stakingPoolAddress,
-        signer as Signer
+        signer as any
       );
       return stakingPool?.stake(amount);
     }, amount);
 
-  const unStakeLpToken = async (amount: BigNumber) =>
+  const unStakeLpToken = async (amount: bigint) =>
     executeTransaction(async () => {
       const stakingPoolAddress = await lendingPool?.stakePool();
       if (!amount || !stakingPoolAddress) return;
       const stakingPool = chedda?.stakingPool(
         stakingPoolAddress,
-        signer as Signer
+        signer as any
       );
       return stakingPool?.unStake(amount);
     }, amount);
@@ -121,25 +125,25 @@ export const useTransaction = (asset: string) => {
       if (!stakingPoolAddress) return;
       const stakingPool = chedda?.stakingPool(
         stakingPoolAddress,
-        signer as Signer
+        signer as any
       );
       return stakingPool?.claim();
     });
 
-  const approveCheddaToken = async (amount: BigNumber) =>
+  const approveCheddaToken = async (amount: bigint) =>
     executeTransaction(async () => {
       const gaugeAddress = await lendingPool?.gauge();
       if (!amount || !gaugeAddress) return;
       return cheddaToken?.approve(gaugeAddress, amount);
     }, amount);
 
-  const lockCheddaToken = async (amount: BigNumber, time: number) =>
+  const lockCheddaToken = async (amount: bigint, time: number) =>
     executeTransaction(async () => {
       const gaugeAddress = await lendingPool?.gauge();
       if (!amount || !gaugeAddress) return;
       const cheddaLockingGauge = chedda?.cheddaLockingGauge(
         gaugeAddress,
-        signer as Signer
+        signer as any
       );
       return cheddaLockingGauge?.createLock(amount, time);
     }, amount);
@@ -150,7 +154,7 @@ export const useTransaction = (asset: string) => {
       if (!gaugeAddress) return;
       const cheddaLockingGauge = chedda?.cheddaLockingGauge(
         gaugeAddress,
-        signer as Signer
+        signer as any
       );
       return cheddaLockingGauge?.withdraw();
     });
@@ -161,7 +165,7 @@ export const useTransaction = (asset: string) => {
       if (!gaugeAddress) return;
       const cheddaLockingGauge = chedda?.cheddaLockingGauge(
         gaugeAddress,
-        signer as Signer
+        signer as any
       );
       return cheddaLockingGauge?.extendLock(lockTime);
     });
@@ -172,18 +176,18 @@ export const useTransaction = (asset: string) => {
       if (!gaugeAddress) return;
       const cheddaLockingGauge = chedda?.cheddaLockingGauge(
         gaugeAddress,
-        signer as Signer
+        signer as any
       );
       return cheddaLockingGauge?.claim();
     });
 
-  const lockMoreCheddaToken = async (amount: BigNumber) =>
+  const lockMoreCheddaToken = async (amount: bigint) =>
     executeTransaction(async () => {
       const gaugeAddress = await lendingPool?.gauge();
       if (!gaugeAddress) return;
       const cheddaLockingGauge = chedda?.cheddaLockingGauge(
         gaugeAddress,
-        signer as Signer
+        signer as any
       );
       return cheddaLockingGauge?.addToLock(amount);
     }, amount);
@@ -191,7 +195,7 @@ export const useTransaction = (asset: string) => {
   const getTokenBalance = useCallback(
     async (tokenAddress: string) => {
       if (!account || !tokenAddress) return;
-      const token = chedda?.cheddaToken(tokenAddress, signer as Signer);
+      const token = chedda?.cheddaToken(tokenAddress, signer as any);
       return await token?.balanceOf(account);
     },
     [account, chedda, signer]

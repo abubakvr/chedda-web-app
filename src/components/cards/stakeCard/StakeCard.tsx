@@ -1,7 +1,7 @@
 "use client";
 import React, { FC, useState } from "react";
 import { Toast } from "@/components/ui";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { StakeCardContent } from "./StakeCardContent";
 import { formatNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { TabInfo } from "./TabInfo";
@@ -11,10 +11,10 @@ interface StakeModalProps {
   assetSymbol: string | undefined;
   lpSymbol: string | undefined;
   lpDecimals: number | undefined;
-  lpAssetValue: BigNumber | undefined;
-  lpAllowance: BigNumber | undefined;
-  lpStakingBalance: BigNumber | undefined;
-  lpTokenBalance: BigNumber | undefined;
+  lpAssetValue: bigint | undefined;
+  lpAllowance: bigint | undefined;
+  lpStakingBalance: bigint | undefined;
+  lpTokenBalance: bigint | undefined;
   assetValue: number | undefined;
   defaultTab: string | null;
   updateCard: () => void;
@@ -92,7 +92,7 @@ export const StakeCard: FC<StakeModalProps> = ({
 
       setTxLoading(true);
       setShowToast(false);
-      const parsedAmount = ethers.utils.parseUnits(
+      const parsedAmount = ethers.parseUnits(
         stakeAmount.toString(),
         lpDecimals
       );
@@ -204,7 +204,7 @@ export const StakeCard: FC<StakeModalProps> = ({
 
       setTxLoading(true);
       setShowToast(false);
-      const parsedAmount = ethers.utils.parseUnits(
+      const parsedAmount = ethers.parseUnits(
         unStakeAmount.toString(),
         lpDecimals
       );

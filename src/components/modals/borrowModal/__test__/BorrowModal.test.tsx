@@ -18,7 +18,7 @@ import {
   useTokenValue,
   useTransaction,
 } from "@/hooks";
-import { BigNumber } from "ethers";
+
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("@web3-react/core", () => ({
@@ -56,7 +56,7 @@ const mockProps: BorrowModalProps = {
   totalBorrowed: 20000,
   assetPrice: 90,
   fetchPoolInfo: jest.fn(),
-  availableLiquidity: BigNumber.from("390"),
+  availableLiquidity: BigInt("390"),
   openSupplyModal: jest.fn(),
   totalCollateralValue: 1000,
 };

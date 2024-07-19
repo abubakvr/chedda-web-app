@@ -18,7 +18,6 @@ import {
   useTransaction,
 } from "@/hooks";
 import { StaticImageData } from "next/image";
-import { BigNumber } from "ethers";
 
 // Mocking hooks
 jest.mock("@web3-react/core", () => ({
@@ -45,15 +44,15 @@ describe("StakeTab Component", () => {
       approveLpToken: mockApproveLpToken,
     }));
     (useStakingBalance as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useLpTokenBalance as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useLpAllowance as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTokenValue as jest.Mock).mockReturnValue({
@@ -65,7 +64,7 @@ describe("StakeTab Component", () => {
       isLoading: false,
     });
     (useLpAssetValue as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useLpSymbol as jest.Mock).mockReturnValue({
@@ -73,23 +72,23 @@ describe("StakeTab Component", () => {
       isLoading: false,
     });
     (useTotalStaked as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useLpStakers as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTotalSupply as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useStakingContractAddress as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useClaimableStakeRewards as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTokenPrice as jest.Mock).mockReturnValue({

@@ -9,7 +9,7 @@ import {
 import { WithdrawTab, WithdrawTabProps } from "../Tabs/WithdrawTab";
 import { StaticImageData } from "next/image";
 import { useTransaction } from "@/hooks";
-import { BigNumber } from "ethers";
+
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("@web3-react/core", () => ({
@@ -46,13 +46,13 @@ const mockProps: WithdrawTabProps = {
   },
   collaterals: [],
   isLoading: {},
-  accountCollateralAmount: BigNumber.from("50000000000000000000000"),
+  accountCollateralAmount: BigInt("50000000000000000000000"),
   totalCollateralValue: 500000000000000000000000000000,
-  healthFactor: BigNumber.from("5000000000000000000"),
+  healthFactor: BigInt("5000000000000000000"),
   assetPrice: 5000,
   totalBorrowed: 9000,
   tokenValue: 9000,
-  tokenCollateralValue: BigNumber.from("5000000000000000000"),
+  tokenCollateralValue: BigInt("5000000000000000000"),
   setSelectedCollateral: jest.fn(),
   fetchAllowance: jest.fn(),
   refreshModal: jest.fn(),

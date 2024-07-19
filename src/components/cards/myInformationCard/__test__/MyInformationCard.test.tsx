@@ -23,7 +23,7 @@ describe("MyInformationCard", () => {
           poolStats={mockPoolStats[0]}
           isLoading={false}
           assetPrice={1000}
-          available={ethers.BigNumber.from("1000")}
+          available={ethers.BigInt("1000")}
           fetchPoolInfo={jest.fn()}
           setActivePoolTab={jest.fn()}
         />

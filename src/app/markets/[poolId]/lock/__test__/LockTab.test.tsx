@@ -15,7 +15,6 @@ import {
   useTransaction,
 } from "@/hooks";
 import { StaticImageData } from "next/image";
-import { BigNumber } from "ethers";
 
 // Mocking hooks
 jest.mock("@web3-react/core", () => ({
@@ -38,23 +37,23 @@ describe("LockTab Component", () => {
       approveCheddaToken: mockApproveLpToken,
     }));
     (useLockedChedda as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTokenValue as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useCheddaBalance as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useCheddaAllowance as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useClaimableLockRewards as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTokenPrice as jest.Mock).mockReturnValue({
@@ -62,19 +61,19 @@ describe("LockTab Component", () => {
       isLoading: false,
     });
     (useTotalAmountLocked as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTotalWeight as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTotalWeightSum as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useGaugeAddress as jest.Mock).mockReturnValue({
-      data: BigNumber.from("0x00"),
+      data: BigInt("0x00"),
       isLoading: false,
     });
   });

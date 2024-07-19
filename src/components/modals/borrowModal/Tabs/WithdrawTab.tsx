@@ -9,7 +9,7 @@ import { DepositTabInfo } from "../TabInfo";
 import { SelectMenu } from "../SelectMenu";
 import { IToken } from "@/utils/types";
 import { useTransaction } from "@/hooks";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { Toast } from "@/components/ui";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
 import { displayProjectedHealthFactor } from "@/utils/helpers";
@@ -19,13 +19,13 @@ export interface WithdrawTabProps {
   selectedCollateral: IToken;
   collaterals: IToken[];
   isLoading: Record<string, boolean>;
-  accountCollateralAmount: BigNumber | undefined;
+  accountCollateralAmount: bigint | undefined;
   totalCollateralValue: number;
-  healthFactor: BigNumber | undefined;
+  healthFactor: bigint | undefined;
   totalBorrowed: number;
   tokenValue: number | undefined;
   assetPrice: number;
-  tokenCollateralValue: BigNumber | undefined;
+  tokenCollateralValue: bigint | undefined;
   setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
   fetchAllowance: () => void;
   refreshModal: () => void;
@@ -96,10 +96,7 @@ export const WithdrawTab = ({
 
       setTxLoading(true);
       setShowToast(false);
-      const parsedAmount = ethers.utils.parseUnits(
-        inputAmount.toString(),
-        decimals
-      );
+      const parsedAmount = ethers.parseUnits(inputAmount.toString(), decimals);
 
       withdrawCollateral(parsedAmount)
         .then(async (res) => {

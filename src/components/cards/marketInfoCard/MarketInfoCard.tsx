@@ -8,7 +8,6 @@ import {
 import { IMarketInfo } from "chedda-sdk";
 import { IPoolStatsResponse } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
-import { BigNumber } from "ethers";
 
 interface MarketInfoCardProps {
   marketInfo: IMarketInfo | undefined;
@@ -30,7 +29,7 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
     );
   }
 
-  const formatValue = (value: BigNumber | undefined, decimals?: BigNumber) => {
+  const formatValue = (value: bigint | undefined, decimals?: bigint) => {
     const decimalValue = parseBigNumberToFloat(decimals, 0, 5);
     return value !== undefined && decimals !== undefined
       ? formatCurrency(parseBigNumberToFloat(value, decimalValue, 2), true)

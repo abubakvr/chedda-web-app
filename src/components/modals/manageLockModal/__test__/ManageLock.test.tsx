@@ -2,7 +2,7 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { ManageLockCard } from "../ManageLockModal";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
-import { BigNumber } from "ethers";
+
 import { useTransaction } from "@/hooks";
 
 jest.mock("../../../../hooks");
@@ -19,8 +19,8 @@ describe("ManageLockCard", () => {
   const defaultProps = {
     isOpen: true,
     cheddaSymbol: "CHEDDA",
-    cheddaAllowance: BigNumber.from(100),
-    cheddaTokenBalance: BigNumber.from(500),
+    cheddaAllowance: BigInt(100),
+    cheddaTokenBalance: BigInt(500),
     cheddaPrice: "200",
     defaultTab: null,
     lockedChedda: undefined,

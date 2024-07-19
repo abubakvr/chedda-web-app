@@ -5,7 +5,6 @@ import {
   waitFor,
   act,
 } from "@testing-library/react";
-import { BigNumber, utils } from "ethers";
 import { StaticImageData } from "next/image";
 import { StakeCard } from "../StakeCard";
 import {
@@ -16,6 +15,7 @@ import {
   useTransaction,
 } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
+import { ethers } from "ethers";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks");
@@ -33,10 +33,10 @@ const mockProps = {
   assetSymbol: "ETH",
   lpSymbol: "chETH",
   lpDecimals: 18,
-  lpAssetValue: BigNumber.from(utils.parseEther("50")),
-  lpAllowance: BigNumber.from(utils.parseEther("50")),
-  lpStakingBalance: BigNumber.from(utils.parseEther("50")),
-  lpTokenBalance: BigNumber.from(utils.parseEther("50")),
+  lpAssetValue: BigInt(ethers.parseEther("50")),
+  lpAllowance: BigInt(ethers.parseEther("50")),
+  lpStakingBalance: BigInt(ethers.parseEther("50")),
+  lpTokenBalance: BigInt(ethers.parseEther("50")),
   assetValue: 10000,
   defaultTab: "Pool",
   updateCard: jest.fn(),

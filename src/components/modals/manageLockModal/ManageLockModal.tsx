@@ -2,7 +2,7 @@
 import React, { FC, useState } from "react";
 import { Lock } from "chedda-sdk";
 import { Toast } from "@/components/ui";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { LockTab } from "./tabs/LockTab";
 import { formatNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { TabInfo } from "./TabInfo";
@@ -12,8 +12,8 @@ import { formatDate, formatProjectedDate } from "@/utils/helpers";
 interface ManageLockCardProps {
   isOpen: boolean;
   cheddaSymbol: string | undefined;
-  cheddaAllowance: BigNumber | undefined;
-  cheddaTokenBalance: BigNumber | undefined;
+  cheddaAllowance: bigint | undefined;
+  cheddaTokenBalance: bigint | undefined;
   cheddaPrice: number | undefined;
   defaultTab: string | null;
   lockedChedda: Lock | undefined;
@@ -149,7 +149,7 @@ export const ManageLockCard: FC<ManageLockCardProps> = ({
         return alert("Enter valid amount");
       }
 
-      const parsedAmount = ethers.utils.parseUnits(lockAmount.toString(), 18);
+      const parsedAmount = ethers.parseUnits(lockAmount.toString(), 18);
 
       if (lockAmount <= parsedAllowance) {
         handleTransaction(

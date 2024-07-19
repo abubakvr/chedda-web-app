@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
-import { BigNumber } from "ethers";
+
 import { useTokenPrice, useTransaction } from "@/hooks";
 import {
   formatCurrency,
@@ -12,7 +12,7 @@ import { Toast } from "@/components/ui";
 import { currentEnvironment } from "@/data/environments";
 
 interface ClaimRewardsCardProps {
-  claimableRewards: BigNumber | undefined;
+  claimableRewards: bigint | undefined;
   rewardType: "Stake" | "Lock";
   setActiveTab?: Dispatch<SetStateAction<string>>;
   fetchClaimableRewards: () => void;

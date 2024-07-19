@@ -3,7 +3,6 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { ClaimRewards } from "../ClaimRewards";
 import { useAllClaimableRewards, useTokenValue, useTransaction } from "@/hooks";
-import { BigNumber } from "ethers";
 
 jest.mock("../../../../hooks");
 
@@ -23,10 +22,7 @@ describe("ClaimRewards Component", () => {
 
   beforeEach(() => {
     mockUseAllClaimableRewards.mockReturnValue({
-      data: [
-        BigNumber.from("1000000000000000000"),
-        BigNumber.from("5000000000000000000"),
-      ],
+      data: [BigInt("1000000000000000000"), BigInt("5000000000000000000")],
       isLoading: false,
       fetchData: jest.fn(),
     });

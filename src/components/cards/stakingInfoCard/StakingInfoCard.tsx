@@ -6,17 +6,17 @@ import {
   formatNumber,
   parseBigNumberToFloat,
 } from "@/utils/formatters";
-import { BigNumber } from "ethers";
+
 import { useStakingContractAddress } from "@/hooks";
 import { currentEnvironment } from "@/data/environments";
 
 interface StakingInfoCardProps {
   assetSymbol: string | undefined;
   assetDecimals: number | undefined;
-  totalStaked: BigNumber | undefined;
-  lpStakers: BigNumber | undefined;
-  lpAssetValue: BigNumber | undefined;
-  totalSupply: BigNumber | undefined;
+  totalStaked: bigint | undefined;
+  lpStakers: bigint | undefined;
+  lpAssetValue: bigint | undefined;
+  totalSupply: bigint | undefined;
   lpDecimals: number | undefined;
   lpSymbol: string | undefined;
 }

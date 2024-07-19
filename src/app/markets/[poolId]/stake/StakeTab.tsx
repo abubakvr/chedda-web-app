@@ -16,7 +16,6 @@ import {
 import { IToken } from "@/utils/types";
 import { ClaimRewardsCard } from "@/components/cards";
 import { InfoCardSkeleton, SwitchTabSkeleton } from "@/components/ui";
-import { BigNumber } from "ethers";
 
 const StakeTab = ({
   asset,
@@ -28,7 +27,7 @@ const StakeTab = ({
   fetchCheddaTokenBalance,
 }: {
   asset: IToken | undefined;
-  lpTokenBalance: BigNumber | undefined;
+  lpTokenBalance: bigint | undefined;
   setActiveTab: Dispatch<SetStateAction<string>>;
   fetchPoolStats: () => void;
   fetchAccountInfo: () => void;

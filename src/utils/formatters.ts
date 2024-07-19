@@ -1,4 +1,4 @@
-import { BigNumber, ethers, utils } from "ethers";
+import { ethers } from "ethers";
 
 export const n6 = new Intl.NumberFormat("en-us", {
   style: "decimal",
@@ -48,23 +48,23 @@ export const tokenValueTxt = (
 ) => `${n4.format(tokenValue(value, decimals))} ${symbol}`;
 
 /**
- * Converts a BigNumber to a formatted float string, considering optional decimals and float point precision.
+ * Converts a bigint to a formatted float string, considering optional decimals and float point precision.
  *
- * @param {BigNumber | undefined} val - The BigNumber value to be converted.
+ * @param {bigint | undefined} val - The biting value to be converted.
  * @param {number | string | undefined} decimals - Optional: The number of decimals to consider in the conversion.
  * @param {number | undefined} floatPoint - Optional: The precision of the resulting float value.
  * @returns {string} The formatted float string.
  */
 export const parseBigNumberToFloat = (
-  val: BigNumber | undefined,
+  val: bigint | undefined,
   decimals: number | string = "ether",
   floatPoint?: number
 ): number => {
-  if (!val || !ethers.BigNumber.isBigNumber(val)) {
+  if (!val || !BigInt(val)) {
     return 0.0;
   }
 
-  const formatted = utils.formatUnits(val, decimals);
+  const formatted = ethers.formatUnits(val, decimals);
 
   // Use parseFloat directly and add error handling
   const parsedValue = parseFloat(formatted);
@@ -201,3 +201,15 @@ export function formatNumber(amount: number): string {
 
   return formattedString;
 }
+
+export const formatToArrayOfStrings = (input: string[][]): string[] => {
+  // Flatten the array of arrays into a single array of strings
+  const flattenedArray: string[] = input.flat();
+
+  // Trim any whitespace from each element and filter out any empty strings
+  const formattedArray: string[] = flattenedArray
+    .map((item) => item.trim())
+    .filter((item) => item);
+
+  return formattedArray;
+};

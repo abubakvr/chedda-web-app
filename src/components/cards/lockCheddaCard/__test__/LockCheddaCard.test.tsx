@@ -5,7 +5,7 @@ import {
   waitFor,
   act,
 } from "@testing-library/react";
-import { BigNumber } from "ethers";
+
 import { LockCheddaCard } from "../LockCheddaCard";
 import { useTransaction } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
@@ -36,8 +36,8 @@ describe("LockCheddaCard", () => {
     const mockProps = {
       assetSymbol: "ETH",
       cheddaSymbol: "CHEDDA",
-      cheddaAllowance: BigNumber.from(1000),
-      cheddaTokenBalance: BigNumber.from(500),
+      cheddaAllowance: BigInt(1000),
+      cheddaTokenBalance: BigInt(500),
       cheddaPrice: 100,
       defaultTab: "Lock",
       lockedChedda: undefined,
@@ -66,8 +66,8 @@ describe("LockCheddaCard", () => {
     const mockProps = {
       assetSymbol: "ETH",
       cheddaSymbol: "CHEDDA",
-      cheddaAllowance: BigNumber.from("1000000000000000000000"),
-      cheddaTokenBalance: BigNumber.from("50000000000000000000000000"),
+      cheddaAllowance: BigInt("1000000000000000000000"),
+      cheddaTokenBalance: BigInt("50000000000000000000000000"),
       cheddaPrice: 100,
       defaultTab: "Lock",
       lockedChedda: undefined,
@@ -110,8 +110,8 @@ describe("LockCheddaCard", () => {
     const mockProps = {
       assetSymbol: "ETH",
       cheddaSymbol: "CHEDDA",
-      cheddaAllowance: BigNumber.from("1000000000000000000000"),
-      cheddaTokenBalance: BigNumber.from("50000000000000000000000000"),
+      cheddaAllowance: BigInt("1000000000000000000000"),
+      cheddaTokenBalance: BigInt("50000000000000000000000000"),
       cheddaPrice: 100,
       defaultTab: "Withdraw",
       lockedChedda: undefined,

@@ -81,7 +81,7 @@ const BridgeCard = () => {
   const getEstimatedGas = useCallback(async () => {
     const tokenAddress = getTokenBridgeAddress(selectedToken, selectedChain);
     if (!account) return;
-    const amountToSend = ethers.utils.parseUnits("0", selectedToken.decimals);
+    const amountToSend = ethers.parseUnits("0", selectedToken.decimals);
 
     const [nativeFee] = await quoteSend(
       tokenAddress,

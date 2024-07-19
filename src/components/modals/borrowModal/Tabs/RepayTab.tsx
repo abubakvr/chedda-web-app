@@ -8,7 +8,7 @@ import {
 import { BorrowTabInfo } from "../TabInfo";
 import { IToken } from "@/utils/types";
 import { useTransaction } from "@/hooks";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { Toast } from "@/components/ui";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
 import { displayProjectedHealthFactor } from "@/utils/helpers";
@@ -16,16 +16,16 @@ import { displayProjectedHealthFactor } from "@/utils/helpers";
 export interface RepayTabProps {
   asset: IToken;
   isLoading: Record<string, boolean>;
-  accountCollateralAmount: BigNumber | undefined;
+  accountCollateralAmount: bigint | undefined;
   totalCollateralValue: number;
-  healthFactor: BigNumber | undefined;
+  healthFactor: bigint | undefined;
   tokenValue: number | undefined;
-  tokenBalance: BigNumber | undefined;
-  availableLiquidity: BigNumber | undefined;
+  tokenBalance: bigint | undefined;
+  availableLiquidity: bigint | undefined;
   totalBorrowed: number;
   assetPrice: number;
-  allowance: BigNumber | undefined;
-  tokenCollateralValue: BigNumber | undefined;
+  allowance: bigint | undefined;
+  tokenCollateralValue: bigint | undefined;
   fetchAllowance: () => void;
   refreshModal: () => void;
 }
@@ -92,10 +92,7 @@ export const RepayTab = ({
 
       setTxLoading(true);
       setShowToast(false);
-      const parsedAmount = ethers.utils.parseUnits(
-        inputAmount.toString(),
-        decimals
-      );
+      const parsedAmount = ethers.parseUnits(inputAmount.toString(), decimals);
       if (inputAmount <= parsedAllowance) {
         repayAsset(parsedAmount)
           .then(async (res) => {
