@@ -14,6 +14,7 @@ import { formatAsPercentage, parseBigNumberToFloat } from "@/utils/formatters";
 import { useRatesProjector } from "@/hooks";
 import { IInterestRatesProjection } from "chedda-sdk";
 import { CustomTooltipProps } from "@/utils/types";
+import { currentEnvironment } from "@/data/environments";
 
 // Override console.error
 // This is a hack to suppress the warning about missing defaultProps in recharts library as of version 2.12
@@ -104,15 +105,17 @@ export const InterestRatesChart = () => {
             <div className="">Utilization</div>
           </div>
         </div>
-        <button
+        <a
+          href={`${currentEnvironment?.contractPrefix}/${currentEnvironment.contracts.InterestRatesProjector}`}
+          target="_blank"
+          rel="noreferrer"
           className="flex gap-x-1 border-2 rounded-md py-[6px] px-3 border-[#ffffff60] hover:opacity-70"
-          onClick={() => {}}
         >
           <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-[10px]">
-            Vault Contract
+            Contract
           </div>
           <Image src={LinkOut} alt="link out" />
-        </button>
+        </a>
       </div>
       <div className="mt-8 px-7 pb-4" style={{ height: "250px" }}>
         <ResponsiveContainer width="100%" height="100%">
