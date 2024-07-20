@@ -134,6 +134,7 @@ export interface IFormattedCollateral {
 
 export interface IPoolStateResponse extends IPoolState {
   timePoint: number;
+  caller: string;
 }
 
 export interface ISummaryStats {

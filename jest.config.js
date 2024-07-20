@@ -12,14 +12,14 @@ const config = {
   // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 
   testEnvironment: "jest-environment-jsdom",
-
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["./jest.setup.ts"],
   transform: {
-    "^.+\\.tsx?$": "babel-jest",
+    "^.+\\.[t|j]sx?$": "babel-jest",
   },
   moduleNameMapper: {
     "^react-redux$": "<rootDir>/__mocks__/react-redux.js",
+    "^chedda-sdk/(.*)$": "<rootDir>/__mocks__/chedda-sdk.js",
     "^uuid$": require.resolve("uuid"),
   },
 };

@@ -78,8 +78,6 @@ const getPoolState: GetDataFunction<IPoolStateResponse[]> = async ({
   );
   const events = await lendingPool.getEventLogs("PoolState", 0, "latest");
 
-  console.log(events);
-
   const eventTimestamps =
     events?.map((item: IPoolState) =>
       parseInt(ethers.formatUnits(item.timestamp, 0))

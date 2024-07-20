@@ -9,17 +9,13 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import { CustomTooltipProps, IPoolStateResponse } from "@/utils/types";
+import { IPoolStateResponse } from "@/utils/types";
 import {
   formatAsPercentage,
   formatLargeNumber,
   parseBigNumberToFloat,
   toFixedTrunc,
 } from "@/utils/formatters";
-
-interface Payload {
-  payload: IPoolStateResponse;
-}
 
 // Override console.error
 // This is a hack to suppress the warning about missing defaultProps in recharts library as of version 2.12
@@ -30,7 +26,7 @@ console.error = (...args: any) => {
   error(...args);
 };
 
-const CustomTooltip: React.FC<CustomTooltipProps<Payload>> = (props) => {
+const CustomTooltip = (props: any) => {
   const dataPoint = props?.payload?.[0];
 
   const formattedDate = () => {
@@ -59,26 +55,26 @@ const CustomTooltip: React.FC<CustomTooltipProps<Payload>> = (props) => {
         <div className="text-[#ffffff60] col-span-2">Supply APR:</div>
         <div className="supply-gradient-text col-span-1">
           {formatAsPercentage(
-            parseBigNumberToFloat(dataPoint?.payload.supplyRate, 18, 3)
+            parseBigNumberToFloat(dataPoint?.payload[5], 18, 3)
           )}
         </div>
         <div className="text-[#ffffff60] col-span-2">Borrow APR:</div>
         <div className="borrow-gradient-text col-span-1">
           {formatAsPercentage(
-            parseBigNumberToFloat(dataPoint?.payload.borrowRate, 18, 3)
+            parseBigNumberToFloat(dataPoint?.payload[6], 18, 3)
           )}
         </div>
 
         <div className="text-[#ffffff60] col-span-2 ">Supplied:</div>
         <div className="supply-gradient-text col-span-1">
           {formatLargeNumber(
-            parseBigNumberToFloat(dataPoint?.payload.supplied, props.decimals)
+            parseBigNumberToFloat(dataPoint?.payload[3], props.decimals)
           )}
         </div>
         <div className="text-[#ffffff60] col-span-2">Borrowed:</div>
         <div className="borrow-gradient-text col-span-1">
           {formatLargeNumber(
-            parseBigNumberToFloat(dataPoint?.payload.borrowed, props.decimals)
+            parseBigNumberToFloat(dataPoint?.payload[4], props.decimals)
           )}
         </div>
       </div>
@@ -139,7 +135,7 @@ export const SuppyAndBorrowChart = ({
             <Line
               name="Supply rate"
               type="monotone"
-              dataKey={(value) => parseBigNumberToFloat(value?.supplyRate, 18)}
+              dataKey={(value) => parseBigNumberToFloat(value[5], 18)}
               stroke="#6FBFF7"
               strokeWidth={4}
               radius={8}
@@ -149,7 +145,7 @@ export const SuppyAndBorrowChart = ({
             <Line
               name="Borrow rate"
               type="monotone"
-              dataKey={(value) => parseBigNumberToFloat(value?.borrowRate, 18)}
+              dataKey={(value) => parseBigNumberToFloat(value[6], 18)}
               stroke="#D058F5"
               strokeWidth={4}
               radius={8}
@@ -191,9 +187,7 @@ export const SuppyAndBorrowChart = ({
               cursor={{ fill: "transparent" }}
             />
             <Bar
-              dataKey={(value) =>
-                parseBigNumberToFloat(value?.borrowed, decimals)
-              }
+              dataKey={(value) => parseBigNumberToFloat(value[4], decimals)}
               name="Borrow"
               fill="#D058F5"
               radius={[0, 0, 8, 8]}
@@ -201,8 +195,8 @@ export const SuppyAndBorrowChart = ({
             />
             <Bar
               dataKey={(value) =>
-                parseBigNumberToFloat(value?.supplied, decimals) -
-                parseBigNumberToFloat(value?.borrowed, decimals)
+                parseBigNumberToFloat(value[3], decimals) -
+                parseBigNumberToFloat(value[4], decimals)
               }
               name="Supply"
               fill="#6FBFF7"

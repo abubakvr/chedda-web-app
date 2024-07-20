@@ -71,27 +71,68 @@ const StakeTab = ({
   const updateCard = () => {
     fetchStakingBalance();
     fetchLpTokenBalance();
-    fetchLpAllowance();
+    fetchLpAllowance(false);
     fetchTotalSupply();
     fetchLpStakers();
     fetchTotalStaked();
-    fetchClaimableRewards();
+    fetchClaimableRewards(false);
     fetchPoolStats();
     fetchAccountInfo();
   };
 
   const isLoading =
-    lpAllowanceLoading ||
     lpSymbolLoading ||
     lpAssetLoading ||
     lpDecimalsLoading ||
     tokenValueLoading ||
     lpStakersLoading ||
     totalStakedLoading ||
-    claimableRewardsLoading ||
     totalSupplyLoading;
 
+  function getLoadingStates(): string[] {
+    const loadingStates: string[] = [];
+
+    if (lpAllowanceLoading) {
+      loadingStates.push("lpAllowanceLoading");
+    }
+
+    if (lpSymbolLoading) {
+      loadingStates.push("lpSymbolLoading");
+    }
+
+    if (lpAssetLoading) {
+      loadingStates.push("lpAssetLoading");
+    }
+
+    if (lpDecimalsLoading) {
+      loadingStates.push("lpDecimalsLoading");
+    }
+
+    if (tokenValueLoading) {
+      loadingStates.push("tokenValueLoading");
+    }
+
+    if (lpStakersLoading) {
+      loadingStates.push("lpStakersLoading");
+    }
+
+    if (totalStakedLoading) {
+      loadingStates.push("totalStakedLoading");
+    }
+
+    if (claimableRewardsLoading) {
+      loadingStates.push("claimableRewardsLoading");
+    }
+
+    if (totalSupplyLoading) {
+      loadingStates.push("totalSupplyLoading");
+    }
+
+    return loadingStates;
+  }
+
   if (isLoading) {
+    console.log(getLoadingStates());
     return (
       <div className="mt-8 w-full flex space-x-5" data-testid="stake-container">
         <div

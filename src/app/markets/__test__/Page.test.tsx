@@ -33,18 +33,22 @@ describe("Page Component", () => {
 
       mockUseCheddaSdk.mockReturnValue({
         chedda: {
-          provider: new ethers.providers.WebSocketProvider(
-            "wss://testgoerliurl"
-          ),
+          provider: new ethers.JsonRpcProvider("wss://testgoerliurl"),
           lendingPool: jest.fn(),
           erc20token: jest.fn(),
           interestRateProjector: jest.fn(),
           poolLens: jest.fn(),
           priceOracle: jest.fn(),
-          closeProvider: jest.fn(),
+          stakingPool: jest.fn(),
+          cheddaLockingGauge: jest.fn(),
+          lockingGaugeRewardsDistributor: jest.fn(),
+          cheddaToken: jest.fn(),
+          cheddaTokenBridged: jest.fn(),
+          genericOFT: jest.fn(),
+          cheddaOFTAdapter: jest.fn(),
+          accountActor: jest.fn(),
         },
         signer: mockProvider.getSigner(),
-        setupChedda: jest.fn(),
       });
 
       (mockUsePools as jest.Mock).mockReturnValue({

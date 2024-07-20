@@ -20,6 +20,7 @@ import { ethers } from "ethers";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks");
+jest.mock("chedda-sdk");
 
 const mockAsset = {
   name: "Token3",
@@ -34,10 +35,10 @@ const mockProps = {
   asset: mockAsset,
   assetPrice: 100,
   isOpen: true,
-  tokenBalance: BigInt(ethers.parseEther("100")),
+  tokenBalance: BigInt("100"),
   baseSupplyAPY: "5%",
-  supplied: BigInt(ethers.parseEther("50")),
-  available: BigInt(ethers.parseEther("30")),
+  supplied: BigInt("50"),
+  available: BigInt("30"),
   onClose: jest.fn(),
   fetchPoolInfo: jest.fn(),
   setActivePoolTab: jest.fn(),

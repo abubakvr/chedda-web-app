@@ -1,15 +1,30 @@
 import { Chedda } from "chedda-sdk";
 import { useWeb3React } from "@web3-react/core";
-import { ethers, JsonRpcSigner, Signer } from "ethers";
+import { BrowserProvider, ethers } from "ethers";
 import { getErrorMessageFromCode } from "@/utils/helpers";
 import { ISourceChain } from "@/utils/types";
 import { useCallback, useMemo } from "react";
 import { parseBigNumberToFloat } from "@/utils/formatters";
 import { Options } from "@layerzerolabs/lz-v2-utilities";
 import { sourceChains, ethAddress } from "@/utils/constants";
+import { UncheckedJsonRpcSigner } from "@/utils/UncheckedJsonRpcSigner";
 
 export const useBridge = (selectedChain: ISourceChain | null) => {
-  const { provider, account } = useWeb3React();
+  const { account } = useWeb3React();
+
+  const provider = useMemo(() => {
+    if (typeof window !== "undefined" && window.ethereum) {
+      return new BrowserProvider(window.ethereum);
+    }
+    return undefined;
+  }, []);
+
+  const signer = useMemo(() => {
+    if (provider && account) {
+      return new UncheckedJsonRpcSigner(provider, account);
+    }
+    return undefined;
+  }, [provider, account]);
 
   const chedda = useMemo(() => {
     if (!selectedChain) {
@@ -17,11 +32,6 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
     }
     return new Chedda(selectedChain.jsonRpcUrl);
   }, [selectedChain]);
-
-  const signer = useMemo(() => {
-    if (!provider?.getSigner || !account) return null;
-    return provider.getSigner(account);
-  }, [provider, account]);
 
   const priceChedda = useMemo(() => {
     return new Chedda(sourceChains[0].jsonRpcUrl);
@@ -43,20 +53,33 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
 
   const getSendParam = useCallback(
     (endpointId: number, amountToSend: bigint) => {
-      if (!account || !chedda || !endpointId || !amountToSend) return null;
-      const options = Options.newOptions()
-        .addExecutorLzReceiveOption(200000, 0)
-        .toHex()
-        .toString();
-      return [
-        endpointId,
-        ethers.zeroPadValue(account, 32),
-        amountToSend,
-        amountToSend,
-        options,
-        `0x`,
-        `0x`,
-      ] as any;
+      try {
+        if (!account || !chedda || !endpointId || !amountToSend) {
+          console.error("error in getSendParam, Check parameters");
+          return null;
+        }
+
+        const options = Options.newOptions()
+          .addExecutorLzReceiveOption(200000, 0)
+          .toHex()
+          .toString();
+
+        const sendParam = [
+          endpointId,
+          ethers.zeroPadValue(account, 32),
+          amountToSend,
+          amountToSend,
+          options,
+          `0x`,
+          `0x`,
+        ] as any;
+
+        console.log("getSendParam: Returning", sendParam);
+        return sendParam;
+      } catch (error) {
+        console.error("Error in getSendParam:", error);
+        return null;
+      }
     },
     [account, chedda]
   );
@@ -74,11 +97,17 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
 
   const quoteSend = useCallback(
     async (tokenAddress: string, endpointId: number, amountToSend: bigint) => {
-      if (!account || !chedda || !endpointId || !signer) return;
-      const sendParam = getSendParam(endpointId, amountToSend);
-      if (!sendParam) return;
-      const genericOFT = chedda.genericOFT(tokenAddress, signer as any);
-      return await genericOFT?.quoteSend(sendParam, false);
+      try {
+        if (!account || !chedda || !endpointId || !signer) return [];
+        const sendParam = getSendParam(endpointId, amountToSend);
+        if (!sendParam) return [];
+        const genericOFT = chedda.genericOFT(tokenAddress, signer as any);
+        const result = await genericOFT?.quoteSend(sendParam, false);
+        return result ? [result] : []; // Ensure result is an array
+      } catch (error) {
+        console.error("Error in quoteSend:", error);
+        return [];
+      }
     },
     [account, chedda, signer, getSendParam]
   );

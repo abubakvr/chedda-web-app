@@ -3,15 +3,34 @@ import { useCheddaSdk } from "./useCheddaSdk";
 import { useParams } from "next/navigation";
 import { getErrorMessageFromCode } from "@/utils/helpers";
 import { currentEnvironment } from "@/data/environments";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
+import { UncheckedJsonRpcSigner } from "@/utils/UncheckedJsonRpcSigner";
+import { BrowserProvider } from "ethers";
 
 export const useTransaction = (asset: string) => {
   const { account } = useWeb3React();
-  const { chedda, signer } = useCheddaSdk();
+  const { chedda } = useCheddaSdk();
   const { poolId } = useParams();
+
   const strPoolId = poolId ? poolId.toString() : "0x00";
+
+  const provider = useMemo(() => {
+    if (typeof window !== "undefined" && window.ethereum) {
+      return new BrowserProvider(window.ethereum);
+    }
+    return undefined;
+  }, []);
+
+  const signer = useMemo(() => {
+    if (provider && account) {
+      return new UncheckedJsonRpcSigner(provider, account);
+    }
+    return undefined;
+  }, [provider, account]);
+
   const cheddaTokenAddress = currentEnvironment.contracts.CheddaToken;
   const accountActorAddress = currentEnvironment.contracts.AccountActor;
+
   const token = chedda?.erc20token(asset || strPoolId, signer as any);
   const lendingPool = chedda?.lendingPool(strPoolId, signer as any);
   const cheddaToken = chedda?.cheddaToken(cheddaTokenAddress, signer as any);
@@ -77,19 +96,11 @@ export const useTransaction = (asset: string) => {
       return lendingPool?.removeCollateral(asset, amount);
     }, amount);
 
-  const borrowAsset = async (amount: bigint) => {
-    try {
+  const borrowAsset = async (amount: bigint) =>
+    executeTransaction(async () => {
       if (!account) return;
       return lendingPool?.take(amount);
-    } catch (error: any) {
-      const errorMessage = getErrorMessageFromCode(error.code);
-      const errorObject = {
-        errorMessage,
-        fullText: error,
-      };
-      throw new Error(JSON.stringify(errorObject));
-    }
-  };
+    }, amount);
 
   const repayAsset = async (amount: bigint) =>
     executeTransaction(async () => {

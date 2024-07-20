@@ -84,7 +84,6 @@ export const StakeCard: FC<StakeModalProps> = ({
   const lpTokenPrice = parsedAssetPrice * parsedAssetValue;
 
   const handleStake = async () => {
-    console.log("lpDecimals", lpDecimals);
     try {
       if (!stakeAmount || stakeAmount > parsedAssetBalance) {
         return alert("Enter valid amount");
@@ -196,7 +195,6 @@ export const StakeCard: FC<StakeModalProps> = ({
   };
 
   const handleUnStake = async () => {
-    console.log("lpDecimals", lpDecimals);
     try {
       if (!unStakeAmount || unStakeAmount > parsedStakingBalance) {
         return alert("Enter valid amount");
