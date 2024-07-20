@@ -87,8 +87,6 @@ const StakeTab = ({
     tokenValueLoading ||
     lpStakersLoading ||
     totalStakedLoading ||
-    claimableRewardsLoading ||
-    lpAllowanceLoading ||
     totalSupplyLoading;
 
   if (isLoading) {

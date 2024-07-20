@@ -1,4 +1,4 @@
-import { ethers, Signer } from "ethers";
+import { ethers } from "ethers";
 import {
   IAccountInfo,
   IAccountSummary,
@@ -121,7 +121,7 @@ const getRatesProjectorData: GetDataFunction<
   );
   const ratesProjector = chedda.interestRateProjector(
     environment.contracts.InterestRatesProjector,
-    signer as any
+    signer
   );
 
   const interestRateModel = await lendingPool.interestRatesModel();
@@ -150,7 +150,7 @@ export const getAllowance: GetDataFunction<bigint> = async ({
   asset,
 }) => {
   if (!asset || !account) return null;
-  const token = chedda.erc20token(asset, signer as any);
+  const token = chedda.erc20token(asset, signer);
   return await token.allowance(account, poolId);
 };
 
@@ -161,7 +161,7 @@ export const getTokenBalance: GetDataFunction<bigint> = async ({
   asset,
 }) => {
   if (!asset || !account) return null;
-  const token = chedda.erc20token(asset, signer as any);
+  const token = chedda.erc20token(asset, signer);
   return await token.balanceOf(account);
 };
 
@@ -172,7 +172,7 @@ export const getSelectTokenBalance: GetDataFunction<bigint> = async ({
   asset,
 }) => {
   if (!asset || !account) return null;
-  const token = chedda.erc20token(asset, signer as any);
+  const token = chedda.erc20token(asset, signer);
   return await token.balanceOf(account);
 };
 
@@ -448,7 +448,7 @@ export const getCheddaBalance: GetDataFunction<bigint> = async ({
   if (!environment || !account) return null;
   const cheddaToken = chedda.cheddaToken(
     environment.contracts.CheddaToken,
-    signer as any
+    signer
   );
   return await cheddaToken.balanceOf(account);
 };
@@ -461,7 +461,7 @@ export const getCheddaTotalSupply: GetDataFunction<bigint> = async ({
   if (!environment) return null;
   const cheddaToken = chedda.cheddaToken(
     environment.contracts.CheddaToken,
-    signer as any
+    signer
   );
   return await cheddaToken.totalSupply();
 };
@@ -483,7 +483,7 @@ export const getCheddaAllowance: GetDataFunction<bigint> = async ({
   const gaugeContract = await lendingPool.gauge();
   const cheddaToken = chedda.cheddaToken(
     environment.contracts.CheddaToken,
-    signer as any
+    signer
   );
   return await cheddaToken.allowance(account, gaugeContract);
 };
@@ -574,7 +574,7 @@ const getTotalWeightSum: GetDataFunction<bigint> = async ({
   if (!chedda) return null;
   const rewardsDistributor = chedda.lockingGaugeRewardsDistributor(
     environment.contracts.LockingGaugeRewardsDistributor,
-    signer as any
+    signer
   );
   return await rewardsDistributor.totalWeightSum();
 };
@@ -588,7 +588,7 @@ const getAllClaimableRewards: GetDataFunction<bigint[]> = async ({
   if (!chedda || !account) return null;
   const accountActor = chedda.accountActor(
     environment.contracts.AccountActor,
-    signer as any
+    signer
   );
   return await accountActor.allClaimableRewards(account);
 };
@@ -602,7 +602,7 @@ const getAccountSummary: GetDataFunction<IAccountSummary> = async ({
   if (!chedda || !account) return null;
   const accountActor = chedda.accountActor(
     environment.contracts.AccountActor,
-    signer as any
+    signer
   );
   return await accountActor.accountSummary(account);
 };
@@ -616,7 +616,7 @@ const getAllPositions: GetDataFunction<IPositionResponse[]> = async ({
   if (!chedda || !account) return null;
   const accountActor = chedda.accountActor(
     environment.contracts.AccountActor,
-    signer as any
+    signer
   );
   const allPositions = await accountActor.allPositions(account, true);
   return formatPositionsList(allPositions);

@@ -4,6 +4,7 @@ import { useWeb3React } from "@web3-react/core";
 import { useCheddaSdk } from "@/hooks";
 import { useParams } from "next/navigation";
 import { useFetcher } from "../useFetcher";
+import { useSigner } from "@/hooks";
 
 jest.mock("ethers");
 jest.mock("react-redux", () => {
@@ -17,6 +18,7 @@ jest.mock("react-redux", () => {
 
 jest.mock("../../hooks", () => ({
   useCheddaSdk: jest.fn(),
+  useSigner: jest.fn(),
 }));
 
 jest.mock("@web3-react/core", () => ({
@@ -43,6 +45,11 @@ describe("useFetcher", () => {
       chedda: "mockChedda",
       signer: "mockSigner",
     });
+    (useSigner as jest.Mock).mockReturnValue({
+      provider: "mockProvider",
+      signer: "mockSigner",
+    });
+
     (useWeb3React as jest.Mock).mockReturnValue({ account: "mockAccount" });
     (useParams as jest.Mock).mockReturnValue({ poolId: "mockPoolId" });
 

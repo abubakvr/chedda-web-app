@@ -1,30 +1,17 @@
 import { Chedda } from "chedda-sdk";
 import { useWeb3React } from "@web3-react/core";
-import { BrowserProvider, ethers } from "ethers";
+import { ethers } from "ethers";
 import { getErrorMessageFromCode } from "@/utils/helpers";
 import { ISourceChain } from "@/utils/types";
 import { useCallback, useMemo } from "react";
 import { parseBigNumberToFloat } from "@/utils/formatters";
 import { Options } from "@layerzerolabs/lz-v2-utilities";
 import { sourceChains, ethAddress } from "@/utils/constants";
-import { UncheckedJsonRpcSigner } from "@/utils/UncheckedJsonRpcSigner";
+import { useSigner } from "@/hooks";
 
 export const useBridge = (selectedChain: ISourceChain | null) => {
   const { account } = useWeb3React();
-
-  const provider = useMemo(() => {
-    if (typeof window !== "undefined" && window.ethereum) {
-      return new BrowserProvider(window.ethereum);
-    }
-    return undefined;
-  }, []);
-
-  const signer = useMemo(() => {
-    if (provider && account) {
-      return new UncheckedJsonRpcSigner(provider, account);
-    }
-    return undefined;
-  }, [provider, account]);
+  const { signer } = useSigner();
 
   const chedda = useMemo(() => {
     if (!selectedChain) {
@@ -72,9 +59,8 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
           options,
           `0x`,
           `0x`,
-        ] as any;
+        ];
 
-        console.log("getSendParam: Returning", sendParam);
         return sendParam;
       } catch (error) {
         console.error("Error in getSendParam:", error);
@@ -91,7 +77,7 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
   ) =>
     executeTransaction(async () => {
       if (!amount || !account || !chedda || !signer) return;
-      const genericOFT = chedda.genericOFT(tokenAddress, signer as any);
+      const genericOFT = chedda.genericOFT(tokenAddress, signer);
       return genericOFT?.approve(oftAddress, amount);
     });
 
@@ -101,7 +87,7 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
         if (!account || !chedda || !endpointId || !signer) return [];
         const sendParam = getSendParam(endpointId, amountToSend);
         if (!sendParam) return [];
-        const genericOFT = chedda.genericOFT(tokenAddress, signer as any);
+        const genericOFT = chedda.genericOFT(tokenAddress, signer);
         const result = await genericOFT?.quoteSend(sendParam, false);
         return result ? [result] : []; // Ensure result is an array
       } catch (error) {
@@ -122,13 +108,14 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
       if (!account || !chedda || !signer) return;
       const sendParam = getSendParam(endpointId, amountToSend);
       if (!sendParam) return;
-      const genericOFT = chedda.genericOFT(tokenAddress, signer as any);
+      const genericOFT = chedda.genericOFT(tokenAddress, signer);
+
       const [nativeFee] = await quoteSend(
         tokenAddress,
         endpointId,
         amountToSend
       );
-      return genericOFT?.send(sendParam, nativeFee, refundAddress);
+      return genericOFT?.send(sendParam, nativeFee[0], refundAddress);
     });
 
   const getTokenPrice = useCallback(
@@ -146,7 +133,7 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
     async (tokenAddress: string) => {
       return executeTransaction(async () => {
         if (!account || !tokenAddress || !chedda || !signer) return;
-        const token = chedda.erc20token(tokenAddress, signer as any);
+        const token = chedda.erc20token(tokenAddress, signer);
         return token?.balanceOf(account);
       });
     },
@@ -157,7 +144,7 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
     async (tokenAddress: string, oftAddress: string) => {
       if (!account || !tokenAddress || !oftAddress || !chedda || !signer)
         return;
-      const token = chedda.erc20token(tokenAddress, signer as any);
+      const token = chedda.erc20token(tokenAddress, signer);
       return token?.allowance(account, oftAddress);
     },
     [account, chedda, signer]

@@ -3,38 +3,30 @@ import { useCheddaSdk } from "./useCheddaSdk";
 import { useParams } from "next/navigation";
 import { getErrorMessageFromCode } from "@/utils/helpers";
 import { currentEnvironment } from "@/data/environments";
-import { useCallback, useMemo } from "react";
-import { UncheckedJsonRpcSigner } from "@/utils/UncheckedJsonRpcSigner";
-import { BrowserProvider } from "ethers";
+import { useCallback } from "react";
+import { useSigner } from "@/hooks";
+import { JsonRpcSigner } from "ethers";
 
 export const useTransaction = (asset: string) => {
   const { account } = useWeb3React();
   const { chedda } = useCheddaSdk();
   const { poolId } = useParams();
+  const { signer } = useSigner();
 
   const strPoolId = poolId ? poolId.toString() : "0x00";
-
-  const provider = useMemo(() => {
-    if (typeof window !== "undefined" && window.ethereum) {
-      return new BrowserProvider(window.ethereum);
-    }
-    return undefined;
-  }, []);
-
-  const signer = useMemo(() => {
-    if (provider && account) {
-      return new UncheckedJsonRpcSigner(provider, account);
-    }
-    return undefined;
-  }, [provider, account]);
-
   const cheddaTokenAddress = currentEnvironment.contracts.CheddaToken;
   const accountActorAddress = currentEnvironment.contracts.AccountActor;
 
-  const token = chedda?.erc20token(asset || strPoolId, signer as any);
-  const lendingPool = chedda?.lendingPool(strPoolId, signer as any);
-  const cheddaToken = chedda?.cheddaToken(cheddaTokenAddress, signer as any);
-  const accountActor = chedda?.accountActor(accountActorAddress, signer as any);
+  const token = chedda?.erc20token(asset || strPoolId, signer as JsonRpcSigner);
+  const lendingPool = chedda?.lendingPool(strPoolId, signer as JsonRpcSigner);
+  const cheddaToken = chedda?.cheddaToken(
+    cheddaTokenAddress,
+    signer as JsonRpcSigner
+  );
+  const accountActor = chedda?.accountActor(
+    accountActorAddress,
+    signer as JsonRpcSigner
+  );
 
   const executeTransaction = async (
     transaction: (params: {
@@ -114,7 +106,7 @@ export const useTransaction = (asset: string) => {
       if (!amount || !stakingPoolAddress) return;
       const stakingPool = chedda?.stakingPool(
         stakingPoolAddress,
-        signer as any
+        signer as JsonRpcSigner
       );
       return stakingPool?.stake(amount);
     }, amount);
@@ -125,7 +117,7 @@ export const useTransaction = (asset: string) => {
       if (!amount || !stakingPoolAddress) return;
       const stakingPool = chedda?.stakingPool(
         stakingPoolAddress,
-        signer as any
+        signer as JsonRpcSigner
       );
       return stakingPool?.unStake(amount);
     }, amount);
@@ -136,7 +128,7 @@ export const useTransaction = (asset: string) => {
       if (!stakingPoolAddress) return;
       const stakingPool = chedda?.stakingPool(
         stakingPoolAddress,
-        signer as any
+        signer as JsonRpcSigner
       );
       return stakingPool?.claim();
     });
@@ -154,7 +146,7 @@ export const useTransaction = (asset: string) => {
       if (!amount || !gaugeAddress) return;
       const cheddaLockingGauge = chedda?.cheddaLockingGauge(
         gaugeAddress,
-        signer as any
+        signer as JsonRpcSigner
       );
       return cheddaLockingGauge?.createLock(amount, time);
     }, amount);
@@ -165,7 +157,7 @@ export const useTransaction = (asset: string) => {
       if (!gaugeAddress) return;
       const cheddaLockingGauge = chedda?.cheddaLockingGauge(
         gaugeAddress,
-        signer as any
+        signer as JsonRpcSigner
       );
       return cheddaLockingGauge?.withdraw();
     });
@@ -176,7 +168,7 @@ export const useTransaction = (asset: string) => {
       if (!gaugeAddress) return;
       const cheddaLockingGauge = chedda?.cheddaLockingGauge(
         gaugeAddress,
-        signer as any
+        signer as JsonRpcSigner
       );
       return cheddaLockingGauge?.extendLock(lockTime);
     });
@@ -187,7 +179,7 @@ export const useTransaction = (asset: string) => {
       if (!gaugeAddress) return;
       const cheddaLockingGauge = chedda?.cheddaLockingGauge(
         gaugeAddress,
-        signer as any
+        signer as JsonRpcSigner
       );
       return cheddaLockingGauge?.claim();
     });
@@ -198,7 +190,7 @@ export const useTransaction = (asset: string) => {
       if (!gaugeAddress) return;
       const cheddaLockingGauge = chedda?.cheddaLockingGauge(
         gaugeAddress,
-        signer as any
+        signer as JsonRpcSigner
       );
       return cheddaLockingGauge?.addToLock(amount);
     }, amount);
@@ -206,7 +198,7 @@ export const useTransaction = (asset: string) => {
   const getTokenBalance = useCallback(
     async (tokenAddress: string) => {
       if (!account || !tokenAddress) return;
-      const token = chedda?.cheddaToken(tokenAddress, signer as any);
+      const token = chedda?.cheddaToken(tokenAddress, signer as JsonRpcSigner);
       return await token?.balanceOf(account);
     },
     [account, chedda, signer]
