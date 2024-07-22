@@ -1,3 +1,4 @@
+"use client";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";

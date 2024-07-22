@@ -230,7 +230,7 @@ export interface IPositionResponse {
 
 export interface IPoolCategory {
   label: string;
-  keyword?: string;
+  keyword?: string | null;
   itemCount: number;
   icon: StaticImageData;
   activeIcon: StaticImageData;

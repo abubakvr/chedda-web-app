@@ -5,6 +5,17 @@ import { IPoolCategory, IPoolStatsResponse } from "@/utils/types";
 import { mockPoolStats } from "@/utils/Mocks/MockTestData";
 import { StaticImageData } from "next/image";
 
+jest.mock("next/navigation", () => ({
+  useParams: jest.fn(),
+  useRouter: jest.fn(() => ({
+    replace: jest.fn(),
+  })),
+  usePathname: jest.fn(),
+  useSearchParams: jest.fn(() => ({
+    get: jest.fn(() => "filter"),
+  })),
+}));
+
 const poolCategories: IPoolCategory[] = [
   {
     label: "Category 1",
@@ -27,18 +38,13 @@ const poolCategories: IPoolCategory[] = [
 const poolStatsList: IPoolStatsResponse[] = mockPoolStats;
 
 const handleSearch = jest.fn();
-const matchFilterItems = jest.fn().mockReturnValue(true);
 
 describe("FilterCard", () => {
   it("renders without crashing", () => {
     render(
       <FilterCard
         poolCategories={poolCategories}
-        selectedCategory={poolCategories[0]}
-        setSelectedCategory={jest.fn()}
         poolStatsList={poolStatsList}
-        handleSearch={handleSearch}
-        matchFilterItems={matchFilterItems}
       />
     );
 
@@ -49,11 +55,7 @@ describe("FilterCard", () => {
     render(
       <FilterCard
         poolCategories={poolCategories}
-        selectedCategory={poolCategories[0]}
-        setSelectedCategory={jest.fn()}
         poolStatsList={poolStatsList}
-        handleSearch={handleSearch}
-        matchFilterItems={matchFilterItems}
       />
     );
 
@@ -66,11 +68,7 @@ describe("FilterCard", () => {
     render(
       <FilterCard
         poolCategories={poolCategories}
-        selectedCategory={poolCategories[0]}
-        setSelectedCategory={jest.fn()}
         poolStatsList={poolStatsList}
-        handleSearch={handleSearch}
-        matchFilterItems={matchFilterItems}
       />
     );
 
@@ -86,11 +84,7 @@ describe("FilterCard", () => {
     render(
       <FilterCard
         poolCategories={poolCategories}
-        selectedCategory={poolCategories[0]}
-        setSelectedCategory={setSelectedCategory}
         poolStatsList={poolStatsList}
-        handleSearch={handleSearch}
-        matchFilterItems={matchFilterItems}
       />
     );
 

@@ -7,6 +7,16 @@ import { mockPoolStats } from "@/utils/Mocks/MockTestData";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks/useContracts");
+jest.mock("next/navigation", () => ({
+  useParams: jest.fn(),
+  useRouter: jest.fn(() => ({
+    replace: jest.fn(),
+  })),
+  usePathname: jest.fn(),
+  useSearchParams: jest.fn(() => ({
+    get: jest.fn(() => "filter"),
+  })),
+}));
 
 describe("VaultCard Component", () => {
   it("renders pools with data when not loading", () => {
@@ -14,7 +24,9 @@ describe("VaultCard Component", () => {
       data: mockPoolStats,
       isLoading: false,
     }));
-    const { getByTestId, getAllByTestId } = render(<VaultCard />);
+    const { getByTestId, getAllByTestId } = render(
+      <VaultCard poolStatsList={mockPoolStats} query="" filter="" />
+    );
 
     expect(getByTestId("vault-card")).toBeInTheDocument();
     expect(getAllByTestId("vault-item")).toHaveLength(mockPoolStats.length);
@@ -26,7 +38,9 @@ describe("VaultCard Component", () => {
       data: mockPoolStats,
       isLoading: false,
     }));
-    const { getByTestId } = render(<VaultCard />);
+    const { getByTestId } = render(
+      <VaultCard poolStatsList={mockPoolStats} query="" filter="" />
+    );
 
     // Test search input
     const searchInput = getByTestId("search-input").querySelector("input")!;
@@ -42,7 +56,9 @@ describe("VaultCard Component", () => {
       data: null,
       isLoading: true,
     }));
-    const { getByTestId } = render(<VaultCard />);
+    const { getByTestId } = render(
+      <VaultCard poolStatsList={mockPoolStats} query="" filter="" />
+    );
 
     await waitFor(() => {
       expect(getByTestId("vault-card")).toBeInTheDocument();

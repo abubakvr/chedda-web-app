@@ -102,7 +102,7 @@ export const sourceChains: ISourceChain[] = [
 export const poolCategories: IPoolCategory[] = [
   {
     label: "ALL",
-    keyword: undefined,
+    keyword: null,
     itemCount: 0,
     icon: stackIcon,
     activeIcon: stackIconActive,

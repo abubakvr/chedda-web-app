@@ -70,7 +70,8 @@ describe("Page Component", () => {
 
     render(
       <MockAppProviders>
-        <Page />
+        {/* @ts-expect-error Server Component */}
+        <Page searchParams={{ q: "sfdf", filter: "werfe" }} />
       </MockAppProviders>
     );
 
@@ -90,7 +91,8 @@ describe("Page Component", () => {
 
     render(
       <MockAppProviders>
-        <Page />
+        {/* @ts-expect-error Server Component */}
+        <Page searchParams={{ q: "ewfew", filter: "werr" }} />
       </MockAppProviders>
     );
 
