@@ -8,8 +8,8 @@ const Page = async ({
 }: {
   searchParams: { q: string; filter: string };
 }) => {
-  const query = searchParams.q ?? undefined;
-  const filter = searchParams.filter ?? undefined;
+  const query = searchParams.q ?? "";
+  const filter = searchParams.filter ?? "";
 
   const { getAggregateStats, getPoolStatsList } = useMarkets();
   const aggregateStats = await getAggregateStats();

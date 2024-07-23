@@ -20,15 +20,15 @@ export const FilterCard: React.FC<FilterCardProps> = ({
 
   function searchAction(term: string) {
     let params = new URLSearchParams({ q: term });
-    router.replace(`/?${params.toString()}`);
+    router.replace(`/?${params.toString()}`, { scroll: false });
   }
 
   function filterAction(term: string) {
     let params = new URLSearchParams({ filter: term });
     if (!term) {
-      router.replace(`/`);
+      router.replace(`/`, { scroll: false });
     } else {
-      router.replace(`/?${params.toString()}`);
+      router.replace(`/?${params.toString()}`, { scroll: false });
     }
   }
 
@@ -86,7 +86,8 @@ export const FilterCard: React.FC<FilterCardProps> = ({
                 <button
                   key={i}
                   onClick={() => filterAction(item.keyword ?? "")}
-                  className={`relative border ${isFilterSelected ? item.activeClass : "border-white bg-none px-3 py-1 h-9 "} rounded-lg flex items-center space-x-1`}
+                  data-testid={`button-${i}`}
+                  className={`relative border ${isFilterSelected ? item.activeClass : `${item.hoverClass} border-white bg-none px-3 py-1 h-9 transition-all`} rounded-lg flex items-center space-x-1 ${item.hoverClass}`}
                 >
                   <Image
                     src={isFilterSelected ? item.activeIcon : item.icon}

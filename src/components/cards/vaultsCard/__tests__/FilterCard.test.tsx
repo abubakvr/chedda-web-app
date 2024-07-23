@@ -1,9 +1,10 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { FilterCard } from "../FilterCard"; // Adjust the path as needed
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { IPoolCategory, IPoolStatsResponse } from "@/utils/types";
 import { mockPoolStats } from "@/utils/Mocks/MockTestData";
 import { StaticImageData } from "next/image";
+import { FilterCard } from "../FilterCard";
+import { useSearchParams, useRouter } from "next/navigation";
 
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),
@@ -16,6 +17,8 @@ jest.mock("next/navigation", () => ({
   })),
 }));
 
+const mockReplace = jest.fn();
+
 const poolCategories: IPoolCategory[] = [
   {
     label: "Category 1",
@@ -24,6 +27,7 @@ const poolCategories: IPoolCategory[] = [
     activeClass: "active",
     activeIcon: {} as StaticImageData,
     icon: {} as StaticImageData,
+    hoverClass: "hovered",
   },
   {
     label: "Category 2",
@@ -32,14 +36,26 @@ const poolCategories: IPoolCategory[] = [
     activeClass: "active",
     activeIcon: {} as StaticImageData,
     icon: {} as StaticImageData,
+    hoverClass: "hovered",
   },
 ];
 
 const poolStatsList: IPoolStatsResponse[] = mockPoolStats;
 
-const handleSearch = jest.fn();
+const mockGet = jest.fn();
 
 describe("FilterCard", () => {
+  beforeAll(() => {
+    (useRouter as jest.Mock).mockImplementation(() => ({
+      replace: mockReplace,
+    }));
+    (useSearchParams as jest.Mock).mockReturnValue({ get: mockGet });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("renders without crashing", () => {
     render(
       <FilterCard
@@ -64,7 +80,7 @@ describe("FilterCard", () => {
     });
   });
 
-  it("calls handleSearch on input change", () => {
+  it("calls handleSearch on input change", async () => {
     render(
       <FilterCard
         poolCategories={poolCategories}
@@ -75,12 +91,14 @@ describe("FilterCard", () => {
     const searchInput = screen.getByPlaceholderText("Search");
     fireEvent.change(searchInput, { target: { value: "test" } });
 
-    expect(handleSearch).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith("/?q=test", {
+        scroll: false,
+      });
+    });
   });
 
-  it("updates selected category on button click", () => {
-    const setSelectedCategory = jest.fn();
-
+  it("updates selected category on button click", async () => {
     render(
       <FilterCard
         poolCategories={poolCategories}
@@ -88,9 +106,13 @@ describe("FilterCard", () => {
       />
     );
 
-    const categoryButton = screen.getByText(poolCategories[1].label);
+    const categoryButton = screen.getByTestId("button-0");
     fireEvent.click(categoryButton);
 
-    expect(setSelectedCategory).toHaveBeenCalledWith(poolCategories[1]);
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith("/?filter=cat1", {
+        scroll: false,
+      });
+    });
   });
 });

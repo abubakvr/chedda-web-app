@@ -16,6 +16,8 @@ import stableIcon from "@/assets/icon/stable-coin.svg";
 import stableIconActive from "@/assets/icon/stable-coin-active.svg";
 import gameFiIcon from "@/assets/icon/gameFi.svg";
 import gameFiIconActive from "@/assets/icon/gameFi-active.svg";
+import bluechipIcon from "@/assets/icon/bluechip.svg";
+import bluechipIconActive from "@/assets/icon/bluechip-active.svg";
 
 export const infuraKey = process.env.NEXT_PUBLIC_INFURA_KEY;
 export const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_KEY;
@@ -107,6 +109,7 @@ export const poolCategories: IPoolCategory[] = [
     icon: stackIcon,
     activeIcon: stackIconActive,
     activeClass: "filter-box border-none px-[13px] h-[37px] bg-[#51D5FA12]",
+    hoverClass: "hover:border-[#51D5FA] hover:bg-[#51D5FA12]",
   },
   {
     label: "#STABLE",
@@ -115,6 +118,7 @@ export const poolCategories: IPoolCategory[] = [
     icon: stableIcon,
     activeIcon: stableIconActive,
     activeClass: "border-[#C142F0] bg-[#2D142D68] h-9 px-3",
+    hoverClass: "hover:border-[#C142F0] hover:bg-[#2D142D68]",
   },
   {
     label: "#DEFI",
@@ -122,7 +126,8 @@ export const poolCategories: IPoolCategory[] = [
     itemCount: 0,
     icon: deFiIcon,
     activeIcon: deFiIconActive,
-    activeClass: "border-[#00F0FF] bg-[#01212864] h-9 px-3",
+    activeClass: "border-[#F89F1A] bg-[#2C1C0464] h-9 px-3",
+    hoverClass: "hover:border-[#F89F1A] hover:bg-[#2C1C0464]",
   },
   {
     label: "#GAMEFI",
@@ -131,14 +136,16 @@ export const poolCategories: IPoolCategory[] = [
     icon: gameFiIcon,
     activeIcon: gameFiIconActive,
     activeClass: "border-[#66DBBB] bg-[#142E2664] h-9 px-3",
+    hoverClass: "hover:border-[#66DBBB] hover:bg-[#142E2664]",
   },
   {
     label: "#Bluechip",
     keyword: "Bluechip",
     itemCount: 0,
-    icon: stackIcon,
-    activeIcon: stackIconActive,
-    activeClass: "border-[#C142F0] bg-[#2D142D68] h-9 px-3",
+    icon: bluechipIcon,
+    activeIcon: bluechipIconActive,
+    activeClass: "border-[#00F0FF] bg-[#01212864] h-9 px-3",
+    hoverClass: "hover:border-[#00F0FF] hover:bg-[#01212864]",
   },
 ];
 

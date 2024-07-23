@@ -6,7 +6,7 @@ import GradientInfoIcon from "@/assets/icon/gradient-info-icon.svg";
 import stableIcon from "@/assets/icon/stable-icon.svg";
 import defiIcon from "@/assets/icon/defi-icon.svg";
 import gamefiIcon from "@/assets/icon/gamefi-icon.svg";
-import bluechipIcon from "@/assets/icon/stable-icon.svg";
+import bluechipIcon from "@/assets/icon/bluechip-icon.svg";
 import {
   formatAsPercentage,
   formatCurrency,
@@ -14,6 +14,7 @@ import {
 } from "@/utils/formatters";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { MobileVaultItem } from "./MobileVaultItem";
+import useScrollRestoration from "@/hooks/useScrollRestoration";
 
 const poolFilters = [
   { keyword: "Stable Coin", icon: stableIcon },
@@ -29,7 +30,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
 
   return (
     <React.Fragment>
-      <Link href={`/markets/${pool.pool}`} passHref>
+      <Link href={`/markets/${pool.pool}`} passHref prefetch={true}>
         <div
           data-testid="vault-item"
           className="market-card pool-card rounded-lg w-full px-7 py-5 text-white hover:opacity-90 cursor-pointer p-6 transition-all"

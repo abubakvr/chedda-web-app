@@ -235,4 +235,5 @@ export interface IPoolCategory {
   icon: StaticImageData;
   activeIcon: StaticImageData;
   activeClass: string;
+  hoverClass: string;
 }
