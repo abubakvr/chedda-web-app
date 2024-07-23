@@ -86,7 +86,18 @@ const getPoolState: GetDataFunction<IPoolStateResponse[]> = async ({
     const index = findNearestIndex(eventTimestamps, timestamp);
     const event = index !== -1 ? events?.[index] : null;
 
-    return event ? { ...event, timePoint: timestamp } : null;
+    return event
+      ? {
+          ...event,
+          pool: event.pool,
+          caller: event.caller,
+          supplied: event.supplied,
+          borrowed: event.borrowed,
+          supplyRate: event.supplyRate,
+          borrowRate: event.borrowRate,
+          timePoint: timestamp,
+        }
+      : null;
   });
 
   return eventsToGraph as IPoolStateResponse[];
