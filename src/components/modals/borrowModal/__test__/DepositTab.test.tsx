@@ -9,7 +9,7 @@ import {
 import { DepositTab, DepositTabProps } from "../Tabs";
 import { StaticImageData } from "next/image";
 import { useTransaction } from "@/hooks";
-import { BigNumber } from "ethers";
+
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("@web3-react/core", () => ({
@@ -44,15 +44,15 @@ const mockProps: DepositTabProps = {
   },
   collaterals: [],
   isLoading: {},
-  allowance: BigNumber.from("50000000000000000000000000"),
-  accountCollateralAmount: BigNumber.from("50000000000000000000000"),
+  allowance: BigInt("50000000000000000000000000"),
+  accountCollateralAmount: BigInt("50000000000000000000000"),
   totalCollateralValue: 1000,
-  tokenBalance: BigNumber.from("50000000000000000000000"),
-  healthFactor: BigNumber.from("5000000000000000000"),
+  tokenBalance: BigInt("50000000000000000000000"),
+  healthFactor: BigInt("5000000000000000000"),
   assetPrice: 5000,
   totalBorrowed: 9000,
   tokenValue: 9000,
-  tokenCollateralValue: BigNumber.from("5000000000000000000"),
+  tokenCollateralValue: BigInt("5000000000000000000"),
   setSelectedCollateral: jest.fn(),
   fetchAllowance: jest.fn(),
   refreshModal: jest.fn(),
@@ -94,7 +94,7 @@ describe("DepositTab Component", () => {
   it("handles approving collateral", async () => {
     const customProps = {
       ...mockProps,
-      allowance: BigNumber.from("500000000000000000"),
+      allowance: BigInt("500000000000000000"),
     };
     render(
       <MockAppProviders>

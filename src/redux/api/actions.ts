@@ -71,7 +71,7 @@ export const getPoolState: GetDataFunction<IPoolStateResponse[]> = async ({
   signer,
 }) => {
   const graphTimes = createTimestamps(0.5, 25);
-  const lendingPool = chedda.lendingPool(poolId, signer as Signer);
+  const lendingPool = chedda.lendingPool(poolId, signer as any);
   const events = await lendingPool.getEventLogs<IPoolState>(
     "PoolState",
     0,
@@ -80,7 +80,7 @@ export const getPoolState: GetDataFunction<IPoolStateResponse[]> = async ({
 
   const eventTimestamps =
     events?.map((item: IPoolState) =>
-      parseInt(ethers.utils.formatUnits(item.timestamp, 0))
+      parseInt(ethers.formatUnits(item.timestamp, 0))
     ) || [];
   const eventsToGraph = graphTimes.map((timestamp) => {
     const index = findNearestIndex(eventTimestamps, timestamp);
@@ -113,10 +113,10 @@ export const getPoolStats: GetDataFunction<IPoolStatsResponse> = async ({
 export const getRatesProjectorData: GetDataFunction<
   IInterestRatesProjection[]
 > = async ({ poolId, chedda, signer, environment }) => {
-  const lendingPool = chedda.lendingPool(poolId, signer as Signer);
+  const lendingPool = chedda.lendingPool(poolId, signer as any);
   const ratesProjector = chedda.interestRateProjector(
     environment.contracts.InterestRatesProjector,
-    signer as Signer
+    signer as any
   );
 
   const interestRateModel = await lendingPool.interestRatesModel();

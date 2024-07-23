@@ -1,7 +1,7 @@
 "use client";
 import React, { FC, useState } from "react";
 import { Toast } from "@/components/ui";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { LockTab } from "./tabs/LockTab";
 import { formatNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { TabInfo } from "./TabInfo";
@@ -13,8 +13,8 @@ import { WithdrawTab } from "./tabs/WithdrawTab";
 interface LockCardProps {
   assetSymbol: string | undefined;
   cheddaSymbol: string | undefined;
-  cheddaAllowance: BigNumber | undefined;
-  cheddaTokenBalance: BigNumber | undefined;
+  cheddaAllowance: bigint | undefined;
+  cheddaTokenBalance: bigint | undefined;
   cheddaPrice: number | undefined;
   defaultTab: string | null;
   lockedChedda: Lock | undefined;
@@ -155,7 +155,7 @@ export const LockCheddaCard: FC<LockCardProps> = ({
         return alert("Enter valid amount");
       }
 
-      const parsedAmount = ethers.utils.parseUnits(lockAmount.toString(), 18);
+      const parsedAmount = ethers.parseUnits(lockAmount.toString(), 18);
 
       if (lockAmount <= parsedAllowance) {
         handleTransaction(

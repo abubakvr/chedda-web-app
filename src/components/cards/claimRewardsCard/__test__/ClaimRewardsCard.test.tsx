@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { ClaimRewardsCard } from "../ClaimRewardsCard";
-import { BigNumber } from "ethers";
+
 import { useTokenPrice, useTransaction } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
@@ -21,7 +21,7 @@ describe("ClaimRewardsCard Component", () => {
   });
   test("renders with provided props", () => {
     const props = {
-      claimableRewards: BigNumber.from("1000000000000000000"), // 1 CHEDDA
+      claimableRewards: BigInt("1000000000000000000"), // 1 CHEDDA
       decimals: 18,
       rewardType: "Lock" as "Lock",
       setActiveTab: jest.fn(),
@@ -46,7 +46,7 @@ describe("ClaimRewardsCard Component", () => {
       claimRewards: mockClaimRewards,
     }));
     const props = {
-      claimableRewards: BigNumber.from("0000000000000000000"), // 1 CHEDDA
+      claimableRewards: BigInt("0000000000000000000"), // 1 CHEDDA
       decimals: 18,
       rewardType: "Lock" as "Lock",
       setActiveTab: jest.fn(),

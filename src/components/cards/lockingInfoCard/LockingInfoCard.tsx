@@ -6,15 +6,15 @@ import {
   formatNumber,
   parseBigNumberToFloat,
 } from "@/utils/formatters";
-import { BigNumber } from "ethers";
+
 import { useGaugeAddress } from "@/hooks";
 import { currentEnvironment } from "@/data/environments";
 
 interface LockingInfoCardProps {
   assetSymbol: string | undefined;
-  totalWeightSum: BigNumber | undefined;
-  totalWeight: BigNumber | undefined;
-  totalAmountLocked: BigNumber | undefined;
+  totalWeightSum: bigint | undefined;
+  totalWeight: bigint | undefined;
+  totalAmountLocked: bigint | undefined;
 }
 
 export const LockingInfoCard = ({

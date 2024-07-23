@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { BigNumber } from "ethers";
+
 import PositionSummary from "../PositionSummary";
 import { usePositionSummary } from "@/hooks";
 import { formatCurrency, formatNumber } from "@/utils/formatters";
@@ -11,10 +11,10 @@ jest.mock("../../../../hooks");
 
 // Mock data for the tests
 const mockPositionSummary = {
-  netValue: BigNumber.from("1000000000000000000"),
-  suppliedValue: BigNumber.from("2000000000000000000"),
-  borrowedValue: BigNumber.from("500000000000000000"),
-  lockedValue: BigNumber.from("300000000000000000"),
+  netValue: BigInt("1000000000000000000"),
+  suppliedValue: BigInt("2000000000000000000"),
+  borrowedValue: BigInt("500000000000000000"),
+  lockedValue: BigInt("300000000000000000"),
 };
 
 const mockAllPositions: IPositionResponse[] = [

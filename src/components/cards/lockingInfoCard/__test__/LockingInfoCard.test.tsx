@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { LockingInfoCard } from "../LockingInfoCard";
-import { BigNumber } from "ethers";
+
 import { useGaugeAddress } from "@/hooks";
 
 jest.mock("../../../../hooks");
@@ -16,9 +16,9 @@ describe("StakingInfoCard Component", () => {
   it("renders with provided props", () => {
     const props = {
       assetSymbol: "ETH",
-      totalWeightSum: BigNumber.from("2000000000000000000000"),
-      totalWeight: BigNumber.from("50000000000000000000"),
-      totalAmountLocked: BigNumber.from("200000000000000000000"),
+      totalWeightSum: BigInt("2000000000000000000000"),
+      totalWeight: BigInt("50000000000000000000"),
+      totalAmountLocked: BigInt("200000000000000000000"),
     };
 
     const { getByText, getByAltText } = render(<LockingInfoCard {...props} />);

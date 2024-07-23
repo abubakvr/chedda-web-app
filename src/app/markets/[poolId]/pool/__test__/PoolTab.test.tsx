@@ -12,7 +12,7 @@ import {
   useTokenBalance,
   useTransaction,
 } from "@/hooks";
-import { BigNumber } from "ethers";
+
 import {
   mockAccountInfo,
   mockCollateralInfo,
@@ -85,7 +85,7 @@ describe("PoolTab", () => {
       isLoading: false,
     }));
     (useAvailableLiquidity as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (usePoolState as jest.Mock).mockReturnValue({

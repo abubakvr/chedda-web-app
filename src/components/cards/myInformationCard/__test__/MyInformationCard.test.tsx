@@ -3,7 +3,6 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { MyInformationCard } from "../MyInformationCard";
 import { mockAccountInfo, mockPoolStats } from "@/utils/Mocks/MockTestData";
 import { useTokenBalance } from "@/hooks";
-import { ethers } from "ethers";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("ethers");
@@ -23,7 +22,7 @@ describe("MyInformationCard", () => {
           poolStats={mockPoolStats[0]}
           isLoading={false}
           assetPrice={1000}
-          available={ethers.BigNumber.from("1000")}
+          available={BigInt("1000")}
           fetchPoolInfo={jest.fn()}
           setActivePoolTab={jest.fn()}
         />

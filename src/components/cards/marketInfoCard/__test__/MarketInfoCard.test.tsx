@@ -3,7 +3,6 @@ import { render, screen } from "@testing-library/react";
 import { MarketInfoCard } from "../MarketInfoCard";
 import { mockMarketInfo, mockPoolStats } from "@/utils/Mocks/MockTestData";
 import { useTokenBalance } from "@/hooks";
-import { BigNumber } from "ethers";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks");

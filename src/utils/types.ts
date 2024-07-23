@@ -7,7 +7,7 @@ import {
   IPoolState,
   IPoolStats,
 } from "chedda-sdk";
-import { BigNumber, Signer } from "ethers";
+import { JsonRpcSigner, Signer } from "ethers";
 import { StaticImageData } from "next/image";
 import React from "react";
 
@@ -134,6 +134,7 @@ export interface IFormattedCollateral {
 
 export interface IPoolStateResponse extends IPoolState {
   timePoint: number;
+  caller: string;
 }
 
 export interface ISummaryStats {
@@ -161,7 +162,7 @@ export type GetDataFunction<T> = ({
   poolId: string;
   account?: string;
   chedda: Chedda;
-  signer?: Signer;
+  signer: JsonRpcSigner;
   environment: IEnvironment;
   asset?: string;
   decimals?: number;

@@ -5,7 +5,6 @@ import {
   waitFor,
   act,
 } from "@testing-library/react";
-import { BigNumber, utils } from "ethers";
 import { StaticImageData } from "next/image";
 import { StakeCard } from "../StakeCard";
 import {
@@ -16,9 +15,11 @@ import {
   useTransaction,
 } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
+import { ethers } from "ethers";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks");
+jest.mock("chedda-sdk");
 
 const mockAsset = {
   name: "Token3",
@@ -33,10 +34,10 @@ const mockProps = {
   assetSymbol: "ETH",
   lpSymbol: "chETH",
   lpDecimals: 18,
-  lpAssetValue: BigNumber.from(utils.parseEther("50")),
-  lpAllowance: BigNumber.from(utils.parseEther("50")),
-  lpStakingBalance: BigNumber.from(utils.parseEther("50")),
-  lpTokenBalance: BigNumber.from(utils.parseEther("50")),
+  lpAssetValue: BigInt("50"),
+  lpAllowance: BigInt("50"),
+  lpStakingBalance: BigInt("50"),
+  lpTokenBalance: BigInt("50"),
   assetValue: 10000,
   defaultTab: "Pool",
   updateCard: jest.fn(),

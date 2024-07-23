@@ -3,22 +3,21 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { CheddaInfo } from "../CheddaInfo";
 import { useCheddaBalance, useCheddaTotalSupply, useTokenValue } from "@/hooks";
-import { BigNumber } from "ethers";
 
 jest.mock("../../../../hooks");
 
 describe("CheddaInfo", () => {
   beforeEach(() => {
     (useCheddaBalance as jest.Mock).mockReturnValue({
-      data: BigNumber.from("100000000000000000000"),
+      data: BigInt("100000000000000000000"),
       isLoading: false,
     });
     (useCheddaTotalSupply as jest.Mock).mockReturnValue({
-      data: BigNumber.from("200000000000000000"),
+      data: BigInt("200000000000000000"),
       isLoading: false,
     });
     (useTokenValue as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
   });

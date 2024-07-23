@@ -1,4 +1,4 @@
-import { BigNumber, ethers, Signer } from "ethers";
+import { ethers } from "ethers";
 import {
   IAccountInfo,
   IAccountSummary,
@@ -29,7 +29,10 @@ import {
   getAggregateInfo,
 } from "@/utils/formatResponse";
 import { useFetcher } from "./useFetcher";
-import { parseBigNumberToFloat } from "@/utils/formatters";
+import {
+  formatToArrayOfStrings,
+  parseBigNumberToFloat,
+} from "@/utils/formatters";
 
 export const getAccountInfo: GetDataFunction<IAccountInfo> = async ({
   lens,
@@ -77,13 +80,24 @@ const getPoolState: GetDataFunction<IPoolStateResponse[]> = async ({
 
   const eventTimestamps =
     events?.map((item: IPoolState) =>
-      parseInt(ethers.utils.formatUnits(item.timestamp, 0))
+      parseInt(ethers.formatUnits(item.timestamp, 0))
     ) || [];
   const eventsToGraph = graphTimes.map((timestamp) => {
     const index = findNearestIndex(eventTimestamps, timestamp);
     const event = index !== -1 ? events?.[index] : null;
 
-    return event ? { ...event, timePoint: timestamp } : null;
+    return event
+      ? {
+          ...event,
+          pool: event.pool,
+          caller: event.caller,
+          supplied: event.supplied,
+          borrowed: event.borrowed,
+          supplyRate: event.supplyRate,
+          borrowRate: event.borrowRate,
+          timePoint: timestamp,
+        }
+      : null;
   });
 
   return eventsToGraph as IPoolStateResponse[];
@@ -94,7 +108,7 @@ const getPoolStatsList: GetDataFunction<IPoolStatsResponse[]> = async ({
   environment,
 }) => {
   const pools = await lens.activePools();
-  const statsList = await lens.getPoolStatsList(pools);
+  const statsList = await lens.getPoolStatsList(formatToArrayOfStrings(pools));
   return formatPoolStatsList(statsList, environment.tokens);
 };
 
@@ -118,14 +132,14 @@ const getRatesProjectorData: GetDataFunction<
   );
   const ratesProjector = chedda.interestRateProjector(
     environment.contracts.InterestRatesProjector,
-    signer as Signer
+    signer
   );
 
   const interestRateModel = await lendingPool.interestRatesModel();
   return await ratesProjector.projection(interestRateModel, utilizationsArray);
 };
 
-export const getAvailableLiquidity: GetDataFunction<BigNumber> = async ({
+export const getAvailableLiquidity: GetDataFunction<bigint> = async ({
   chedda,
   signer,
   poolId,
@@ -139,7 +153,7 @@ export const getAvailableLiquidity: GetDataFunction<BigNumber> = async ({
   return await lendingPool.available();
 };
 
-export const getAllowance: GetDataFunction<BigNumber> = async ({
+export const getAllowance: GetDataFunction<bigint> = async ({
   chedda,
   signer,
   poolId,
@@ -147,33 +161,33 @@ export const getAllowance: GetDataFunction<BigNumber> = async ({
   asset,
 }) => {
   if (!asset || !account) return null;
-  const token = chedda.erc20token(asset, signer as Signer);
+  const token = chedda.erc20token(asset, signer);
   return await token.allowance(account, poolId);
 };
 
-export const getTokenBalance: GetDataFunction<BigNumber> = async ({
+export const getTokenBalance: GetDataFunction<bigint> = async ({
   chedda,
   signer,
   account,
   asset,
 }) => {
   if (!asset || !account) return null;
-  const token = chedda.erc20token(asset, signer as Signer);
+  const token = chedda.erc20token(asset, signer);
   return await token.balanceOf(account);
 };
 
-export const getSelectTokenBalance: GetDataFunction<BigNumber> = async ({
+export const getSelectTokenBalance: GetDataFunction<bigint> = async ({
   chedda,
   signer,
   account,
   asset,
 }) => {
   if (!asset || !account) return null;
-  const token = chedda.erc20token(asset, signer as Signer);
+  const token = chedda.erc20token(asset, signer);
   return await token.balanceOf(account);
 };
 
-export const getAssetBalance: GetDataFunction<BigNumber> = async ({
+export const getAssetBalance: GetDataFunction<bigint> = async ({
   chedda,
   signer,
   account,
@@ -213,7 +227,7 @@ const getTokenPrice: GetDataFunction<number> = async ({
   return parseBigNumberToFloat(assetPrice, decimals, 10);
 };
 
-export const getAccountCollateral: GetDataFunction<BigNumber> = async ({
+export const getAccountCollateral: GetDataFunction<bigint> = async ({
   chedda,
   signer,
   poolId,
@@ -230,7 +244,7 @@ export const getAccountCollateral: GetDataFunction<BigNumber> = async ({
   return await lendingPool?.accountCollateralAmount(account, asset);
 };
 
-export const getAccountHealth: GetDataFunction<BigNumber> = async ({
+export const getAccountHealth: GetDataFunction<bigint> = async ({
   poolId,
   signer,
   chedda,
@@ -246,7 +260,7 @@ export const getAccountHealth: GetDataFunction<BigNumber> = async ({
   return await lendingPool?.accountHealth(account);
 };
 
-export const getTokenCollateralValue: GetDataFunction<BigNumber> = async ({
+export const getTokenCollateralValue: GetDataFunction<bigint> = async ({
   poolId,
   signer,
   chedda,
@@ -260,11 +274,11 @@ export const getTokenCollateralValue: GetDataFunction<BigNumber> = async ({
     signer,
     "lendingPool"
   );
-  const amount = ethers.utils.parseUnits("1", decimals);
+  const amount = ethers.parseUnits("1", decimals);
   return await lendingPool.getTokenCollateralValue(asset, amount);
 };
 
-const getStakingBalance: GetDataFunction<BigNumber> = async ({
+const getStakingBalance: GetDataFunction<bigint> = async ({
   chedda,
   signer,
   poolId,
@@ -280,7 +294,7 @@ const getStakingBalance: GetDataFunction<BigNumber> = async ({
   return await stakingPool.stakingBalance(account);
 };
 
-const getLpTokenBalance: GetDataFunction<BigNumber> = async ({
+const getLpTokenBalance: GetDataFunction<bigint> = async ({
   chedda,
   signer,
   poolId,
@@ -311,7 +325,7 @@ const getLpSymbol: GetDataFunction<string> = async ({
   return await lendingPool.symbol();
 };
 
-const getLpAllowance: GetDataFunction<BigNumber> = async ({
+const getLpAllowance: GetDataFunction<bigint> = async ({
   chedda,
   signer,
   poolId,
@@ -343,7 +357,7 @@ const getLpDecimals: GetDataFunction<number> = async ({
   return await lendingPool.decimals();
 };
 
-const convertToAssets: GetDataFunction<BigNumber> = async ({
+const convertToAssets: GetDataFunction<bigint> = async ({
   poolId,
   signer,
   chedda,
@@ -356,11 +370,11 @@ const convertToAssets: GetDataFunction<BigNumber> = async ({
     "lendingPool"
   );
   const decimals = await lendingPool.decimals();
-  const amount = ethers.utils.parseUnits("1", decimals);
+  const amount = ethers.parseUnits("1", decimals);
   return await lendingPool.convertToAssets(amount);
 };
 
-const getTotalStaked: GetDataFunction<BigNumber> = async ({
+const getTotalStaked: GetDataFunction<bigint> = async ({
   poolId,
   signer,
   chedda,
@@ -375,7 +389,7 @@ const getTotalStaked: GetDataFunction<BigNumber> = async ({
   return await stakingPool.totalStaked();
 };
 
-const getLpStakers: GetDataFunction<BigNumber> = async ({
+const getLpStakers: GetDataFunction<bigint> = async ({
   poolId,
   signer,
   chedda,
@@ -390,7 +404,7 @@ const getLpStakers: GetDataFunction<BigNumber> = async ({
   return await stakingPool.stakers();
 };
 
-const getTotalSupply: GetDataFunction<BigNumber> = async ({
+const getTotalSupply: GetDataFunction<bigint> = async ({
   poolId,
   signer,
   chedda,
@@ -420,7 +434,7 @@ const getStakingPoolAddress: GetDataFunction<string> = async ({
   return await lendingPool.stakePool();
 };
 
-const getClaimableStakeRewards: GetDataFunction<BigNumber> = async ({
+const getClaimableStakeRewards: GetDataFunction<bigint> = async ({
   poolId,
   signer,
   chedda,
@@ -436,7 +450,7 @@ const getClaimableStakeRewards: GetDataFunction<BigNumber> = async ({
   return await stakingPool.claimable(account);
 };
 
-export const getCheddaBalance: GetDataFunction<BigNumber> = async ({
+export const getCheddaBalance: GetDataFunction<bigint> = async ({
   chedda,
   signer,
   account,
@@ -445,12 +459,12 @@ export const getCheddaBalance: GetDataFunction<BigNumber> = async ({
   if (!environment || !account) return null;
   const cheddaToken = chedda.cheddaToken(
     environment.contracts.CheddaToken,
-    signer as Signer
+    signer
   );
   return await cheddaToken.balanceOf(account);
 };
 
-export const getCheddaTotalSupply: GetDataFunction<BigNumber> = async ({
+export const getCheddaTotalSupply: GetDataFunction<bigint> = async ({
   chedda,
   signer,
   environment,
@@ -458,12 +472,12 @@ export const getCheddaTotalSupply: GetDataFunction<BigNumber> = async ({
   if (!environment) return null;
   const cheddaToken = chedda.cheddaToken(
     environment.contracts.CheddaToken,
-    signer as Signer
+    signer
   );
   return await cheddaToken.totalSupply();
 };
 
-export const getCheddaAllowance: GetDataFunction<BigNumber> = async ({
+export const getCheddaAllowance: GetDataFunction<bigint> = async ({
   chedda,
   signer,
   account,
@@ -480,7 +494,7 @@ export const getCheddaAllowance: GetDataFunction<BigNumber> = async ({
   const gaugeContract = await lendingPool.gauge();
   const cheddaToken = chedda.cheddaToken(
     environment.contracts.CheddaToken,
-    signer as Signer
+    signer
   );
   return await cheddaToken.allowance(account, gaugeContract);
 };
@@ -502,7 +516,7 @@ const getLockedAmount: GetDataFunction<Lock> = async ({
   return await cheddaLockingGauge.getLock(account);
 };
 
-const getClaimableLockRewards: GetDataFunction<BigNumber> = async ({
+const getClaimableLockRewards: GetDataFunction<bigint> = async ({
   poolId,
   signer,
   chedda,
@@ -518,7 +532,7 @@ const getClaimableLockRewards: GetDataFunction<BigNumber> = async ({
   return await cheddaLockingGauge.claimable(account);
 };
 
-const getTotalAmountLocked: GetDataFunction<BigNumber> = async ({
+const getTotalAmountLocked: GetDataFunction<bigint> = async ({
   poolId,
   signer,
   chedda,
@@ -533,7 +547,7 @@ const getTotalAmountLocked: GetDataFunction<BigNumber> = async ({
   return await cheddaLockingGauge.totalLocked();
 };
 
-const getTotalWeight: GetDataFunction<BigNumber> = async ({
+const getTotalWeight: GetDataFunction<bigint> = async ({
   poolId,
   signer,
   chedda,
@@ -563,7 +577,7 @@ const getGaugeAddress: GetDataFunction<string> = async ({
   return await lendingPool.gauge();
 };
 
-const getTotalWeightSum: GetDataFunction<BigNumber> = async ({
+const getTotalWeightSum: GetDataFunction<bigint> = async ({
   signer,
   chedda,
   environment,
@@ -571,12 +585,12 @@ const getTotalWeightSum: GetDataFunction<BigNumber> = async ({
   if (!chedda) return null;
   const rewardsDistributor = chedda.lockingGaugeRewardsDistributor(
     environment.contracts.LockingGaugeRewardsDistributor,
-    signer as Signer
+    signer
   );
   return await rewardsDistributor.totalWeightSum();
 };
 
-const getAllClaimableRewards: GetDataFunction<BigNumber[]> = async ({
+const getAllClaimableRewards: GetDataFunction<bigint[]> = async ({
   signer,
   chedda,
   environment,
@@ -585,7 +599,7 @@ const getAllClaimableRewards: GetDataFunction<BigNumber[]> = async ({
   if (!chedda || !account) return null;
   const accountActor = chedda.accountActor(
     environment.contracts.AccountActor,
-    signer as Signer
+    signer
   );
   return await accountActor.allClaimableRewards(account);
 };
@@ -599,7 +613,7 @@ const getAccountSummary: GetDataFunction<IAccountSummary> = async ({
   if (!chedda || !account) return null;
   const accountActor = chedda.accountActor(
     environment.contracts.AccountActor,
-    signer as Signer
+    signer
   );
   return await accountActor.accountSummary(account);
 };
@@ -613,7 +627,7 @@ const getAllPositions: GetDataFunction<IPositionResponse[]> = async ({
   if (!chedda || !account) return null;
   const accountActor = chedda.accountActor(
     environment.contracts.AccountActor,
-    signer as Signer
+    signer
   );
   const allPositions = await accountActor.allPositions(account, true);
   return formatPositionsList(allPositions);
@@ -645,19 +659,19 @@ export const usePoolStats = (): HookResult<IPoolStatsResponse> =>
 export const useRatesProjector = (): HookResult<IInterestRatesProjection[]> =>
   useFetcher<IInterestRatesProjection[]>(getRatesProjectorData);
 
-export const useAvailableLiquidity = (): HookResult<BigNumber> =>
-  useFetcher<BigNumber>(getAvailableLiquidity);
+export const useAvailableLiquidity = (): HookResult<bigint> =>
+  useFetcher<bigint>(getAvailableLiquidity);
 
-export const useAllowance = (asset: string): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getAllowance, asset);
+export const useAllowance = (asset: string): HookResult<bigint> => {
+  return useFetcher<bigint>(getAllowance, asset);
 };
 
-export const useTokenBalance = (asset: string): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getTokenBalance, asset);
+export const useTokenBalance = (asset: string): HookResult<bigint> => {
+  return useFetcher<bigint>(getTokenBalance, asset);
 };
 
-export const useAssetBalance = (asset: string): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getAssetBalance, asset);
+export const useAssetBalance = (asset: string): HookResult<bigint> => {
+  return useFetcher<bigint>(getAssetBalance, asset);
 };
 
 export const useTokenValue = (asset: string): HookResult<number> => {
@@ -668,107 +682,107 @@ export const useTokenPrice = (asset: string): HookResult<number> => {
   return useFetcher<number>(getTokenPrice, asset);
 };
 
-export const useAccountCollateral = (asset: string): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getAccountCollateral, asset);
+export const useAccountCollateral = (asset: string): HookResult<bigint> => {
+  return useFetcher<bigint>(getAccountCollateral, asset);
 };
 
-export const useAccountHealth = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getAccountHealth);
+export const useAccountHealth = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getAccountHealth);
 };
 
-export const useSelectTokenBalance = (asset: string): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getSelectTokenBalance, asset);
+export const useSelectTokenBalance = (asset: string): HookResult<bigint> => {
+  return useFetcher<bigint>(getSelectTokenBalance, asset);
 };
 
 export const useTokenCollateralValue = (
   asset: string,
   decimals: number
-): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getTokenCollateralValue, asset, decimals);
+): HookResult<bigint> => {
+  return useFetcher<bigint>(getTokenCollateralValue, asset, decimals);
 };
 
-export const useLpAllowance = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getLpAllowance);
+export const useLpAllowance = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getLpAllowance);
 };
 
 export const useLpSymbol = (): HookResult<string> => {
   return useFetcher<string>(getLpSymbol);
 };
 
-export const useLpTokenBalance = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getLpTokenBalance);
+export const useLpTokenBalance = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getLpTokenBalance);
 };
 
-export const useLpAssetValue = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(convertToAssets);
+export const useLpAssetValue = (): HookResult<bigint> => {
+  return useFetcher<bigint>(convertToAssets);
 };
 
-export const useStakingBalance = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getStakingBalance);
+export const useStakingBalance = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getStakingBalance);
 };
 
 export const useLpDecimals = (): HookResult<number> => {
   return useFetcher<number>(getLpDecimals);
 };
 
-export const useLpStakers = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getLpStakers);
+export const useLpStakers = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getLpStakers);
 };
 
-export const useTotalStaked = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getTotalStaked);
+export const useTotalStaked = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getTotalStaked);
 };
 
-export const useTotalSupply = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getTotalSupply);
+export const useTotalSupply = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getTotalSupply);
 };
 
 export const useStakingContractAddress = (): HookResult<string> => {
   return useFetcher<string>(getStakingPoolAddress);
 };
 
-export const useClaimableStakeRewards = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getClaimableStakeRewards);
+export const useClaimableStakeRewards = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getClaimableStakeRewards);
 };
 
-export const useCheddaBalance = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getCheddaBalance);
+export const useCheddaBalance = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getCheddaBalance);
 };
 
-export const useCheddaAllowance = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getCheddaAllowance);
+export const useCheddaAllowance = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getCheddaAllowance);
 };
 
 export const useLockedChedda = (): HookResult<Lock> => {
   return useFetcher<Lock>(getLockedAmount);
 };
 
-export const useClaimableLockRewards = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getClaimableLockRewards);
+export const useClaimableLockRewards = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getClaimableLockRewards);
 };
 
-export const useTotalAmountLocked = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getTotalAmountLocked);
+export const useTotalAmountLocked = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getTotalAmountLocked);
 };
 
-export const useTotalWeight = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getTotalWeight);
+export const useTotalWeight = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getTotalWeight);
 };
 
-export const useTotalWeightSum = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getTotalWeightSum);
+export const useTotalWeightSum = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getTotalWeightSum);
 };
 
 export const useGaugeAddress = (): HookResult<string> => {
   return useFetcher<string>(getGaugeAddress);
 };
 
-export const useCheddaTotalSupply = (): HookResult<BigNumber> => {
-  return useFetcher<BigNumber>(getCheddaTotalSupply);
+export const useCheddaTotalSupply = (): HookResult<bigint> => {
+  return useFetcher<bigint>(getCheddaTotalSupply);
 };
 
-export const useAllClaimableRewards = (): HookResult<BigNumber[]> => {
-  return useFetcher<BigNumber[]>(getAllClaimableRewards);
+export const useAllClaimableRewards = (): HookResult<bigint[]> => {
+  return useFetcher<bigint[]>(getAllClaimableRewards);
 };
 
 export const usePositionSummary = (): HookResult<IAccountSummary> => {

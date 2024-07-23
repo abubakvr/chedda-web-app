@@ -9,7 +9,7 @@ import { DepositTabInfo } from "../TabInfo";
 import { SelectMenu } from "../SelectMenu";
 import { IToken } from "@/utils/types";
 import { useTransaction } from "@/hooks";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { Toast } from "@/components/ui";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
 import { displayProjectedHealthFactor } from "@/utils/helpers";
@@ -22,12 +22,12 @@ export interface DepositTabProps {
   totalBorrowed: number;
   assetPrice: number;
   tokenValue: number | undefined;
-  allowance: BigNumber | undefined;
-  accountCollateralAmount: BigNumber | undefined;
+  allowance: bigint | undefined;
+  accountCollateralAmount: bigint | undefined;
   totalCollateralValue: number;
-  tokenBalance: BigNumber | undefined;
-  healthFactor: BigNumber | undefined;
-  tokenCollateralValue: BigNumber | undefined;
+  tokenBalance: bigint | undefined;
+  healthFactor: bigint | undefined;
+  tokenCollateralValue: bigint | undefined;
   setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
   fetchAllowance: () => void;
   refreshModal: () => void;
@@ -105,10 +105,7 @@ export const DepositTab = ({
         return alert("Enter valid amount");
       }
 
-      const parsedAmount = ethers.utils.parseUnits(
-        inputAmount.toString(),
-        decimals
-      );
+      const parsedAmount = ethers.parseUnits(inputAmount.toString(), decimals);
       setTxLoading(true);
       setShowToast(false);
       if (inputAmount <= parsedAllowance) {

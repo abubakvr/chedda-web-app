@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { StakingInfoCard } from "../StakingInfoCard";
-import { BigNumber } from "ethers";
+
 import { useStakingContractAddress } from "@/hooks";
 
 jest.mock("../../../../hooks");
@@ -9,7 +9,7 @@ jest.mock("../../../../hooks");
 describe("StakingInfoCard Component", () => {
   beforeEach(() => {
     (useStakingContractAddress as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
   });
@@ -17,10 +17,10 @@ describe("StakingInfoCard Component", () => {
     const props = {
       assetSymbol: "ETH",
       assetDecimals: 18,
-      totalStaked: BigNumber.from("20000000000000000000"),
-      lpStakers: BigNumber.from("130"),
-      lpAssetValue: BigNumber.from("1000000000000000000"),
-      totalSupply: BigNumber.from("100000000000000000000"),
+      totalStaked: BigInt("20000000000000000000"),
+      lpStakers: BigInt("130"),
+      lpAssetValue: BigInt("1000000000000000000"),
+      totalSupply: BigInt("100000000000000000000"),
       lpDecimals: 18,
       lpSymbol: "chETH",
     };

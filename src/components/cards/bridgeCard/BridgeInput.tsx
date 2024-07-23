@@ -112,7 +112,7 @@ export const BridgeInput = ({
         return;
       }
 
-      const amountToSend = ethers.utils.parseUnits(
+      const amountToSend = ethers.parseUnits(
         `${amount}`,
         selectedToken.decimals
       );
@@ -173,7 +173,7 @@ export const BridgeInput = ({
         return;
       }
 
-      const amountToSend = ethers.utils.parseUnits(
+      const amountToSend = ethers.parseUnits(
         `${amount}`,
         selectedToken.decimals
       );

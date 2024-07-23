@@ -79,21 +79,34 @@ const BridgeCard = () => {
   }, [selectedChain, getTokenBalance]);
 
   const getEstimatedGas = useCallback(async () => {
-    const tokenAddress = getTokenBridgeAddress(selectedToken, selectedChain);
-    if (!account) return;
-    const amountToSend = ethers.utils.parseUnits("0", selectedToken.decimals);
+    try {
+      const tokenAddress = getTokenBridgeAddress(selectedToken, selectedChain);
+      if (!account) {
+        console.error("getEstimatedGas: No account");
+        return;
+      }
 
-    const [nativeFee] = await quoteSend(
-      tokenAddress,
-      destinationChain.endpointId,
-      amountToSend
-    );
-    const ethGasPrice = await getEthPrice();
-    const parsedNativeFee = parseBigNumberToFloat(nativeFee, 18, 10);
-    setEstimatedGas({
-      gasETHFee: parsedNativeFee,
-      gasUSDFee: parsedNativeFee * (ethGasPrice || 0),
-    });
+      const amountToSend = ethers.parseUnits("1", selectedToken.decimals);
+
+      const quoteResult = await quoteSend(
+        tokenAddress,
+        destinationChain.endpointId,
+        amountToSend
+      );
+
+      if (quoteResult.length === 0) return;
+
+      const [nativeFee] = quoteResult;
+      const ethGasPrice = await getEthPrice();
+      const parsedNativeFee = parseBigNumberToFloat(nativeFee[0], 18, 10);
+
+      setEstimatedGas({
+        gasETHFee: parsedNativeFee,
+        gasUSDFee: parsedNativeFee * (ethGasPrice || 0),
+      });
+    } catch (error) {
+      console.error("Error estimating gas:", error);
+    }
   }, [
     account,
     selectedToken,

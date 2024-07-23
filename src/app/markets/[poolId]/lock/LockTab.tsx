@@ -18,7 +18,6 @@ import { IToken } from "@/utils/types";
 import { InfoCardSkeleton, SwitchTabSkeleton } from "@/components/ui";
 import { ManageLockCard } from "@/components/modals/manageLockModal/ManageLockModal";
 import { currentEnvironment } from "@/data/environments";
-import { BigNumber } from "ethers";
 
 const LockTab = ({
   asset,
@@ -27,7 +26,7 @@ const LockTab = ({
   fetchCheddaTokenBalance,
 }: {
   asset: IToken | undefined;
-  CheddaTokenBalance: BigNumber | undefined;
+  CheddaTokenBalance: bigint | undefined;
   fetchPoolStats: () => void;
   fetchCheddaTokenBalance: () => void;
 }) => {

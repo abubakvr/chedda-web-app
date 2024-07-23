@@ -1,5 +1,5 @@
 import { Chedda } from "chedda-sdk";
-import { BigNumber, ethers, Signer } from "ethers";
+import { ethers, Signer, ErrorCode } from "ethers";
 import { ISourceChain, IToken, IPositionResponse } from "./types";
 
 export function findNearestIndex(sortedArray: number[], targetNumber: number) {
@@ -48,9 +48,9 @@ export function createTimestamps(interval: number, stamps: number) {
   return timestamps;
 }
 
-export const utilizationsArray: BigNumber[] = Array.from(
+export const utilizationsArray: bigint[] = Array.from(
   { length: 101 },
-  (_, index) => BigNumber.from(BigInt(index) * BigInt(10000000000000000))
+  (_, index) => BigInt(BigInt(index) * BigInt("10000000000000000"))
 );
 
 export function displayProjectedHealthFactor(
@@ -73,32 +73,52 @@ export function displayProjectedHealthFactor(
   }
 }
 
-export function getErrorMessageFromCode(errorCode: string): string {
+export function getErrorMessageFromCode(errorCode: ErrorCode): string {
   switch (errorCode) {
-    case ethers.errors.INVALID_ARGUMENT:
-      return "Invalid argument. Please check your input.";
-
-    case ethers.errors.MISSING_ARGUMENT:
-      return "Missing argument. Please provide all required parameters.";
-
-    case ethers.errors.UNPREDICTABLE_GAS_LIMIT:
-      return "Gas estimation failed. Transaction may fail or require manual gas limit.";
-
-    case ethers.errors.INSUFFICIENT_FUNDS:
-      return "Insufficient funds. Please make sure your account has enough balance.";
-
-    case ethers.errors.NONCE_EXPIRED:
-      return "Nonce expired. The provided transaction nonce is too low.";
-
-    case ethers.errors.REPLACEMENT_UNDERPRICED:
-      return "Replacement transaction gas price is too low.";
-
-    case ethers.errors.ACTION_REJECTED:
-      return "User rejected the transaction.";
-
-    case ethers.errors.CALL_EXCEPTION:
-      return "Exception occurred during contract call.";
-
+    case "UNKNOWN_ERROR":
+      return "An unknown error occurred. Please try again later.";
+    case "NOT_IMPLEMENTED":
+      return "This feature is not implemented yet.";
+    case "UNSUPPORTED_OPERATION":
+      return "The operation is unsupported.";
+    case "NETWORK_ERROR":
+      return "A network error occurred. Please check your connection.";
+    case "SERVER_ERROR":
+      return "The server encountered an error. Please try again later.";
+    case "TIMEOUT":
+      return "The operation timed out. Please try again.";
+    case "BAD_DATA":
+      return "Received bad data. Please check the input and try again.";
+    case "CANCELLED":
+      return "The operation was cancelled.";
+    case "BUFFER_OVERRUN":
+      return "Buffer overrun error. Please try again.";
+    case "NUMERIC_FAULT":
+      return "Numeric fault error. Please check the input values.";
+    case "INVALID_ARGUMENT":
+      return "Invalid argument provided. Please check the input and try again.";
+    case "MISSING_ARGUMENT":
+      return "A required argument is missing. Please check the input and try again.";
+    case "UNEXPECTED_ARGUMENT":
+      return "An unexpected argument was provided. Please check the input and try again.";
+    case "VALUE_MISMATCH":
+      return "Value mismatch error. Please check the input values.";
+    case "CALL_EXCEPTION":
+      return "An exception occurred during the call. Please try again.";
+    case "INSUFFICIENT_FUNDS":
+      return "Insufficient funds to complete the operation.";
+    case "NONCE_EXPIRED":
+      return "The nonce has expired. Please try again.";
+    case "REPLACEMENT_UNDERPRICED":
+      return "Replacement transaction underpriced. Please check the gas price.";
+    case "TRANSACTION_REPLACED":
+      return "The transaction was replaced by another transaction.";
+    case "UNCONFIGURED_NAME":
+      return "The name is unconfigured. Please check the configuration.";
+    case "OFFCHAIN_FAULT":
+      return "An offchain fault occurred. Please try again.";
+    case "ACTION_REJECTED":
+      return "The action was rejected.";
     default:
       return `Unknown error with code ${errorCode}.`;
   }
@@ -129,16 +149,16 @@ export const getPoolInstance = async (
   signer: Signer | undefined,
   poolType: "lendingPool" | "stakingPool" | "cheddaLockingGauge"
 ): Promise<any> => {
-  const lendingPool = chedda.lendingPool(poolId, signer as Signer);
+  const lendingPool = chedda.lendingPool(poolId, signer as any);
   switch (poolType) {
     case "lendingPool":
       return lendingPool;
     case "stakingPool":
       const stakePoolContract = await lendingPool.stakePool();
-      return chedda.stakingPool(stakePoolContract, signer as Signer);
+      return chedda.stakingPool(stakePoolContract, signer as any);
     case "cheddaLockingGauge":
       const gaugeAddress = await lendingPool.gauge();
-      return chedda.cheddaLockingGauge(gaugeAddress, signer as Signer);
+      return chedda.cheddaLockingGauge(gaugeAddress, signer as any);
     default:
       throw new Error("Invalid pool type");
   }

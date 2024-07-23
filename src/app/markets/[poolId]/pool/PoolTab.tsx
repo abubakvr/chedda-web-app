@@ -6,7 +6,6 @@ import {
   formatCollateralInfo,
 } from "@/utils/formatResponse";
 import {
-  useAccountInfo,
   useMarketInfo,
   useCollateralInfo,
   useAvailableLiquidity,

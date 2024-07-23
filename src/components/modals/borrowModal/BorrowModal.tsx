@@ -10,7 +10,6 @@ import {
   useTokenCollateralValue,
   useTokenValue,
 } from "@/hooks";
-import { BigNumber } from "ethers";
 
 export interface BorrowModalProps {
   asset: IToken;
@@ -19,7 +18,7 @@ export interface BorrowModalProps {
   assetPrice: number;
   totalBorrowed: number;
   totalCollateralValue: number;
-  availableLiquidity: BigNumber | undefined;
+  availableLiquidity: bigint | undefined;
   onClose: () => void;
   fetchPoolInfo: () => void;
   openSupplyModal: (activeTab: "Deposit" | "Withdraw") => void;

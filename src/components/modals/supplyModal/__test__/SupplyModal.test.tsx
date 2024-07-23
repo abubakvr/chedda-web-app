@@ -5,7 +5,6 @@ import {
   waitFor,
   act,
 } from "@testing-library/react";
-import { BigNumber, utils } from "ethers";
 import { StaticImageData } from "next/image";
 import { SupplyModal } from "../SupplyModal";
 import {
@@ -17,9 +16,11 @@ import {
 } from "@/hooks";
 
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
+import { ethers } from "ethers";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks");
+jest.mock("chedda-sdk");
 
 const mockAsset = {
   name: "Token3",
@@ -34,10 +35,10 @@ const mockProps = {
   asset: mockAsset,
   assetPrice: 100,
   isOpen: true,
-  tokenBalance: BigNumber.from(utils.parseEther("100")),
+  tokenBalance: BigInt("100"),
   baseSupplyAPY: "5%",
-  supplied: BigNumber.from(utils.parseEther("50")),
-  available: BigNumber.from(utils.parseEther("30")),
+  supplied: BigInt("50"),
+  available: BigInt("30"),
   onClose: jest.fn(),
   fetchPoolInfo: jest.fn(),
   setActivePoolTab: jest.fn(),

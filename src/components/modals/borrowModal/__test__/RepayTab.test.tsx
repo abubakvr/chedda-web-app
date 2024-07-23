@@ -6,8 +6,6 @@ import { StaticImageData } from "next/image";
 import { useTransaction } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
-import { BigNumber } from "ethers";
-
 jest.mock("@web3-react/core", () => ({
   ...jest.requireActual("@web3-react/core"),
   useWeb3React: jest.fn(() => ({
@@ -31,18 +29,18 @@ const mockProps: RepayTabProps = {
     logo: {} as StaticImageData,
     color: "#ffffff",
   },
-  accountCollateralAmount: BigNumber.from("50000000000000000000000"),
+  accountCollateralAmount: BigInt("50000000000000000000000"),
   totalCollateralValue: 1000,
-  healthFactor: BigNumber.from("39000000000000000"),
+  healthFactor: BigInt("39000000000000000"),
   tokenValue: 1000,
   fetchAllowance: jest.fn(),
   refreshModal: jest.fn(),
   assetPrice: 100,
-  allowance: BigNumber.from("390000000000000000000000000000000000"),
-  tokenBalance: BigNumber.from("3900000000000000000000000000000000000000"),
-  tokenCollateralValue: BigNumber.from("39000000000000000000000"),
+  allowance: BigInt("390000000000000000000000000000000000"),
+  tokenBalance: BigInt("3900000000000000000000000000000000000000"),
+  tokenCollateralValue: BigInt("39000000000000000000000"),
   totalBorrowed: 1000,
-  availableLiquidity: BigNumber.from("390000000000000000000"),
+  availableLiquidity: BigInt("390000000000000000000"),
 };
 const mockRepayAsset = jest.fn().mockResolvedValue({ hash: "0x00" });
 JSON.parse = jest.fn().mockReturnValue({

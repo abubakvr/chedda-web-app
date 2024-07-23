@@ -6,14 +6,14 @@ import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { IPoolStatsResponse } from "@/utils/types";
 import { InfoCardSkeleton } from "@/components/ui";
 import { BorrowModal, SupplyModal } from "@/components/modals";
-import { BigNumber } from "ethers";
+
 import { Button } from "@/components/common";
 import { currentEnvironment } from "@/data/environments";
 
 interface MyInformationCardProps {
   poolStats: IPoolStatsResponse | undefined;
   accountInfo: IAccountInfo | undefined;
-  available: BigNumber | undefined;
+  available: bigint | undefined;
   isLoading: boolean;
   assetPrice: number;
   fetchPoolInfo: () => void;

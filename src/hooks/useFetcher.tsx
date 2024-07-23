@@ -11,6 +11,7 @@ import { useWeb3React } from "@web3-react/core";
 import { useParams, usePathname } from "next/navigation";
 import { GetDataFunction } from "@/utils/types";
 import { currentEnvironment } from "@/data/environments";
+import { useSigner } from "@/hooks";
 
 export const useFetcher = <T = any,>(
   getData: GetDataFunction<T>,
@@ -18,10 +19,11 @@ export const useFetcher = <T = any,>(
   decimals?: number
 ) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { chedda, signer } = useCheddaSdk();
+  const { chedda } = useCheddaSdk();
   const pathname = usePathname();
   const { account } = useWeb3React();
   const { poolId } = useParams();
+  const { signer } = useSigner();
 
   const strPoolId = poolId?.toString();
   const hookName = getData.name;

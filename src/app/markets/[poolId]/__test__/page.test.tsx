@@ -43,7 +43,7 @@ import {
   mockPoolStateEvents,
   mockPoolStats,
 } from "@/utils/Mocks/MockTestData";
-import { BigNumber } from "ethers";
+
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("ethers");
@@ -78,15 +78,15 @@ describe("Pool details component", () => {
       data: mockInterestRates,
     });
     (useStakingBalance as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useLpTokenBalance as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useLpAllowance as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTokenValue as jest.Mock).mockReturnValue({
@@ -98,7 +98,7 @@ describe("Pool details component", () => {
       isLoading: false,
     });
     (useLpAssetValue as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useLpSymbol as jest.Mock).mockReturnValue({
@@ -106,59 +106,59 @@ describe("Pool details component", () => {
       isLoading: false,
     });
     (useCheddaBalance as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTotalStaked as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useLpStakers as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useClaimableStakeRewards as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTotalSupply as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useStakingContractAddress as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTokenPrice as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useCheddaAllowance as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useLockedChedda as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTotalWeight as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTotalWeightSum as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTotalAmountLocked as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useClaimableLockRewards as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useGaugeAddress as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
     (useTransaction as jest.Mock).mockImplementation(() => ({
@@ -196,7 +196,7 @@ describe("Pool details component", () => {
       isLoading: false,
     }));
     (useAvailableLiquidity as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
 

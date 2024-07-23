@@ -3,7 +3,6 @@ import { HeaderComponent } from "../Header";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 import { usePathname } from "next/navigation";
 import { useCheddaBalance } from "@/hooks";
-import { BigNumber } from "ethers";
 
 jest.mock("../../../hooks");
 jest.mock("next/navigation");
@@ -11,7 +10,7 @@ describe("HeaderComponent", () => {
   beforeEach(() => {
     (usePathname as jest.Mock).mockImplementation(() => "/home");
     (useCheddaBalance as jest.Mock).mockReturnValue({
-      data: BigNumber.from("1000"),
+      data: BigInt("1000"),
       isLoading: false,
     });
   });

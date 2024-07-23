@@ -1,5 +1,4 @@
 import React from "react";
-import { BigNumber } from "ethers";
 import { ConnectWalletBox } from "./ConnectWalletBox";
 import { usePositionSummary } from "@/hooks";
 import {
@@ -28,7 +27,7 @@ export const PositionSummary = ({
   const { netValue, suppliedValue, borrowedValue, lockedValue } =
     positionSummary || {};
 
-  const parseValue = (value: BigNumber | undefined) =>
+  const parseValue = (value: bigint | undefined) =>
     parseBigNumberToFloat(value, 18, 5);
 
   const parsedNetValue = parseValue(netValue);

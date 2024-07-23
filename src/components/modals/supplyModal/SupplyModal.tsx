@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useState,
 } from "react";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import {
   useAllowance,
   useAssetBalance,
@@ -28,10 +28,10 @@ interface SupplyModalProps {
   asset: IToken;
   assetPrice: number;
   isOpen: boolean;
-  tokenBalance: BigNumber | undefined;
+  tokenBalance: bigint | undefined;
   baseSupplyAPY: string | number;
-  supplied: BigNumber | undefined;
-  available: BigNumber | undefined;
+  supplied: bigint | undefined;
+  available: bigint | undefined;
   defaultTab?: string | null;
   onClose: () => void;
   fetchPoolInfo: () => void;
@@ -136,7 +136,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
 
       setTxLoading(true);
       setShowToast(false);
-      const parsedAmount = ethers.utils.parseUnits(
+      const parsedAmount = ethers.parseUnits(
         supplyAmount.toString(),
         asset.decimals
       );
@@ -245,7 +245,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     }
     setTxLoading(true);
     setShowToast(false);
-    const parsedAmount = ethers.utils.parseUnits(
+    const parsedAmount = ethers.parseUnits(
       withdrawAmount.toString(),
       asset.decimals
     );

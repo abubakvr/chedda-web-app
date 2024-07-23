@@ -9,7 +9,7 @@ import {
 } from "@testing-library/react";
 import { BorrowTab, BorrowTabProps } from "../Tabs";
 import { StaticImageData } from "next/image";
-import { BigNumber } from "ethers";
+
 import { useTransaction } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
@@ -37,16 +37,16 @@ const mockProps: BorrowTabProps = {
     logo: {} as StaticImageData,
     color: "#ffffff",
   },
-  accountCollateralAmount: BigNumber.from("50000000000000000000000"),
+  accountCollateralAmount: BigInt("50000000000000000000000"),
   totalCollateralValue: 50000000000000000000000,
-  healthFactor: BigNumber.from("39000000000000000"),
+  healthFactor: BigInt("39000000000000000"),
   tokenValue: 1000,
   fetchAllowance: jest.fn(),
   refreshModal: jest.fn(),
   assetPrice: 100,
-  tokenCollateralValue: BigNumber.from("390"),
+  tokenCollateralValue: BigInt("390"),
   totalBorrowed: 1000,
-  availableLiquidity: BigNumber.from("390000000000000000000"),
+  availableLiquidity: BigInt("390000000000000000000"),
 };
 
 const mockBorrowAsset = jest.fn().mockResolvedValue({ hash: "0x00" });
