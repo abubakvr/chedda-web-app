@@ -14,7 +14,6 @@ import {
 } from "@/utils/formatters";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { MobileVaultItem } from "./MobileVaultItem";
-import useScrollRestoration from "@/hooks/useScrollRestoration";
 
 const poolFilters = [
   { keyword: "Stable Coin", icon: stableIcon },
