@@ -40,17 +40,17 @@ export const SummaryCard = ({ stats, isLoading }: SummaryCardProps) => {
   return (
     <div
       data-testid="summary-card"
-      className="w-full flex flex-row flex-wrap gap-4"
+      className="w-full grid grid-cols-3 lg:flex flex-row flex-wrap gap-4"
     >
       {stats?.map((item, index) => (
         <div
           key={index}
-          className="w-max flex-grow summary-card rounded-lg text-white p-4 sm:p-6 xl:p-8 flex flex-col justify-center"
+          className="md:w-full lg:w-max flex-grow summary-card rounded-lg text-white p-4 sm:p-6 lg:p-4 xl:p-8 flex flex-col justify-center"
         >
-          <div className="flex flex-col gap-y-1">
+          <div className="flex flex-col">
             <div
               data-testid="summary-title"
-              className="text-white opacity-50 font-open-sans text-xs font-semibold leading-6 tracking-wide"
+              className="text-white opacity-50 font-open-sans md:text-[10px] xl:text-xs font-semibold leading-6 tracking-wide"
             >
               {item.title}
             </div>
@@ -59,7 +59,7 @@ export const SummaryCard = ({ stats, isLoading }: SummaryCardProps) => {
                 data-testid="summary-value"
                 className={`${
                   index >= 4 && "card-gradient-text font-bold"
-                } text-white font-open-sans text-2xl font-bold leading-7 tracking-wide`}
+                }  xl:mt-2 text-white font-open-sans md:text-lg lg:text-xl xl:text-2xl font-bold tracking-wide`}
               >
                 {item.value}
               </div>

@@ -19,6 +19,10 @@ import gameFiIconActive from "@/assets/icon/gameFi-active.svg";
 import bluechipIcon from "@/assets/icon/bluechip.svg";
 import bluechipIconActive from "@/assets/icon/bluechip-active.svg";
 
+import TwitterIcon from "@/assets/icon/twitter-icon.svg";
+import DiscordIcon from "@/assets/icon/discord-icon.svg";
+import DocumentIcon from "@/assets/icon/document-icon.svg";
+
 export const infuraKey = process.env.NEXT_PUBLIC_INFURA_KEY;
 export const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_KEY;
 
@@ -108,7 +112,8 @@ export const poolCategories: IPoolCategory[] = [
     itemCount: 0,
     icon: stackIcon,
     activeIcon: stackIconActive,
-    activeClass: "filter-box border-none px-[13px] h-[37px] bg-[#51D5FA12]",
+    activeClass:
+      "filter-box border-none px-[13px] h-7 md:h-8 lg:h-[37px] bg-[#51D5FA12]",
     hoverClass: "hover:border-[#51D5FA] hover:bg-[#51D5FA12]",
   },
   {
@@ -117,7 +122,8 @@ export const poolCategories: IPoolCategory[] = [
     itemCount: 0,
     icon: stableIcon,
     activeIcon: stableIconActive,
-    activeClass: "border-[#C142F0] bg-[#2D142D68] h-9 px-3",
+    activeClass:
+      "border-[#C142F0] bg-[#2D142D68] md:px-1 py-1 h-7 md:h-8 lg:h-9 ",
     hoverClass: "hover:border-[#C142F0] hover:bg-[#2D142D68]",
   },
   {
@@ -126,7 +132,8 @@ export const poolCategories: IPoolCategory[] = [
     itemCount: 0,
     icon: deFiIcon,
     activeIcon: deFiIconActive,
-    activeClass: "border-[#F89F1A] bg-[#2C1C0464] h-9 px-3",
+    activeClass:
+      "border-[#F89F1A] bg-[#2C1C0464] md:px-1 py-1 h-7 md:h-8 lg:h-9 ",
     hoverClass: "hover:border-[#F89F1A] hover:bg-[#2C1C0464]",
   },
   {
@@ -135,7 +142,8 @@ export const poolCategories: IPoolCategory[] = [
     itemCount: 0,
     icon: gameFiIcon,
     activeIcon: gameFiIconActive,
-    activeClass: "border-[#66DBBB] bg-[#142E2664] h-9 px-3",
+    activeClass:
+      "border-[#66DBBB] bg-[#142E2664] md:px-1 py-1 h-7 md:h-8 lg:h-9 ",
     hoverClass: "hover:border-[#66DBBB] hover:bg-[#142E2664]",
   },
   {
@@ -144,7 +152,8 @@ export const poolCategories: IPoolCategory[] = [
     itemCount: 0,
     icon: bluechipIcon,
     activeIcon: bluechipIconActive,
-    activeClass: "border-[#00F0FF] bg-[#01212864] h-9 px-3",
+    activeClass:
+      "border-[#00F0FF] bg-[#01212864] md:px-1 py-1 h-7 md:h-8 lg:h-9 ",
     hoverClass: "hover:border-[#00F0FF] hover:bg-[#01212864]",
   },
 ];
@@ -157,3 +166,9 @@ export const poolFilters: IPoolCategories = {
     categories: ["defi"],
   },
 };
+
+export const moreMenuItems = [
+  { label: "Docs", url: DOCS_URL, icon: DocumentIcon },
+  { label: "Discord", url: DISCORD_URL, icon: DiscordIcon },
+  { label: "Twitter", url: TWITTER_URL, icon: TwitterIcon },
+];
