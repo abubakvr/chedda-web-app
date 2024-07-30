@@ -55,7 +55,10 @@ export const CollateralInfoChart = ({
   }, [collateralInfo]);
 
   return (
-    <div className="w-36 h-36 relative" data-testid="chart-container">
+    <div
+      className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 xl:w-36 xl:h-36 relative"
+      data-testid="chart-container"
+    >
       <canvas ref={chartContainer} data-testid="collateral-info-chart"></canvas>
     </div>
   );

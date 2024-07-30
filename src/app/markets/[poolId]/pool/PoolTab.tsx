@@ -70,10 +70,10 @@ const PoolTab = ({
 
   return (
     <div
-      className="mt-8 w-full flex space-x-5"
+      className="mt-6 lg:mt-8 w-full flex flex-col-reverse lg:flex-row lg:space-x-5"
       data-testid="pool-tab-container"
     >
-      <div className="w-[67%] h-fit flex flex-col gap-y-6">
+      <div className="w-full lg:w-[67%] h-fit flex flex-col gap-y-6 mt-6 lg:mt-0">
         <div className="pool-card rounded-lg">
           <CollateralInfoCard
             collateralInfo={collateralInfo}
@@ -95,8 +95,8 @@ const PoolTab = ({
           <InterestRatesChart />
         </div>
       </div>
-      <div className="w-[33%] text-white flex flex-col gap-y-6">
-        <div className="pool-card rounded-lg">
+      <div className="w-full lg:w-[33%] text-white flex flex-col md:flex-row-reverse justify-between lg:justify-start gap-x-6 lg:md:gap-x-0 lg:flex-col gap-y-6">
+        <div className="pool-card rounded-lg w-full">
           <MyInformationCard
             poolStats={poolStats}
             accountInfo={accountInfo}
@@ -107,7 +107,7 @@ const PoolTab = ({
             setActivePoolTab={setActivePoolTab}
           />
         </div>
-        <div className="pool-card rounded-lg z-5">
+        <div className="pool-card rounded-lg z-5 w-full">
           <MarketInfoCard
             poolStats={poolStats}
             marketInfo={marketInfo}

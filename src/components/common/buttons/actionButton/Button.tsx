@@ -12,7 +12,7 @@ interface ButtonProps {
   children: ReactNode;
   type: "primary" | "secondary" | "tertiary";
   className?: string;
-  size?: "small" | "large";
+  size?: "mobile" | "small" | "large";
   isLoading?: boolean;
   disabled?: boolean;
   onClick: () => void;
@@ -93,14 +93,18 @@ export const Button: FC<ButtonProps> = ({
         data-testid="custom-button"
         className={`${
           type === "primary"
-            ? "primary-button text-xl uppercase"
+            ? "primary-button text-sm xl:text-xl uppercase"
             : type === "secondary"
-              ? "secondary-button button-gradient-text text-xl uppercase"
+              ? "secondary-button button-gradient-text text-sm xl:text-xl uppercase"
               : type === "tertiary"
                 ? "modal-button"
                 : ""
         } w-full text-center ${
-          size === "large" ? "h-[56px]" : size === "small" ? "h-12" : ""
+          size === "large"
+            ? "h-8 lg:h-10 xl:h-[56px]"
+            : size === "small"
+              ? "h-8 lg:h-10 xl:h-12"
+              : size === "mobile" && "h-9 text-sm"
         } items-center rounded-lg text-white text-opacity-100 ${
           isLoading || disabled
             ? "opacity-50 hover:opacity-50"

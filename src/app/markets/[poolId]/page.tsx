@@ -86,13 +86,18 @@ const Page = () => {
         className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto pb-10"
         data-testid="pool-container"
       >
-        <div className="my-7">
+        <div className="mt-4 lg:mt-7 mb-6 lg:mb-7">
           <SummaryHeader
             asset={poolStats?.asset}
             poolName={poolStats?.characterization}
           />
         </div>
-        <SummaryCard stats={poolSummary} isLoading={!poolStats || isLoading} />
+        <div className="hidden md:flex">
+          <SummaryCard
+            stats={poolSummary}
+            isLoading={!poolStats || isLoading}
+          />
+        </div>
         <RouteCard
           setActiveTab={setActiveTab}
           activeTab={activeTab}

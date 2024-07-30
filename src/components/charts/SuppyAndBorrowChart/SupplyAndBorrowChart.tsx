@@ -101,8 +101,8 @@ export const SuppyAndBorrowChart = ({
         data-testid="loading-container"
         className="w-full h-72 items-center justify-center"
       >
-        <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">
-          <div className="text-white text-opacity-50 font-bold text-sm uppercase">
+        <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 xl:px-8 h-11 xl:h-[50px] items-center">
+          <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-xs xl:text-sm uppercase">
             Total Supply and Borrow
           </div>
         </div>
@@ -118,12 +118,12 @@ export const SuppyAndBorrowChart = ({
 
   return (
     <div data-testid="supply-borrow-chart">
-      <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">
-        <div className="text-white text-opacity-50 font-bold text-sm uppercase">
+      <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 xl:px-8 h-11 xl:h-[50px] items-center">
+        <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-xs xl:text-sm uppercase">
           Total Supply and Borrow
         </div>
       </div>
-      <div className="mt-6 pl-7 pr-8" style={{ height: "170px" }}>
+      <div className="mt-6 pl-2 md:pl-4 xl:pl-7 pr-8 h-[90px] md:h-[110px] xl:h-[170px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <YAxis
@@ -159,7 +159,7 @@ export const SuppyAndBorrowChart = ({
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <div className="mt-3" style={{ height: "140px" }}>
+      <div className="mt-3 h-24 md:h-[110px] xl:h-[140px]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ left: 50, top: 0, bottom: 0 }}>
             <XAxis
