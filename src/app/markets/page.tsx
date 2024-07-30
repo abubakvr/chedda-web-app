@@ -1,11 +1,19 @@
-"use client";
 import React from "react";
 import { VaultCard, SummaryCard } from "@/components/cards";
-import { useAggregateStats } from "@/hooks";
 import { PageTitle } from "@/components/common";
+import { useMarkets } from "@/hooks/useMarkets";
 
-const Page = () => {
-  const { data: aggregateStats, isLoading } = useAggregateStats();
+const Page = async ({
+  searchParams,
+}: {
+  searchParams: { q: string; filter: string };
+}) => {
+  const query = searchParams.q ?? "";
+  const filter = searchParams.filter ?? "";
+
+  const { getAggregateStats, getPoolStatsList } = useMarkets();
+  const aggregateStats = await getAggregateStats();
+  const poolStatsList = await getPoolStatsList();
 
   return (
     <div
@@ -18,12 +26,17 @@ const Page = () => {
       <div className="mt-6">
         <SummaryCard
           stats={aggregateStats}
-          isLoading={isLoading}
+          isLoading={false}
           data-testid="market-info-card"
         />
       </div>
       <div className="mt-6" data-testid="vault-card-container">
-        <VaultCard data-testid="vault-card" />
+        <VaultCard
+          data-testid="vault-card"
+          poolStatsList={poolStatsList}
+          query={query}
+          filter={filter}
+        />
       </div>
     </div>
   );

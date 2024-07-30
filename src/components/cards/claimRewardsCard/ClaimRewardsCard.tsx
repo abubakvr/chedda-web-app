@@ -1,4 +1,5 @@
-import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
+"use client";
+import React, { Dispatch, SetStateAction, useState } from "react";
 
 import { useTokenPrice, useTransaction } from "@/hooks";
 import {

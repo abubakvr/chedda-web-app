@@ -30,24 +30,6 @@ const moreDropdownItems = [
   { label: "Twitter", url: TWITTER_URL, icon: TwitterIcon },
 ];
 
-const navMenuItems = [
-  {
-    label: "Docs",
-    url: "https://docs.chedda.finance",
-    icon: DocumentIcon,
-  },
-  {
-    label: "Discord",
-    url: "https://discord.gg/4ZMWVez73A",
-    icon: DiscordIcon,
-  },
-  {
-    label: "Twitter",
-    url: "https://twitter.com/chedda_crypto",
-    icon: TwitterIcon,
-  },
-];
-
 export const HeaderComponent: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);

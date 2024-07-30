@@ -5,7 +5,6 @@ import React from "react";
 export const MobileVaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
   return (
     <div
-      onClick={() => {}}
       data-testid="mobile-vault-item"
       className="h-auto w-full rounded-lg mt-2 px-8 py-5 card-bg text-white hover:opacity-80 cursor-pointer md:hidden"
     >
