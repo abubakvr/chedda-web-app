@@ -13,7 +13,6 @@ import {
   formatLargeNumber,
 } from "@/utils/formatters";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
-import { MobileVaultItem } from "./MobileVaultItem";
 
 const poolFilters = [
   { keyword: "Stable Coin", icon: stableIcon },
@@ -32,39 +31,45 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
       <Link href={`/markets/${pool.pool}`} passHref prefetch={true}>
         <div
           data-testid="vault-item"
-          className="market-card pool-card rounded-lg w-full px-7 py-5 text-white hover:opacity-90 cursor-pointer p-6 transition-all"
+          className="market-card pool-card rounded-lg w-full xl:px-7 xl:py-5 text-white hover:opacity-90 cursor-pointer p-4 xl:p-6 transition-all"
         >
           <div className="flex justify-between">
             <div className="flex items-center gap-x-2">
               <div className="flex relative">
                 <Image
                   src={pool.asset?.logo}
-                  className="h-10 w-10 round-image"
+                  className="w-8 h-8 xl:h-10 xl:w-10 round-image"
                   alt={pool.asset?.symbol}
                   data-testid="asset-name"
                 />
                 <Image
                   src={pool.asset?.sourceLogo}
                   alt="icon image"
-                  className="absolute w-[18px] h-[18px] top-0 left-0"
+                  className="absolute w-[14px] h-[14px] xl:w-[18px] xl:h-[18px] top-0 left-0"
                 />
               </div>
               <div
-                className="tracking-widest text-lg font-bold"
+                className="tracking-widest text-xs xl:text-lg font-bold"
                 data-testid="asset-symbol"
               >
                 {pool.asset?.symbol}
               </div>
-              <div className="defi-box uppercase h-6 w-20 flex items-center justify-center text-[10px] font-bold">
+              <div className="defi-box uppercase h-5 xl:h-6 w-16 xl:w-20 flex items-center justify-center text-[8px] md:text-[10px] font-bold">
                 {pool.characterization}
               </div>
             </div>
             <div>
-              <Image src={itemFilter?.icon} alt="characterization" />
+              <Image
+                src={itemFilter?.icon}
+                alt="characterization"
+                className="w-6 h-6 xl:w-8 xl:h-8"
+              />
             </div>
           </div>
           <div className="mt-4">
-            <p className="text-xs text-[#FFFFFF70]">Collateral</p>
+            <p className="text-[10px] lg:text-xs text-[#FFFFFF70]">
+              Collateral
+            </p>
             <div className="flex gap-x-3 items-center">
               <div className="flex w-max mt-2 ml-1">
                 {pool.collaterals?.map((collateral: IToken, i: number) => {
@@ -75,26 +80,26 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                     >
                       <Image
                         src={collateral?.logo}
-                        className="h-10 w-10 round-image"
+                        className="w-8 h-8 xl:h-10 xl:w-10 round-image"
                         alt={collateral?.symbol}
                         data-testid="collateral-logo"
                       />
                       <Image
                         src={collateral.sourceLogo}
                         alt="icon image"
-                        className="absolute w-[18px] h-[18px] top-0 left-0"
+                        className="absolute w-[14px] h-[14px] xl:w-[18px] xl:h-[18px] top-0 left-0"
                       />
                     </div>
                   );
                 })}
               </div>
               <div
-                className={`w-full font-bold flex flex-wrap gap-x-1 text-ellipsis overflow-hidden`}
+                className={`w-full font-bold flex flex-wrap gap-x-1 items-center text-ellipsis overflow-hidden`}
                 data-testid="collaterals-list"
               >
                 {pool.collaterals?.map((collateral: IToken, i: number) => (
                   <div
-                    className="flex text-sm font-bold justify-start items-start text-ellipsis"
+                    className="flex text-xs lg:text-sm font-bold justify-start items-center text-ellipsis"
                     key={i}
                   >
                     {collateral?.symbol}
@@ -108,17 +113,21 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           <div className="grid grid-cols-2">
             <div className="colspan-1">
               <div>
-                <p className="text-xs text-[#FFFFFF70]">Supply APR</p>
-                <div className="mt-2 text-lg flex items-center space-x-1 font-bold">
+                <p className="text-[10px] xl:text-xs text-[#FFFFFF70]">
+                  Supply APR
+                </p>
+                <div className="mt-2 text-sm xl:text-lg flex items-center space-x-1 font-bold">
                   <div data-testid="max-supply-apy">
                     {formatAsPercentage(pool.maxSupplyAPY)}
                   </div>
                   <Image src={InfoIcon} className="w-3 h-3" alt="Info Icon" />
                 </div>
               </div>
-              <div className="mt-6">
-                <p className="text-xs text-[#FFFFFF70]">Supplied</p>
-                <div className="mt-2 text-lg items-center font-bold">
+              <div className="mt-4 md:mt-6">
+                <p className="text-[10px] xl:text-xs text-[#FFFFFF70]">
+                  Supplied
+                </p>
+                <div className="mt-2 text-sm xl:text-lg items-center font-bold">
                   <div data-testid="supplied">
                     {formatLargeNumber(pool.supplied)} {pool.asset?.symbol}
                   </div>
@@ -130,9 +139,11 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                   </div>
                 </div>
               </div>
-              <div className="mt-6">
-                <p className="text-xs text-[#FFFFFF70]">Utilization</p>
-                <div className="mt-2 text-lg flex items-center font-bold">
+              <div className="mt-4 md:mt-6">
+                <p className="text-[10px] xl:text-xs text-[#FFFFFF70]">
+                  Utilization
+                </p>
+                <div className="mt-2 text-sm xl:text-lg flex items-center font-bold">
                   <div data-testid="utilization">
                     {formatAsPercentage(pool.utilization)}
                   </div>
@@ -141,17 +152,21 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
             </div>
             <div className="colspan-1">
               <div>
-                <p className="text-xs text-[#FFFFFF70]">Borrow APR</p>
-                <div className="mt-2 text-lg flex items-center space-x-1 font-bold">
+                <p className="text-[10px] xl:text-xs text-[#FFFFFF70]">
+                  Borrow APR
+                </p>
+                <div className="mt-2 text-sm xl:text-lg flex items-center space-x-1 font-bold">
                   <div data-testid="max-borrow-apy">
                     {formatAsPercentage(pool.maxBorrowAPY)}
                   </div>
                   <Image src={InfoIcon} className="w-3 h-3" alt="Info Icon" />
                 </div>
               </div>
-              <div className="mt-6">
-                <p className="text-xs text-[#FFFFFF70]">Borrowed</p>
-                <div className="mt-2 text-lg items-center font-bold7tt ">
+              <div className="mt-4 md:mt-6">
+                <p className="text-[10px] xl:text-xs text-[#FFFFFF70]">
+                  Borrowed
+                </p>
+                <div className="mt-2 text-sm lg:text-lg items-center font-bold">
                   <div data-testid="borrowed">
                     {formatLargeNumber(pool.borrowed)} {pool.asset?.symbol}
                   </div>
@@ -163,9 +178,11 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                   </div>
                 </div>
               </div>
-              <div className="mt-6">
-                <p className="text-xs text-[#FFFFFF70]">Rewards APR</p>
-                <div className="mt-2 text-lg flex items-center space-x-1 font-bold card-gradient-text ">
+              <div className="mt-4 md:mt-6">
+                <p className="text-[10px] xl:text-xs text-[#FFFFFF70]">
+                  Rewards APR
+                </p>
+                <div className="mt-2 text-sm xl:text-lg flex items-center space-x-1 font-bold card-gradient-text ">
                   <div data-testid="rewards">
                     {formatAsPercentage(pool.rewardsAPY)}
                   </div>
@@ -180,7 +197,6 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           </div>
         </div>
       </Link>
-      <MobileVaultItem pool={pool} />
     </React.Fragment>
   );
 };

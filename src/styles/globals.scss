@@ -588,3 +588,44 @@ input:checked + .slider:before {
   background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
   transition: opacity 0.7s ease; /* Smooth transition for the hover effect */
 }
+
+/* In your CSS file or <style> tag */
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Hide scrollbar in Chrome, Safari and Opera */
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+.mobile-nav {
+  background: radial-gradient(
+    59.97% 59.97% at 50% 48.72%,
+    #1d123a 0%,
+    #030303 100%
+  );
+}
+
+.slideOut,
+.slide-left {
+  animation: slideLeft 0.3s ease-out;
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}

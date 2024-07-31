@@ -3,15 +3,10 @@ import "@/styles/pacman-loader.scss";
 
 export const PacmanLogo = () => {
   return (
-    <div
-      className="absolute justify-center pacman-logo"
-      data-testid="pacman-logo"
-    >
-      <div className="logo">
+    <div className="pacman-logo" data-testid="pacman-logo">
+      <div className="logo w-[10px] h-[10px] md:w-[8px] md:h-[8px] lg:w-[10px] lg:h-[10px]">
         <svg
           data-testid="logo-svg"
-          width="10"
-          height="10"
           viewBox="0 0 32 32"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -22,11 +17,23 @@ export const PacmanLogo = () => {
           />
         </svg>
       </div>
-      <div className="flex ml-2 space-x-2">
-        <div className="circle-pac" data-testid="circle-pac"></div>
-        <div className="circle-pac" data-testid="circle-pac"></div>
-        <div className="circle-pac" data-testid="circle-pac"></div>
-        <div className="circle-pac" data-testid="circle-pac"></div>
+      <div className="flex ml-1 lg:ml-2 space-x-2 md:space-x-1 lg:space-x-1.5">
+        <div
+          className="circle-pac w-[4px] h-[4px] md:w-[3px] md:h-[3px] lg:w-[4px] lg:h-[4px]"
+          data-testid="circle-pac"
+        ></div>
+        <div
+          className="circle-pac w-[4px] h-[4px] md:w-[3px] md:h-[3px] lg:w-[4px] lg:h-[4px]"
+          data-testid="circle-pac"
+        ></div>
+        <div
+          className="circle-pac w-[4px] h-[4px] md:w-[3px] md:h-[3px] lg:w-[4px] lg:h-[4px]"
+          data-testid="circle-pac"
+        ></div>
+        <div
+          className="circle-pac w-[4px] h-[4px] md:w-[3px] md:h-[3px] lg:w-[4px] lg:h-[4px] md:hidden lg:flex"
+          data-testid="circle-pac"
+        ></div>
       </div>
     </div>
   );

@@ -96,11 +96,11 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
         >
           <button
             onClick={openProfileMenu}
-            className="h-10 sm:h-10 xl:h-12 w-40 sm:w-40 px-2 rounded-lg text-sm account_button flex justify-evenly items-center hover:opacity-90 font-bold"
+            className="h-8 w-28 lg:h-10 xl:h-12 lg:w-36 xl:w-40 p-2 px-1 rounded-md md:rounded-lg text-[8px] lg:text-sm account_button flex justify-evenly items-center hover:opacity-90 font-bold"
             data-testid="profile-menu-button"
           >
-            <div className="rounded-full w-7 h-7 flex items-center">
-              <Blockie accountAddress={account} />
+            <div className="rounded-full h-4 w-4 lg:w-7 lg:h-7 flex items-center">
+              <Blockie accountAddress={account} size={7} />
             </div>
             <div data-testid="profile-menu-address">
               {account?.substring(0, 6)}...
@@ -110,9 +110,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
               <Image
                 src={ArrowDown}
                 alt="Arrow"
-                className="w-2.5 h-2.5"
-                width={10}
-                height={10}
+                className="w-2 h-2 lg:w-2.5 lg:h-2.5"
               />
             </div>
           </button>

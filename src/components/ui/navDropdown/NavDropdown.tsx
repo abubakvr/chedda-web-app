@@ -35,7 +35,7 @@ export const NavDropdown: React.FC<DropdownMenuProps> = ({ menuItems }) => {
         onClick={() => setOpenMoreMenu(!openMoreMenu)}
       >
         <span className="flex items-center gap-x-1.5 hover:opacity-80">
-          More
+          <p className="hidden lg:flex">More</p>
           <Image
             src={ArrowDownIcon}
             className="w-2 h-2 self-center"
