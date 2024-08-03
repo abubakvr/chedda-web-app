@@ -1,6 +1,7 @@
 import InfoIcon from "@/assets/icon/info-gradient-icon.svg";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 export const RouteCard = ({
   setActiveTab,
@@ -13,9 +14,23 @@ export const RouteCard = ({
   routeInfo: string | undefined;
   routhPaths: string[];
 }) => {
+  const { replace } = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  function handleActiveScreen(term: string) {
+    const params = new URLSearchParams(searchParams);
+    if (term) {
+      params.set("tab", term);
+    } else {
+      params.delete("tab");
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }
+
   const handleTabButton = (tab: string) => {
     setActiveTab(tab);
-    localStorage.setItem("savedPoolTab", tab);
+    handleActiveScreen(tab);
   };
 
   return (

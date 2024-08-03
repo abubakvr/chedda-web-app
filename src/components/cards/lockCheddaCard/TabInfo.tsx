@@ -19,7 +19,7 @@ export const TabInfo: React.FC<TabInfoProps> = ({
 }: TabInfoProps) =>
   !isCheddaLocked ? (
     <div data-testid="lock-tab-info">
-      <div className="flex justify-between text-sm pb-5">
+      <div className="flex justify-between text-xs lg:text-sm pb-5">
         <div
           className="opacity-50 font-semibold flex gap-x-2"
           data-testid="allowance-label"
@@ -33,7 +33,7 @@ export const TabInfo: React.FC<TabInfoProps> = ({
           {allowance}
         </div>
       </div>
-      <div className="flex justify-between text-sm pb-5">
+      <div className="flex justify-between text-xs lg:text-sm pb-5">
         <div
           className="opacity-50 font-semibold flex gap-x-2"
           data-testid="amount-to-lock-label"
@@ -47,7 +47,7 @@ export const TabInfo: React.FC<TabInfoProps> = ({
           {amountToLock}
         </div>
       </div>
-      <div className="flex justify-between text-sm">
+      <div className="flex justify-between text-xs lg:text-sm">
         <div
           className="opacity-50 font-semibold flex gap-x-2"
           data-testid="projected-maturity-label"
@@ -64,7 +64,7 @@ export const TabInfo: React.FC<TabInfoProps> = ({
     </div>
   ) : (
     <div data-testid="lock-tab-info">
-      <div className="flex justify-between text-sm pb-5">
+      <div className="flex justify-between text-xs lg:text-sm pb-5">
         <div
           className="opacity-50 font-semibold flex gap-x-2"
           data-testid="locked-amount-label"
@@ -78,7 +78,7 @@ export const TabInfo: React.FC<TabInfoProps> = ({
           {lockedAmount}
         </div>
       </div>
-      <div className="flex justify-between text-sm">
+      <div className="flex justify-between text-xs lg:text-sm">
         <div
           className="opacity-50 font-semibold flex gap-x-2"
           data-testid="maturity-label"

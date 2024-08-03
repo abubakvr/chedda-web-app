@@ -136,12 +136,12 @@ export const BorrowTab = ({
         txHash={txHash}
         status={txStatus}
       />
-      <div data-testid="withdraw-tab-content" className="mt-6">
-        <div className="text-xl font-bold flex justify-between">
+      <div data-testid="withdraw-tab-content" className="mt-4 lg:mt-6">
+        <div className="text-xs md:text-sm lg:text-xl font-bold flex justify-between">
           <div>Select amount to Borrow</div>
         </div>
-        <div className="flex justify-between mt-6 items-center text-xs">
-          <div data-testid="amount-label" className="text-[#DEDEDE]">
+        <div className="flex justify-between mt-3 lg:mt-4 md:mt-6 items-center text-[10px] md:text-xs">
+          <div data-testid="amount-label" className="text-[#FFFFFF70]">
             Enter amount to Borrow
           </div>
           <div
@@ -169,14 +169,14 @@ export const BorrowTab = ({
         <Button
           type="primary"
           onClick={handleWithdrawCollateral}
-          className="mt-6 h-7"
+          className="mt-3 md:mt-4 lg:mt-6 h-7"
           size="large"
           isLoading={txLoading}
           disabled={accountCollateralLoading}
         >
           Borrow {symbol}
         </Button>
-        <div data-testid="modal-info" className="mt-6 pb-0">
+        <div data-testid="modal-info" className="mt-3 md:mt-4 lg:mt-6">
           <BorrowTabInfo
             isLoading={accountCollateralLoading || healthFactorLoading}
             totalBorrowed={`${formatNumber(totalBorrowed)} ${symbol}`}

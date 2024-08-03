@@ -1,4 +1,5 @@
 "use client";
+import { useSearchParams } from "next/navigation";
 import { RouteCard, SummaryCard } from "@/components/cards";
 import { SummaryHeader } from "@/components/ui";
 import {
@@ -14,7 +15,10 @@ import PoolTab from "./pool/PoolTab";
 import StakeTab from "./stake/StakeTab";
 
 const Page = () => {
-  const [activeTab, setActiveTab] = useState("Pool");
+  const searchParams = useSearchParams();
+  const activeScreen = searchParams.get("tab");
+  const [activeTab, setActiveTab] = useState(activeScreen ?? "Pool");
+
   const {
     data: poolStats,
     isLoading,

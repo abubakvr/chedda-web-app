@@ -57,7 +57,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
 
   if (isLoading || !poolStats) {
     // Render loading placeholder if poolStats is undefined
-    return <InfoCardSkeleton title="MY INFORMATION" itemCount={5} />;
+    return <InfoCardSkeleton title="MY INFORMATION" itemCount={4} />;
   }
 
   const openSupplyModal = (activeTab: "Deposit" | "Withdraw") => {

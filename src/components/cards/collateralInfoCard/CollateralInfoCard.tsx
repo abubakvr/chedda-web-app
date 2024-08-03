@@ -202,7 +202,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
               <div
                 className="justify-between text-white text-sm mt-3 p-4 border-b border-[#ffffff19]"
                 key={index}
-                data-testid={`collateral-item-${index}`}
+                data-testid={`mobile-collateral-item-${index}`}
               >
                 <div className="flex items-center gap-x-2">
                   <div className="flex relative">
@@ -210,7 +210,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                       src={item.asset.logo}
                       alt={item.asset.name}
                       className="w-8 h-8 xl:w-10 xl:h-10"
-                      data-testid={`collateral-item-logo-${index}`}
+                      data-testid={`mobile-collateral-item-logo-${index}`}
                     />
                     <Image
                       src={item.asset?.sourceLogo}
@@ -252,7 +252,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                   </div>
                   <div
                     className="pl-1 text-[10px]"
-                    data-testid={`collateral-factor-${index}`}
+                    data-testid={`mobile-collateral-factor-${index}`}
                   >
                     <span className="font-bold">{item.collateralFactor}</span>
                   </div>

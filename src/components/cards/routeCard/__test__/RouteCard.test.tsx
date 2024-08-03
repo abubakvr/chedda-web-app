@@ -2,6 +2,16 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { RouteCard } from "../RouteCard";
 
+jest.mock("next/navigation", () => ({
+  useParams: jest.fn(),
+  useRouter: jest.fn(() => ({
+    prefetch: jest.fn(),
+    replace: jest.fn(),
+  })),
+  usePathname: jest.fn(),
+  useSearchParams: jest.fn(),
+}));
+
 describe("RouteCard", () => {
   const mockSetActiveTab = jest.fn();
   const mockRouteInfo = "This is a route info";

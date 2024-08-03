@@ -46,7 +46,7 @@ const Tab: FC<{
 }> = ({ label, isActive, onClick, testId }) => (
   <button
     data-testid={testId}
-    className={`text-sm font-bold px-4 py-2 focus:outline-none relative w-full hover:bg-[#4c37a740] ${
+    className={`text-[10px] md:text-xs lg:text-sm font-bold px-4 py-2 focus:outline-none relative w-full hover:bg-[#4c37a740] ${
       isActive && "modal-button rounded"
     }`}
     onClick={onClick}
@@ -309,10 +309,10 @@ export const SupplyModal: FC<SupplyModalProps> = ({
       />
       <Toast
         isOpen={showToast}
-        toastMessage={txMessage}
-        txHash={txHash}
-        status={txStatus}
-        copyText={copyText}
+        toastMessage={"An error occurred while proccessing your transaction"}
+        txHash={"An error occurred while proccessing your transaction"}
+        status={"failed"}
+        copyText={"An error occurred while proccessing your transaction"}
       />
       <div
         data-testid="modal-container"
@@ -321,22 +321,22 @@ export const SupplyModal: FC<SupplyModalProps> = ({
         } bg-[#00000024] bg-opacity-75 overflow-y-auto backdrop-filter backdrop-blur-sm z-20`}
       >
         <div className="flex items-center justify-center min-h-screen">
-          <div className="app-modal p-8 rounded shadow-lg w-[550px]">
+          <div className="app-modal p-4 md:p-6 lg:p-8 rounded shadow-lg w-11/12 max-w-[370px] sm:max-w-[400px] md:max-w-[470px] lg:max-w-[550px]">
             <div className="flex justify-between items-center">
               <h2
-                className="text-3xl font-bold"
+                className="text-lg md:text-2xl lg:text-3xl font-bold"
                 data-testid="supply-modal-title"
               >
                 Supply Asset
               </h2>
-              <span
-                className="text-4xl cursor-pointer font-bold text-white relative"
+              <button
+                className="text-2xl md:text-3xl lg:text-4xl cursor-pointer font-bold text-white relative"
                 onClick={onClose}
               >
                 &times;
-              </span>
+              </button>
             </div>
-            <div className="flex mt-6 bg-[#201D47] rounded-lg justify-between p-2">
+            <div className="flex mt-3 md:mt-4 lg:mt-6 bg-[#201D47] rounded-lg justify-between p-2">
               <Tab
                 label="Deposit"
                 isActive={activeTab === "Deposit"}

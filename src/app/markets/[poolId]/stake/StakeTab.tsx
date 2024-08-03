@@ -83,6 +83,8 @@ const StakeTab = ({
   const isLoading =
     lpSymbolLoading ||
     lpAssetLoading ||
+    claimableRewardsLoading ||
+    lpAllowanceLoading ||
     lpDecimalsLoading ||
     tokenValueLoading ||
     lpStakersLoading ||
@@ -91,30 +93,40 @@ const StakeTab = ({
 
   if (isLoading) {
     return (
-      <div className="mt-8 w-full flex space-x-5" data-testid="stake-container">
+      <div
+        className="mt-6 lg:mt-8 custom-grid-card"
+        data-testid="stake-container"
+      >
         <div
-          className="pool-card rounded-lg h-fit w-full"
+          className="pool-card rounded-lg h-fit w-full order-3 lg:order-1 grid-info-card"
           data-testid="stake-information-card"
         >
-          <InfoCardSkeleton title="Stake Information" itemCount={3} />
+          <InfoCardSkeleton title="Stake Info" itemCount={3} />
         </div>
-        <div className="pool-card rounded-lg w-full" data-testid="stake-card">
+        <div
+          className="pool-card rounded-lg w-full h-fit order-0 xl:order-2"
+          data-testid="stake-card"
+        >
           <SwitchTabSkeleton />
         </div>
         <div
-          className="pool-card rounded-lg h-fit w-full"
+          className="pool-card rounded-lg h-fit order-2 lg:order-3 grid-claim-card w-full"
           data-testid="rewards-card"
         >
           <InfoCardSkeleton title="Claim Rewards" itemCount={3} />
         </div>
+        <div className="order-3 xl:hidden"></div>
       </div>
     );
   }
 
   return (
-    <div className="mt-8 w-full flex space-x-5" data-testid="stake-container">
+    <div
+      className="mt-6 lg:mt-8 custom-grid-card"
+      data-testid="stake-container"
+    >
       <div
-        className="pool-card rounded-lg h-72 w-full"
+        className="pool-card rounded-lg h-fit w-full order-3 lg:order-1 grid-info-card"
         data-testid="stake-information-card"
       >
         <StakingInfoCard
@@ -128,7 +140,10 @@ const StakeTab = ({
           totalSupply={totalSupply}
         />
       </div>
-      <div className="pool-card rounded-lg w-full" data-testid="stake-card">
+      <div
+        className="pool-card rounded-lg order-1 lg:order-2 grid-action-card w-full"
+        data-testid="stake-card"
+      >
         <StakeCard
           assetSymbol={asset?.symbol}
           lpSymbol={lpSymbol}
@@ -144,7 +159,7 @@ const StakeTab = ({
         />
       </div>
       <div
-        className="pool-card rounded-lg h-fit w-full"
+        className="pool-card h-fit order-2 lg:order-3 grid-claim-card w-full"
         data-testid="rewards-card"
       >
         <ClaimRewardsCard

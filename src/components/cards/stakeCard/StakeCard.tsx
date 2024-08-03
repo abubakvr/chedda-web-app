@@ -29,7 +29,7 @@ const Tab: FC<{
 }> = ({ label, isActive, onClick, testId }) => (
   <button
     data-testid={testId}
-    className={`text-sm font-bold px-4 py-2 focus:outline-none relative w-full hover:bg-[#4c37a740] ${
+    className={`text-[10px] lg:text-sm font-bold px-4 py-2 focus:outline-none relative w-full hover:bg-[#4c37a740] ${
       isActive && "modal-button rounded"
     }`}
     onClick={onClick}
@@ -272,7 +272,7 @@ export const StakeCard: FC<StakeModalProps> = ({
         copyText={copyText}
       />
       <div
-        className="min-w-[470px] text-white px-8 py-6"
+        className="lg:min-w-[400px] xl:min-w-[460px] text-white px-4 py-4 md:px-6 md:py-5 xl:px-8 xl:py-6"
         data-testid="stake-card-container"
       >
         <div className="flex bg-[#201D47] rounded-lg justify-between p-2">

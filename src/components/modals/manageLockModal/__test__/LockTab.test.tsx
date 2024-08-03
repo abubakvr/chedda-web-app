@@ -93,7 +93,7 @@ describe("LockTab", () => {
       </MockAppProviders>
     );
     act(() => {
-      fireEvent.click(getByText("Add More Chedda"));
+      fireEvent.click(getByText("Lock More Chedda"));
     });
 
     await waitFor(() => {

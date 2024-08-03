@@ -3,7 +3,6 @@ import Image from "next/image";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ArrowDownIcon from "@/assets/icon/arrow-down.svg";
 import { IToken } from "@/utils/types";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 interface SelectMenuProps {
   setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
@@ -49,13 +48,13 @@ export const SelectMenu = ({
     >
       <button
         onClick={openSelectMenu}
-        className="h-8 min-w-24 px-3 rounded text-xs gap-x-1 flex modal-button justify-between items-center hover:opacity-90 font-bold"
+        className="py-2 px-2 lg:px-3 rounded text-[10px] md:text-xs gap-x-1 flex modal-button justify-between items-center hover:opacity-90 font-bold"
         data-testid="select-menu-button"
       >
         <div>
           <Image
             src={selectedCollateral?.logo}
-            className="w-4 h-4 self-center"
+            className="w-4 h-4 md:w-5 md:h-5 self-center"
             alt="collateral image"
           />
         </div>
