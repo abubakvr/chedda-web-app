@@ -9,7 +9,7 @@ import { BRIDGE_DOC_URL } from "@/utils/constants";
 export const BridgeSection = () => {
   return (
     <div
-      className="pool-card text-white rounded-lg shadow-lg flex justify-center items-center relative h-48 xl:h-56"
+      className="pool-card text-white rounded-lg shadow-lg flex justify-center items-center relative h-44 md:h-48 xl:h-56"
       data-testid="bridge-assets"
     >
       <div
@@ -66,7 +66,7 @@ export const BridgeSection = () => {
           <Image
             src={bridgeVector}
             alt="bridge vector"
-            className="h-48 xl:h-56"
+            className="h-44 md:h-4 xl:h-56"
           />
         </div>
       </div>
