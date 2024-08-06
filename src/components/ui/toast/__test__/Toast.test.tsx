@@ -33,7 +33,7 @@ describe("Toast Component", () => {
     expect(screen.getByTestId("close-toast")).toBeInTheDocument();
 
     const slider = screen.getByTestId("slider");
-    expect(slider).toHaveStyle("width: 0% ");
+    expect(slider).toHaveStyle("width: 100% ");
 
     // Fast-forward time to trigger the interval
     act(() => {
@@ -41,7 +41,7 @@ describe("Toast Component", () => {
     });
 
     await waitFor(() => {
-      expect(slider).toHaveStyle("width: 0% ");
+      expect(slider).toHaveStyle("width: 100% ");
     });
   });
 

@@ -24,7 +24,7 @@ describe("StakingInfoCard Component", () => {
     const { getByText, getByAltText } = render(<LockingInfoCard {...props} />);
 
     // Check if elements with specific text content are rendered
-    expect(getByText("LOCK INFORMATION")).toBeInTheDocument();
+    expect(getByText("LOCK INFO")).toBeInTheDocument();
     expect(getByText("Annual Percentage Rate")).toBeInTheDocument();
     expect(getByText("Total Locked")).toBeInTheDocument();
     expect(getByText("Weight")).toBeInTheDocument();

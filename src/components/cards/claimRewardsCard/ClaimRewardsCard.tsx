@@ -112,20 +112,20 @@ export const ClaimRewardsCard = ({
         copyText={copyText}
       />
       <div className="w-full">
-        <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">
-          <div className="text-white text-opacity-50 font-bold text-sm uppercase">
+        <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 lg:px-8 h-10 lg:h-[50px] items-center">
+          <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-sm uppercase">
             CLAIM REWARDS
           </div>
         </div>
-        <div className="px-8 py-6 text-5xl text-white relative">
+        <div className="px-4 md:px-6 py-4 lg:px-8 lg:py-6 text-5xl text-white relative">
           <div className="text-xl text-white  border-[#ffffff19] bg-[#ffffff02] border rounded-lg p-3">
-            <div className="text-sm font-bold text-[#ffffff70]">
+            <div className="text-xs lg:text-sm font-bold text-[#ffffff70]">
               Claimable Rewards
             </div>
-            <div className="mt-2 text-2xl card-gradient-text font-bold">
+            <div className="mt-2 text-lg lg:text-2xl card-gradient-text font-bold">
               {formatLargeNumber(parsedRewardsValue)} CHEDDA
             </div>
-            <div className="text-xs  text-[#ffffff70] mt-2">
+            <div className="text-xs  text-[#ffffff70] lg:mt-2">
               {rewardValue ? formatCurrency(rewardValue) : "$0.00"}
             </div>
           </div>
@@ -133,20 +133,20 @@ export const ClaimRewardsCard = ({
             size="small"
             type="secondary"
             onClick={() => handleClaimRewards()}
-            className="secondary-button py-3 mt-6 w-full border-red-400"
+            className="secondary-button py-3 mt-4 lg:mt-6 w-full border-red-400"
             isLoading={txLoading}
             disabled={!parsedRewardsValue || parsedRewardsValue === 0}
           >
             Claim
           </Button>
           {setActiveTab && (
-            <div className="text-xs text-[#ffffff70] flex gap-x-1 mt-6 justify-between items-center">
+            <div className="text-[8px] md:text-[10px] lg:text-xs text-[#ffffff70] flex gap-x-1 mt-4 lg:mt-6 justify-between items-center">
               Lock CHEDDA to maximise your rewards
               <button
                 onClick={() => setActiveTab("Lock")}
-                className="button-gradient-text px-3 font-bold py-3 bg-red-500 border border-[#ffffff19] rounded  hover:opacity-80"
+                className="px-3 font-bold py-3 bg-[#00000030] rounded-sm  hover:opacity-80"
               >
-                LOCK CHEDDA
+                <div className="button-gradient-text ">LOCK CHEDDA</div>
               </button>
             </div>
           )}

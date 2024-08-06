@@ -1,7 +1,7 @@
 import React from "react";
 import Page from "../page";
 import { render, screen, waitFor } from "@testing-library/react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import {
   usePoolStats,
   useAccountInfo,
@@ -52,8 +52,12 @@ jest.mock("../../../../hooks");
 
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),
-  useRouter: jest.fn(),
+  useRouter: jest.fn(() => ({
+    prefetch: jest.fn(),
+    replace: jest.fn(),
+  })),
   usePathname: jest.fn(),
+  useSearchParams: jest.fn(),
 }));
 
 jest.mock("../../../../utils/formatResponse", () => ({
@@ -69,6 +73,12 @@ describe("Pool details component", () => {
 
   beforeEach(() => {
     (useParams as jest.Mock).mockReturnValue({ poolId: mockPoolId });
+    (useSearchParams as jest.Mock).mockReturnValue({
+      get: jest.fn((key) => {
+        if (key === "tab") return null;
+        return null;
+      }),
+    });
     (usePoolState as jest.Mock).mockReturnValue({
       isLoading: true,
       data: mockPoolStateEvents,

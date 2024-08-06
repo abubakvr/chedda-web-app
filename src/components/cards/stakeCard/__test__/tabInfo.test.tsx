@@ -33,7 +33,7 @@ describe("TabInfo", () => {
     );
 
     // Check if my stake label and value are rendered correctly
-    expect(screen.getByTestId("my-stake-label")).toHaveTextContent("My Stake");
+    expect(screen.getByTestId("my-stake-label")).toHaveTextContent("Staked");
     expect(screen.getByTestId("my-stake-value")).toHaveTextContent(
       testProps.myStake
     );

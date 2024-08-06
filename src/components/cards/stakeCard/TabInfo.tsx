@@ -7,7 +7,7 @@ export interface TabInfoProps {
 export const TabInfo = ({ allowance, exchangeRate, myStake }: TabInfoProps) => {
   return (
     <div data-testid="stake-tab-info">
-      <div className="flex justify-between text-sm pb-5">
+      <div className="flex justify-between text-xs lg:text-sm pb-5">
         <div
           className="opacity-50 font-semibold flex gap-x-2"
           data-testid="allowance-label"
@@ -21,7 +21,7 @@ export const TabInfo = ({ allowance, exchangeRate, myStake }: TabInfoProps) => {
           {allowance}
         </div>
       </div>
-      <div className="flex justify-between text-sm pb-5">
+      <div className="flex justify-between text-xs lg:text-sm pb-5">
         <div
           className="opacity-50 font-semibold flex gap-x-2"
           data-testid="exchange-rate-label"
@@ -35,12 +35,12 @@ export const TabInfo = ({ allowance, exchangeRate, myStake }: TabInfoProps) => {
           {exchangeRate}
         </div>
       </div>
-      <div className="flex justify-between text-sm">
+      <div className="flex justify-between text-xs lg:text-sm">
         <div
           className="opacity-50 font-semibold flex gap-x-2"
           data-testid="my-stake-label"
         >
-          My Stake
+          Staked
         </div>
         <div
           className="flex items-center font-bold"

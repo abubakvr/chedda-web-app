@@ -65,23 +65,26 @@ export const AmountField: FC<InputWithMaxButtonProps> = ({
   const maxActive = inputValue === maxValue;
 
   return (
-    <div className="py-2 px-4 rounded-lg border-[1.5px] border-[#8080CC] mt-3 flex justify-between">
+    <div className="py-2 px-3 lg:px-4 rounded-lg border-[1.5px] border-[#8080CC] mt-2 lg:mt-3 flex justify-between">
       <div className="relative w-full">
         <input
           type="text"
-          className="w-full text-white text-2xl bg-transparent focus:outline-none"
+          className="w-full text-white text-sm lg:text-2xl bg-transparent focus:outline-none"
           value={inputValue}
           onInput={handleInput}
           onChange={handleInputChange}
           placeholder="0.00"
           data-testid="amount-input"
         />
-        <div className="text-sm text-[#ffffff50] mt-1" data-testid="value-box">
+        <div
+          className="text-[10px] lg:text-sm text-[#ffffff50] mt-0.5 lg:mt-1"
+          data-testid="value-box"
+        >
           {calculatedValue || "$0.00"}
         </div>
       </div>
       <button
-        className={`px-5 py-4 h-full rounded bg-[#201D47] hover:bg-[#261da2] relative ${
+        className={`px-4 py-3 lg:px-5 lg:py-4 text-xs lg:text-lg h-full rounded bg-[#201D47] hover:bg-[#261da2] relative ${
           maxActive && "bg-[#261da2]"
         }`}
         onClick={onMaxButtonClick}

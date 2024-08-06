@@ -42,34 +42,38 @@ export const StakingInfoCard = ({
 
   return (
     <div className="w-full">
-      <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">
-        <div className="text-white text-opacity-50 font-bold text-sm uppercase">
-          STAKE INFORMATION
+      <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 lg:px-8 h-10 lg:h-[50px] items-center">
+        <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-sm uppercase">
+          STAKE INFO
         </div>
         <a
           href={`${currentEnvironment?.contractPrefix}/${stakingPoolAddress}`}
           target="_blank"
           rel="noreferrer"
-          className="flex gap-x-1 border-2 rounded-md py-[6px] px-3 border-[#ffffff60] hover:opacity-70"
+          className="flex items-center gap-x-1 border-2 rounded-md py-1 px-2 md:py-[6px] md:px-3 border-[#ffffff60] hover:opacity-70"
         >
-          <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-[10px]">
+          <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-[8px] xl:text-[10px]">
             Staking Pool
           </div>
-          <Image src={LinkOut} alt="link out" />
+          <Image
+            src={LinkOut}
+            alt="link out"
+            className="w-2.5 h-2.5 xl:w-4 xl:h-4"
+          />
         </a>
       </div>
-      <div className="p-8 pb-0 text-white">
-        <div className="flex justify-between text-sm pb-5">
+      <div className="p-4 md:p-6 lg:p-8 pb-0 text-white">
+        <div className="flex justify-between text-xs lg:text-sm pb-5">
           <div className="opacity-50 font-semibold">Annual Percentage Rate</div>
-          <div className="text-sm font-bold">5.52%</div>
+          <div className="font-bold">5.52%</div>
         </div>
-        <div className="flex justify-between text-sm pb-5">
+        <div className="flex justify-between text-xs lg:text-sm pb-5">
           <div className="opacity-50 font-semibold">Total Staked</div>
           <div className="font-bold">
             {formatNumber(parsedTotalStaked)} {lpSymbol}
           </div>
         </div>
-        <div className="flex justify-between text-sm pb-5">
+        <div className="flex justify-between text-xs lg:text-sm pb-5">
           <div className="opacity-50 font-semibold">
             Underlying Asset Amount
           </div>
@@ -77,7 +81,7 @@ export const StakingInfoCard = ({
             {formatNumber(underlyingAssetAmount)} {assetSymbol}
           </div>
         </div>
-        <div className="flex justify-between text-sm pb-5">
+        <div className="flex justify-between text-xs lg:text-sm pb-5">
           <div className="opacity-50 font-semibold">
             Percentage of LP Staked
           </div>
@@ -85,7 +89,7 @@ export const StakingInfoCard = ({
             {formatAsPercentage(percentageStaked)}
           </div>
         </div>
-        <div className="flex justify-between text-sm ">
+        <div className="flex justify-between text-xs lg:text-sm ">
           <div className="opacity-50 font-semibold">Stakers</div>
           <div className="font-bold">
             {parseBigNumberToFloat(lpStakers, 0, 0)}

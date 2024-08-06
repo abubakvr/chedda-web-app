@@ -42,12 +42,12 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
       className="flex flex-col justify-between z-1"
       data-testid="market-info-card"
     >
-      <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">
-        <div className="text-white text-opacity-50 font-bold text-sm uppercase">
+      <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 xl:px-8 h-11 xl:h-[50px] items-center">
+        <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-xs xl:text-sm uppercase">
           Market Information
         </div>
       </div>
-      <div className="p-8 pb-3">
+      <div className="p-4 md:p-6 xl:p-8 xl:pb-3">
         {[
           {
             label: "Asset Price",
@@ -69,7 +69,7 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
             )} ${poolStats?.asset?.symbol}`,
           },
           {
-            label: "Available Liquidity",
+            label: "Liquidity",
             value: `${formatLargeNumber(
               parseBigNumberToFloat(
                 marketInfo?.liquidity,
@@ -78,7 +78,7 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
             )} ${poolStats?.asset?.symbol}`,
           },
           {
-            label: "Utilization",
+            label: "Utilization Rate",
             value: formatAsPercentage(
               parseBigNumberToFloat(marketInfo?.utilization, 18, 10)
             ),
@@ -90,13 +90,13 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
             data-testid={`market-info-item-${index}`}
           >
             <div
-              className="opacity-50 text-sm"
+              className="opacity-50 text-sm md:text-xs lg:text-sm"
               data-testid={`market-info-label-${index}`}
             >
               {label}
             </div>
             <div
-              className="text-sm font-bold"
+              className="text-sm md:text-xs lg:text-sm font-bold"
               data-testid={`market-info-value-${index}`}
             >
               {value}

@@ -27,9 +27,8 @@ describe("TabInfo", () => {
       expect(getByTestId("projected-maturity-value")).toHaveTextContent(
         "2024-06-01"
       );
-      expect(getByText("Amount To Lock")).toBeInTheDocument();
+      expect(getByText("Locked Amount")).toBeInTheDocument();
       expect(getByText("100 ETH")).toBeInTheDocument();
-      expect(getByText("120 ETH")).toBeInTheDocument();
     });
   });
 

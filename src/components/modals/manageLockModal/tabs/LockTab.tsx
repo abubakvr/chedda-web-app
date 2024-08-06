@@ -56,7 +56,7 @@ export const LockTab: FC<LockTabProps> = ({
   const [showWarning, setShowWarning] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
   const buttonTitle =
-    !isExtendTab && allowance < amount ? "Approve" : "Add More Chedda";
+    !isExtendTab && allowance < amount ? "Approve" : "Lock More Chedda";
 
   const maturityDate = lockExpiry.getTime();
   const projectedMaturityDate = projectDateTime(lockTime?.days || 0).getTime();
@@ -78,18 +78,24 @@ export const LockTab: FC<LockTabProps> = ({
   };
 
   return (
-    <div data-testid="lock-card-content" className="mt-3">
-      <div className="text-warning text-sm flex gap-x-2">
-        <Image src={InfoIcon} alt="info icon" />
+    <div data-testid="lock-card-content" className="mt-2 md:mt-3">
+      <div className="text-warning text-[10px] lg:text-sm flex gap-x-2 items-center">
+        <Image
+          src={InfoIcon}
+          alt="info icon"
+          className="w-[12px] h-[12px] md:w-[14px] md:h-[14px]"
+        />
         <span>{info}</span>
       </div>
-      <div className="text-xl font-bold mt-6">{title}</div>
+      <div className="text-xs lg:text-xl font-bold mt-3 md:mt-4 lg:mt-6">
+        {title}
+      </div>
       {isExtendTab ? (
         <>
-          <div className="mt-6 text-xs text-[#FFFFFF80]">
+          <div className="mt-3 md:mt-4 lg:mt-6 text-xs text-[#FFFFFF80]">
             Select Lock Period
           </div>
-          <div className="flex space-between gap-x-2 mt-5">
+          <div className="flex space-between gap-x-2 mt-3 md:mt-4 lg:mt-5">
             {LOCKTIMES.map((item, index) => (
               <button
                 key={index}
@@ -99,12 +105,12 @@ export const LockTab: FC<LockTabProps> = ({
                 }}
                 className={`bg-[#201D47] rounded-lg flex justify-center items-center w-full relative lock-time-box transition-all ${lockTime?.value === item.value ? "modal-button" : ""}`}
               >
-                <div className="absolute -top-3 right-0">
-                  <span className="multiplier-circle  bg-[#151532] text-white rounded-full w-7 h-7 text-[8px] flex justify-center items-center">
+                <div className="absolute -top-2 lg:-top-3 right-0">
+                  <span className="multiplier-circle  bg-[#151532] text-white rounded-full w-4 h-4 lg:w-7 lg:h-7 text-[5px] lg:text-[8px] flex justify-center items-center">
                     {item.multiplier}x
                   </span>
                 </div>
-                <div className="text-white text-sm py-3 font-bold">
+                <div className="text-white text-xs lg:text-sm py-3 font-bold">
                   {item.title}
                 </div>
               </button>
@@ -113,8 +119,8 @@ export const LockTab: FC<LockTabProps> = ({
         </>
       ) : (
         <>
-          <div className="flex justify-between mt-6 items-center text-xs">
-            <div data-testid="amount-label" className="text-[#DEDEDE]">
+          <div className="flex justify-between mt-3 md:mt-4 lg:mt-6 items-center text-[10px] lg:text-xs">
+            <div data-testid="amount-label" className="text-[#FFFFFF70]">
               Enter amount to Lock
             </div>
             <div data-testid="max-amount" className="font-bold">
@@ -135,16 +141,18 @@ export const LockTab: FC<LockTabProps> = ({
       <Button
         type="primary"
         onClick={() => handleButtonAction()}
-        className="mt-6 h-7"
+        className="mt-3 md:mt-4 lg:mt-6 h-7"
         size="large"
         isLoading={isTransactionLoading}
       >
         {isExtendTab ? "Extend Lock" : buttonTitle}
       </Button>
       {showWarning && isExtendTab ? (
-        <div className="text-error mt-2 text-xs">{warningMessage}</div>
+        <div className="text-error mt-2 text-[10px] md:text-xs">
+          {warningMessage}
+        </div>
       ) : null}
-      <div data-testid="modal-info" className="mt-6 pb-0 ">
+      <div data-testid="modal-info" className="mt-3 md:mt-4 lg:mt-6 pb-0 ">
         {modalInfo}
       </div>
     </div>

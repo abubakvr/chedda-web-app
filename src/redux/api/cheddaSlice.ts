@@ -55,7 +55,6 @@ export const fetchData = createAsyncThunk<any, FetchDataParams>(
         signer
       );
 
-      // const pool = chedda?.poolLens(poolId ? poolId : "", signer);
       const data = await getData({
         lens,
         poolId,
@@ -88,7 +87,9 @@ export const cheddaSlice = createSlice({
         const showLoading =
           hookName === "getSelectTokenBalance"
             ? true
-            : action.meta.arg.showLoading || !existingData;
+            : action.meta.arg.showLoading ||
+              existingData === undefined ||
+              existingData === null;
 
         state.fetchDataStates[`${hookName} + ${pathname}`] = {
           data: existingData ?? undefined,

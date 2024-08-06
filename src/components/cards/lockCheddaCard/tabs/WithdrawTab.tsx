@@ -35,23 +35,23 @@ export const WithdrawTab: FC<LockTabProps> = ({
   const isLockedExpired = currentDate > cheddaExpiryTimestamp;
 
   return (
-    <div data-testid="lock-card-content" className="mt-6">
-      <div className="text-2xl font-bold">{title} your CHEDDA</div>
-      <div className="text-[#FFFFFF50] text-sm mt-2">{subTitle}</div>
+    <div data-testid="lock-card-content" className="mt-4 lg:mt-6">
+      <div className="text-lg lg:text-2xl font-bold">{title} your CHEDDA</div>
+      <div className="text-[#FFFFFF50] text-xs lg:text-sm mt-2">{subTitle}</div>
 
       <div className="mt-6 text-5xl text-white relative">
         <div className="text-xl text-white  border-[#ffffff19] bg-[#ffffff02] border rounded-lg p-3">
-          <div className="text-sm font-bold text-[#ffffff70]">
-            Locked Assets
+          <div className="text-xs lg:text-sm font-bold text-[#ffffff70]">
+            Available Asset to withdraw
           </div>
           <div
-            className="mt-2 text-2xl card-gradient-text font-bold"
+            className="mt-2 text-lg lg:text-2xl card-gradient-text font-bold"
             data-testid="locked-chedda-asset"
           >
             {lockedChedda} {cheddaSymbol}
           </div>
           <div
-            className="text-xs  text-[#ffffff70] mt-2"
+            className="text-xs text-[#ffffff70] lg:mt-2"
             data-testid="locked-chedda-price"
           >
             {formatCurrency(cheddaPrice * (lockedChedda || 0))}
@@ -63,14 +63,14 @@ export const WithdrawTab: FC<LockTabProps> = ({
             setIsWithdrawCliked(true);
             withdrawChedda();
           }}
-          className="mt-6 h-7"
+          className="mt-4 lg:mt-6 h-7"
           size="large"
           isLoading={isWithdrawClicked && isTransactionLoading}
           disabled={!isLockedExpired || !lockedChedda}
         >
           WITHDRAW
         </Button>
-        <div className="uppercase text-sm text-[#FFFFFF50] my-2 text-center">
+        <div className="uppercase text-sm text-[#FFFFFF50] my-1 lg:my-2 text-center">
           Or
         </div>
         <Button

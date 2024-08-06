@@ -38,7 +38,11 @@ describe("CollateralInfoCard", () => {
     // Check if individual collateral items are rendered
     mockCollateralInfo.forEach((_, index) => {
       const collateralItem = screen.getByTestId(`collateral-item-${index}`);
+      const mobileCollateralItem = screen.getByTestId(
+        `mobile-collateral-item-${index}`
+      );
       expect(collateralItem).toBeInTheDocument();
+      expect(mobileCollateralItem).toBeInTheDocument();
       const collateralItemLogo = screen.getByTestId(
         `collateral-item-logo-${index}`
       );
@@ -63,7 +67,7 @@ describe("CollateralInfoCard", () => {
     );
 
     // Check if the skeleton is rendered when loading
-    expect(screen.getByText("Collateral Information")).toBeInTheDocument();
+    expect(screen.getByText("Collateral Info")).toBeInTheDocument();
     expect(screen.getByTestId("collateral-info-skeleton")).toBeInTheDocument();
   });
 });

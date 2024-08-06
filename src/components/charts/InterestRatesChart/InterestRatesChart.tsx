@@ -70,8 +70,8 @@ export const InterestRatesChart = () => {
         data-testid="loading-container"
         className="w-full h-72 items-center justify-center"
       >
-        <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">
-          <div className="text-white text-opacity-50 font-bold text-sm uppercase">
+        <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 xl:px-8 h-11 xl:h-[50px] items-center">
+          <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-xs xl:text-sm uppercase">
             Interest Rate Model
           </div>
         </div>
@@ -87,11 +87,11 @@ export const InterestRatesChart = () => {
 
   return (
     <div data-testid="interest-rates-chart">
-      <div className="card-header-bg flex justify-between w-full rounded-t-lg px-8 h-[50px] items-center">
-        <div className="text-white text-opacity-50 font-bold text-sm uppercase">
+      <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 xl:px-8 h-11 xl:h-[50px] items-center">
+        <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-xs xl:text-sm uppercase">
           Interest Rate Model
         </div>
-        <div className="flex gap-x-6 text-white text-opacity-50 text-xs uppercase font-bold">
+        <div className="hidden md:flex gap-x-6 text-white text-opacity-50 text-[8px] lg:text-xs uppercase font-bold">
           <div className="flex items-center gap-x-2">
             <div className="rounded-full bg-[#6FBFF7] w-[10px] h-[10px]"></div>
             <div className="">Supply APR</div>
@@ -109,15 +109,19 @@ export const InterestRatesChart = () => {
           href={`${currentEnvironment?.contractPrefix}/${currentEnvironment.contracts.InterestRatesProjector}`}
           target="_blank"
           rel="noreferrer"
-          className="flex gap-x-1 border-2 rounded-md py-[6px] px-3 border-[#ffffff60] hover:opacity-70"
+          className="flex items-center gap-x-1 border-2 rounded-md py-1 px-2 md:py-[6px] md:px-3 border-[#ffffff60] hover:opacity-70"
         >
-          <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-[10px]">
+          <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-[8px] xl:text-[10px]">
             Contract
           </div>
-          <Image src={LinkOut} alt="link out" />
+          <Image
+            src={LinkOut}
+            alt="link out"
+            className="w-2.5 h-2.5 xl:w-4 xl:h-4"
+          />
         </a>
       </div>
-      <div className="mt-8 px-7 pb-4" style={{ height: "250px" }}>
+      <div className="mt-5 xl:mt-8 pl-1 pr-2 md:px-3 xl:px-7 pb-2 md:pb-4 h-[150px] md:h-[210px] xl:h-[250px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={interestRates}>
             <YAxis

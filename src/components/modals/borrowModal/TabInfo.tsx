@@ -4,6 +4,7 @@ import ArrowRight from "@/assets/icon/arrow-right.svg";
 import InfoIcon from "@/assets/icon/info-icon.svg";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
 import { toFixedTrunc } from "@/utils/formatters";
+import { getHealthFactorColor } from "@/utils/helpers";
 
 export interface DepositTabInfoProps {
   isLoading: boolean;
@@ -39,7 +40,7 @@ export const DepositTabInfo = ({
 }: DepositTabInfoProps) => {
   return (
     <div data-testid="deposit-tab-info">
-      <div className="flex justify-between text-sm pb-5">
+      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
         <div className="opacity-50 font-semibold" data-testid="symbol-label">
           {symbol} Collateral
         </div>
@@ -63,7 +64,7 @@ export const DepositTabInfo = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-between text-sm pb-5">
+      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
         <div
           className="opacity-50 font-semibold"
           data-testid="collateral-value-label"
@@ -89,17 +90,24 @@ export const DepositTabInfo = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-between text-sm pb-5">
+      <div className="flex justify-between items-center text-[10px] md:text-xs lg:text-sm">
         <div
-          className="opacity-50 font-semibold flex gap-x-2"
+          className="flex items-center opacity-50 font-semibold gap-x-2"
           data-testid="health-factor-label"
         >
           Health Factor
-          <Image src={InfoIcon} alt="info icon" />
+          <Image
+            src={InfoIcon}
+            alt="info icon"
+            className="h-3 w-3 lg:h-[14px] lg:w-[14px]"
+          />
         </div>
         <div className="flex items-center gap-x-1.5">
           <div className="flex space-x-2  text-success">
-            <div className="font-bold" data-testid="health-factor">
+            <div
+              className={`font-bold ${getHealthFactorColor(Number(healthFactor))}`}
+              data-testid="health-factor"
+            >
               {isLoading ? "-" : toFixedTrunc(Number(healthFactor), 2)}
             </div>
             <Image
@@ -107,7 +115,10 @@ export const DepositTabInfo = ({
               alt="right arrow"
               className="flex self-center"
             />
-            <div className="font-bold" data-testid="projected-health-factor">
+            <div
+              className={`font-bold ${getHealthFactorColor(projectedHealthFactor)}`}
+              data-testid="projected-health-factor"
+            >
               {isLoading ? "-" : toFixedTrunc(projectedHealthFactor, 2)}
             </div>
           </div>
@@ -129,13 +140,17 @@ export const BorrowTabInfo = ({
 }: BorrowTabInfoProps) => {
   return (
     <div data-testid="borrow-tab-info">
-      <div className="flex justify-between text-sm pb-5">
+      <div className="flex justify-between items-center text-[10px] md:text-xs lg:text-sm pb-5">
         <div
-          className="opacity-50 font-semibold flex gap-x-2"
+          className="flex items-center opacity-50 font-semibold gap-x-2"
           data-testid="total-borrowed-label"
         >
           Borrowed
-          <Image src={InfoIcon} alt="info icon" />
+          <Image
+            src={InfoIcon}
+            alt="info icon"
+            className="h-3 w-3 lg:h-[14px] lg:w-[14px]"
+          />
         </div>
         <div className="flex items-center gap-x-1.5">
           <RefreshSpinner isOpen={isLoading} data-testid="refresh-spinner" />
@@ -154,13 +169,17 @@ export const BorrowTabInfo = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-between text-sm pb-5">
+      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
         <div
-          className="opacity-50 font-semibold flex gap-x-2"
+          className="opacity-50 flex items-center font-semibold gap-x-2"
           data-testid="collateral-value-label"
         >
           Collateral Value
-          <Image src={InfoIcon} alt="info icon" />
+          <Image
+            src={InfoIcon}
+            alt="info icon"
+            className="h-3 w-3 lg:h-[14px] lg:w-[14px]"
+          />
         </div>
         <div className="flex items-center gap-x-1.5">
           <div className="flex space-x-2">
@@ -170,17 +189,24 @@ export const BorrowTabInfo = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-between text-sm pb-5">
+      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
         <div
-          className="opacity-50 font-semibold flex gap-x-2"
+          className="flex items-center opacity-50 font-semibold gap-x-2"
           data-testid="health-factor-label"
         >
           Health Factor
-          <Image src={InfoIcon} alt="info icon" />
+          <Image
+            src={InfoIcon}
+            alt="info icon"
+            className="h-3 w-3 lg:h-[14px] lg:w-[14px]"
+          />
         </div>
         <div className="flex items-center gap-x-1.5">
           <div className="flex space-x-2  text-success">
-            <div className="font-bold" data-testid="health-factor">
+            <div
+              className={`font-bold ${getHealthFactorColor(Number(healthFactor))}`}
+              data-testid="health-factor"
+            >
               {isLoading ? "-" : toFixedTrunc(Number(healthFactor), 2)}
             </div>
             <Image
@@ -188,19 +214,26 @@ export const BorrowTabInfo = ({
               alt="right arrow"
               className="flex self-center"
             />
-            <div className="font-bold" data-testid="projected-health-factor">
+            <div
+              className={`font-bold ${getHealthFactorColor(projectedHealthFactor)}`}
+              data-testid="projected-health-factor"
+            >
               {isLoading ? "-" : toFixedTrunc(projectedHealthFactor, 2)}
             </div>
           </div>
         </div>
       </div>
-      <div className="flex justify-between text-sm pb-5">
+      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm">
         <div
-          className="opacity-50 font-semibold flex gap-x-2"
+          className="flex items-center opacity-50 font-semibold gap-x-2"
           data-testid="liquidity-label"
         >
           Liquidity
-          <Image src={InfoIcon} alt="info icon" />
+          <Image
+            src={InfoIcon}
+            alt="info icon"
+            className="h-3 w-3 lg:h-[14px] lg:w-[14px]"
+          />
         </div>
         <div className="flex items-center gap-x-1.5">
           <div className="flex space-x-2 ">

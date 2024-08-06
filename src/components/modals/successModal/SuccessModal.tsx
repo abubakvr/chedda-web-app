@@ -26,39 +26,39 @@ export const SuccessModal = ({
       } bg-[#00000024] bg-opacity-75 overflow-y-auto backdrop-filter backdrop-blur-sm z-20`}
     >
       <div className="flex items-center justify-center min-h-screen">
-        <div className="app-modal p-8 rounded shadow-lg w-[550px]">
+        <div className="app-modal p-4 md:p-6 lg:p-8 rounded shadow-lg  w-11/12 max-w-[380px] md:max-w-[450px] lg:max-w-[550px]">
           <div className="flex justify-end items-center">
-            <span
-              className="text-4xl cursor-pointer font-bold text-white relative"
+            <button
+              className="text-2xl md:text-3xl lg:text-4xl cursor-pointer font-bold text-white relative"
               onClick={onClose}
               data-testid="close-success-modal"
             >
               &times;
-            </span>
+            </button>
           </div>
-          <div className="flex flex-col mt-6 rounded-lg justify-center items-center p-2">
+          <div className="flex flex-col mt-1 lg:mt- rounded-lg justify-center items-center p-2">
             <Image
               src={SuccessIcon}
               alt="success"
-              className="flex self-center"
+              className="flex self-center w-[56px] h-[56px] md:w-[72px] md:h-[72px] lg:w-[96px] lg:h-[96px]"
             />
             <div
               data-testid="transactionCompletedText"
-              className="text-3xl text-white mt-6 font-bold"
+              className="text-lg md:text-2xl lg:text-3xl text-white mt-3 md:mt-4 lg:mt-6 font-bold"
             >
               Transaction Completed
             </div>
-            <div className="text-2xl text-[#FFFFFF50] mt-6 ">
+            <div className="text-xs md:text-lg lg:text-2xl text-[#FFFFFF50] mt-4 md:mt-6 lg:mt-8">
               {modalMessage}
             </div>
-            <div className="mt-10 text-lg text-[#FFFFFF50] justify-center text-center">
+            <div className="mt-6 md:mt-9 lg:mt-10 text-[10px] md:text-xs lg:text-lg text-[#FFFFFF50] justify-center text-center">
               Stake LP tokens, earn CHEDDA — secure rewards in a streamlined and
               rewarding staking venture.
             </div>
             <Button
               type="primary"
               size="large"
-              className="mt-12"
+              className="mt-6 md:mt-10 lg:mt-12"
               onClick={() => {
                 stakeAction();
                 onClose();
@@ -66,12 +66,12 @@ export const SuccessModal = ({
             >
               Stake LP Tokens
             </Button>
-            <div className="mt-3 text-2xl text-white">or</div>
+            <div className="my-1 md:my-3 text-2xl text-white">or</div>
             <Button
               type="secondary"
               size="large"
-              className="mt-3"
               onClick={continueAction}
+              className="mt-1"
             >
               Continue
             </Button>

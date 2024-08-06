@@ -1,6 +1,4 @@
 import React from "react";
-import Image from "next/image";
-import ArrowRight from "@/assets/icon/arrow-right.svg";
 
 interface TabInfoProps {
   lockTime: {
@@ -23,7 +21,7 @@ export const TabInfo: React.FC<TabInfoProps> = ({
   projectedMaturityDate,
 }: TabInfoProps) => (
   <div data-testid="lock-tab-info">
-    <div className="flex justify-between text-sm pb-5">
+    <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
       <div
         className="opacity-50 font-semibold flex gap-x-2"
         data-testid="allowance-label"
@@ -37,7 +35,7 @@ export const TabInfo: React.FC<TabInfoProps> = ({
         {allowance}
       </div>
     </div>
-    <div className="flex justify-between text-sm pb-5">
+    <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
       <div
         className="opacity-50 font-semibold flex gap-x-2"
         data-testid="projected-maturity-label"
@@ -51,16 +49,10 @@ export const TabInfo: React.FC<TabInfoProps> = ({
         {lockTime.value !== undefined ? projectedMaturityDate : maturityDate}
       </div>
     </div>
-    <div className="flex justify-between text-sm">
-      <div className="opacity-50 font-semibold">Amount To Lock</div>
+    <div className="flex justify-between text-[10px] md:text-xs lg:text-sm">
+      <div className="opacity-50 font-semibold">Locked Amount</div>
       <div className="flex space-x-2">
         <div className="font-bold">{lockedAmount}</div>
-        <Image
-          src={ArrowRight}
-          alt="right arrow"
-          className="flex self-center"
-        />
-        <div className="font-bold">{projectedLockAmount}</div>
       </div>
     </div>
   </div>

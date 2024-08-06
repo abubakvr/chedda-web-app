@@ -37,12 +37,12 @@ const LockTab = ({
     isLoading: cheddaAllowanceLoading,
   } = useCheddaAllowance();
   const { data: cheddaPrice, isLoading: cheddaPriceLoading } = useTokenValue(
-    currentEnvironment?.contracts.CheddaToken || ""
+    currentEnvironment?.contracts.CheddaToken
   );
   const {
     data: lockedChedda,
     isLoading: lockedCheddaLoading,
-    fetchData: fetchLockedChedaa,
+    fetchData: fetchLockedChedda,
   } = useLockedChedda();
 
   const {
@@ -72,7 +72,7 @@ const LockTab = ({
   const updateCard = () => {
     fetchCheddaTokenBalance();
     fetchCheddaAllowance();
-    fetchLockedChedaa();
+    fetchLockedChedda();
     fetchClaimableRewards();
     fetchTotalWeight();
     fetchTotalWeightSum();
@@ -82,30 +82,37 @@ const LockTab = ({
 
   const isLoading =
     cheddaPriceLoading ||
-    lockedCheddaLoading ||
     claimableRewardsLoading ||
+    lockedCheddaLoading ||
     totalAmountLockedLoading ||
     totalWeightLoading ||
     totalWeightSumLoading;
 
   if (isLoading) {
     return (
-      <div className="mt-8 w-full flex space-x-5" data-testid="lock-container">
+      <div
+        className="mt-6 lg:mt-8 custom-grid-card"
+        data-testid="lock-container"
+      >
         <div
-          className="pool-card rounded-lg h-fit w-full"
+          className="pool-card rounded-lg h-72 w-full order-3 lg:order-1 grid-info-card"
           data-testid="lock-information-card"
         >
-          <InfoCardSkeleton title="Lock Information" itemCount={3} />
+          <InfoCardSkeleton title="Lock Info" itemCount={3} />
         </div>
-        <div className="pool-card rounded-lg w-full" data-testid="lock-card">
+        <div
+          className="pool-card rounded-lg order-1 lg:order-2 grid-action-card w-full"
+          data-testid="lock-card"
+        >
           <SwitchTabSkeleton />
         </div>
         <div
-          className="pool-card rounded-lg h-fit w-full"
+          className="pool-card rounded-lg h-fit order-2 lg:order-3 grid-claim-card w-full"
           data-testid="rewards-card"
         >
           <InfoCardSkeleton title="Claim Rewards" itemCount={3} />
         </div>
+        <div className="order-3 xl:hidden"></div>
       </div>
     );
   }
@@ -113,11 +120,11 @@ const LockTab = ({
   return (
     <>
       <div
-        className="mt-8 w-full flex space-x-5"
+        className="mt-6 lg:mt-8 custom-grid-card"
         data-testid="lock-chedda-container"
       >
         <div
-          className="pool-card rounded-lg h-72 w-full"
+          className="pool-card rounded-lg h-fit w-full order-3 lg:order-1 grid-info-card"
           data-testid="lock-information-card"
         >
           <LockingInfoCard
@@ -128,7 +135,7 @@ const LockTab = ({
           />
         </div>
         <div
-          className="pool-card rounded-lg w-full"
+          className="pool-card rounded-lg order-1 lg:order-2 grid-action-card w-full"
           data-testid="lock-chedda-card"
         >
           <LockCheddaCard
@@ -146,7 +153,7 @@ const LockTab = ({
           />
         </div>
         <div
-          className="pool-card rounded-lg h-fit w-full"
+          className="pool-card rounded-lg h-fit order-2 lg:order-3 grid-claim-card w-full"
           data-testid="lock-rewards-card"
         >
           <ClaimRewardsCard

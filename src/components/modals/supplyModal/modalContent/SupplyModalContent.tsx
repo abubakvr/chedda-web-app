@@ -47,10 +47,12 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
   const buttonTitle = allowance < amount ? "Approve" : "Supply";
 
   return (
-    <div data-testid="supply-modal-content" className="mt-6">
-      <div className="text-xl font-bold">{title} your assets</div>
-      <div className="flex justify-between mt-6 items-center text-xs">
-        <div data-testid="amount-label" className="text-[#DEDEDE]">
+    <div data-testid="supply-modal-content" className="mt-4 lg:mt-6">
+      <div className="text-xs md:text-sm lg:text-xl font-bold">
+        {title} your assets
+      </div>
+      <div className="flex justify-between mt-3 lg:mt-4 md:mt-6 items-center text-[10px] md:text-xs">
+        <div data-testid="amount-label" className="text-[#FFFFFF70]">
           Enter amount to {title}
         </div>
         <div data-testid="max-amount" className="font-bold">
@@ -67,7 +69,7 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
         assetPrice={assetPrice}
       />
       {title === "Deposit" && (
-        <div className="flex justify-between items-center mt-6 font-bold text-lg">
+        <div className="flex justify-between items-center mt-3 md:mt-4 lg:mt-6 font-bold text-xs md:text-sm lg:text-lg">
           <div>Use as collateral</div>
           <label className="switch">
             <input
@@ -83,13 +85,13 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
       <Button
         type="primary"
         onClick={() => buttonAction(useAsCollateral)}
-        className="mt-6 h-7"
+        className="mt-3 md:mt-4 lg:mt-6 h-7"
         size="large"
         isLoading={isTransactionLoading}
       >
         {title === "Deposit" ? buttonTitle : title} {asset.symbol}
       </Button>
-      <div data-testid="modal-info" className="mt-6 pb-0">
+      <div data-testid="modal-info" className="mt-4 lg:mt-6">
         {modalInfo}
       </div>
     </div>
