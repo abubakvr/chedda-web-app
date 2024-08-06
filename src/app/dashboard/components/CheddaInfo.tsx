@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import linkOut from "@/assets/icon/link-out-white.svg";
+import arrowForward from "@/assets/icon/arrow-forward.svg";
+
 import { Card } from "@/components/common";
 import { ConnectWalletBox } from "./ConnectWalletBox";
 import { useCheddaBalance, useCheddaTotalSupply } from "@/hooks";
@@ -21,21 +23,27 @@ interface InfoItemProps {
 
 const InfoItem = ({ title, value, isLoading, subValue }: InfoItemProps) => (
   <div
-    className="hazy-bg p-6 pb-[51px] w-full space-y-2"
+    className="lg:border lg:border-[#ffffff19] lg:bg-[#ffffff02] rounded-lg lg:p-6 lg:pb-[51px] w-full space-y-1 lg:space-y-2"
     data-testid={`info-item-${title.replace(" ", "-").toLowerCase()}`}
   >
-    <p className="text-xs text-[#FFFFFF70] font-semibold">{title}</p>
+    <p className="text-[8px] lg:text-xs text-[#FFFFFF70] font-semibold w-max">
+      {title}
+    </p>
     {isLoading ? (
-      <div className="space-y-4 animate-pulse">
-        <div className="mt-1 h-7 w-24 rounded-md bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+      <div className="space-y-2 lg:space-y-4 animate-pulse">
+        <div className="mt-1 h-5 w-16 lg:h-7 lg:w-24 rounded lg:rounded-md bg-gray-300 dark:bg-blue-200 opacity-10"></div>
         {subValue && (
-          <div className="mt-4 h-4 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+          <div className="mt-4 h-4 w-20 lg:h-4 lg:w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
         )}
       </div>
     ) : (
-      <div className="space-y-2">
-        <p className="text-2xl text-white font-bold">{value}</p>
-        {subValue && <p className="text-sm text-[#FFFFFF70]">{subValue}</p>}
+      <div className="lg:space-y-2">
+        <p className="text-sm lg:text-2xl text-white font-bold">{value}</p>
+        {subValue && (
+          <p className="text-[10px] lg:text-sm text-[#FFFFFF70] w-max">
+            {subValue}
+          </p>
+        )}
       </div>
     )}
   </div>
@@ -71,7 +79,7 @@ export const CheddaInfo = ({
       {isWalletConnected ? (
         <div data-testid="chedda-info-card">
           <div
-            className="flex justify-between gap-x-2"
+            className="flex justify-between gap-x-2 border border-[#ffffff19] bg-[#ffffff02] lg:border-none lg:bg-transparent rounded-lg p-3 lg:p-0"
             data-testid="info-items-container"
           >
             <InfoItem
@@ -96,19 +104,23 @@ export const CheddaInfo = ({
               isLoading={isLoading}
             />
           </div>
-          <div className="mt-4 flex items-center justify-between relative">
-            <div className="text-xs text-[#FFFFFF70]">
+          <div className="mt-2 lg:mt-4 flex items-center justify-between relative">
+            <div className="text-[8px] lg:text-xs text-[#FFFFFF70]">
               Overview of CHEDDA Info
             </div>
             <a
               href="https://app.uniswap.org/#/swap"
               target="_blank"
               rel="noreferrer"
-              className="modal-button text-white rounded-lg p-3 px-4 text-xs font-bold flex gap-x-2 hover:opacity-90"
+              className="modal-button text-white rounded-md lg:rounded-lg py-2 px-3 lg:py-3 lg:px-4 text-[8px] lg:text-xs font-bold flex items-center gap-x-1 lg:gap-x-2 hover:opacity-90"
               data-testid="buy-chedda-link"
             >
               <p>Buy CHEDDA</p>
-              <Image src={linkOut} alt="link out" className="w-4 h-4" />
+              <Image
+                src={arrowForward}
+                alt="link out"
+                className="w-2 h-2 lg:w-3 lg:h-3"
+              />
             </a>
           </div>
         </div>
@@ -116,6 +128,7 @@ export const CheddaInfo = ({
         <ConnectWalletBox
           title="CHEDDA info"
           data-testid="connect-wallet-box"
+          height={20}
         />
       )}
     </Card>

@@ -97,7 +97,7 @@ export const Button: FC<ButtonProps> = ({
             : type === "secondary"
               ? "secondary-button button-gradient-text text-xs md:text-sm xl:text-xl uppercase"
               : type === "tertiary"
-                ? "modal-button"
+                ? "modal-button text-[8px] md:text-[8px] xl:text-sm h-auto"
                 : ""
         } w-full text-center ${
           size === "large"

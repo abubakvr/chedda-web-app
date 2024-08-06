@@ -117,7 +117,7 @@ export const FilterCard: React.FC<FilterCardProps> = ({
                 <input
                   name="q"
                   type="search"
-                  className="w-full md:w-48 lg:w-64 h-full bg-transparent focus:outline-none text-[10px] md:text-lg text-white pl-2 md:pl-3 md:pr-10"
+                  className="w-full md:w-48 lg:w-64 h-full bg-transparent focus:outline-none text-[10px] md:text-lg text-white pl-2 md:pl-3 md:pr-10 flex items-center"
                   placeholder="Search"
                   onChange={(e) => searchAction(e.target.value)}
                 />

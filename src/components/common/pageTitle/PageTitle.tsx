@@ -10,7 +10,7 @@ export const PageTitle = ({
 }) => {
   return (
     <div
-      className="pool-card rounded-lg w-full mt-2 lg:mt-6 xl:mt-6 p-4 md:p-6 md:px-8 xl:px-10 xl:py-8"
+      className="pool-card rounded-lg w-full md:mt-2 lg:mt-6 xl:mt-6 p-4 md:p-6 md:px-8 xl:px-10 xl:py-8"
       data-testid="route-card-container"
     >
       <div className="relative flex items-center text-white text-lg md:text-2xl xl:text-[32px] pb-2 md:pb-4 font-bold border-b border-[#51D5FA30]">
