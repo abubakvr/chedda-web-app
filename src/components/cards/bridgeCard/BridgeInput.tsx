@@ -33,7 +33,7 @@ interface BridgeInputProps {
   tokenPrice: number;
   handleActiveScreen: (term: string) => void;
   switchToSelectedChain: (chain: ISourceChain) => void;
-  fetchBalances: () => void;
+  fetchBalances: (chain: ISourceChain) => void;
   getEstimatedGas: () => void;
   fetchTokenData: () => void;
 }
@@ -87,7 +87,6 @@ export const BridgeInput = ({
   const handleChainSwitch = () => {
     switchToSelectedChain(destinationChain);
     switchNetwork(destinationChain);
-    fetchBalances();
   };
 
   const buttonName =
@@ -149,7 +148,7 @@ export const BridgeInput = ({
           setShowToast(true);
         }
       }
-      fetchBalances();
+      fetchBalances(selectedChain);
       fetchTokenData();
       setIsLoading(false);
     } catch (error: any) {
@@ -228,6 +227,12 @@ export const BridgeInput = ({
       alert("Input field cannot be empty");
       return;
     }
+
+    if (amount > tokenBalances[balanceAddress]!) {
+      alert("Enter Valid Amount");
+      return;
+    }
+
     try {
       if (
         selectedToken.source === selectedChain.key &&

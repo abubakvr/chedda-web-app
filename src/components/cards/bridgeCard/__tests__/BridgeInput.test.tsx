@@ -167,7 +167,6 @@ describe("BridgeInput Component", () => {
       expect(defaultProps.switchToSelectedChain).toHaveBeenCalledWith(
         defaultProps.destinationChain
       );
-      expect(defaultProps.fetchBalances).toHaveBeenCalled();
     });
   });
 
