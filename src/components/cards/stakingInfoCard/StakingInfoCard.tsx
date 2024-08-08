@@ -62,7 +62,7 @@ export const StakingInfoCard = ({
           />
         </a>
       </div>
-      <div className="p-4 md:p-6 lg:p-8 pb-0 text-white">
+      <div className="p-4 md:p-6 lg:p-8 text-white">
         <div className="flex justify-between text-xs lg:text-sm pb-5">
           <div className="opacity-50 font-semibold">Annual Percentage Rate</div>
           <div className="font-bold">5.52%</div>

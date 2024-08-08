@@ -25,15 +25,15 @@ const Page = () => {
       <PageTitle title="DASHBOARD">
         Track all your positions in one place.
       </PageTitle>
-      <div className="mt-6 flex justify-between w-full space-x-6">
-        <div className="w-[62%]">
+      <div className="mt-4 md:mt-6 md:flex justify-between w-full gap-x-6 space-y-4 md:space-y-0">
+        <div className="md:w-1/2 lg:w-[59%] xl:w-[62%]">
           <CheddaInfo
             isWalletConnected={isWalletConnected}
             cheddaTokenPrice={cheddaTokenPrice}
             cheddaTokenPriceLoading={cheddaTokenPriceLoading}
           />
         </div>
-        <div className="w-[38%]">
+        <div className="md:w-1/2 lg:w-[41%] xl:w-[38%]">
           <ClaimRewards
             isWalletConnected={isWalletConnected}
             cheddaTokenPrice={cheddaTokenPrice}
@@ -41,14 +41,14 @@ const Page = () => {
           />
         </div>
       </div>
-      <div className="mt-6">
+      <div className="mt-4 md:mt-6">
         <PositionSummary
           isWalletConnected={isWalletConnected}
           allPositions={allPositions}
           allPositionsLoading={allPositionsLoading}
         />
       </div>
-      <div className="mt-6">
+      <div className="mt-4 md:mt-6">
         <MyPositions
           isWalletConnected={isWalletConnected}
           allPositions={allPositions}
@@ -57,7 +57,7 @@ const Page = () => {
           cheddaTokenPriceLoading={cheddaTokenPriceLoading}
         />
       </div>
-      <div className="mt-6">
+      <div className="mt-4 md:mt-6">
         <BridgeSection />
       </div>
     </PageContainer>

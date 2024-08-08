@@ -34,11 +34,11 @@ describe("Card Component", () => {
     // Check if the header has the correct classes applied
     const header = screen.getByText(title).parentElement;
     expect(header).toHaveClass(
-      "card-header-bg flex justify-between rounded-t-lg px-8 h-[50px] items-center"
+      "card-header-bg flex justify-between rounded-t-lg px-4 md:px-6 lg:px-8 h-9 lg:h-[50px] items-center"
     );
 
     // Check if the body has the correct classes applied
     const body = header?.nextSibling;
-    expect(body).toHaveClass("px-8 p-4");
+    expect(body).toHaveClass("px-4 md:px-6 lg:px-8 py-4");
   });
 });

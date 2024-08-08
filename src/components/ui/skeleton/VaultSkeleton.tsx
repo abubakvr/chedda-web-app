@@ -14,7 +14,7 @@ export const VaultSkeleton: React.FC<VaultSkeletonProps> = ({ itemCount }) => (
       <div
         key={index}
         data-testid={`skeleton-item-container`}
-        className="h-auto w-full py-5 hidden md:grid grid-cols-1 grid-row-bg justify-between text-white hover:opacity-80 cursor-pointer"
+        className="h-auto w-full py-5 grid grid-cols-1 grid-row-bg justify-between text-white hover:opacity-80 cursor-pointer"
       >
         <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-8 ">
           <div className="flex flex-col">

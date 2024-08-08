@@ -115,30 +115,30 @@ export const ClaimRewards = ({
       <Card title="CLAIM REWARDS" data-test-id="custom-card">
         {isWalletConnected ? (
           <>
-            <div className="hazy-bg flex justif-between gap-x-2">
-              <div className="flex flex-col items-center p-7 w-full">
-                <p className="text-xs text-[#FFFFFF70] font-semibold">
+            <div className="hazy-bg flex justift-between gap-x-2">
+              <div className="flex flex-col items-center p-2 md:p- lg:p-7 w-full justify-center">
+                <p className="text-[8px] lg:text-xs text-[#FFFFFF70] font-semibold w-max">
                   Lock Rewards
                 </p>
                 {isDataLoading ? (
                   <div className="flex flex-col items-center animate-pulse">
-                    <div className="mt-2 h-7 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
-                    <div className="mt-2 h-5 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
-                    <div className="mt-2 h-4 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                    <div className="mt-1 lg:mt-2 h-4 lg:h-7 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                    <div className="mt-1 lg:mt-2 h-4 lg:h-5 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                    <div className="mt-1 lg:mt-2 h-3 lg:h-3 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center space-y-1">
+                  <div className="flex flex-col items-center lg:space-y-1">
                     <p
-                      className="mt-2 text-2xl font-bold card-gradient-text"
+                      className="lg:mt-2 text-sm lg:text-2xl font-bold card-gradient-text"
                       data-testid="lock-rewards"
                     >
                       {formatLargeNumber(parsedLockRewards)}
                     </p>
-                    <p className="text-sm font-bold card-gradient-text">
+                    <p className="text-[10px] lg:text-sm font-bold card-gradient-text">
                       CHEDDA
                     </p>
                     <p
-                      className="mt-2 text-xs text-[#FFFFFF70]"
+                      className="lg:mt-2 text-[8px] lg:text-xs text-[#FFFFFF70]"
                       data-testid="lock-rewards-value"
                     >
                       $
@@ -150,29 +150,29 @@ export const ClaimRewards = ({
                 )}
               </div>
               <div className="border-0.5 border-l border-[#7F56D9] h-10/12 my-3 opacity-70"></div>
-              <div className="flex flex-col items-center p-7 w-full space-y-1">
-                <p className="text-xs text-[#FFFFFF70] font-semibold">
+              <div className="flex flex-col items-center p-1 md:p-1 lg:p-7 w-full space-y-1">
+                <p className="text-[8px] lg:text-xs text-[#FFFFFF70] font-semibold w-max">
                   Stake Rewards
                 </p>
                 {isDataLoading ? (
                   <div className="flex flex-col items-center animate-pulse">
-                    <div className="mt-2 h-7 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
-                    <div className="mt-2 h-5 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
-                    <div className="mt-2 h-3 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                    <div className="mt-1 lg:mt-2 h-4 lg:h-7 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                    <div className="mt-1 lg:mt-2 h-4 lg:h-5 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
+                    <div className="mt-1 lg:mt-2 h-3 lg:h-3 w-24 rounded bg-gray-300 dark:bg-blue-200 opacity-10"></div>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center space-y-1">
+                  <div className="flex flex-col items-center lg:space-y-1">
                     <p
-                      className="mt-2 text-2xl font-bold card-gradient-text"
+                      className="lg:mt-2 text-sm lg:text-2xl font-bold card-gradient-text"
                       data-testid="stake-rewards"
                     >
                       {formatLargeNumber(parsedStakeRewards)}
                     </p>
-                    <p className="text-sm font-bold card-gradient-text">
+                    <p className="text-[10px] lg:text-sm font-bold card-gradient-text">
                       CHEDDA
                     </p>
                     <p
-                      className="mt-2 text-xs text-[#FFFFFF70]"
+                      className="lg:mt-2 text-[8px] lg:text-xs text-[#FFFFFF70]"
                       data-testid="stake-rewards-value"
                     >
                       $
@@ -184,15 +184,15 @@ export const ClaimRewards = ({
                 )}
               </div>
             </div>
-            <div className="mt-4 flex items-center justify-between relative">
-              <div className="text-xs text-[#FFFFFF70]">
+            <div className="mt-2 lg:mt-4 flex items-center justify-between relative gap-x-2">
+              <div className="text-[8px] lg:text-xs text-[#FFFFFF70]">
                 Claim all your rewards on the protocol in one place
               </div>
-              <div className="w-32">
+              <div className="w-20 lg:w-32">
                 <Button
                   type="tertiary"
                   onClick={() => handleClaimAllRewards()}
-                  className="h-10 text-sm"
+                  className="py-2 lg:py-3 xl:py-2.5 text-[8px] lg:text-xs"
                   isLoading={txLoading}
                   disabled={!parsedLockRewards && !parsedStakeRewards}
                   data-testid="custom-button"
@@ -203,7 +203,11 @@ export const ClaimRewards = ({
             </div>
           </>
         ) : (
-          <ConnectWalletBox title="rewards" data-testid="connect-wallet-box" />
+          <ConnectWalletBox
+            title="rewards"
+            data-testid="connect-wallet-box"
+            height={20}
+          />
         )}
       </Card>
     </>
