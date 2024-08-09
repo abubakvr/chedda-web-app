@@ -69,12 +69,8 @@ export const DepositTab = ({
   const [inputAmount, setInputAmount] = useState(0);
   const [txLoading, setTxLoading] = useState(false);
   const { address: tokenAddress, decimals, symbol } = selectedCollateral;
-  const {
-    allowanceLoading,
-    accountCollateralLoading,
-    tokenBalanceLoading,
-    healthFactorLoading,
-  } = isLoading;
+  const { allowanceLoading, accountCollateralLoading, tokenBalanceLoading } =
+    isLoading;
   const { depositCollateral, approveAsset } = useTransaction(tokenAddress);
 
   const parsedAllowance = parseBigNumberToFloat(allowance, decimals);
@@ -271,10 +267,9 @@ export const DepositTab = ({
           onClick={handleDepositCollateral}
           className="mt-3 md:mt-4 lg:mt-6 h-7"
           size="large"
-          isLoading={txLoading}
+          isLoading={txLoading || allowanceLoading}
           disabled={
             accountCollateralLoading ||
-            allowanceLoading ||
             selectedCollateral.symbol === asset.symbol
           }
         >

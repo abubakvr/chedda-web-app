@@ -188,7 +188,7 @@ export const TokenSelect = ({
           />
         </div>
       </div>
-      <div className="mt-4 md:mt-6 h-64 overflow-y-auto bridge-scroll-element">
+      <div className="mt-4 md:mt-6 h-64 lg:h-72 overflow-y-auto bridge-scroll-element">
         {sortedTokenList.map((token, index) => {
           if (token.bridgeToken) {
             return !searchKeyword

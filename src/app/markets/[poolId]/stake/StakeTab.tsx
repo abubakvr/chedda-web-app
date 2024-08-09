@@ -156,6 +156,7 @@ const StakeTab = ({
           updateCard={updateCard}
           fetchLpAllowance={fetchLpAllowance}
           defaultTab={"Stake"}
+          lpAllowanceLoading={lpAllowanceLoading}
         />
       </div>
       <div

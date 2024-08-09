@@ -122,7 +122,7 @@ export const BridgeCard = ({
         </PageTitle>
       </div>
       <div className="flex justify-center mt-4 md:mt-6">
-        <div className="pool-card rounded-xl w-full sm:w-[450px] md:w-[450px] lg:w-[580px] text-white p-4 py-5 md:p-6 lg:p-8">
+        <div className="pool-card rounded-xl w-full sm:w-[450px] md:w-[470px] lg:w-[580px] text-white p-4 py-5 md:p-6 lg:p-8">
           {activeScreen === "tokenselect" ? (
             <TokenSelect
               handleActiveScreen={handleActiveScreen}

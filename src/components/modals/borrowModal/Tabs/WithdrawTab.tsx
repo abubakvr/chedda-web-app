@@ -64,7 +64,7 @@ export const WithdrawTab = ({
   const [showToast, setShowToast] = useState(false);
   const [inputAmount, setInputAmount] = useState(0);
   const { address: tokenAddress, decimals, symbol } = selectedCollateral;
-  const { accountCollateralLoading, healthFactorLoading, tokenBalanceLoading } =
+  const { accountCollateralLoading, allowanceLoading, tokenBalanceLoading } =
     isLoading;
   const { withdrawCollateral } = useTransaction(tokenAddress);
 
@@ -217,7 +217,7 @@ export const WithdrawTab = ({
           onClick={handleWithdrawCollateral}
           className="mt-3 md:mt-4 lg:mt-6 h-7"
           size="large"
-          isLoading={txLoading}
+          isLoading={txLoading || allowanceLoading}
           disabled={
             accountCollateralLoading ||
             selectedCollateral.symbol === asset.symbol
