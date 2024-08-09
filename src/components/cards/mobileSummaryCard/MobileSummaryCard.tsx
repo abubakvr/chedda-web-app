@@ -6,6 +6,8 @@ export const MobileSummaryCard = ({
 }: {
   aggregateStats: ISummaryStats[] | undefined;
 }) => {
+  if (!aggregateStats) return null;
+
   return (
     <div className="pool-card rounded-lg p-4 bg-gray-800 text-white w-full">
       <div className="flex justify-between border-b  border-[#51D5FA30] pb-3">
