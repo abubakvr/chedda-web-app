@@ -1,5 +1,5 @@
 import React from "react";
-import Page from "../Page";
+import Page from "../page";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { useBridge } from "@/hooks";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
