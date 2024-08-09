@@ -32,7 +32,7 @@ export const ConfirmationScreen = ({
 }: ConfirmationScreenProps) => {
   return (
     <div>
-      <div className="flex gap-x-6">
+      <div className="flex gap-x-3 md:gap-x-4 lg:gap-x-6">
         <button
           className="relative hover:opacity-75"
           onClick={() => returnToInput()}
@@ -40,63 +40,69 @@ export const ConfirmationScreen = ({
           <Image
             src={leftIcon}
             alt="image-icon"
-            className="w-8 h-8"
+            className="w-6 h-6 md:w-8 md:h-8"
             data-testid="back-button"
           />
         </button>
-        <div className="text-3xl font-bold">Confirmation</div>
+        <div className="text-lg md:text-2xl lg:text-3xl font-bold">
+          Confirmation
+        </div>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-1 md:mt-3 lg:mt-6">
         <div className="relative flex justify-between items-center py-3">
-          <div className="w-max flex  font-bold items-center py-2 space-x-2">
+          <div className="w-max flex font-bold items-center py-2 space-x-2">
             <div className="w-max flex relative">
               <Image
                 src={selectedToken.logo}
                 alt="icon image"
-                className="w-12 h-12"
+                className="w-6 h-6 md:w-8 md:h-8 lg:w-12 lg:h-12"
               />
               <Image
                 src={selectedChain.logo}
                 alt="icon image"
-                className="absolute w-6 h-6 bottom-0 -right-0.5"
+                className="absolute w-[11px] h-[11px] md:w-[14px] md:h-[14px] lg:w-6 lg:h-6 bottom-0 -right-0.5"
               />
             </div>
             <div>
-              <p className="font-bold text-lg uppercase">
+              <p className="font-bold text-xs md:text-sm lg:text-lg uppercase">
                 {formatNumber(amountToSend)} {selectedToken.symbol}
               </p>
-              <p className="font-bold text-xs mt-0.5 text-[#FFFFFF70]">
+              <p className="font-bold text-[10px] md:text-xs mt-0.5 text-[#FFFFFF70]">
                 ~ ${formatNumber(amountToSend * tokenPrice)}
               </p>
             </div>
           </div>
-          <Image src={arrowLogo} alt="" className="w-12 h-12" />
-          <div className="w-max flex  font-bold items-center py-2 space-x-2">
+          <Image
+            src={arrowLogo}
+            alt=""
+            className="w-10 h-10 md::w-12 md:h-12"
+          />
+          <div className="w-max flex font-bold items-center py-2 space-x-2">
             <div className="w-max flex relative">
               <Image
                 src={selectedToken.logo}
                 alt="icon image"
-                className="w-12 h-12"
+                className="w-6 h-6 md:w-8 md:h-8 lg:w-12 lg:h-12"
               />
               <Image
                 src={destinationChain.logo}
                 alt="icon image"
-                className="absolute w-6 h-6 bottom-0 -right-0.5"
+                className="absolute w-[11px] h-[11px] md:w-[14px] md:h-[14px] lg:w-6 lg:h-6 bottom-0 -right-0.5"
               />
             </div>
             <div>
-              <p className="font-bold text-lg uppercase">
+              <p className="font-bold text-xs md:text-sm lg:text-lg uppercase">
                 {formatNumber(amountToSend)} {selectedToken.symbol}
               </p>
-              <p className="font-bold text-xs mt-0.5 text-[#FFFFFF70]">
+              <p className="font-bold text-[10px] md:text-xs mt-0.5 text-[#FFFFFF70]">
                 ~ ${formatNumber(amountToSend * tokenPrice)}
               </p>
             </div>
           </div>
         </div>
       </div>
-      <div className="mt-5">
+      <div className="mt-1 md:mt-3 lg:mt-5">
         <BridgeCardInfo
           destination={destinationChain.name}
           amountToreceive={`${formatNumber(amountToSend || 0)} ${selectedToken.symbol} ($${formatNumber((amountToSend || 0) * tokenPrice)})`}
@@ -108,7 +114,7 @@ export const ConfirmationScreen = ({
         type="primary"
         size="large"
         onClick={() => bridgeToken()}
-        className="mt-8"
+        className="mt-3 md:mt-6 lg:mt-8"
         isLoading={isLoading}
         data-testid="confirm-button"
       >

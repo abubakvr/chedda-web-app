@@ -133,7 +133,9 @@ describe("BridgeCard Component", () => {
       </MockAppProviders>
     );
     await waitFor(() => {
-      expect(screen.getByText("Select a Token")).toBeInTheDocument();
+      expect(
+        screen.getByText("Select a Network and Token")
+      ).toBeInTheDocument();
     });
   });
 

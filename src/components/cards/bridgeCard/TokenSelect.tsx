@@ -84,27 +84,35 @@ export const TokenSelect = ({
             setSelectedToken(token);
             handleActiveScreen("bridge");
           }}
-          className={`w-full bridge-box relative flex justify-between items-center px-8 py-3 rounded-xl hover:cursor-pointer ${
+          className={`w-full bridge-box relative flex justify-between items-center px-3 md:px-4 lg:px-8 py-3 lg:py-5 rounded-xl hover:cursor-pointer ${
             selectedToken?.symbol === token.symbol && "bridge-box-active"
           }`}
           data-testid={`token-select-item-${token.symbol}`}
         >
-          <div className="w-max flex font-bold items-center py-2 px-4 space-x-4">
+          <div className="w-max flex font-bold items-center space-x-4">
             <div className="w-max flex relative">
-              <Image src={token.logo} alt="icon image" className="w-10 h-10" />
+              <Image
+                src={token.logo}
+                alt="icon image"
+                className="w-8 h-8 lg:w-10 lg:h-10"
+              />
               <Image
                 src={selectedChain.logo}
                 alt="icon image"
-                className="absolute w-4 h-4 top-0 left-0"
+                className="absolute w-[14px] h-[14px] lg:w-[18px] lg:h-[18px] top-0 left-0"
               />
             </div>
             <div className="flex flex-col justify-start items-start">
-              <p className="font-bold text-lg uppercase">{token.symbol}</p>
-              <p className="font-bold text-xs mt-0.5">{selectedChain.name}</p>
+              <p className="font-bold text-sm md:text-lg uppercase">
+                {token.symbol}
+              </p>
+              <p className="font-bold text-[10px] md:text-xs mt-0.5">
+                {selectedChain.name}
+              </p>
             </div>
           </div>
           <div className="flex items-center">
-            <p className="text-white font-bold">
+            <p className="text-white text-xs md:text-sm font-bold">
               {fetchTokenBalanceLoading
                 ? "Loading..."
                 : tokenBalances[balanceAddress]
@@ -119,17 +127,23 @@ export const TokenSelect = ({
 
   return (
     <div>
-      <div className="flex gap-x-6">
+      <div className="flex gap-x-3 md:gap-x-4 lg:gap-x-6">
         <button
           className="relative hover:opacity-75"
           onClick={() => handleActiveScreen("bridge")}
           data-testid="back-button"
         >
-          <Image src={leftIcon} alt="left icon" className="w-8 h-8" />
+          <Image
+            src={leftIcon}
+            alt="left icon"
+            className="w-6 h-6 md:w-8 md:h-8"
+          />
         </button>
-        <div className="text-3xl font-bold">Select a Token</div>
+        <div className="text-lg md:text-2xl lg:text-3xl font-bold">
+          Select a Network and Token
+        </div>
       </div>
-      <div className="flex gap-x-6 mt-8">
+      <div className="flex gap-x-6 mt-8 overflow-x-auto w-full">
         {sourceChains.map((chain, index) => (
           <button
             key={index}
@@ -138,13 +152,17 @@ export const TokenSelect = ({
             data-testid={`network-button-${chain.key}`}
           >
             <div
-              className={`token-select w-20 h-20 flex justify-center items-center ${
+              className={`token-select w-[55px] h-[55px] md:w-[70px] md:h-[70px] lg:w-20 lg:h-20 flex justify-center items-center ${
                 chain.key === selectedChain.key && "token-select-active"
               }`}
             >
-              <Image src={chain.logo} alt="" className="w-8 h-8" />
+              <Image
+                src={chain.logo}
+                alt=""
+                className="w-6 h-6 md:w-8 md:h-8"
+              />
             </div>
-            <p className="font-bold text-xs text-[#B5B5B5] mt-2">
+            <p className="font-bold text-[10px] md:text-xs text-[#B5B5B5] mt-2">
               {chain.name}
             </p>
           </button>
@@ -152,26 +170,25 @@ export const TokenSelect = ({
       </div>
       <div
         data-testid="search-input"
-        className="pool-card mt-8 flex flex-col justify-center gap-4 rounded-lg focus
+        className="pool-card mt-4 md:mt-6 lg:mt-8 flex flex-col justify-center gap-2 lg:gap-4 rounded-lg focus
         "
       >
-        <div className="relative p-4">
+        <div className="relative p-3 lg:p-4">
           <Image
             src={SearchIcon}
             alt="Search Icon"
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white opacity-60"
+            className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 absolute left-3 md:left-4 top-1/2 transform -translate-y-1/2 text-white"
           />
           <input
             type="text"
-            className="w-full h-full font-bold bg-transparent focus
-        text-white pl-10"
+            className="w-full h-full text-xs md:text-lg font-bold bg-transparent focustext-white pl-6 md:pl-8 lg:pl-10"
             placeholder="Search token by name or address"
             onChange={(e) => handleSearch(e)}
             data-testid="search-input-field"
           />
         </div>
       </div>
-      <div className="mt-6 h-64 overflow-y-auto bridge-scroll-element">
+      <div className="mt-4 md:mt-6 h-64 overflow-y-auto bridge-scroll-element">
         {sortedTokenList.map((token, index) => {
           if (token.bridgeToken) {
             return !searchKeyword

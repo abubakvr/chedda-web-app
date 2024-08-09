@@ -72,32 +72,33 @@ export const BridgeAmountField: FC<InputWithMaxButtonProps> = ({
   const maxActive = inputValue === maxValue;
 
   return (
-    <div className="w-full rounded-lg border-[1.5px] border-[#8080CC] mt-3 flex">
-      <div className="w-max flex  font-bold items-center uppercase border-r-[1.5px] border-[#8080CC] py-2 px-4 space-x-2">
+    <div className="w-full rounded-lg border-[1.5px] border-[#8080CC] mt-2 lg:mt-3 flex">
+      <div className="w-max flex font-bold items-center uppercase border-r-[1.5px] border-[#8080CC] px-2 md:px-4 space-x-2">
         {selectedChain && selectedToken && (
           <>
             <div className="w-max flex relative">
               <Image
                 src={selectedToken.logo}
                 alt="icon image"
-                className="w-10 h-10"
+                className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
               />
               <Image
                 src={selectedChain?.logo}
                 alt="icon image"
-                className="absolute w-4 h-4 top-0 left-0"
+                className="absolute w-[10px] h-[10px] md:w-[14px] md:h-[14px] lg:w-[18px] lg:h-[18px] top-0 left-0"
               />
             </div>
-            <p className="font-bold text-xl">{selectedToken?.symbol}</p>
+            <p className="font-bold text-sm md:text-lg lg:text-xl">
+              {selectedToken?.symbol}
+            </p>
           </>
         )}
       </div>
-      <div className="w-full flex py-2 px-4 justify-between">
+      <div className="w-full flex py-1.5 md:py-2 px-3 lg:px-4 justify-between">
         <div className="relative w-full pr-2">
           <input
             type="text"
-            className="text-white text-2xl 
-            bg-transparent focus:outline-none font-bold w-full"
+            className="text-white text-sm md:text-lg lg:text-2xl bg-transparent focus:outline-none font-bold w-full"
             value={inputValue}
             onInput={handleInput}
             onChange={handleInputChange}
@@ -105,23 +106,21 @@ export const BridgeAmountField: FC<InputWithMaxButtonProps> = ({
             data-testid="amount-input"
           />
           <div
-            className="text-sm text-[#ffffff50] mt-1"
+            className="text-[8px] md:text-[10px] lg:text-sm text-[#ffffff50] mt-1"
             data-testid="value-box"
           >
             {calculatedValue || "$0.00"}
           </div>
         </div>
-        <div className="w-fit">
-          <button
-            className={`px-5 py-4 h-full rounded bg-[#201D47] hover:bg-[#261da2] relative self-end ${
-              maxActive && "bg-[#261da2]"
-            }`}
-            onClick={onMaxButtonClick}
-            data-testid="max-button"
-          >
-            MAX
-          </button>
-        </div>
+        <button
+          className={`px-4 py-3 lg:px-5 lg:py-4 text-xs lg:text-lg h-full rounded bg-[#201D47] hover:bg-[#261da2] relative ${
+            maxActive && "bg-[#261da2]"
+          }`}
+          onClick={onMaxButtonClick}
+          data-testid="max-button"
+        >
+          MAX
+        </button>
       </div>
     </div>
   );

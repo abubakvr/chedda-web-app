@@ -7,6 +7,7 @@ import { sourceChains } from "@/utils/constants";
 import { useBridge } from "@/hooks";
 import { parseBigNumberToFloat } from "@/utils/formatters";
 import { useLocalStorageGet } from "@/hooks/useLocalStorage";
+import { PageTitle } from "@/components/common";
 
 export interface IBridgeCardProps {
   handleActiveScreen: (term: string) => void;
@@ -113,8 +114,15 @@ export const BridgeCard = ({
 
   return (
     <div className="sticky ">
-      <div className="flex justify-center mt-6">
-        <div className="pool-card rounded-xl w-[580px] min-w-[470px] text-white px-8 py-8">
+      <div className="md:hidden">
+        <PageTitle title="BRIDGE">
+          Bridge assets from other networks to use on Chedda. Bridged assets can
+          be supplied or used as collateral in Chedda lending pools. Bridged
+          assets can be bridged back at any time.
+        </PageTitle>
+      </div>
+      <div className="flex justify-center mt-4 md:mt-6">
+        <div className="pool-card rounded-xl w-full sm:w-[450px] md:w-[450px] lg:w-[580px] text-white p-4 py-5 md:p-6 lg:p-8">
           {activeScreen === "tokenselect" ? (
             <TokenSelect
               handleActiveScreen={handleActiveScreen}

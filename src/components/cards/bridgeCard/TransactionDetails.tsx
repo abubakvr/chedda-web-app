@@ -155,24 +155,28 @@ export const TransactionDetails = ({
 
   return (
     <div>
-      <div className="flex gap-x-6">
+      <div className="flex gap-x-3 md:gap-x-4 lg:gap-x-6">
         <button
           className="relative hover:opacity-75"
           onClick={() => returnToInput()}
           data-testid="back-button"
         >
-          <Image src={leftIcon} alt="image-icon" className="w-8 h-8" />
+          <Image
+            src={leftIcon}
+            alt="image-icon"
+            className="w-6 h-6 md:w-8 md:h-8"
+          />
         </button>
         <div
-          className="text-3xl font-bold"
+          className="text-lg md:text-2xl lg:text-3xl font-bold"
           data-testid="transaction-details-title"
         >
           Transaction Details
         </div>
       </div>
-      <div className="mt-6 border border-[#ffffff20] bg-[#ffffff07] rounded-xl">
+      <div className="mt-3 md:mt-4 lg:mt-6 px-4 lg:px-8 border border-[#ffffff20] bg-[#ffffff07] rounded-xl">
         <div
-          className="relative flex justify-between px-8 py-3"
+          className="relative flex justify-between py-1 md:py-2 lg:py-3"
           data-testid="source-chain"
         >
           <div className="w-max flex font-bold items-center py-2 space-x-4">
@@ -180,19 +184,19 @@ export const TransactionDetails = ({
               <Image
                 src={selectedToken.logo}
                 alt="icon image"
-                className="w-12 h-12"
+                className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
               />
               <Image
                 src={selectedChain.logo}
                 alt="icon image"
-                className="absolute w-5 h-5 bottom-0 -right-0.5"
+                className="absolute w-[14px] h-[14px] md:w-[18px] md:h-[18px] lg:w-5 lg:h-5 top-0 left-0"
               />
             </div>
             <div>
-              <p className="font-bold text-lg uppercase">
+              <p className="font-bold text-sm md:text-lguppercase">
                 {amountToSend} {selectedToken.symbol}
               </p>
-              <p className="font-bold text-xs mt-0.5 text-[#FFFFFF70]">
+              <p className="font-bold text-[10px] md:text-xs mt-0.5 text-[#FFFFFF70]">
                 ~ ${(amountToSend * tokenPrice).toFixed(2)} •{" "}
                 {selectedToken.symbol} on {selectedChain.name}
               </p>
@@ -200,23 +204,27 @@ export const TransactionDetails = ({
           </div>
         </div>
         <div
-          className="relative flex justify-between px-8 py-3"
+          className="relative flex justify-between py-1 md:py-2 lg:py-3"
           data-testid="transaction-status"
         >
           <div className="w-max flex font-bold items-center py-2 space-x-4">
             <div className="w-max flex relative">
               {txHash ? (
-                <Image src={checkIcon} alt="icon image" className="w-12 h-12" />
+                <Image
+                  src={checkIcon}
+                  alt="icon image"
+                  className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
+                />
               ) : (
                 <Image
                   src={loadingIcon}
                   alt="icon image"
-                  className="w-12 h-12 animate-spin-slow"
+                  className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 animate-spin-slow"
                 />
               )}
             </div>
             <div className="flex items-center">
-              <p className="font-bold text-lg">
+              <p className="font-bold text-sm md:text-lg">
                 {txHash ? "Transaction Confirmed" : "Transaction Processing"}
               </p>
             </div>
@@ -227,14 +235,18 @@ export const TransactionDetails = ({
             className={`flex flex-col justify-center items-end hover:opacity-70 ${!txHash && "hidden"}`}
             data-testid="source-chain-link"
           >
-            <Image src={linkOut} alt="icon-logo" className="w-4 h-4" />
-            <p className="font-bold text-[#FFFFFF70] text-sm">
+            <Image
+              src={linkOut}
+              alt="icon-logo"
+              className="w-3 h-3 md:w-4 md:h-4"
+            />
+            <p className="font-bold text-[#FFFFFF70] text-[10px] md:text-xs lg:text-sm">
               on {selectedChain.name}
             </p>
           </a>
         </div>
         <div
-          className="relative flex justify-between px-8 py-3"
+          className="relative flex justify-between py-1 md:py-2 lg:py-3"
           data-testid="destination-chain"
         >
           <div className="w-max flex font-bold items-center py-2 space-x-4">
@@ -242,11 +254,13 @@ export const TransactionDetails = ({
               <Image
                 src={txDetails.icon}
                 alt="icon image"
-                className={`w-12 h-12 ${txDetails.icon === loadingIcon && "animate-spin-slow"}`}
+                className={`w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 ${txDetails.icon === loadingIcon && "animate-spin-slow"}`}
               />
             </div>
             <div className="flex items-center">
-              <p className="font-bold text-lg ">{txDetails.message}</p>
+              <p className="font-bold text-sm md:text-lg ">
+                {txDetails.message}
+              </p>
             </div>
           </div>
           <a
@@ -255,14 +269,18 @@ export const TransactionDetails = ({
             className={`flex flex-col justify-center items-end hover:opacity-70 ${!txCompleted && "hidden"}`}
             data-testid="destination-chain-link"
           >
-            <Image src={linkOut} alt="icon-logo" className="w-4 h-4" />
-            <p className="font-bold text-[#FFFFFF70] text-sm">
+            <Image
+              src={linkOut}
+              alt="icon-logo"
+              className="w-3 h-3 md:w-4 md:h-4"
+            />
+            <p className="font-bold text-[#FFFFFF70] text-[10px] md:text-xs lg:text-sm">
               on {destinationChain.name}
             </p>
           </a>
         </div>
         <div
-          className="relative flex justify-between px-8 py-3"
+          className="relative flex justify-between py-1 md:py-2 lg:py-3"
           data-testid="destination-chain-info"
         >
           <div className="w-max flex font-bold items-center py-2 space-x-4">
@@ -270,19 +288,19 @@ export const TransactionDetails = ({
               <Image
                 src={selectedToken.logo}
                 alt="icon image"
-                className="w-12 h-12"
+                className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
               />
               <Image
                 src={destinationChain.logo}
                 alt="icon image"
-                className="absolute w-5 h-5 bottom-0 -right-0.5"
+                className="absolute w-[14px] h-[14px] md:w-[18px] md:h-[18px] lg:w-5 lg:h-5  top-0 left-0"
               />
             </div>
             <div>
-              <p className="font-bold text-lg uppercase">
+              <p className="font-bold text-sm md:text-lg uppercase">
                 {amountToSend} {selectedToken.symbol}
               </p>
-              <p className="font-bold text-xs mt-0.5 text-[#FFFFFF70]">
+              <p className="font-bold text-[10px] md:text-xs mt-0.5 text-[#FFFFFF70]">
                 ~ ${(amountToSend * tokenPrice).toFixed(2)} •{" "}
                 {selectedToken.symbol} on {destinationChain.name}
               </p>
@@ -290,7 +308,7 @@ export const TransactionDetails = ({
           </div>
         </div>
       </div>
-      <p className="text-[#FFFFFF70] text-lg text-center mt-6 relative">
+      <p className="text-[#FFFFFF70] text-[10px] md:text-xs lg:text-lg text-center mt-2 md:mt-4 lg:mt-6 relative">
         Transaction is processing. You can track your transaction on{" "}
         <a
           href={`${LAYERZERO_TESTNET}/${txHash}`}
@@ -307,7 +325,7 @@ export const TransactionDetails = ({
           type="primary"
           size="large"
           onClick={() => returnToInput()}
-          className="mt-8"
+          className="mt-3 md:mt-6 lg:mt-8"
           data-testid="continue-button"
         >
           Continue
@@ -318,12 +336,14 @@ export const TransactionDetails = ({
             type="primary"
             size="large"
             onClick={navigateToMarkets}
-            className="mt-8"
+            className="mt-3 md:mt-6 lg:mt-8"
             data-testid="go-to-markets-button"
           >
             GO TO MARKETS
           </Button>
-          <p className="flex justify-center text-2xl text-center py-4">or</p>
+          <p className="flex justify-center text-sm md:text-lg lg:text-2xl text-center py-1.5 md:py-3 lg:py-4">
+            or
+          </p>
           <Button
             type="secondary"
             size="large"

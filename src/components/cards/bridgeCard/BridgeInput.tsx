@@ -2,6 +2,7 @@
 import Image from "next/image";
 import layerZeroLogo from "@/assets/logos/layer-zero-logo.svg";
 import refreshIcon from "@/assets/icon/refresh-icon.svg";
+import InfoIcon from "@/assets/icon/info-gradient-icon.svg";
 import { ethers } from "ethers";
 import { BridgeAmountField } from "@/components/common/input/BridgeAmountField";
 import { Button } from "@/components/common";
@@ -56,6 +57,7 @@ export const BridgeInput = ({
   const switchChain = useSwitchChain();
   const { sendOFT, approveAsset } = useBridge(selectedChain);
   const { account, chainId } = useWeb3React();
+  const [showMore, setShowMore] = useState(false);
   const [amount, setAmount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [confirmBridge, setConfirmBridge] = useState(false);
@@ -259,58 +261,114 @@ export const BridgeInput = ({
         txPrefix={selectedChain.txUrlPrefix}
       />
       <div className="flex justify-between" data-testid="bridge-input-title">
-        <h1 className="text-3xl font-bold">Transfer</h1>
-        <div className="flex gap-x-2 items-center font-bold text-lg">
+        <h1 className="text-lg md:text-2xl lg:text-3xl font-bold">Transfer</h1>
+        <div className="flex gap-x-2 items-center font-bold text-xs md:text-lg">
           <p>Powered By</p>
-          <Image src={layerZeroLogo} alt="layer-zero" className="h-8" />
+          <Image
+            src={layerZeroLogo}
+            alt="layer-zero"
+            className="w-fit h-5 md:h-7 lg:h-8"
+          />
+        </div>
+      </div>
+      <div
+        className={`hidden w-full md:flex items-center space-x-2 border p-4 border-[#ffffff19] bg-[#ffffff02] rounded-lg mt-6`}
+      >
+        <Image
+          src={InfoIcon}
+          alt="info icon"
+          className="w-4 h-4 md:w-[18px] md:h-[18px] xl:w-6 xl:h-6"
+        />
+        <div
+          className={`${
+            showMore ? "max-h-[500px]" : "max-h-[40px] transition-max-height"
+          } overflow-hidden transition-max-height transition- duration-1000 ease-in-out text-sm lg:text-lg text-[#B5B5B5]`}
+        >
+          {showMore ? (
+            <p>
+              Bridge assets from other networks to use on Chedda. Bridged assets
+              can be supplied or used as collateral in Chedda lending pools.
+              Bridged assets can be bridged back at any time.{" "}
+              <button
+                className="card-gradient-text hover:opacity-80 relative"
+                onClick={() => setShowMore(false)}
+              >
+                Less
+              </button>
+            </p>
+          ) : (
+            <p>
+              Bridge assets to use on Chedda...{" "}
+              <button
+                className="card-gradient-text hover:opacity-80 relative"
+                onClick={() => setShowMore(true)}
+              >
+                More
+              </button>
+            </p>
+          )}
         </div>
       </div>
       <div className="mt-6 flex gap-x-2" data-testid="bridge-input-chains">
         <div className="w-full">
-          <p className="text-lg text-[#FFFFFF70] font-bold">From</p>
+          <p className="text-xs md:text-sm lg:text-lg text-[#FFFFFF70] font-bold">
+            From
+          </p>
           <button
             onClick={() => handleActiveScreen("tokenselect")}
-            className="token-select relative flex w-full rounded-2xl px-7 py-5 mt-2 items-center gap-x-4"
+            className="token-select relative flex w-full py-3 px-3 sm:py-4 md:px-4 lg:px-7 lg:py-5 mt-2 items-center gap-x-2 md:gap-x-3 lg:gap-x-4"
             data-testid="bridge-input-from-chain"
           >
             <Image
               src={selectedChain.logo}
               alt="icon-logo"
-              className="w-10 h-10"
+              className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
             />
-            <span className="text-xl font-bold">{selectedChain.name}</span>
+            <span className="text-sm md:text-lg font-bold">
+              {selectedChain.name}
+            </span>
           </button>
         </div>
         <div className="relative w-max flex items-center">
           <button
-            className="relative mt-6 w-9 h-9 hover:opacity-75"
+            className="relative mt-6 w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9 hover:opacity-75"
             onClick={() => handleChainSwitch()}
             data-testid="bridge-input-refresh-button"
           >
-            <Image src={refreshIcon} alt="icon-logo" />
+            <Image
+              src={refreshIcon}
+              alt="icon-logo"
+              className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9"
+            />
           </button>
         </div>
         <div className="w-full">
-          <p className="text-lg text-[#FFFFFF70] font-bold">To</p>
+          <p className="text-xs md:text-sm lg:text-lg text-[#FFFFFF70] font-bold">
+            To
+          </p>
           <button
-            className="token-select flex w-full px-7 py-5 mt-2 items-center gap-x-4"
+            className="token-select flex w-full py-3 px-3 sm:py-4 md:px-4 lg:px-7 lg:py-5 mt-2 items-center gap-x-2 md:gap-x-3 lg:gap-x-4"
             data-testid="bridge-input-to-chain"
           >
             <Image
               src={destinationChain?.logo}
               alt="icon-logo"
-              className="w-10 h-10"
+              className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
             />
-            <span className="text-xl font-bold">{destinationChain.name}</span>
+            <span className="text-sm md:text-lg lg:text-xl font-bold">
+              {destinationChain.name}
+            </span>
           </button>
         </div>
       </div>
       <div
-        className="flex justify-between mt-8"
+        className="flex justify-between mt-4 md:mt-6 lg:mt-8"
         data-testid="bridge-input-amount-section"
       >
-        <p className="text-xs text-[#FFFFFF70] font-bold">Select Amount:</p>
-        <p className="text-xs text-[#FFFFFF] font-bold">
+        <p className="text-[10px] lg:text-xs text-[#FFFFFF70] font-bold">
+          Select Amount:
+        </p>
+        <p className="text-[10px] lg:text-xs text-[#FFFFFF] font-bold">
           Balance:{" "}
           {fetchTokenBalanceLoading
             ? "loading..."
@@ -334,7 +392,7 @@ export const BridgeInput = ({
       </div>
       {wrongChain && (
         <div
-          className="mt-4 text-error relative font-bold"
+          className="mt-1.5 md:mt-2 text-xs md:text-sm text-error relative font-bold"
           data-testid="bridge-input-wrong-network"
         >
           You are on the wrong network.{" "}
@@ -350,7 +408,7 @@ export const BridgeInput = ({
         type="primary"
         size="large"
         onClick={() => handleBridgeToken()}
-        className={wrongChain ? "mt-3" : "mt-8"}
+        className={wrongChain ? "mt-3" : "mt-4 md:mt-6 lg:mt-8"}
         isLoading={isLoading || tokenDataLoading}
         disabled={isLoading || wrongChain}
         data-testid="bridge-input-action-button"
@@ -359,12 +417,15 @@ export const BridgeInput = ({
       </Button>
       <div>
         <h2
-          className="mt-8 text-xl font-bold"
+          className="mt-3 md:mt-6 lg:mt-8 tet-sm md:text-lg lg:text-xl font-bold"
           data-testid="bridge-input-summary-title"
         >
           Summary
         </h2>
-        <div className="mt-5" data-testid="bridge-input-summary">
+        <div
+          className="mt-[14px] md:mt-4 lg:mt-5"
+          data-testid="bridge-input-summary"
+        >
           <BridgeCardInfo
             destination={destinationChain.name}
             amountToreceive={`${formatNumber(amount || 0)} ${selectedToken.symbol} ($${formatNumber((amount || 0) * tokenPrice)})`}
