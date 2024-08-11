@@ -636,6 +636,14 @@ input:checked + .slider:before {
     grid-auto-rows: repeat(3, 1fr);
     gap: 24px;
   }
+
+  .token-select::before {
+    border-radius: 12px;
+  }
+
+  .token-select-active::before {
+    border-radius: 12px;
+  }
 }
 
 @media screen and (min-width: 0px) and (max-width: 768px) {
@@ -661,5 +669,13 @@ input:checked + .slider:before {
     display: flex;
     flex-direction: column;
     row-gap: 16px;
+  }
+
+  .token-select::before {
+    border-radius: 8px;
+  }
+
+  .token-select-active::before {
+    border-radius: 8px;
   }
 }

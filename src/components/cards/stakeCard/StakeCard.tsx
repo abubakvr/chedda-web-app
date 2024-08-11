@@ -17,6 +17,7 @@ interface StakeModalProps {
   lpTokenBalance: bigint | undefined;
   assetValue: number | undefined;
   defaultTab: string | null;
+  lpAllowanceLoading: boolean;
   updateCard: () => void;
   fetchLpAllowance: () => void;
 }
@@ -48,6 +49,7 @@ export const StakeCard: FC<StakeModalProps> = ({
   lpTokenBalance,
   assetValue,
   defaultTab,
+  lpAllowanceLoading,
   updateCard,
   fetchLpAllowance,
 }) => {
@@ -314,7 +316,7 @@ export const StakeCard: FC<StakeModalProps> = ({
                 />
               }
               buttonAction={handleStake}
-              isTransactionLoading={txLoading}
+              isTransactionLoading={txLoading || lpAllowanceLoading}
               isLoading={false}
               setAmount={setStakeAmount}
               amount={stakeAmount}
@@ -340,7 +342,7 @@ export const StakeCard: FC<StakeModalProps> = ({
               setClearInputField={setClearInputField}
               clearInputField={clearInputField}
               buttonAction={handleUnStake}
-              isTransactionLoading={txLoading}
+              isTransactionLoading={txLoading || lpAllowanceLoading}
               isLoading={false}
               setAmount={setUnstakeAmount}
               amount={unStakeAmount}

@@ -34,12 +34,18 @@ const Page = async ({
         <MobileSummaryCard aggregateStats={aggregateStats} />
       </div>
       <div className="mt-4 md:mt-6" data-testid="vault-card-container">
-        <VaultCard
-          data-testid="vault-card"
-          poolStatsList={poolStatsList}
-          query={query}
-          filter={filter}
-        />
+        {poolStatsList ? (
+          <VaultCard
+            data-testid="vault-card"
+            poolStatsList={poolStatsList}
+            query={query}
+            filter={filter}
+          />
+        ) : (
+          <div className="pool-card w-full p-6 md:p-8 text-white text-center text-xs md:text-sm lg:text-lg">
+            An error occurred while loading pools. Try again later.
+          </div>
+        )}
       </div>
     </div>
   );

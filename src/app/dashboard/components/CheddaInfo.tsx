@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import linkOut from "@/assets/icon/link-out-white.svg";
 import arrowForward from "@/assets/icon/arrow-forward.svg";
 
 import { Card } from "@/components/common";

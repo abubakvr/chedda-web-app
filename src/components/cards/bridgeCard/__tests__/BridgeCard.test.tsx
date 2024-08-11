@@ -1,11 +1,13 @@
 import React from "react";
+import BridgeCard, { IBridgeCardProps } from "../BridgeCard";
 import { render, screen, waitFor } from "@testing-library/react";
-import BridgeCard from "../BridgeCard";
 import { WalletConnect } from "@web3-react/walletconnect-v2";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 import { useBridge } from "@/hooks";
-import { useWeb3React } from "@web3-react/core";
 import { useSearchParams } from "next/navigation";
+import { useLocalStorageGet } from "@/hooks";
+import { ISourceChain, IToken } from "@/utils/types";
+import { StaticImageData } from "next/image";
 
 jest.mock("@web3-react/core", () => ({
   useWeb3React: jest.fn(),
@@ -13,13 +15,12 @@ jest.mock("@web3-react/core", () => ({
 
 jest.mock("../../../../hooks", () => ({
   useBridge: jest.fn(() => ({
-    quoteSend: jest.fn().mockResolvedValue([
-      /* Your iterable value here */
-    ]),
+    quoteSend: jest.fn().mockResolvedValue([[]]),
     getTokenPrice: jest.fn(),
     getEthPrice: jest.fn(),
   })),
   useSwitchChain: jest.fn(),
+  useLocalStorageGet: jest.fn(),
 }));
 
 jest.mock("@web3-react/core", () => ({
@@ -51,13 +52,65 @@ jest.mock("next/navigation", () => ({
   useSearchParams: jest.fn(),
 }));
 
+const props: IBridgeCardProps = {
+  handleActiveScreen: () => {},
+  activeScreen: "tokenselect",
+  estimatedGasFee: {
+    gasETHFee: 90,
+    gasUSDFee: 20,
+  },
+  tokenDataLoading: false,
+  allowance: 90,
+  tokenPrice: 11,
+  tokenList: [
+    {
+      address: "0x123",
+      symbol: "USDT",
+      decimals: 18,
+      source: "ETH",
+      type: "oftAdapter",
+      oftAdapter: "0x456",
+      bridgeToken: true,
+      bridgedOft: "0x789",
+      name: "Tether USD",
+      logo: {} as StaticImageData,
+      color: "#26a17b",
+    },
+  ] as IToken[],
+  getEstimatedGas: () => {},
+  fetchTokenData: () => {},
+  selectedToken: {
+    address: "0x123",
+    symbol: "USDT",
+    decimals: 18,
+    source: "ETH",
+    type: "oftAdapter",
+    oftAdapter: "0x456",
+    bridgeToken: true,
+    bridgedOft: "0x789",
+    name: "Tether USD",
+    logo: {} as StaticImageData,
+    sourceLogo: {} as StaticImageData,
+    color: "#26a17b",
+  },
+  selectedChain: {
+    chainId: 5,
+    key: "BNB",
+    name: "Binance",
+    logo: {} as StaticImageData,
+    endpointId: 200,
+    jsonRpcUrl: "https://bsc-dataseed.binance.org/",
+    priceFeed: "https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT",
+    ethAddress: "0x0000000000000000000000000000000000000000",
+  } as ISourceChain,
+  setSelectedToken: () => {},
+  setSelectedChain: () => {},
+};
+
 describe("BridgeCard Component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (useWeb3React as jest.Mock).mockReturnValue({
-      account: "0xABC",
-      chainId: 1,
-    });
+    (useLocalStorageGet as jest.Mock).mockReturnValue("Base");
     (useBridge as jest.Mock).mockReturnValue(mockUseBridge);
     (useSearchParams as jest.Mock).mockReturnValue({
       get: jest.fn((key) => {
@@ -76,18 +129,21 @@ describe("BridgeCard Component", () => {
     });
     render(
       <MockAppProviders>
-        <BridgeCard />
+        <BridgeCard {...props} />
       </MockAppProviders>
     );
     await waitFor(() => {
-      expect(screen.getByText("Select a Token")).toBeInTheDocument();
+      expect(
+        screen.getByText("Select a Network and Token")
+      ).toBeInTheDocument();
     });
   });
 
   test("renders BridgeInput component when activeScreen is default", async () => {
+    const customProps = { ...props, activeScreen: "" };
     render(
       <MockAppProviders>
-        <BridgeCard />
+        <BridgeCard {...customProps} />
       </MockAppProviders>
     );
     await waitFor(() => {

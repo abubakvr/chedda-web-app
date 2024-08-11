@@ -86,9 +86,11 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   });
   const [supplyAmount, setSupplyAmount] = useState<number>(0);
   const [withdrawAmount, setWithdrawAmount] = useState<number>(0);
-  const { data: allowance, fetchData: fetchAllowance } = useAllowance(
-    asset.address
-  );
+  const {
+    data: allowance,
+    fetchData: fetchAllowance,
+    isLoading: allowanceLoading,
+  } = useAllowance(asset.address);
   const { data: assetBalance, fetchData: fetchAssetBalance } = useAssetBalance(
     asset.address
   );
@@ -381,7 +383,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                     />
                   }
                   buttonAction={handleDeposit}
-                  isTransactionLoading={txLoading}
+                  isTransactionLoading={txLoading || allowanceLoading}
                   setAmount={setSupplyAmount}
                   amount={supplyAmount}
                 />
@@ -415,7 +417,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                   setClearInputField={setClearInputField}
                   clearInputField={clearInputField}
                   buttonAction={handleWithdraw}
-                  isTransactionLoading={txLoading}
+                  isTransactionLoading={txLoading || allowanceLoading}
                   setAmount={setWithdrawAmount}
                   amount={withdrawAmount}
                 />

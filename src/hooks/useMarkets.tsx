@@ -15,19 +15,29 @@ export const useMarkets = () => {
 
   const getAggregateStats = async (): Promise<ISummaryStats[] | undefined> => {
     if (!lens) return;
-    const aggregateStats = await lens.getAggregateStats(true);
-    return getAggregateInfo(aggregateStats);
+    try {
+      const aggregateStats = await lens.getAggregateStats(true);
+      return getAggregateInfo(aggregateStats);
+    } catch (error) {
+      console.error("Error getting aggregate stats:", error);
+      return undefined;
+    }
   };
 
   const getPoolStatsList = async (): Promise<
     IPoolStatsResponse[] | undefined
   > => {
     if (!lens) return;
-    const pools = (await lens.activePools()) as any;
-    const statsList = await lens.getPoolStatsList(
-      formatToArrayOfStrings(pools)
-    );
-    return formatPoolStatsList(statsList, currentEnvironment.tokens);
+    try {
+      const pools = (await lens.activePools()) as any;
+      const statsList = await lens.getPoolStatsList(
+        formatToArrayOfStrings(pools)
+      );
+      return formatPoolStatsList(statsList, currentEnvironment.tokens);
+    } catch (error) {
+      console.error("Error getting pool stats list:", error);
+      return undefined;
+    }
   };
 
   return { getPoolStatsList, getAggregateStats };

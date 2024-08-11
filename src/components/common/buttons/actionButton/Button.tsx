@@ -101,9 +101,9 @@ export const Button: FC<ButtonProps> = ({
                 : ""
         } w-full text-center ${
           size === "large"
-            ? "h-8 sm:h-9 lg:h-12 xl:h-[56px]"
+            ? "h-8 sm:h-9 md:h-10 lg:h-12 xl:h-[56px]"
             : size === "small"
-              ? "h-8 sm:h-9 lg:h-12 xl:h-12"
+              ? "h-8 sm:h-9 md:h-10 lg:h-12 xl:h-12"
               : size === "mobile" && "h-9 text-xs md:text-sm xl:text-xl"
         } items-center rounded-md lg:rounded-lg text-white text-opacity-100 ${
           isLoading || disabled
