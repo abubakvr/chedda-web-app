@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import { SuppyAndBorrowChart } from "../SupplyAndBorrowChart";
 import { usePoolState } from "@/hooks"; // Import the actual hook implementation

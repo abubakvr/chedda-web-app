@@ -2,7 +2,6 @@
 import { ethers } from "ethers";
 import { PageContainer } from "@/components/common";
 import { BridgeCard } from "@/components/cards/bridgeCard/BridgeCard";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useBridge } from "@/hooks";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { parseBigNumberToFloat } from "@/utils/formatters";
@@ -15,11 +14,6 @@ const tokenList = Object.values(currentEnvironment.tokens);
 const bridgeTokens = tokenList.filter((item) => item.bridgeToken);
 
 const Page = () => {
-  const { replace } = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const activeScreen = searchParams.get("screen");
-
   const [estimatedGasFee, setEstimatedGas] = useState({
     gasETHFee: 0,
     gasUSDFee: 0,
@@ -37,16 +31,6 @@ const Page = () => {
   const destinationChain =
     sourceChains.find((item) => item.key !== selectedChain?.key) ||
     selectedChain;
-
-  function handleActiveScreen(term: string) {
-    const params = new URLSearchParams(searchParams);
-    if (term) {
-      params.set("screen", term);
-    } else {
-      params.delete("screen");
-    }
-    replace(`${pathname}?${params.toString()}`);
-  }
 
   const getEstimatedGas = useCallback(async () => {
     try {
@@ -111,11 +95,9 @@ const Page = () => {
   }, [fetchTokenData]);
 
   return (
-    <Suspense>
-      <PageContainer>
+    <PageContainer>
+      <Suspense>
         <BridgeCard
-          handleActiveScreen={handleActiveScreen}
-          activeScreen={activeScreen!}
           estimatedGasFee={estimatedGasFee}
           tokenDataLoading={tokenDataLoading}
           allowance={allowance}
@@ -128,8 +110,8 @@ const Page = () => {
           selectedChain={selectedChain}
           setSelectedChain={setSelectedChain}
         />
-      </PageContainer>
-    </Suspense>
+      </Suspense>
+    </PageContainer>
   );
 };
 

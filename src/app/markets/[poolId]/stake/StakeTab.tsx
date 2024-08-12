@@ -104,7 +104,7 @@ const StakeTab = ({
           <InfoCardSkeleton title="Stake Info" itemCount={3} />
         </div>
         <div
-          className="pool-card rounded-lg w-full h-fit order-0 xl:order-2"
+          className="pool-card rounded-lg w-full h-fit order-1 xl:order-2 grid-action-card"
           data-testid="stake-card"
         >
           <SwitchTabSkeleton />
@@ -141,7 +141,7 @@ const StakeTab = ({
         />
       </div>
       <div
-        className="pool-card rounded-lg order-1 lg:order-2 grid-action-card w-full"
+        className="pool-card rounded-lg  h-fit order-1 lg:order-2 grid-action-card w-full"
         data-testid="stake-card"
       >
         <StakeCard

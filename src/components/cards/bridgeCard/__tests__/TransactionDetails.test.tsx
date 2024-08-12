@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { TransactionDetails } from "../TransactionDetails";
 import { useRouter } from "next/navigation";
 import { createClient } from "@layerzerolabs/scan-client";

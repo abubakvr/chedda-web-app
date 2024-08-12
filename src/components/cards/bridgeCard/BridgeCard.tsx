@@ -1,5 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { BridgeInput } from "./BridgeInput";
 import { TokenSelect } from "./TokenSelect";
 import { ISourceChain, IToken } from "@/utils/types";
@@ -10,8 +11,6 @@ import { useLocalStorageGet } from "@/hooks/useLocalStorage";
 import { PageTitle } from "@/components/common";
 
 export interface IBridgeCardProps {
-  handleActiveScreen: (term: string) => void;
-  activeScreen: string;
   estimatedGasFee: {
     gasETHFee: number;
     gasUSDFee: number;
@@ -29,8 +28,6 @@ export interface IBridgeCardProps {
 }
 
 export const BridgeCard = ({
-  handleActiveScreen,
-  activeScreen,
   estimatedGasFee,
   tokenDataLoading,
   allowance,
@@ -43,6 +40,10 @@ export const BridgeCard = ({
   selectedChain,
   setSelectedChain,
 }: IBridgeCardProps) => {
+  const { replace } = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const activeScreen = searchParams.get("screen");
   const savedChainId = useLocalStorageGet("selectedBridgeChain");
   const [fetchTokenBalanceLoading, setFetchTokenBalanceLoading] =
     useState(false);
@@ -97,6 +98,16 @@ export const BridgeCard = ({
     },
     [getTokenBalance, tokenList]
   );
+
+  function handleActiveScreen(term: string) {
+    const params = new URLSearchParams(searchParams);
+    if (term) {
+      params.set("screen", term);
+    } else {
+      params.delete("screen");
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }
 
   useEffect(() => {
     fetchBalances(selectedChain);
