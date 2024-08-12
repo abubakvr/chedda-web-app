@@ -3,6 +3,7 @@ import "@/styles/globals.scss";
 import type { Metadata } from "next";
 import { AppProviders } from "@/components/AppProviders/AppProviders";
 import { AppHeader } from "@/layout";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Chedda Markets",
@@ -19,7 +20,9 @@ export default function RootLayout({
       <body suppressHydrationWarning={true}>
         <AppProviders>
           <AppHeader />
-          <div className="py-20 xl:pt-24 pb-10 ">{children}</div>
+          <Suspense>
+            <div className="py-20 xl:pt-24 pb-10 ">{children}</div>
+          </Suspense>
         </AppProviders>
       </body>
     </html>

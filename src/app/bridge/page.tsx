@@ -4,7 +4,7 @@ import { PageContainer } from "@/components/common";
 import { BridgeCard } from "@/components/cards/bridgeCard/BridgeCard";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useBridge } from "@/hooks";
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { parseBigNumberToFloat } from "@/utils/formatters";
 import { getTokenBalanceAddress, getTokenBridgeAddress } from "@/utils/helpers";
 import { sourceChains } from "@/utils/constants";
@@ -111,23 +111,25 @@ const Page = () => {
   }, [fetchTokenData]);
 
   return (
-    <PageContainer>
-      <BridgeCard
-        handleActiveScreen={handleActiveScreen}
-        activeScreen={activeScreen!}
-        estimatedGasFee={estimatedGasFee}
-        tokenDataLoading={tokenDataLoading}
-        allowance={allowance}
-        tokenPrice={tokenPrice}
-        tokenList={tokenList}
-        getEstimatedGas={getEstimatedGas}
-        fetchTokenData={fetchTokenData}
-        selectedToken={selectedToken}
-        setSelectedToken={setSelectedToken}
-        selectedChain={selectedChain}
-        setSelectedChain={setSelectedChain}
-      />
-    </PageContainer>
+    <Suspense>
+      <PageContainer>
+        <BridgeCard
+          handleActiveScreen={handleActiveScreen}
+          activeScreen={activeScreen!}
+          estimatedGasFee={estimatedGasFee}
+          tokenDataLoading={tokenDataLoading}
+          allowance={allowance}
+          tokenPrice={tokenPrice}
+          tokenList={tokenList}
+          getEstimatedGas={getEstimatedGas}
+          fetchTokenData={fetchTokenData}
+          selectedToken={selectedToken}
+          setSelectedToken={setSelectedToken}
+          selectedChain={selectedChain}
+          setSelectedChain={setSelectedChain}
+        />
+      </PageContainer>
+    </Suspense>
   );
 };
 
