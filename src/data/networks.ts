@@ -101,12 +101,12 @@ export const CHAINS: {
     chainId: "84532",
     urls: [
       infuraKey ? `https://base-sepolia.g.alchemy.com/v2/${alchemyKey}` : "",
-      "https://sepolia-explorer.basescan.org/",
+      "https://sepolia-explorer.base.org/",
     ].filter(Boolean),
-    publicUrls: ["https://sepolia.basescan.org/"].filter(Boolean),
+    publicUrls: ["https://sepolia.base.org/"].filter(Boolean),
     name: "Base Sepolia",
     nativeCurrency: ETH,
-    blockExplorerUrls: ["https://sepolia.basescan.org/"],
+    blockExplorerUrls: ["https://sepolia.bases.org/"],
   },
 };
 
