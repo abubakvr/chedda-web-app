@@ -106,7 +106,7 @@ export const CHAINS: {
     publicUrls: ["https://sepolia.base.org/"].filter(Boolean),
     name: "Base Sepolia",
     nativeCurrency: ETH,
-    blockExplorerUrls: ["https://sepolia.bases.org/"],
+    blockExplorerUrls: ["https://sepolia.base.org/"],
   },
 };
 
