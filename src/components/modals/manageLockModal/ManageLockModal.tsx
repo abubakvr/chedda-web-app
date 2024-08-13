@@ -152,10 +152,11 @@ export const ManageLockCard: FC<ManageLockCardProps> = ({
       const parsedAmount = ethers.parseUnits(lockAmount.toString(), 18);
 
       if (lockAmount <= parsedAllowance) {
-        handleTransaction(
+        await handleTransaction(
           lockMoreCheddaToken(parsedAmount),
           `You've successfully added ${formatNumber(lockAmount)} ${cheddaSymbol}`
         );
+        handleCloseModal();
       } else {
         handleTransaction(
           approveCheddaToken(parsedAmount),
@@ -178,10 +179,11 @@ export const ManageLockCard: FC<ManageLockCardProps> = ({
         return alert(`You have not selected a lock period`);
       }
 
-      handleTransaction(
+      await handleTransaction(
         relockCheddaToken(lockTime?.value),
         `You've successfully extended your lock date`
       );
+      handleCloseModal();
     } catch (error) {
       handleTransaction(Promise.reject(error), "");
     }
