@@ -123,6 +123,7 @@ export const ManageLockCard: FC<ManageLockCardProps> = ({
             });
             setLockAmount(0);
             setClearInputField(true);
+            onClose();
           }
         } else {
           setShowToast(true);
@@ -156,7 +157,6 @@ export const ManageLockCard: FC<ManageLockCardProps> = ({
           lockMoreCheddaToken(parsedAmount),
           `You've successfully added ${formatNumber(lockAmount)} ${cheddaSymbol}`
         );
-        handleCloseModal();
       } else {
         handleTransaction(
           approveCheddaToken(parsedAmount),
@@ -183,7 +183,6 @@ export const ManageLockCard: FC<ManageLockCardProps> = ({
         relockCheddaToken(lockTime?.value),
         `You've successfully extended your lock date`
       );
-      handleCloseModal();
     } catch (error) {
       handleTransaction(Promise.reject(error), "");
     }
