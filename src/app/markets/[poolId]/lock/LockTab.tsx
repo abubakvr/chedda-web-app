@@ -101,7 +101,7 @@ const LockTab = ({
           <InfoCardSkeleton title="Lock Info" itemCount={3} />
         </div>
         <div
-          className="pool-card rounded-lg order-1 lg:order-2 grid-action-card w-full"
+          className="pool-card rounded-lg h-fit order-1 lg:order-2 grid-action-card w-full"
           data-testid="lock-card"
         >
           <SwitchTabSkeleton />

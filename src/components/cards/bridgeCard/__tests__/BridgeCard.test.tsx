@@ -53,8 +53,6 @@ jest.mock("next/navigation", () => ({
 }));
 
 const props: IBridgeCardProps = {
-  handleActiveScreen: () => {},
-  activeScreen: "tokenselect",
   estimatedGasFee: {
     gasETHFee: 90,
     gasUSDFee: 20,

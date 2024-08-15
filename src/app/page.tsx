@@ -1,7 +1,5 @@
-import { redirect } from "next/navigation";
-
 const Page = () => {
-  return redirect("/markets");
+  return null;
 };
 
 export default Page;

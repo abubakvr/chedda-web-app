@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { MyPositions } from "../MyPositions";
 import { IPositionResponse } from "@/utils/types";
 import { StaticImageData } from "next/image";

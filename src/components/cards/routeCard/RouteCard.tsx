@@ -1,3 +1,4 @@
+"use client";
 import InfoIcon from "@/assets/icon/info-gradient-icon.svg";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
