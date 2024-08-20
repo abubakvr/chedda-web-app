@@ -3,14 +3,7 @@ import { VaultCard, SummaryCard, MobileSummaryCard } from "@/components/cards";
 import { PageTitle } from "@/components/common";
 import { useMarkets } from "@/hooks/useMarkets";
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: { q: string; filter: string };
-}) => {
-  const query = searchParams.q ?? "";
-  const filter = searchParams.filter ?? "";
-
+const Page = async () => {
   const { getAggregateStats, getPoolStatsList } = useMarkets();
   const aggregateStats = await getAggregateStats();
   const poolStatsList = await getPoolStatsList();
@@ -35,15 +28,17 @@ const Page = async ({
       </div>
       <div className="mt-4 md:mt-6" data-testid="vault-card-container">
         {poolStatsList ? (
-          <VaultCard
-            data-testid="vault-card"
-            poolStatsList={poolStatsList}
-            query={query}
-            filter={filter}
-          />
+          <VaultCard data-testid="vault-card" poolStatsList={poolStatsList} />
         ) : (
-          <div className="pool-card w-full p-6 md:p-8 text-white text-center text-xs md:text-sm lg:text-lg">
-            An error occurred while loading pools. Try again later.
+          <div className="pool-card relative w-full flex gap-x-2 items-center justify-center p-6 md:p-5 text-white text-center text-xs md:text-sm lg:text-lg">
+            <p>An error occurred while loading pools.</p>
+            <a
+              href="javascript:window.top.location.reload(true)"
+              className="modal-button relative text-white rounded md:rounded-md py-1 px-3 lg:py-2 lg:px-4 text-[8px] lg:text-xs font-bold flex items-center gap-x-1 lg:gap-x-2 hover:opacity-90"
+              data-testid="buy-chedda-link"
+            >
+              Refresh
+            </a>
           </div>
         )}
       </div>

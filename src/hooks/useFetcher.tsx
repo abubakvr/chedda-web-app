@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import {
   fetchData,
   selectCheddaSliceData,
+  selectCheddaSliceError,
   selectCheddaSliceLoading,
 } from "@/redux/api/cheddaSlice";
 import { useCheddaSdk } from "@/hooks";
@@ -11,7 +12,7 @@ import { useWeb3React } from "@web3-react/core";
 import { useParams, usePathname } from "next/navigation";
 import { GetDataFunction } from "@/utils/types";
 import { currentEnvironment } from "@/data/environments";
-import { useSigner } from "@/hooks";
+import { useSigner, useToast } from "@/hooks";
 
 export const useFetcher = <T = any,>(
   getData: GetDataFunction<T>,
@@ -24,6 +25,7 @@ export const useFetcher = <T = any,>(
   const { account } = useWeb3React();
   const { poolId } = useParams();
   const { signer } = useSigner();
+  const { addToast } = useToast();
 
   const strPoolId = poolId?.toString();
   const hookName = getData.name;
@@ -63,6 +65,11 @@ export const useFetcher = <T = any,>(
   const isLoading = useSelector((state: RootState) =>
     selectCheddaSliceLoading(`${hookName} + ${pathname}`)(state)
   );
+
+  const isError = useSelector((state: RootState) =>
+    selectCheddaSliceError(`${hookName} + ${pathname}`)(state)
+  );
+
   const data = useSelector((state: RootState) =>
     selectCheddaSliceData(`${hookName} + ${pathname}`)(state)
   );
@@ -74,9 +81,19 @@ export const useFetcher = <T = any,>(
     fetchDataCallback();
   }, [fetchDataCallback]);
 
+  useEffect(() => {
+    if (isError) {
+      addToast({
+        message: "An error occured,",
+        type: "fetchError",
+      });
+    }
+  }, [isError, addToast]);
+
   return {
-    data: data,
-    isLoading: isLoading,
+    data,
+    isLoading,
+    isError,
     fetchData: fetchHookData,
   };
 };

@@ -6,3 +6,4 @@ export * from "./useTransactions";
 export * from "./useBridge";
 export * from "./useSigner";
 export * from "./useLocalStorage";
+export * from "./useToast";

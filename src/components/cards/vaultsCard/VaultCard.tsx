@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { VaultItem } from "./VaultItem";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { FilterCard } from "./FilterCard";
@@ -6,13 +7,12 @@ import { poolCategories } from "@/utils/constants";
 
 export const VaultCard = ({
   poolStatsList,
-  query,
-  filter,
 }: {
   poolStatsList: IPoolStatsResponse[] | undefined;
-  query: string;
-  filter: string;
 }) => {
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<string | undefined>(undefined);
+
   const matchSearchItem = (item: IPoolStatsResponse, searchKeyword: string) => {
     const normalizedSearchKeyword = searchKeyword?.toLowerCase() || "";
 
@@ -63,11 +63,28 @@ export const VaultCard = ({
 
   const noPoolsFound = filteredPoolStatsList?.length === 0;
 
+  const handleSearch = (keyword: string) => {
+    setFilter(undefined);
+    setQuery(keyword);
+  };
+
+  const handleFilter = (keyword: string) => {
+    setQuery("");
+    if (!keyword) {
+      setFilter(undefined);
+    } else {
+      setFilter(keyword);
+    }
+  };
+
   return (
     <div data-testid="vault-card">
       <FilterCard
         poolCategories={poolCategories}
         poolStatsList={poolStatsList}
+        handleFilter={handleFilter}
+        handleSearch={handleSearch}
+        currentFilter={filter}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-4 md:mt-6 w-full gap-x-6 lg:gap-x-4 xl:gap-x-6 gap-y-4 md:gap-y-6">
         {filteredPoolStatsList?.map((item, index) => (

@@ -4,7 +4,7 @@ import { useWeb3React } from "@web3-react/core";
 import { useCheddaSdk } from "@/hooks";
 import { useParams } from "next/navigation";
 import { useFetcher } from "../useFetcher";
-import { useSigner } from "@/hooks";
+import { useSigner, useToast } from "@/hooks";
 
 jest.mock("ethers");
 jest.mock("react-redux", () => {
@@ -19,6 +19,7 @@ jest.mock("react-redux", () => {
 jest.mock("../../hooks", () => ({
   useCheddaSdk: jest.fn(),
   useSigner: jest.fn(),
+  useToast: jest.fn(),
 }));
 
 jest.mock("@web3-react/core", () => ({
@@ -32,6 +33,9 @@ jest.mock("next/navigation", () => ({
 
 describe("useFetcher", () => {
   beforeEach(() => {
+    (useToast as jest.Mock).mockReturnValue({
+      addToast: jest.fn(),
+    });
     jest.clearAllMocks();
   });
 

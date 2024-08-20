@@ -7,15 +7,16 @@ import { useCallback, useMemo } from "react";
 import { parseBigNumberToFloat } from "@/utils/formatters";
 import { Options } from "@layerzerolabs/lz-v2-utilities";
 import { sourceChains, ethAddress } from "@/utils/constants";
-import { useSigner } from "@/hooks";
+import { useSigner, useToast } from "@/hooks";
 
 export const useBridge = (selectedChain: ISourceChain | null) => {
   const { account } = useWeb3React();
   const { signer } = useSigner();
+  const { addToast } = useToast();
 
   const chedda = useMemo(() => {
     if (!selectedChain) {
-      return null;
+      return undefined;
     }
     return new Chedda(selectedChain.jsonRpcUrl);
   }, [selectedChain]);
@@ -43,7 +44,11 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
       try {
         if (!account || !chedda || !endpointId || !amountToSend) {
           console.error("error in getSendParam, Check parameters");
-          return null;
+          addToast({
+            message: `An error occured,`,
+            type: "error",
+          });
+          return undefined;
         }
 
         const options = Options.newOptions()
@@ -64,10 +69,10 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
         return sendParam;
       } catch (error) {
         console.error("Error in getSendParam:", error);
-        return null;
+        return undefined;
       }
     },
-    [account, chedda]
+    [account, chedda, addToast]
   );
 
   const approveAsset = async (
@@ -92,10 +97,14 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
         return result ? [result] : []; // Ensure result is an array
       } catch (error) {
         console.error("Error in quoteSend:", error);
+        addToast({
+          message: `An error occured,`,
+          type: "fetchError",
+        });
         return [];
       }
     },
-    [account, chedda, signer, getSendParam]
+    [account, chedda, signer, getSendParam, addToast]
   );
 
   const sendOFT = async (
@@ -120,42 +129,80 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
 
   const getTokenPrice = useCallback(
     async (tokenAddress: string) => {
-      if (!tokenAddress || !chedda || !selectedChain?.priceFeed) return;
-      const priceOracle = chedda.priceOracle(selectedChain.priceFeed);
-      const decimals = await priceOracle.decimals();
-      const assetPrice = await priceOracle.readPrice(tokenAddress);
-      return parseBigNumberToFloat(assetPrice, decimals, 10);
+      try {
+        if (!tokenAddress || !chedda || !selectedChain?.priceFeed)
+          return undefined;
+
+        const priceOracle = chedda.priceOracle(selectedChain.priceFeed);
+        const decimals = await priceOracle.decimals();
+        const assetPrice = await priceOracle.readPrice(tokenAddress);
+        return parseBigNumberToFloat(assetPrice, decimals, 10);
+      } catch (error) {
+        console.error("Failed to get token price:", error);
+        addToast({
+          message: `An error occured,`,
+          type: "fetchError",
+        });
+        return undefined;
+      }
     },
-    [chedda, selectedChain?.priceFeed]
+    [chedda, selectedChain?.priceFeed, addToast]
   );
 
   const getTokenBalance = useCallback(
     async (tokenAddress: string) => {
-      return executeTransaction(async () => {
-        if (!account || !tokenAddress || !chedda || !signer) return;
+      try {
+        if (!account || !tokenAddress || !chedda || !signer) return undefined;
+
         const token = chedda.erc20token(tokenAddress, signer);
-        return token?.balanceOf(account);
-      });
+        return await token?.balanceOf(account);
+      } catch (error) {
+        console.error("Failed to get token balance:", error);
+        addToast({
+          message: `An error occured,`,
+          type: "fetchError",
+        });
+        return undefined;
+      }
     },
-    [account, chedda, signer, executeTransaction]
+    [account, chedda, signer, addToast]
   );
 
   const getTokenAllowance = useCallback(
     async (tokenAddress: string, oftAddress: string) => {
-      if (!account || !tokenAddress || !oftAddress || !chedda || !signer)
-        return;
-      const token = chedda.erc20token(tokenAddress, signer);
-      return token?.allowance(account, oftAddress);
+      try {
+        if (!account || !tokenAddress || !oftAddress || !chedda || !signer)
+          return;
+
+        const token = chedda.erc20token(tokenAddress, signer);
+        return await token?.allowance(account, oftAddress);
+      } catch (error) {
+        console.error("Failed to get token allowance:", error);
+        addToast({
+          message: `An error occured,`,
+          type: "fetchError",
+        });
+        return undefined;
+      }
     },
-    [account, chedda, signer]
+    [account, chedda, signer, addToast]
   );
 
   const getEthPrice = useCallback(async () => {
-    const priceOracle = priceChedda.priceOracle(sourceChains[0].priceFeed);
-    const decimals = await priceOracle.decimals();
-    const assetPrice = await priceOracle.readPrice(ethAddress);
-    return parseBigNumberToFloat(assetPrice, decimals, 10);
-  }, [priceChedda]);
+    try {
+      const priceOracle = priceChedda.priceOracle(sourceChains[0].priceFeed);
+      const decimals = await priceOracle.decimals();
+      const assetPrice = await priceOracle.readPrice(ethAddress);
+      return parseBigNumberToFloat(assetPrice, decimals, 10);
+    } catch (error) {
+      console.error("Failed to get ETH price:", error);
+      addToast({
+        message: `An error occured,`,
+        type: "fetchError",
+      });
+      return undefined;
+    }
+  }, [priceChedda, addToast]);
 
   return {
     approveAsset,

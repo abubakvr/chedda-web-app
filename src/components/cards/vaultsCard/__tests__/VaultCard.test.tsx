@@ -1,42 +1,31 @@
 import "@testing-library/jest-dom";
 import React from "react";
-import { render, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { VaultCard } from "../VaultCard";
 import { usePoolStatsList } from "@/hooks";
 import { mockPoolStats } from "@/utils/Mocks/MockTestData";
-import { useRouter } from "next/navigation";
 
 jest.mock("ethers");
 jest.mock("../../../../hooks/useContracts");
-jest.mock("next/navigation", () => ({
-  useParams: jest.fn(),
-  useRouter: jest.fn(() => ({
-    replace: jest.fn(),
-  })),
-  usePathname: jest.fn(),
-  useSearchParams: jest.fn(() => ({
-    get: jest.fn(() => "filter"),
-  })),
-}));
-
-const mockReplace = jest.fn();
 
 describe("VaultCard Component", () => {
-  (useRouter as jest.Mock).mockImplementation(() => ({
-    replace: mockReplace,
-  }));
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-  it("renders pools with data when not loading", () => {
+  it("renders pools with data when not loading", async () => {
     (usePoolStatsList as jest.Mock).mockImplementation(() => ({
       data: mockPoolStats,
       isLoading: false,
     }));
     const { getByTestId, getAllByTestId } = render(
-      <VaultCard poolStatsList={mockPoolStats} query="" filter="" />
+      <VaultCard poolStatsList={mockPoolStats} />
     );
 
-    expect(getByTestId("vault-card")).toBeInTheDocument();
-    expect(getAllByTestId("vault-item")).toHaveLength(mockPoolStats.length);
+    await waitFor(() => {
+      expect(getByTestId("vault-card")).toBeInTheDocument();
+      expect(getAllByTestId("vault-item")).toHaveLength(mockPoolStats.length);
+    });
   });
 
   it("renders VaultCard item when market is searched", async () => {
@@ -45,12 +34,12 @@ describe("VaultCard Component", () => {
       data: mockPoolStats,
       isLoading: false,
     }));
-    const { getByTestId } = render(
-      <VaultCard poolStatsList={mockPoolStats} query="Token1" filter="" />
-    );
+    render(<VaultCard poolStatsList={mockPoolStats} />);
+    const searchInput = screen.getByPlaceholderText("Search");
+    fireEvent.change(searchInput, { target: { value: "Token3" } });
 
     await waitFor(() => {
-      expect(getByTestId("asset-symbol")).toHaveTextContent("T1");
+      expect(screen.getByTestId("asset-symbol")).toHaveTextContent("T3");
     });
   });
 
@@ -59,11 +48,24 @@ describe("VaultCard Component", () => {
       data: mockPoolStats,
       isLoading: false,
     }));
-    const { getByTestId } = render(
-      <VaultCard poolStatsList={mockPoolStats} query="" filter="bluechip" />
-    );
+    render(<VaultCard poolStatsList={mockPoolStats} />);
+
+    const categoryButton = screen.getByTestId("button-2");
+    fireEvent.click(categoryButton);
+
     await waitFor(() => {
-      expect(getByTestId("asset-symbol")).toHaveTextContent("T1");
+      expect(screen.getByTestId("asset-symbol")).toHaveTextContent("T1");
+    });
+  });
+
+  it("displays a message when no pools are found", async () => {
+    render(<VaultCard poolStatsList={mockPoolStats} />);
+
+    const searchInput = screen.getByPlaceholderText("Search");
+    fireEvent.change(searchInput, { target: { value: "test" } });
+
+    await waitFor(() => {
+      expect(screen.getByText("No pools found.")).toBeInTheDocument();
     });
   });
 });
