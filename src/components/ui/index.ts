@@ -9,3 +9,4 @@ export * from "./blockie/Blockie";
 export * from "./skeleton/SwitchTabSkeleton";
 export * from "./navDropdown/NavDropdown";
 export * from "./pacmanLogo/PacmanLogo";
+export * from "./globalToast/GlobalToast";

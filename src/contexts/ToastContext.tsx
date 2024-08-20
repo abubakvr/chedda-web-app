@@ -1,4 +1,4 @@
-import { ToastContainer } from "@/components/ui/globalToast/globalToast";
+import { ToastContainer } from "@/components/ui";
 import React, { createContext, useState, useCallback, ReactNode } from "react";
 
 type ToastType = "success" | "error" | "info" | "fetchError";

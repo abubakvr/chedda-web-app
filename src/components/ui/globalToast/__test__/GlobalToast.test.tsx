@@ -1,13 +1,13 @@
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { Toast, ToastContainer, ToastItem } from "../GlobalToast";
+import { IToast, ToastContainer, ToastItem } from "../GlobalToast";
 
 jest.mock("../../../../utils/copyToClipboard", () => ({
   copyToClipboard: jest.fn(),
 }));
 
 describe("ToastContainer", () => {
-  const mockToasts: Toast[] = [
+  const mockToasts: IToast[] = [
     {
       id: 1,
       message: "Success message",
@@ -50,7 +50,7 @@ describe("ToastContainer", () => {
           ? "Transaction Successful"
           : mockToasts[index].type === "error"
             ? "Transaction Failed"
-            : "Unexpected Error"
+            : "Fetch Error"
       );
     });
 
@@ -117,7 +117,7 @@ describe("ToastContainer", () => {
 
 describe("ToastItem", () => {
   test("renders toast item correctly", async () => {
-    const mockToast: Toast = {
+    const mockToast: IToast = {
       id: 1,
       message: "Success message",
       copyText: "0x123456789",

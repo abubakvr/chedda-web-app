@@ -4,9 +4,8 @@ import LinkOut from "@/assets/icon/link-out.svg";
 import CopyIcon from "@/assets/icon/copy-icon-line.svg";
 import { currentEnvironment } from "@/data/environments";
 import { copyToClipboard } from "@/utils/copyToClipboard";
-import { useRouter } from "next/navigation";
 
-export interface Toast {
+export interface IToast {
   id: number;
   message: string;
   copyText?: string;
@@ -16,7 +15,7 @@ export interface Toast {
 }
 
 interface ToastContainerProps {
-  toasts: Toast[];
+  toasts: IToast[];
   duration?: number;
   removeToast: (id: number) => void;
 }
@@ -41,7 +40,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
 };
 
 interface ToastItemProps {
-  toast: Toast;
+  toast: IToast;
   duration: number;
   removeToast: (id: number) => void;
 }
