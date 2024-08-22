@@ -34,21 +34,21 @@ const initialState: CheddaSliceState = {
 export const fetchData = createAsyncThunk<any, FetchDataParams>(
   "cheddaSlice/fetchData",
   async (params: FetchDataParams) => {
-    try {
-      const {
-        hookName,
-        pathname,
-        showLoading,
-        chedda,
-        currentEnvironment,
-        account,
-        poolId,
-        getData,
-        signer,
-        asset,
-        decimals,
-      } = params;
+    const {
+      hookName,
+      pathname,
+      showLoading,
+      chedda,
+      currentEnvironment,
+      account,
+      poolId,
+      getData,
+      signer,
+      asset,
+      decimals,
+    } = params;
 
+    try {
       if (!currentEnvironment || !chedda) return;
 
       const lens = chedda?.poolLens(
@@ -68,7 +68,18 @@ export const fetchData = createAsyncThunk<any, FetchDataParams>(
       });
       return { showLoading, hookName, pathname, data };
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.log(`Error fetching data in ${hookName}`, error);
+      console.log("hookName", hookName);
+      console.log("pathname", pathname);
+      console.log("showLoading", showLoading);
+      console.log("chedda", chedda);
+      console.log("currentEnvironment", currentEnvironment);
+      console.log("account", account);
+      console.log("poolId", poolId);
+      console.log("getData", getData);
+      console.log("signer", signer);
+      console.log("asset", asset);
+      console.log("decimals", decimals);
       throw error;
     }
   }
