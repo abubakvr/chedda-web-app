@@ -57,15 +57,15 @@ export const FilterCard: React.FC<FilterCardProps> = ({
         className="pool-card rounded-lg w-full"
         data-testid="route-card-container"
       >
-        <div className="relative items-center text-white text-sm md:text-lg lg:text-2xl p-4 pb-0 xl:px-8 xl:pt-8 font-bold">
+        <div
+          data-testid="vaults-title"
+          className="relative items-center text-white text-sm md:text-lg lg:text-2xl p-4 pb-0 xl:px-8 xl:pt-8 font-bold"
+        >
           Lending Pools
           <div className="mt-2 md:mt-4 w-full border-b border-[#51D5FA30]"></div>
         </div>
-        <div className="md:flex mt-2 md:mt-4 xl:mt-6 items-center justify-between w-full md:pb-4 xl:px-8">
-          <div
-            data-testid="vaults-title"
-            className="flex space-x-2 md:space-x-2 lg:space-x-3 relative items-center overflow-auto w-full px-4 xl:px-0 no-scrollbar"
-          >
+        <div className="md:flex mt-2 md:mt-4 xl:mt-6 items-center justify-between w-full md:pb-4 md:px-4 xl:px-8">
+          <div className="flex space-x-2 md:space-x-2 lg:space-x-3 relative items-center overflow-auto w-full md:w-fit px-4 md:px-2 no-scrollbar md:border  md:border-[#ffffff19] md:bg-[#ffffff02] rounded-lg p-2">
             {poolCategories.map((item, i) => {
               const isFilterSelected = currentFilter === item.keyword;
 
