@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { getErrorMessageFromCode } from "@/utils/helpers";
 import { currentEnvironment } from "@/data/environments";
 import { useCallback } from "react";
-import { useSigner } from "@/hooks";
+import { useSigner, useToast } from "@/hooks";
 import { JsonRpcSigner } from "ethers";
 
 export const useTransaction = (asset: string) => {
@@ -12,6 +12,7 @@ export const useTransaction = (asset: string) => {
   const { chedda } = useCheddaSdk();
   const { poolId } = useParams();
   const { signer } = useSigner();
+  const { addToast } = useToast();
 
   const strPoolId = poolId ? poolId.toString() : "0x00";
   const cheddaTokenAddress = currentEnvironment.contracts.CheddaToken;
@@ -194,14 +195,27 @@ export const useTransaction = (asset: string) => {
       );
       return cheddaLockingGauge?.addToLock(amount);
     }, amount);
-
   const getTokenBalance = useCallback(
     async (tokenAddress: string) => {
-      if (!account || !tokenAddress) return;
-      const token = chedda?.cheddaToken(tokenAddress, signer as JsonRpcSigner);
-      return await token?.balanceOf(account);
+      try {
+        if (!account || !tokenAddress || !chedda || !signer) return null;
+
+        const token = chedda?.cheddaToken(
+          tokenAddress,
+          signer as JsonRpcSigner
+        );
+        const balance = await token?.balanceOf(account);
+        return balance;
+      } catch (error) {
+        console.error("Failed to get token balance:", error);
+        addToast({
+          message: "An error occured,",
+          type: "fetchError",
+        });
+        return null;
+      }
     },
-    [account, chedda, signer]
+    [account, chedda, signer, addToast]
   );
 
   const claimAllRewards = async () =>

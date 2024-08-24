@@ -10,6 +10,7 @@ interface CheddaSliceState {
 interface AsyncState<T> {
   data?: T;
   isLoading: boolean;
+  isError: boolean;
 }
 
 interface FetchDataParams {
@@ -94,6 +95,7 @@ export const cheddaSlice = createSlice({
         state.fetchDataStates[`${hookName} + ${pathname}`] = {
           data: existingData ?? undefined,
           isLoading: showLoading,
+          isError: false,
         };
       })
       .addCase(
@@ -110,6 +112,7 @@ export const cheddaSlice = createSlice({
           state.fetchDataStates[`${hookName} + ${pathname}`] = {
             data,
             isLoading: false,
+            isError: false,
           };
         }
       )
@@ -119,6 +122,7 @@ export const cheddaSlice = createSlice({
         state.fetchDataStates[`${hookName} + ${pathname}`] = {
           data: undefined,
           isLoading: false,
+          isError: true,
         };
       });
   },
@@ -130,3 +134,7 @@ export const selectCheddaSliceData = (hookName: string) => (state: RootState) =>
 export const selectCheddaSliceLoading =
   (hookName: string) => (state: RootState) =>
     state.cheddaSlice.fetchDataStates[hookName]?.isLoading ?? true;
+
+export const selectCheddaSliceError =
+  (hookName: string) => (state: RootState) =>
+    state.cheddaSlice.fetchDataStates[hookName]?.isError ?? false;

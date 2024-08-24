@@ -23,25 +23,25 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
         {/** Web View */}
         <div
           data-testid="position-item"
-          className="h-28 w-full px-7 py-5 hidden lg:grid grid-cols-7 grid-row-bg gap-x-20 text-white hover:opacity-80 hover:bg-blue-200 hover:bg-opacity-10 cursor-pointer"
+          className="lg:h-28 w-full px-7 py-5 lg:py-5 hidden md:grid grid-cols-7 grid-row-bg gap-x-20 text-white hover:opacity-80 hover:bg-blue-200 hover:bg-opacity-10 cursor-pointer"
         >
           <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-2 w-max">
             <div className="flex items-center ">
               <div className="flex relative">
                 <Image
                   src={pool.asset?.logo}
-                  className="h-10 w-10 round-image"
+                  className="w-6 h-6 lg:h-10 lg:w-10 round-image"
                   alt={pool.asset?.symbol}
                   data-testid="asset-icon"
                 />
                 <Image
                   src={pool.asset?.sourceLogo}
                   alt="icon image"
-                  className="absolute w-[18px] h-[18px] top-0 left-0"
+                  className="absolute w-[10px] h-[10px] lg:w-[18px] lg:h-[18px] top-0 left-0"
                 />
               </div>
               <div
-                className="ml-2 tracking-widest text-lg font-bold"
+                className="ml-2 tracking-widest text-[10px] lg:text-lg font-bold"
                 data-testid="asset-symbol"
               >
                 {pool.asset?.symbol}
@@ -52,7 +52,7 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
             </div> */}
           </div>
           <div className="flex justify-left items-center w-max">
-            <div className="text-sm flex flex-col font-semibold md:col-span-1">
+            <div className="text-[10px] lg:text-sm flex flex-col font-semibold md:col-span-1">
               <div data-testid="supplied-amount">
                 {formatLargeNumber(pool.supplied)} {pool.asset?.symbol}
               </div>
@@ -62,7 +62,7 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
             </div>
           </div>
           <div className="flex justify-start items-center w-max">
-            <div className="text-sm flex flex-col font-semibold md:col-span-1">
+            <div className="text-[10px] lg:text-sm flex flex-col font-semibold md:col-span-1">
               <div data-testid="borrowed-amount">
                 {formatLargeNumber(pool.borrowed)} {pool.asset?.symbol}
               </div>
@@ -72,7 +72,7 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
             </div>
           </div>
           <div className="flex justify-start w-max">
-            <div className="text-sm flex items-center font-semibold md:col-span-1">
+            <div className="text-[10px] lg:text-sm flex items-center font-semibold md:col-span-1">
               <div
                 data-testid="health-factor-value"
                 className={getHealthFactorColor(pool.healthFactor)}
@@ -82,7 +82,7 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
             </div>
           </div>
           <div className="flex justify-start items-center w-max">
-            <div className="text-sm flex flex-col font-semibold md:col-span-1">
+            <div className="text-[10px] lg:text-sm flex flex-col font-semibold md:col-span-1">
               <div data-testid="staked-amount">
                 {formatLargeNumber(pool.staked)} CHEDDA
               </div>
@@ -92,7 +92,7 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
             </div>
           </div>
           <div className="flex justify-start items-center w-max">
-            <div className="text-sm flex flex-col font-semibold md:col-span-1">
+            <div className="text-[10px] lg:text-sm flex flex-col font-semibold md:col-span-1">
               <div data-testid="locked-amount">
                 {formatLargeNumber(pool.locked)} CHEDDA
               </div>
@@ -106,7 +106,7 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
           </div>
         </div>
         {/** Mobile Items */}
-        <div className="lg:hidden ">
+        <div className="md:hidden ">
           <div
             className="justify-between text-white text-sm mt-3 p-4"
             data-testid={"position-item"}

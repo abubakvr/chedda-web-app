@@ -4,20 +4,6 @@ import { IPoolCategory, IPoolStatsResponse } from "@/utils/types";
 import { mockPoolStats } from "@/utils/Mocks/MockTestData";
 import { StaticImageData } from "next/image";
 import { FilterCard } from "../FilterCard";
-import { useSearchParams, useRouter } from "next/navigation";
-
-jest.mock("next/navigation", () => ({
-  useParams: jest.fn(),
-  useRouter: jest.fn(() => ({
-    replace: jest.fn(),
-  })),
-  usePathname: jest.fn(),
-  useSearchParams: jest.fn(() => ({
-    get: jest.fn(() => "filter"),
-  })),
-}));
-
-const mockReplace = jest.fn();
 
 const poolCategories: IPoolCategory[] = [
   {
@@ -42,17 +28,17 @@ const poolCategories: IPoolCategory[] = [
 
 const poolStatsList: IPoolStatsResponse[] = mockPoolStats;
 
-const mockGet = jest.fn();
+const mockReplace = jest.fn();
+
+jest.mock("next/navigation", () => ({
+  useSearchParams: jest.fn(),
+  useRouter: () => ({
+    replace: mockReplace,
+  }),
+}));
 
 describe("FilterCard", () => {
-  beforeAll(() => {
-    (useRouter as jest.Mock).mockImplementation(() => ({
-      replace: mockReplace,
-    }));
-    (useSearchParams as jest.Mock).mockReturnValue({ get: mockGet });
-  });
-
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
@@ -61,6 +47,9 @@ describe("FilterCard", () => {
       <FilterCard
         poolCategories={poolCategories}
         poolStatsList={poolStatsList}
+        handleSearch={jest.fn()}
+        handleFilter={jest.fn()}
+        currentFilter="none"
       />
     );
 
@@ -72,6 +61,9 @@ describe("FilterCard", () => {
       <FilterCard
         poolCategories={poolCategories}
         poolStatsList={poolStatsList}
+        handleSearch={jest.fn()}
+        handleFilter={jest.fn()}
+        currentFilter="none"
       />
     );
 
@@ -80,11 +72,39 @@ describe("FilterCard", () => {
     });
   });
 
-  it("calls handleSearch on input change", async () => {
+  test("updates item counts correctly", () => {
+    const mockHandleSearch = jest.fn();
+    const mockHandleFilter = jest.fn();
+
     render(
       <FilterCard
         poolCategories={poolCategories}
         poolStatsList={poolStatsList}
+        handleSearch={mockHandleSearch}
+        handleFilter={mockHandleFilter}
+        currentFilter={undefined}
+      />
+    );
+
+    // Check that the item counts are updated correctly
+    poolCategories.forEach((category) => {
+      expect(category.itemCount).toBe(
+        poolStatsList.filter((item) =>
+          item.categories.includes(category.keyword!)
+        ).length
+      );
+    });
+  });
+
+  it("calls handleSearch on input change", async () => {
+    const mockHandleSearch = jest.fn();
+    render(
+      <FilterCard
+        poolCategories={poolCategories}
+        poolStatsList={poolStatsList}
+        handleSearch={mockHandleSearch}
+        handleFilter={jest.fn()}
+        currentFilter="none"
       />
     );
 
@@ -92,17 +112,20 @@ describe("FilterCard", () => {
     fireEvent.change(searchInput, { target: { value: "test" } });
 
     await waitFor(() => {
-      expect(mockReplace).toHaveBeenCalledWith("/?q=test", {
-        scroll: false,
-      });
+      expect(mockHandleSearch).toHaveBeenCalledWith("test");
     });
   });
 
   it("updates selected category on button click", async () => {
+    const mockHandleFilter = jest.fn();
+
     render(
       <FilterCard
         poolCategories={poolCategories}
         poolStatsList={poolStatsList}
+        handleSearch={jest.fn()}
+        handleFilter={mockHandleFilter}
+        currentFilter="none"
       />
     );
 
@@ -110,9 +133,7 @@ describe("FilterCard", () => {
     fireEvent.click(categoryButton);
 
     await waitFor(() => {
-      expect(mockReplace).toHaveBeenCalledWith("/?filter=cat1", {
-        scroll: false,
-      });
+      expect(mockHandleFilter).toHaveBeenCalledWith("cat1");
     });
   });
 });

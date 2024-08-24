@@ -2,15 +2,9 @@ import React from "react";
 import { VaultCard, SummaryCard, MobileSummaryCard } from "@/components/cards";
 import { PageTitle } from "@/components/common";
 import { useMarkets } from "@/hooks/useMarkets";
+import { ErrorCard } from "@/components/cards/errorCard/ErrorCard";
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: { q: string; filter: string };
-}) => {
-  const query = searchParams.q ?? "";
-  const filter = searchParams.filter ?? "";
-
+const Page = async () => {
   const { getAggregateStats, getPoolStatsList } = useMarkets();
   const aggregateStats = await getAggregateStats();
   const poolStatsList = await getPoolStatsList();
@@ -35,16 +29,9 @@ const Page = async ({
       </div>
       <div className="mt-4 md:mt-6" data-testid="vault-card-container">
         {poolStatsList ? (
-          <VaultCard
-            data-testid="vault-card"
-            poolStatsList={poolStatsList}
-            query={query}
-            filter={filter}
-          />
+          <VaultCard data-testid="vault-card" poolStatsList={poolStatsList} />
         ) : (
-          <div className="pool-card w-full p-6 md:p-8 text-white text-center text-xs md:text-sm lg:text-lg">
-            An error occurred while loading pools. Try again later.
-          </div>
+          <ErrorCard>An error occurred while loading pools.</ErrorCard>
         )}
       </div>
     </div>

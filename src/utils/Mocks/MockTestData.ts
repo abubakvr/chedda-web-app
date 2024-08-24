@@ -68,7 +68,7 @@ export const mockPoolStats: IPoolStatsResponse[] = [
         sourceLogo: {} as StaticImageData,
       },
     ],
-    categories: ["defi", "bluechip"],
+    categories: ["defi"],
     rewardsAPY: 90909,
   },
   {
@@ -132,7 +132,7 @@ export const mockPoolStats: IPoolStatsResponse[] = [
         sourceLogo: {} as StaticImageData,
       },
     ],
-    categories: ["defi"],
+    categories: ["bluechip"],
     rewardsAPY: 90909,
   },
 ];

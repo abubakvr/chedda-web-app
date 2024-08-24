@@ -3,35 +3,22 @@ import React from "react";
 import Image from "next/image";
 import { IPoolCategory, IPoolStatsResponse } from "@/utils/types";
 import SearchIcon from "@/assets/icon/search-icon.svg";
-import { useRouter, useSearchParams } from "next/navigation";
 
 interface FilterCardProps {
   poolCategories: IPoolCategory[];
   poolStatsList?: IPoolStatsResponse[];
+  handleSearch: (term: string) => void;
+  handleFilter: (term: string) => void;
+  currentFilter: string | undefined;
 }
 
 export const FilterCard: React.FC<FilterCardProps> = ({
   poolCategories,
   poolStatsList,
+  handleSearch,
+  handleFilter,
+  currentFilter,
 }) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const currentFilter = searchParams.get("filter");
-
-  function searchAction(term: string) {
-    let params = new URLSearchParams({ q: term });
-    router.replace(`/?${params.toString()}`, { scroll: false });
-  }
-
-  function filterAction(term: string) {
-    let params = new URLSearchParams({ filter: term });
-    if (!term) {
-      router.replace(`/`, { scroll: false });
-    } else {
-      router.replace(`/?${params.toString()}`, { scroll: false });
-    }
-  }
-
   const matchFilterItems = (
     item: IPoolStatsResponse,
     filterKeyword: string
@@ -70,15 +57,15 @@ export const FilterCard: React.FC<FilterCardProps> = ({
         className="pool-card rounded-lg w-full"
         data-testid="route-card-container"
       >
-        <div className="relative items-center text-white text-sm md:text-lg lg:text-2xl p-4 pb-0 xl:px-8 xl:pt-8 font-bold">
+        <div
+          data-testid="vaults-title"
+          className="relative items-center text-white text-sm md:text-lg lg:text-2xl p-4 pb-0 xl:px-8 xl:pt-8 font-bold"
+        >
           Lending Pools
           <div className="mt-2 md:mt-4 w-full border-b border-[#51D5FA30]"></div>
         </div>
-        <div className="md:flex mt-2 md:mt-4 xl:mt-6 items-center justify-between w-full md:pb-4 xl:px-8">
-          <div
-            data-testid="vaults-title"
-            className="flex space-x-2 md:space-x-2 lg:space-x-3 relative items-center overflow-auto w-full px-4 xl:px-0 no-scrollbar"
-          >
+        <div className="md:flex mt-2 md:mt-4 xl:mt-6 items-center justify-between w-full md:pb-4 md:px-4 xl:px-8">
+          <div className="flex space-x-2 md:space-x-2 lg:space-x-3 relative items-center overflow-auto w-full md:w-fit px-4 md:px-2 no-scrollbar md:border  md:border-[#ffffff19] md:bg-[#ffffff02] rounded-lg p-2">
             {poolCategories.map((item, i) => {
               const isFilterSelected = currentFilter === item.keyword;
 
@@ -89,7 +76,7 @@ export const FilterCard: React.FC<FilterCardProps> = ({
               return (
                 <button
                   key={i}
-                  onClick={() => filterAction(item.keyword ?? "")}
+                  onClick={() => handleFilter(item.keyword ?? "")}
                   data-testid={`button-${i}`}
                   className={`relative border ${isFilterSelected ? item.activeClass : `${item.hoverClass} border-white bg-none py-1 h-7 md:h-8 lg:h-9 transition-all`} px-4 md:px-4 lg:px-3 rounded-lg flex items-center justify-center space-x-1 ${item.hoverClass}`}
                 >
@@ -115,11 +102,11 @@ export const FilterCard: React.FC<FilterCardProps> = ({
             >
               <div className="relative w-full ">
                 <input
-                  name="q"
+                  name="query"
                   type="search"
                   className="w-full md:w-48 lg:w-64 h-full bg-transparent focus:outline-none text-[10px] md:text-lg text-white pl-2 md:pl-3 md:pr-10 flex items-center"
                   placeholder="Search"
-                  onChange={(e) => searchAction(e.target.value)}
+                  onChange={(e) => handleSearch(e.target.value)}
                 />
                 <Image
                   src={SearchIcon}
