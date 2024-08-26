@@ -162,6 +162,7 @@ export const TransactionDetails = ({
           data-testid="back-button"
         >
           <Image
+            style={{ color: "" }}
             src={leftIcon}
             alt="image-icon"
             className="w-6 h-6 md:w-8 md:h-8"
@@ -182,11 +183,13 @@ export const TransactionDetails = ({
           <div className="w-max flex font-bold items-center py-2 space-x-4">
             <div className="w-max flex relative">
               <Image
+                style={{ color: "" }}
                 src={selectedToken.logo}
                 alt="icon image"
                 className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
               />
               <Image
+                style={{ color: "" }}
                 src={selectedChain.logo}
                 alt="icon image"
                 className="absolute w-[14px] h-[14px] md:w-[18px] md:h-[18px] lg:w-5 lg:h-5 top-0 left-0"
@@ -211,12 +214,14 @@ export const TransactionDetails = ({
             <div className="w-max flex relative">
               {txHash ? (
                 <Image
+                  style={{ color: "" }}
                   src={checkIcon}
                   alt="icon image"
                   className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
                 />
               ) : (
                 <Image
+                  style={{ color: "" }}
                   src={loadingIcon}
                   alt="icon image"
                   className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 animate-spin-slow"
@@ -236,6 +241,7 @@ export const TransactionDetails = ({
             data-testid="source-chain-link"
           >
             <Image
+              style={{ color: "" }}
               src={linkOut}
               alt="icon-logo"
               className="w-3 h-3 md:w-4 md:h-4"
@@ -252,6 +258,7 @@ export const TransactionDetails = ({
           <div className="w-max flex font-bold items-center py-2 space-x-4">
             <div className="w-max flex relative">
               <Image
+                style={{ color: "" }}
                 src={txDetails.icon}
                 alt="icon image"
                 className={`w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 ${txDetails.icon === loadingIcon && "animate-spin-slow"}`}
@@ -270,6 +277,7 @@ export const TransactionDetails = ({
             data-testid="destination-chain-link"
           >
             <Image
+              style={{ color: "" }}
               src={linkOut}
               alt="icon-logo"
               className="w-3 h-3 md:w-4 md:h-4"
@@ -286,11 +294,13 @@ export const TransactionDetails = ({
           <div className="w-max flex font-bold items-center py-2 space-x-4">
             <div className="w-max flex relative">
               <Image
+                style={{ color: "" }}
                 src={selectedToken.logo}
                 alt="icon image"
                 className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
               />
               <Image
+                style={{ color: "" }}
                 src={destinationChain.logo}
                 alt="icon image"
                 className="absolute w-[14px] h-[14px] md:w-[18px] md:h-[18px] lg:w-5 lg:h-5  top-0 left-0"

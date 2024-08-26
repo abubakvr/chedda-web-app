@@ -48,7 +48,6 @@ export const RouteCard = ({
               key={index}
               onClick={() => handleTabButton(item)}
               className={`${isActive && "card-gradient-text"} font-bold w-full md:w-fit hover:text-[#FFFFFF99] transition-all`}
-              style={{ fontWeight: isActive ? 600 : "" }}
             >
               {item}
               {isActive ? (
@@ -65,6 +64,7 @@ export const RouteCard = ({
           className={`flex items-center xl:items-start gap-x-4 mt-2 md:mt-4 mt-xl:mt-6`}
         >
           <Image
+            style={{ color: "" }}
             src={InfoIcon}
             alt="info icon"
             className="w-[18px] h-[18px] xl:w-6 xl:h-6"

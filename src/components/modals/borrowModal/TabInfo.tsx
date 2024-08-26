@@ -51,6 +51,7 @@ export const DepositTabInfo = ({
               {isLoading ? "-" : collateralAmount}
             </div>
             <Image
+              style={{ color: "" }}
               src={ArrowRight}
               alt="loading spinner"
               className="flex self-center"
@@ -77,6 +78,7 @@ export const DepositTabInfo = ({
               {isLoading ? "-" : totalCollateralValue}
             </div>
             <Image
+              style={{ color: "" }}
               src={ArrowRight}
               alt="right arrow"
               className="flex self-center"
@@ -97,6 +99,7 @@ export const DepositTabInfo = ({
         >
           Health Factor
           <Image
+            style={{ color: "" }}
             src={InfoIcon}
             alt="info icon"
             className="h-3 w-3 lg:h-[14px] lg:w-[14px]"
@@ -111,6 +114,7 @@ export const DepositTabInfo = ({
               {isLoading ? "-" : toFixedTrunc(Number(healthFactor), 2)}
             </div>
             <Image
+              style={{ color: "" }}
               src={ArrowRight}
               alt="right arrow"
               className="flex self-center"
@@ -147,6 +151,7 @@ export const BorrowTabInfo = ({
         >
           Borrowed
           <Image
+            style={{ color: "" }}
             src={InfoIcon}
             alt="info icon"
             className="h-3 w-3 lg:h-[14px] lg:w-[14px]"
@@ -159,6 +164,7 @@ export const BorrowTabInfo = ({
               {isLoading ? "-" : totalBorrowed}
             </div>
             <Image
+              style={{ color: "" }}
               src={ArrowRight}
               alt="right arrow"
               className="flex self-center"
@@ -176,6 +182,7 @@ export const BorrowTabInfo = ({
         >
           Collateral Value
           <Image
+            style={{ color: "" }}
             src={InfoIcon}
             alt="info icon"
             className="h-3 w-3 lg:h-[14px] lg:w-[14px]"
@@ -196,6 +203,7 @@ export const BorrowTabInfo = ({
         >
           Health Factor
           <Image
+            style={{ color: "" }}
             src={InfoIcon}
             alt="info icon"
             className="h-3 w-3 lg:h-[14px] lg:w-[14px]"
@@ -210,6 +218,7 @@ export const BorrowTabInfo = ({
               {isLoading ? "-" : toFixedTrunc(Number(healthFactor), 2)}
             </div>
             <Image
+              style={{ color: "" }}
               src={ArrowRight}
               alt="right arrow"
               className="flex self-center"
@@ -230,6 +239,7 @@ export const BorrowTabInfo = ({
         >
           Liquidity
           <Image
+            style={{ color: "" }}
             src={InfoIcon}
             alt="info icon"
             className="h-3 w-3 lg:h-[14px] lg:w-[14px]"
@@ -241,6 +251,7 @@ export const BorrowTabInfo = ({
               {isLoading ? "-" : liquidity}
             </div>
             <Image
+              style={{ color: "" }}
               src={ArrowRight}
               alt="right arrow"
               className="flex self-center"

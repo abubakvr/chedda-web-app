@@ -6,6 +6,7 @@ export const RefreshSpinner = ({ isOpen }: { isOpen: boolean }) => {
   return isOpen ? (
     <div className={`${isOpen ? "flex" : "hidden"}  animate-spin-slow`}>
       <Image
+        style={{ color: "" }}
         src={LoadingIcon}
         alt="loading spinner"
         className="flex self-center w-3 h-3"

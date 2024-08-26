@@ -1,10 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import bridgeLines from "@/assets/svg/bridge-section-lines.svg";
 import bridgeVector from "@/assets/images/bridge-vector.png";
 import arrowForward from "@/assets/icon/arrow-forward.svg";
 import gradientArrowForward from "@/assets/icon/gradient-arrow-forward.svg";
 import { BRIDGE_DOC_URL } from "@/utils/constants";
+import Image from "next/image";
 
 export const BridgeSection = () => {
   return (
@@ -16,7 +16,7 @@ export const BridgeSection = () => {
         className="absolute left-0 flex h-full"
         data-testid="bridge-lines-left"
       >
-        <Image src={bridgeLines} alt="networks" />
+        <Image style={{ color: "" }} src={bridgeLines} alt="networks" />
       </div>
       <div className="flex justify-center items-center relative w-full md:w-4/5 lg:w-3/5">
         <div
@@ -46,7 +46,11 @@ export const BridgeSection = () => {
               data-testid="go-to-bridge"
             >
               <span>Go to Bridge</span>
-              <Image src={arrowForward} alt="arrow forward" />
+              <Image
+                style={{ color: "" }}
+                src={arrowForward}
+                alt="arrow forward"
+              />
             </Link>
             <a
               href={BRIDGE_DOC_URL}
@@ -55,7 +59,11 @@ export const BridgeSection = () => {
               data-testid="learn-more"
             >
               <span>Learn more</span>
-              <Image src={gradientArrowForward} alt="gradient arrow" />
+              <Image
+                style={{ color: "" }}
+                src={gradientArrowForward}
+                alt="gradient arrow"
+              />
             </a>
           </div>
         </div>
@@ -64,6 +72,7 @@ export const BridgeSection = () => {
           data-testid="bridge-vector"
         >
           <Image
+            style={{ color: "" }}
             src={bridgeVector}
             alt="bridge vector"
             className="h-44 md:h-4 xl:h-56"
@@ -75,6 +84,7 @@ export const BridgeSection = () => {
         data-testid="bridge-lines-right"
       >
         <Image
+          style={{ color: "" }}
           src={bridgeLines}
           alt="networks"
           className="transform scale-x-[-1]"

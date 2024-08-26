@@ -108,6 +108,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
             </div>
             <div>
               <Image
+                style={{ color: "" }}
                 src={ArrowDown}
                 alt="Arrow"
                 className="w-2 h-2 lg:w-2.5 lg:h-2.5"
@@ -139,7 +140,12 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
                       data-testid="copy-address-button"
                       onClick={copyAddress}
                     >
-                      <Image src={CopyIcon} width={21} alt="Copy" />
+                      <Image
+                        style={{ color: "" }}
+                        src={CopyIcon}
+                        width={21}
+                        alt="Copy"
+                      />
                       <div
                         className="tooltip"
                         data-testid="address-copy-tooltip"
@@ -162,7 +168,12 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
                     className="text-xs card-gradient-text relative flex mt-1.5 items-center gap-x-1"
                   >
                     <span>Buy CHEDDA</span>
-                    <Image src={LinkOut} width={12} alt="Copy" />
+                    <Image
+                      style={{ color: "" }}
+                      src={LinkOut}
+                      width={12}
+                      alt="Copy"
+                    />
                   </a>
                 </li>
                 <li className="py-4 rounded-b-md cursor-pointer flex items-center">

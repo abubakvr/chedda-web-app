@@ -4,6 +4,7 @@ import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { useBridge } from "@/hooks";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { WalletConnect } from "@web3-react/walletconnect-v2";
+import { NonceProvider } from "@/contexts/NonceContext";
 
 // Mock hooks
 jest.mock("next/navigation", () => ({
@@ -72,7 +73,11 @@ describe("Page Component", () => {
   });
 
   it("renders the Page component correctly", async () => {
-    render(<Page />);
+    render(
+      <NonceProvider nonce="0xc8">
+        <Page />
+      </NonceProvider>
+    );
 
     await waitFor(() => {
       expect(screen.getByText("Transfer")).toBeInTheDocument();
@@ -80,7 +85,11 @@ describe("Page Component", () => {
   });
 
   it("updates gas fee on selected token or chain change", async () => {
-    render(<Page />);
+    render(
+      <NonceProvider nonce="0xc8">
+        <Page />
+      </NonceProvider>
+    );
 
     await waitFor(() => {
       expect(mockQuoteSend).toHaveBeenCalled();
@@ -93,7 +102,11 @@ describe("Page Component", () => {
   });
 
   it("handles active screen changes", async () => {
-    render(<Page />);
+    render(
+      <NonceProvider nonce="0xc8">
+        <Page />
+      </NonceProvider>
+    );
 
     fireEvent.click(screen.getByTestId("bridge-input-from-chain"));
     await waitFor(() => {

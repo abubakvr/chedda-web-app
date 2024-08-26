@@ -1,3 +1,4 @@
+"use client";
 import React, { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import { menuItems, moreMenuItems } from "@/utils/constants";
@@ -5,6 +6,7 @@ import { PacmanLogo } from "@/components/ui";
 import { usePathname } from "next/navigation";
 import LinkOut from "@/assets/icon/link-out-grey.svg";
 import Link from "next/link";
+import { useNonce } from "@/hooks/useNonce";
 
 export const MobileNav = ({
   navOpen,
@@ -14,12 +16,14 @@ export const MobileNav = ({
   setNavOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const pathname = usePathname();
+  const { nonce } = useNonce();
+
   return (
     <nav
-      className={`fixed inset-0 bg-gray-900 text-white bg-[#00000024] bg-opacity-75 overflow-y-auto backdrop-filter backdrop-blur-sm z-20 flex justify-end transition-all`}
-      style={{
-        transform: navOpen ? "translateX(0px)" : "translateX(100%)",
-      }}
+      className={`fixed inset-0 bg-gray-900 text-white bg-opacity-75 overflow-y-auto backdrop-blur-sm z-20 flex justify-end transition-transform ${
+        navOpen ? "translate-x-0" : "translate-x-full"
+      }`}
+      nonce={nonce}
       data-testid="mobile-nav"
     >
       <div className={`bg-black w-4/5 h-screen p-8 mobile-nav`}>
@@ -80,6 +84,7 @@ export const MobileNav = ({
               >
                 <div className="flex gap-x-4 w-full items-center">
                   <Image
+                    style={{ color: "" }}
                     src={item.icon}
                     className="w-5 h-5 md:w-4 md:h-4"
                     alt={item.label}
@@ -94,6 +99,7 @@ export const MobileNav = ({
                   </div>
                 </div>
                 <Image
+                  style={{ color: "" }}
                   src={LinkOut}
                   className="w-[18px] h-[18px]"
                   alt={item.label}

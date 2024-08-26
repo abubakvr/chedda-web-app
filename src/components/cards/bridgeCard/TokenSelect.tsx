@@ -92,11 +92,13 @@ export const TokenSelect = ({
           <div className="w-max flex font-bold items-center space-x-4">
             <div className="w-max flex relative">
               <Image
+                style={{ color: "" }}
                 src={token.logo}
                 alt="icon image"
                 className="w-8 h-8 lg:w-10 lg:h-10"
               />
               <Image
+                style={{ color: "" }}
                 src={selectedChain.logo}
                 alt="icon image"
                 className="absolute w-[14px] h-[14px] lg:w-[18px] lg:h-[18px] top-0 left-0"
@@ -134,6 +136,7 @@ export const TokenSelect = ({
           data-testid="back-button"
         >
           <Image
+            style={{ color: "" }}
             src={leftIcon}
             alt="left icon"
             className="w-6 h-6 md:w-8 md:h-8"
@@ -157,6 +160,7 @@ export const TokenSelect = ({
               }`}
             >
               <Image
+                style={{ color: "" }}
                 src={chain.logo}
                 alt=""
                 className="w-6 h-6 md:w-8 md:h-8"
@@ -175,6 +179,7 @@ export const TokenSelect = ({
       >
         <div className="relative p-3 lg:p-4">
           <Image
+            style={{ color: "" }}
             src={SearchIcon}
             alt="Search Icon"
             className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 absolute left-3 md:left-4 top-1/2 transform -translate-y-1/2 text-white"

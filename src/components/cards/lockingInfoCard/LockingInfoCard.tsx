@@ -43,11 +43,13 @@ export const LockingInfoCard = ({
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-x-1 border-2 rounded-md py-1 px-2 md:py-[6px] md:px-3 border-[#ffffff60] hover:opacity-70"
+          data-testid="gauge-link"
         >
           <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-[8px] xl:text-[10px]">
             GUAGE CONTRACT
           </div>
           <Image
+            style={{ color: "" }}
             src={LinkOut}
             alt="link out"
             className="w-2.5 h-2.5 xl:w-4 xl:h-4"

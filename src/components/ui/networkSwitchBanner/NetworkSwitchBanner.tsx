@@ -24,6 +24,7 @@ export const NetworkSwitchBanner = ({
       data-testid="network-switch-banner"
     >
       <Image
+        style={{ color: "" }}
         src={InfoIcon}
         width={30}
         className="w-4 h-4 lg:w-5 lg:h-5 hidden md:flex"

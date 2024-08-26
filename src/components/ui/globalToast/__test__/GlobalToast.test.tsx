@@ -1,3 +1,4 @@
+import { NonceProvider } from "@/contexts/NonceContext";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { IToast, ToastContainer, ToastItem } from "../GlobalToast";
@@ -36,7 +37,9 @@ describe("ToastContainer", () => {
   test("renders toast items correctly", async () => {
     const mockRemoveToast = jest.fn();
     render(
-      <ToastContainer toasts={mockToasts} removeToast={mockRemoveToast} />
+      <NonceProvider nonce="0x90">
+        <ToastContainer toasts={mockToasts} removeToast={mockRemoveToast} />
+      </NonceProvider>
     );
 
     const toastTitles = screen.getAllByTestId("toast-title");
@@ -99,11 +102,13 @@ describe("ToastContainer", () => {
   test("removes toast after duration", async () => {
     const mockRemoveToast = jest.fn();
     render(
-      <ToastContainer
-        toasts={mockToasts}
-        duration={1000}
-        removeToast={mockRemoveToast}
-      />
+      <NonceProvider nonce="0x90">
+        <ToastContainer
+          toasts={mockToasts}
+          duration={1000}
+          removeToast={mockRemoveToast}
+        />
+      </NonceProvider>
     );
 
     await waitFor(
@@ -127,11 +132,13 @@ describe("ToastItem", () => {
     };
     const mockRemoveToast = jest.fn();
     render(
-      <ToastItem
-        toast={mockToast}
-        duration={1000}
-        removeToast={mockRemoveToast}
-      />
+      <NonceProvider nonce="0x90">
+        <ToastItem
+          toast={mockToast}
+          duration={1000}
+          removeToast={mockRemoveToast}
+        />
+      </NonceProvider>
     );
 
     await waitFor(() => {

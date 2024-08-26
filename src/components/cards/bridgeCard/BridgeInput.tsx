@@ -265,6 +265,7 @@ export const BridgeInput = ({
         <div className="flex gap-x-2 items-center font-bold text-xs md:text-lg">
           <p>Powered By</p>
           <Image
+            style={{ color: "" }}
             src={layerZeroLogo}
             alt="layer-zero"
             className="w-fit h-5 md:h-7 lg:h-8"
@@ -275,6 +276,7 @@ export const BridgeInput = ({
         className={`hidden w-full md:flex items-center space-x-2 border p-4 border-[#ffffff19] bg-[#ffffff02] rounded-lg mt-6`}
       >
         <Image
+          style={{ color: "" }}
           src={InfoIcon}
           alt="info icon"
           className="w-4 h-4 md:w-[18px] md:h-[18px] xl:w-6 xl:h-6"
@@ -320,6 +322,7 @@ export const BridgeInput = ({
             data-testid="bridge-input-from-chain"
           >
             <Image
+              style={{ color: "" }}
               src={selectedChain.logo}
               alt="icon-logo"
               className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
@@ -336,6 +339,7 @@ export const BridgeInput = ({
             data-testid="bridge-input-refresh-button"
           >
             <Image
+              style={{ color: "" }}
               src={refreshIcon}
               alt="icon-logo"
               className="w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9"
@@ -351,6 +355,7 @@ export const BridgeInput = ({
             data-testid="bridge-input-to-chain"
           >
             <Image
+              style={{ color: "" }}
               src={destinationChain?.logo}
               alt="icon-logo"
               className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"

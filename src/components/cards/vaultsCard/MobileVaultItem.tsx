@@ -19,6 +19,7 @@ export const MobileVaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
           </div>
           <div className="flex flex-col items-center mt-2">
             <Image
+              style={{ color: "" }}
               src={pool.asset?.logo}
               className="h-8 w-8"
               alt={pool.asset?.symbol}
@@ -40,6 +41,7 @@ export const MobileVaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
             {pool.collaterals?.map((collateral: IToken, i: number) => (
               <div key={i} className="logo-cascade round-image">
                 <Image
+                  style={{ color: "" }}
                   src={collateral.logo}
                   className="h-8 w-8 round-image"
                   alt={collateral.symbol}

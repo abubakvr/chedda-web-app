@@ -11,6 +11,7 @@ import { IAccountInfo, IMarketInfo } from "chedda-sdk";
 import { CollateralInfoSkeleton } from "@/components/ui";
 import { IFormattedCollateral } from "@/utils/types";
 import { CollateralInfoChart } from "@/components/charts";
+import { useNonce } from "@/hooks/useNonce";
 
 const collateralHeaderItems = [
   "Collateral",
@@ -31,6 +32,8 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
   marketInfo,
   isLoading,
 }) => {
+  const { nonce } = useNonce();
+
   if (isLoading) {
     return <CollateralInfoSkeleton />;
   }
@@ -68,6 +71,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                     <div
                       className="w-[2.7px] h-2 md:w-[4px] md:h-[12px] xl:w-[5px] xl:h-[15px] rounded"
                       style={{ background: `${item.asset.color}` }}
+                      nonce={nonce}
                     ></div>
                     <div>{item.asset.symbol}</div>
                   </div>
@@ -82,6 +86,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                 <div className="flex items-center gap-x-2">
                   <div className="font-bold">Liquidation threshold</div>
                   <Image
+                    style={{ color: "" }}
                     src={InfoIcon}
                     alt="Info Icon"
                     className="w-2.5 h-2.5 md:w-3 md:h-3 xl:w-4 xl:h-4"
@@ -100,6 +105,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                 <div className="flex items-center gap-x-2">
                   <div className="font-bold">Liquidation Penalty</div>
                   <Image
+                    style={{ color: "" }}
                     src={InfoIcon}
                     alt="Info Icon"
                     className="w-2.5 h-2.5 md:w-3 md:h-3 xl:w-4 xl:h-4"
@@ -153,12 +159,14 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                   <div className="flex items-center gap-x-2">
                     <div className="flex relative">
                       <Image
+                        style={{ color: "" }}
                         src={item.asset.logo}
                         alt={item.asset.name}
                         className="w-8 h-8 xl:w-10 xl:h-10"
                         data-testid={`collateral-item-logo-${index}`}
                       />
                       <Image
+                        style={{ color: "" }}
                         src={item.asset?.sourceLogo}
                         alt="icon image"
                         className="absolute w-[14px] h-[14px] xl:w-[18px] xl:h-[18px] top-0 left-0"
@@ -207,12 +215,14 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                 <div className="flex items-center gap-x-2">
                   <div className="flex relative">
                     <Image
+                      style={{ color: "" }}
                       src={item.asset.logo}
                       alt={item.asset.name}
                       className="w-8 h-8 xl:w-10 xl:h-10"
                       data-testid={`mobile-collateral-item-logo-${index}`}
                     />
                     <Image
+                      style={{ color: "" }}
                       src={item.asset?.sourceLogo}
                       alt="icon image"
                       className="absolute w-[14px] h-[14px] xl:w-[18px] xl:h-[18px] top-0 left-0"

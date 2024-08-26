@@ -88,6 +88,7 @@ export const HeaderComponent: React.FC = () => {
         <div className="flex h-16 lg:h-20 xl:h-24 flex-row justify-between w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto items-center">
           <div>
             <Image
+              style={{ color: "" }}
               src={CheddaLogo}
               width={30}
               className="lg:w-32 xl:w-40 hidden lg:flex"
@@ -96,6 +97,7 @@ export const HeaderComponent: React.FC = () => {
               priority={true}
             />
             <Image
+              style={{ color: "" }}
               src={CheddaMiniLogo}
               className="w-12 flex lg:hidden"
               width={70}
@@ -130,7 +132,12 @@ export const HeaderComponent: React.FC = () => {
             <ProfileMenu account={account} data-testid="profile-menu" />
             <div className="flex md:hidden hover:opacity-75 pl-1">
               <button onClick={() => setNavOpen(true)}>
-                <Image src={MenuIcon} alt="Menu" className="w-6 h-6" />
+                <Image
+                  style={{ color: "" }}
+                  src={MenuIcon}
+                  alt="Menu"
+                  className="w-6 h-6"
+                />
               </button>
             </div>
           </div>

@@ -81,6 +81,7 @@ export const FilterCard: React.FC<FilterCardProps> = ({
                   className={`relative border ${isFilterSelected ? item.activeClass : `${item.hoverClass} border-white bg-none py-1 h-7 md:h-8 lg:h-9 transition-all`} px-4 md:px-4 lg:px-3 rounded-lg flex items-center justify-center space-x-1 ${item.hoverClass}`}
                 >
                   <Image
+                    style={{ color: "" }}
                     src={isFilterSelected ? item.activeIcon : item.icon}
                     alt={item.label}
                     className="h-3 w-3 md:h-4 md:w-4"
@@ -109,6 +110,7 @@ export const FilterCard: React.FC<FilterCardProps> = ({
                   onChange={(e) => handleSearch(e.target.value)}
                 />
                 <Image
+                  style={{ color: "" }}
                   src={SearchIcon}
                   alt="Search Icon"
                   className="w-4 h-4 lg:w-5 lg:h-5 absolute right-3 top-1/2 transform -translate-y-1/2 text-white"

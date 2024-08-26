@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MobileNav } from "../MobileNav";
 import { menuItems, moreMenuItems } from "@/utils/constants";
+import { NonceProvider } from "@/contexts/NonceContext";
 
 // Mock next/router for usePathname hook
 jest.mock("next/navigation", () => ({
@@ -16,12 +17,15 @@ describe("MobileNav", () => {
   });
 
   it("renders correctly when nav is open", () => {
-    render(<MobileNav navOpen={true} setNavOpen={setNavOpenMock} />);
+    render(
+      <NonceProvider nonce="0x009">
+        <MobileNav navOpen={true} setNavOpen={setNavOpenMock} />
+      </NonceProvider>
+    );
 
     // Check if the nav component is rendered
     const nav = screen.getByTestId("mobile-nav");
     expect(nav).toBeInTheDocument();
-    expect(nav).toHaveStyle("transform: translateX(0px)");
 
     // Check if the close button is present
     expect(screen.getByTestId("close-button")).toBeInTheDocument();
@@ -32,6 +36,7 @@ describe("MobileNav", () => {
         item.name
       );
     });
+    expect(nav).toHaveClass("translate-x-0");
 
     // Check if more menu items are rendered
     moreMenuItems.forEach((item, index) => {
@@ -40,16 +45,24 @@ describe("MobileNav", () => {
   });
 
   it("renders correctly when nav is closed", () => {
-    render(<MobileNav navOpen={false} setNavOpen={setNavOpenMock} />);
+    render(
+      <NonceProvider nonce="0x009">
+        <MobileNav navOpen={false} setNavOpen={setNavOpenMock} />
+      </NonceProvider>
+    );
 
     // Check if the nav component is rendered and moved off-screen
     const nav = screen.getByTestId("mobile-nav");
     expect(nav).toBeInTheDocument();
-    expect(nav).toHaveStyle("transform: translateX(100%)");
+    expect(nav).toHaveClass("translate-x-full");
   });
 
   it("calls setNavOpen with false when close button is clicked", () => {
-    render(<MobileNav navOpen={true} setNavOpen={setNavOpenMock} />);
+    render(
+      <NonceProvider nonce="0x009">
+        <MobileNav navOpen={true} setNavOpen={setNavOpenMock} />
+      </NonceProvider>
+    );
 
     // Click the close button
     fireEvent.click(screen.getByTestId("close-button"));
@@ -59,7 +72,11 @@ describe("MobileNav", () => {
   });
 
   it("calls setNavOpen with false when a menu item is clicked", () => {
-    render(<MobileNav navOpen={true} setNavOpen={setNavOpenMock} />);
+    render(
+      <NonceProvider nonce="0x009">
+        <MobileNav navOpen={true} setNavOpen={setNavOpenMock} />
+      </NonceProvider>
+    );
 
     // Click the first menu item
     fireEvent.click(screen.getByTestId("menu-link-0"));
@@ -69,14 +86,22 @@ describe("MobileNav", () => {
   });
 
   it("displays the PacmanLogo for the active path", () => {
-    render(<MobileNav navOpen={true} setNavOpen={setNavOpenMock} />);
+    render(
+      <NonceProvider nonce="0x009">
+        <MobileNav navOpen={true} setNavOpen={setNavOpenMock} />
+      </NonceProvider>
+    );
 
     // Check if the PacmanLogo is displayed for the active menu item
     expect(screen.getByTestId("pacman-logo-1")).toBeInTheDocument();
   });
 
   it("renders external links in the more menu", () => {
-    render(<MobileNav navOpen={true} setNavOpen={setNavOpenMock} />);
+    render(
+      <NonceProvider nonce="0x009">
+        <MobileNav navOpen={true} setNavOpen={setNavOpenMock} />
+      </NonceProvider>
+    );
 
     // Check if each more menu item has a link with the correct href
     moreMenuItems.forEach((item, index) => {

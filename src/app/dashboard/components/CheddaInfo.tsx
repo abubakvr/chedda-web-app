@@ -116,6 +116,7 @@ export const CheddaInfo = ({
             >
               <p>Buy CHEDDA</p>
               <Image
+                style={{ color: "" }}
                 src={arrowForward}
                 alt="link out"
                 className="w-2 h-2 lg:w-3 lg:h-3"

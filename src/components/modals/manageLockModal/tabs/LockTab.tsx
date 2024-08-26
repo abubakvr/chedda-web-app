@@ -81,6 +81,7 @@ export const LockTab: FC<LockTabProps> = ({
     <div data-testid="lock-card-content" className="mt-2 md:mt-3">
       <div className="text-warning text-[10px] lg:text-sm flex gap-x-2 items-center">
         <Image
+          style={{ color: "" }}
           src={InfoIcon}
           alt="info icon"
           className="w-[12px] h-[12px] md:w-[14px] md:h-[14px]"

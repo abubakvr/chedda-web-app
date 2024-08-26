@@ -18,6 +18,7 @@ import {
   useTransaction,
 } from "@/hooks";
 import { StaticImageData } from "next/image";
+import { NonceProvider } from "@/contexts/NonceContext";
 
 // Mocking hooks
 jest.mock("@web3-react/core", () => ({
@@ -106,11 +107,13 @@ describe("StakeTab Component", () => {
       color: "#ffffff",
     };
     render(
-      <StakeTab
-        asset={asset}
-        setActiveTab={jest.fn()}
-        fetchPoolStats={jest.fn()}
-      />
+      <NonceProvider nonce="0x56n">
+        <StakeTab
+          asset={asset}
+          setActiveTab={jest.fn()}
+          fetchPoolStats={jest.fn()}
+        />
+      </NonceProvider>
     );
 
     expect(screen.getByTestId("stake-card")).toBeInTheDocument();

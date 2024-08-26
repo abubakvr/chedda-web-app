@@ -22,6 +22,7 @@ import {
   mockPoolStats,
 } from "@/utils/Mocks/MockTestData";
 import { getPoolSummaryData } from "@/utils/formatResponse";
+import { NonceProvider } from "@/contexts/NonceContext";
 
 jest.mock("recharts");
 // Mocking hooks
@@ -99,21 +100,25 @@ describe("PoolTab", () => {
   });
   it("renders without crashing", () => {
     render(
-      <PoolTab
-        poolStats={mockPoolStats[0]}
-        setActivePoolTab={jest.fn()}
-        fetchPoolStats={jest.fn()}
-      />
+      <NonceProvider nonce="0x78b">
+        <PoolTab
+          poolStats={mockPoolStats[0]}
+          setActivePoolTab={jest.fn()}
+          fetchPoolStats={jest.fn()}
+        />
+      </NonceProvider>
     );
   });
 
   it("displays the correct child components", () => {
     render(
-      <PoolTab
-        poolStats={mockPoolStats[0]}
-        setActivePoolTab={jest.fn()}
-        fetchPoolStats={jest.fn()}
-      />
+      <NonceProvider nonce="0x78b">
+        <PoolTab
+          poolStats={mockPoolStats[0]}
+          setActivePoolTab={jest.fn()}
+          fetchPoolStats={jest.fn()}
+        />
+      </NonceProvider>
     );
     expect(screen.getByTestId("collateral-info-card")).toBeInTheDocument();
     expect(screen.getByTestId("supply-borrow-chart")).toBeInTheDocument();

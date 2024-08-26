@@ -24,6 +24,7 @@ export const SummaryHeader = ({ asset, poolName }: SummaryProps) => {
         data-testid="back-button"
       >
         <Image
+          style={{ color: "" }}
           src={backIcon}
           className="w-9 h-7 lg:h-10 lg:w-12 xl:h-12 xl:w-14"
           alt="Back icon"
@@ -35,6 +36,7 @@ export const SummaryHeader = ({ asset, poolName }: SummaryProps) => {
         <div className="gap-x-3 xl:gap-x-2 flex items-center">
           <div className="flex relative">
             <Image
+              style={{ color: "" }}
               src={asset.logo}
               width={30}
               className="h-8 w-8 xl:h-10 xl:w-10"
@@ -43,6 +45,7 @@ export const SummaryHeader = ({ asset, poolName }: SummaryProps) => {
               priority={true}
             />
             <Image
+              style={{ color: "" }}
               src={asset.sourceLogo}
               alt="icon image"
               className="absolute w-[14px] h-[14px] xl:w-[18px] xl:h-[18px] top-0 left-0"

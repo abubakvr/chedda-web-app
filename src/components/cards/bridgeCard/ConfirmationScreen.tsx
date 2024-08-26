@@ -38,6 +38,7 @@ export const ConfirmationScreen = ({
           onClick={() => returnToInput()}
         >
           <Image
+            style={{ color: "" }}
             src={leftIcon}
             alt="image-icon"
             className="w-6 h-6 md:w-8 md:h-8"
@@ -54,11 +55,13 @@ export const ConfirmationScreen = ({
           <div className="w-max flex font-bold items-center py-2 space-x-2">
             <div className="w-max flex relative">
               <Image
+                style={{ color: "" }}
                 src={selectedToken.logo}
                 alt="icon image"
                 className="w-6 h-6 md:w-8 md:h-8 lg:w-12 lg:h-12"
               />
               <Image
+                style={{ color: "" }}
                 src={selectedChain.logo}
                 alt="icon image"
                 className="absolute w-[11px] h-[11px] md:w-[14px] md:h-[14px] lg:w-6 lg:h-6 bottom-0 -right-0.5"
@@ -74,6 +77,7 @@ export const ConfirmationScreen = ({
             </div>
           </div>
           <Image
+            style={{ color: "" }}
             src={arrowLogo}
             alt=""
             className="w-10 h-10 md::w-12 md:h-12"
@@ -81,11 +85,13 @@ export const ConfirmationScreen = ({
           <div className="w-max flex font-bold items-center py-2 space-x-2">
             <div className="w-max flex relative">
               <Image
+                style={{ color: "" }}
                 src={selectedToken.logo}
                 alt="icon image"
                 className="w-6 h-6 md:w-8 md:h-8 lg:w-12 lg:h-12"
               />
               <Image
+                style={{ color: "" }}
                 src={destinationChain.logo}
                 alt="icon image"
                 className="absolute w-[11px] h-[11px] md:w-[14px] md:h-[14px] lg:w-6 lg:h-6 bottom-0 -right-0.5"
