@@ -69,7 +69,7 @@ const getPoolState: GetDataFunction<IPoolStateResponse[]> = async ({
   signer,
 }) => {
   const graphTimes = createTimestamps(0.5, 25);
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   const events = (await lendingPool.getEventLogs(
     "PoolState",
     0,
@@ -126,7 +126,7 @@ const getPoolStats: GetDataFunction<IPoolStatsResponse> = async ({
 const getRatesProjectorData: GetDataFunction<
   IInterestRatesProjection[]
 > = async ({ poolId, chedda, signer, environment }) => {
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   const ratesProjector = chedda.interestRateProjector(
     environment.contracts.InterestRatesProjector,
     signer
@@ -141,7 +141,7 @@ export const getAvailableLiquidity: GetDataFunction<bigint> = async ({
   signer,
   poolId,
 }) => {
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   return await lendingPool.available();
 };
 
@@ -186,7 +186,7 @@ export const getAssetBalance: GetDataFunction<bigint> = async ({
   poolId,
 }) => {
   if (!poolId || !account) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   return await lendingPool.assetBalance(account);
 };
 
@@ -222,7 +222,7 @@ export const getAccountCollateral: GetDataFunction<bigint> = async ({
   asset = "",
 }) => {
   if (!account) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   return await lendingPool?.accountCollateralAmount(account, asset);
 };
 
@@ -233,7 +233,7 @@ export const getAccountHealth: GetDataFunction<bigint> = async ({
   account,
 }) => {
   if (!account) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   return await lendingPool?.accountHealth(account);
 };
 
@@ -245,7 +245,7 @@ export const getTokenCollateralValue: GetDataFunction<bigint> = async ({
   decimals,
 }) => {
   if (!asset) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   const amount = ethers.parseUnits("1", decimals);
   return await lendingPool.getTokenCollateralValue(asset, amount);
 };
@@ -257,9 +257,9 @@ const getStakingBalance: GetDataFunction<bigint> = async ({
   account,
 }) => {
   if (!account || !poolId || !signer) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   const stakePoolContract = await lendingPool.stakePool();
-  const stakingPool = chedda.stakingPool(stakePoolContract, signer as any);
+  const stakingPool = chedda.stakingPool(stakePoolContract, signer);
   return await stakingPool.stakingBalance(account);
 };
 
@@ -270,7 +270,7 @@ const getLpTokenBalance: GetDataFunction<bigint> = async ({
   account,
 }) => {
   if (!account || !chedda || !poolId || !signer) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   return await lendingPool.balanceOf(account);
 };
 
@@ -280,7 +280,7 @@ const getLpSymbol: GetDataFunction<string> = async ({
   poolId,
 }) => {
   if (!chedda || !poolId || !signer) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   return await lendingPool.symbol();
 };
 
@@ -291,7 +291,7 @@ const getLpAllowance: GetDataFunction<bigint> = async ({
   account,
 }) => {
   if (!account || !poolId || !signer || !chedda) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   const stakePoolContract = await lendingPool.stakePool();
   return await lendingPool.allowance(account, stakePoolContract);
 };
@@ -302,7 +302,7 @@ const getLpDecimals: GetDataFunction<number> = async ({
   poolId,
 }) => {
   if (!chedda || !poolId || !signer) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   return await lendingPool.decimals();
 };
 
@@ -312,7 +312,7 @@ const convertToAssets: GetDataFunction<bigint> = async ({
   chedda,
 }) => {
   if (!chedda || !poolId || !signer) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
 
   const decimals = await lendingPool.decimals();
   const amount = ethers.parseUnits("1", decimals);
@@ -325,9 +325,9 @@ const getTotalStaked: GetDataFunction<bigint> = async ({
   chedda,
 }) => {
   if (!chedda || !poolId || !signer) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   const stakePoolContract = await lendingPool.stakePool();
-  const stakingPool = chedda.stakingPool(stakePoolContract, signer as any);
+  const stakingPool = chedda.stakingPool(stakePoolContract, signer);
   return await stakingPool.totalStaked();
 };
 
@@ -337,9 +337,9 @@ const getLpStakers: GetDataFunction<bigint> = async ({
   chedda,
 }) => {
   if (!chedda || !poolId || !signer) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   const stakePoolContract = await lendingPool.stakePool();
-  const stakingPool = chedda.stakingPool(stakePoolContract, signer as any);
+  const stakingPool = chedda.stakingPool(stakePoolContract, signer);
   return await stakingPool.stakers();
 };
 
@@ -349,7 +349,7 @@ const getTotalSupply: GetDataFunction<bigint> = async ({
   chedda,
 }) => {
   if (!chedda || !poolId || !signer) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   return await lendingPool.totalSupply();
 };
 
@@ -359,7 +359,7 @@ const getStakingPoolAddress: GetDataFunction<string> = async ({
   chedda,
 }) => {
   if (!chedda || !poolId || !signer) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   console.log("lendingPool", lendingPool);
   return await lendingPool.stakePool();
 };
@@ -371,9 +371,9 @@ const getClaimableStakeRewards: GetDataFunction<bigint> = async ({
   account,
 }) => {
   if (!account || !chedda || !poolId || !signer) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   const stakePoolContract = await lendingPool.stakePool();
-  const stakingPool = chedda.stakingPool(stakePoolContract, signer as any);
+  const stakingPool = chedda.stakingPool(stakePoolContract, signer);
   return await stakingPool.claimable(account);
 };
 
@@ -412,7 +412,7 @@ export const getCheddaAllowance: GetDataFunction<bigint> = async ({
   poolId,
 }) => {
   if (!account || !environment) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   const gaugeContract = await lendingPool.gauge();
   const cheddaToken = chedda.cheddaToken(
     environment.contracts.CheddaToken,
@@ -429,12 +429,9 @@ const getLockedAmount: GetDataFunction<Lock> = async ({
   poolId,
 }) => {
   if (!account || !environment) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   const gaugeAddress = await lendingPool.gauge();
-  const cheddaLockingGauge = chedda.cheddaLockingGauge(
-    gaugeAddress,
-    signer as any
-  );
+  const cheddaLockingGauge = chedda.cheddaLockingGauge(gaugeAddress, signer);
   return await cheddaLockingGauge.getLock(account);
 };
 
@@ -445,12 +442,9 @@ const getClaimableLockRewards: GetDataFunction<bigint> = async ({
   account,
 }) => {
   if (!account) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   const gaugeAddress = await lendingPool.gauge();
-  const cheddaLockingGauge = chedda.cheddaLockingGauge(
-    gaugeAddress,
-    signer as any
-  );
+  const cheddaLockingGauge = chedda.cheddaLockingGauge(gaugeAddress, signer);
   return await cheddaLockingGauge.claimable(account);
 };
 
@@ -460,12 +454,9 @@ const getTotalAmountLocked: GetDataFunction<bigint> = async ({
   chedda,
 }) => {
   if (!chedda) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   const gaugeAddress = await lendingPool.gauge();
-  const cheddaLockingGauge = chedda.cheddaLockingGauge(
-    gaugeAddress,
-    signer as any
-  );
+  const cheddaLockingGauge = chedda.cheddaLockingGauge(gaugeAddress, signer);
   return await cheddaLockingGauge.totalLocked();
 };
 
@@ -475,12 +466,9 @@ const getTotalWeight: GetDataFunction<bigint> = async ({
   chedda,
 }) => {
   if (!chedda) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   const gaugeAddress = await lendingPool.gauge();
-  const cheddaLockingGauge = chedda.cheddaLockingGauge(
-    gaugeAddress,
-    signer as any
-  );
+  const cheddaLockingGauge = chedda.cheddaLockingGauge(gaugeAddress, signer);
   return await cheddaLockingGauge.totalWeight();
 };
 
@@ -490,7 +478,7 @@ const getGaugeAddress: GetDataFunction<string> = async ({
   chedda,
 }) => {
   if (!chedda) return null;
-  const lendingPool = chedda.lendingPool(poolId, signer as any);
+  const lendingPool = chedda.lendingPool(poolId, signer);
   return await lendingPool.gauge();
 };
 
