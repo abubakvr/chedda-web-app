@@ -1,7 +1,6 @@
 "use client";
 import React, { Dispatch, SetStateAction, useState } from "react";
-
-import { useTokenPrice, useTransaction } from "@/hooks";
+import { useTransaction } from "@/hooks";
 import {
   formatCurrency,
   formatLargeNumber,
@@ -10,10 +9,10 @@ import {
 } from "@/utils/formatters";
 import { Button } from "@/components/common";
 import { Toast } from "@/components/ui";
-import { currentEnvironment } from "@/data/environments";
 
 interface ClaimRewardsCardProps {
   claimableRewards: bigint | undefined;
+  assetPrice: number | undefined;
   rewardType: "Stake" | "Lock";
   setActiveTab?: Dispatch<SetStateAction<string>>;
   fetchClaimableRewards: () => void;
@@ -23,6 +22,7 @@ interface ClaimRewardsCardProps {
 export const ClaimRewardsCard = ({
   claimableRewards,
   rewardType,
+  assetPrice,
   setActiveTab,
   fetchClaimableRewards,
   fetchCheddaTokenBalance,
@@ -41,8 +41,6 @@ export const ClaimRewardsCard = ({
     txStatus: "success",
   });
   const { claimStakeRewards, claimLockRewards } = useTransaction("");
-  const cheddaContract = currentEnvironment?.contracts.CheddaToken;
-  const { data: assetPrice } = useTokenPrice(cheddaContract);
 
   const parsedRewardsValue = parseBigNumberToFloat(claimableRewards, 18, 5);
 

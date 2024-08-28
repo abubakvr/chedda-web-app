@@ -13,6 +13,8 @@ import {
   useTokenValue,
   useTotalAmountLocked,
   useTotalWeight,
+  useTokenPrice,
+  useGaugeAddress,
 } from "@/hooks";
 import { IToken } from "@/utils/types";
 import { InfoCardSkeleton, SwitchTabSkeleton } from "@/components/ui";
@@ -68,6 +70,12 @@ const LockTab = ({
     isLoading: claimableRewardsLoading,
     fetchData: fetchClaimableRewards,
   } = useClaimableLockRewards();
+
+  const { data: CheddaTokenPrice } = useTokenPrice(
+    currentEnvironment?.contracts.CheddaToken
+  );
+
+  const { data: lockingGaugeAddress } = useGaugeAddress();
 
   const updateCard = () => {
     fetchCheddaTokenBalance();
@@ -129,13 +137,14 @@ const LockTab = ({
         >
           <LockingInfoCard
             assetSymbol={"CHEDDA"}
+            lockingGaugeAddress={lockingGaugeAddress}
             totalWeight={totalWeight}
             totalWeightSum={totalWeightSum}
             totalAmountLocked={totalAmountLocked}
           />
         </div>
         <div
-          className="pool-card rounded-lg order-1 lg:order-2 grid-action-card w-full"
+          className="pool-card rounded-lg h-fit order-1 lg:order-2 grid-action-card w-full"
           data-testid="lock-chedda-card"
         >
           <LockCheddaCard
@@ -158,6 +167,7 @@ const LockTab = ({
         >
           <ClaimRewardsCard
             claimableRewards={claimableRewards}
+            assetPrice={CheddaTokenPrice}
             fetchClaimableRewards={fetchClaimableRewards}
             fetchCheddaTokenBalance={fetchCheddaTokenBalance}
             rewardType="Lock"

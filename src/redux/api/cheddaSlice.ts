@@ -51,8 +51,8 @@ export const fetchData = createAsyncThunk<any, FetchDataParams>(
     try {
       if (!currentEnvironment || !chedda) return;
 
-      const lens = chedda?.poolLens(
-        currentEnvironment?.contracts.LendingPoolLens,
+      const lens = chedda.poolLens(
+        currentEnvironment.contracts.LendingPoolLens,
         signer
       );
 
@@ -68,18 +68,7 @@ export const fetchData = createAsyncThunk<any, FetchDataParams>(
       });
       return { showLoading, hookName, pathname, data };
     } catch (error) {
-      console.log(`Error fetching data in ${hookName}`, error);
-      console.log("hookName", hookName);
-      console.log("pathname", pathname);
-      console.log("showLoading", showLoading);
-      console.log("chedda", chedda);
-      console.log("currentEnvironment", currentEnvironment);
-      console.log("account", account);
-      console.log("poolId", poolId);
-      console.log("getData", getData);
-      console.log("signer", signer);
-      console.log("asset", asset);
-      console.log("decimals", decimals);
+      console.error(`Error fetching data in ${hookName} `, error);
       throw error;
     }
   }

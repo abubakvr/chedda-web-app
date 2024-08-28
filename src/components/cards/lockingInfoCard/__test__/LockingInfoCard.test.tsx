@@ -15,6 +15,7 @@ describe("StakingInfoCard Component", () => {
   it("renders with provided props", () => {
     const props = {
       assetSymbol: "ETH",
+      lockingGaugeAddress: "0x00",
       totalWeightSum: BigInt("2000000000000000000000"),
       totalWeight: BigInt("50000000000000000000"),
       totalAmountLocked: BigInt("200000000000000000000"),
