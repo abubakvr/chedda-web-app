@@ -29,12 +29,14 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
             <div className="flex items-center ">
               <div className="flex relative">
                 <Image
+                  style={{ color: "" }}
                   src={pool.asset?.logo}
                   className="w-6 h-6 lg:h-10 lg:w-10 round-image"
                   alt={pool.asset?.symbol}
                   data-testid="asset-icon"
                 />
                 <Image
+                  style={{ color: "" }}
                   src={pool.asset?.sourceLogo}
                   alt="icon image"
                   className="absolute w-[10px] h-[10px] lg:w-[18px] lg:h-[18px] top-0 left-0"
@@ -102,7 +104,11 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
             </div>
           </div>
           <div className="flex items-center" data-testid="arrow-forward">
-            <Image src={arrowForward} alt="arrow forward" />
+            <Image
+              style={{ color: "" }}
+              src={arrowForward}
+              alt="arrow forward"
+            />
           </div>
         </div>
         {/** Mobile Items */}
@@ -114,12 +120,14 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
             <div className="flex items-center gap-x-2">
               <div className="flex relative">
                 <Image
+                  style={{ color: "" }}
                   src={pool.asset.logo}
                   alt={pool.asset.name}
                   className="w-8 h-8 md:w-10 md:h-10"
                   data-testid={`mobile-collateral-item`}
                 />
                 <Image
+                  style={{ color: "" }}
                   src={pool.asset?.sourceLogo}
                   alt="icon image"
                   className="absolute w-[14px] h-[14px] md:w-[18px] md:h-[18px] top-0 left-0"

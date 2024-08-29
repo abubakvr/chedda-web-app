@@ -6,6 +6,7 @@ import {
   mockCollateralInfo,
   mockMarketInfo,
 } from "@/utils/Mocks/MockTestData";
+import { NonceProvider } from "@/contexts/NonceContext";
 
 // Mocking the modules that are not available in the testing environment
 jest.mock("chart.js");
@@ -20,7 +21,11 @@ describe("CollateralInfoCard", () => {
   };
 
   it("renders the component with provided data", () => {
-    render(<CollateralInfoCard {...mockProps} />);
+    render(
+      <NonceProvider nonce="0x90">
+        <CollateralInfoCard {...mockProps} />
+      </NonceProvider>
+    );
 
     // Check if collateral information container is rendered
     const collateralInfoContainer = screen.getByTestId(
@@ -58,12 +63,14 @@ describe("CollateralInfoCard", () => {
 
   it("renders skeleton when loading", () => {
     render(
-      <CollateralInfoCard
-        collateralInfo={undefined}
-        accountInfo={undefined}
-        isLoading={true}
-        marketInfo={undefined}
-      />
+      <NonceProvider nonce="0x90">
+        <CollateralInfoCard
+          collateralInfo={undefined}
+          accountInfo={undefined}
+          isLoading={true}
+          marketInfo={undefined}
+        />
+      </NonceProvider>
     );
 
     // Check if the skeleton is rendered when loading

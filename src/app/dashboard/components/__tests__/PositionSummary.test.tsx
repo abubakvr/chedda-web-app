@@ -5,6 +5,7 @@ import { usePositionSummary } from "@/hooks";
 import { formatCurrency, formatNumber } from "@/utils/formatters";
 import { IPositionResponse } from "@/utils/types";
 import { StaticImageData } from "next/image";
+import { NonceProvider } from "@/contexts/NonceContext";
 
 // Mock the usePositionSummary hook
 jest.mock("../../../../hooks");
@@ -33,6 +34,7 @@ const mockAllPositions: IPositionResponse[] = [
       nativeChain: "Ethereum",
       source: "DeFi",
       logo: {} as StaticImageData,
+      sourceLogo: {} as StaticImageData,
       color: "#36C693",
     },
     decimals: 6,
@@ -63,6 +65,7 @@ const mockAllPositions: IPositionResponse[] = [
       nativeChain: "Ethereum",
       source: "DeFi",
       logo: {} as StaticImageData,
+      sourceLogo: {} as StaticImageData,
       color: "#F4C042",
     },
     decimals: 6,
@@ -93,6 +96,7 @@ const mockAllPositions: IPositionResponse[] = [
       nativeChain: "Ethereum",
       source: "DeFi",
       logo: {} as StaticImageData,
+      sourceLogo: {} as StaticImageData,
       color: "#885AF8",
     },
     decimals: 18,
@@ -123,6 +127,7 @@ const mockAllPositions: IPositionResponse[] = [
       nativeChain: "Avalanche",
       source: "DeFi",
       logo: {} as StaticImageData,
+      sourceLogo: {} as StaticImageData,
       color: "#4ACBD3",
     },
     decimals: 6,
@@ -156,11 +161,13 @@ describe("PositionSummary", () => {
     });
 
     render(
-      <PositionSummary
-        isWalletConnected={true}
-        allPositions={undefined}
-        allPositionsLoading={true}
-      />
+      <NonceProvider nonce="0x0xf89">
+        <PositionSummary
+          isWalletConnected={true}
+          allPositions={undefined}
+          allPositionsLoading={true}
+        />
+      </NonceProvider>
     );
 
     expect(screen.getByTestId("net-value-loading")).toBeInTheDocument();
@@ -178,11 +185,13 @@ describe("PositionSummary", () => {
     });
 
     render(
-      <PositionSummary
-        isWalletConnected={true}
-        allPositions={mockAllPositions}
-        allPositionsLoading={false}
-      />
+      <NonceProvider nonce="0x0xf89">
+        <PositionSummary
+          isWalletConnected={true}
+          allPositions={mockAllPositions}
+          allPositionsLoading={false}
+        />
+      </NonceProvider>
     );
 
     expect(screen.getByText("$1.00")).toBeInTheDocument(); // netValue
@@ -211,11 +220,13 @@ describe("PositionSummary", () => {
 
   test("show supply asset text when position list is empty", () => {
     render(
-      <PositionSummary
-        isWalletConnected={true}
-        allPositions={[]}
-        allPositionsLoading={false}
-      />
+      <NonceProvider nonce="0x0xf89">
+        <PositionSummary
+          isWalletConnected={true}
+          allPositions={[]}
+          allPositionsLoading={false}
+        />
+      </NonceProvider>
     );
 
     expect(screen.getByTestId("no-open-positions")).toBeInTheDocument();
@@ -223,11 +234,13 @@ describe("PositionSummary", () => {
 
   test("renders ConnectWalletBox when wallet is not connected", () => {
     render(
-      <PositionSummary
-        isWalletConnected={false}
-        allPositions={undefined}
-        allPositionsLoading={false}
-      />
+      <NonceProvider nonce="0x0xf89">
+        <PositionSummary
+          isWalletConnected={false}
+          allPositions={undefined}
+          allPositionsLoading={false}
+        />
+      </NonceProvider>
     );
 
     expect(

@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { ClaimRewards } from "../ClaimRewards";
 import { useAllClaimableRewards, useTokenValue, useTransaction } from "@/hooks";
+import { NonceProvider } from "@/contexts/NonceContext";
 
 jest.mock("../../../../hooks");
 
@@ -39,11 +40,13 @@ describe("ClaimRewards Component", () => {
 
   it("renders lock rewards and stake rewards correctly when wallet is connected", () => {
     render(
-      <ClaimRewards
-        isWalletConnected={true}
-        cheddaTokenPrice={3}
-        cheddaTokenPriceLoading={false}
-      />
+      <NonceProvider nonce="0x78b">
+        <ClaimRewards
+          isWalletConnected={true}
+          cheddaTokenPrice={3}
+          cheddaTokenPriceLoading={false}
+        />
+      </NonceProvider>
     );
 
     waitFor(() => {
@@ -60,11 +63,13 @@ describe("ClaimRewards Component", () => {
 
   it("renders ConnectWalletBox when wallet is not connected", () => {
     render(
-      <ClaimRewards
-        isWalletConnected={false}
-        cheddaTokenPrice={3}
-        cheddaTokenPriceLoading={false}
-      />
+      <NonceProvider nonce="0x78b">
+        <ClaimRewards
+          isWalletConnected={false}
+          cheddaTokenPrice={3}
+          cheddaTokenPriceLoading={false}
+        />
+      </NonceProvider>
     );
 
     waitFor(() => {
@@ -74,11 +79,13 @@ describe("ClaimRewards Component", () => {
 
   it("calls handleClaimAllRewards when claim all button is clicked", async () => {
     render(
-      <ClaimRewards
-        isWalletConnected={true}
-        cheddaTokenPrice={3}
-        cheddaTokenPriceLoading={false}
-      />
+      <NonceProvider nonce="0x78b">
+        <ClaimRewards
+          isWalletConnected={true}
+          cheddaTokenPrice={3}
+          cheddaTokenPriceLoading={false}
+        />
+      </NonceProvider>
     );
 
     fireEvent.click(screen.getByTestId("custom-button"));

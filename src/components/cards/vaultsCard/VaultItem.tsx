@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import InfoIcon from "@/assets/icon/info-icon.svg";
 import GradientInfoIcon from "@/assets/icon/gradient-info-icon.svg";
@@ -13,6 +12,7 @@ import {
   formatLargeNumber,
 } from "@/utils/formatters";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
+import Image from "next/image";
 
 const poolFilters = [
   { keyword: "Stable Coin", icon: stableIcon },
@@ -37,12 +37,14 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
             <div className="flex items-center gap-x-2">
               <div className="flex relative">
                 <Image
+                  style={{ color: "" }}
                   src={pool.asset?.logo}
                   className="w-8 h-8 xl:h-10 xl:w-10 round-image"
                   alt={pool.asset?.symbol}
                   data-testid="asset-name"
                 />
                 <Image
+                  style={{ color: "" }}
                   src={pool.asset?.sourceLogo}
                   alt="icon image"
                   className="absolute w-[14px] h-[14px] xl:w-[18px] xl:h-[18px] top-0 left-0"
@@ -60,6 +62,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
             </div>
             <div>
               <Image
+                style={{ color: "" }}
                 src={itemFilter?.icon}
                 alt="characterization"
                 className="w-6 h-6 xl:w-8 xl:h-8"
@@ -79,12 +82,14 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                       className="-ml-[4px] round-image w-max relative"
                     >
                       <Image
+                        style={{ color: "" }}
                         src={collateral?.logo}
                         className="w-8 h-8 xl:h-10 xl:w-10 round-image"
                         alt={collateral?.symbol}
                         data-testid="collateral-logo"
                       />
                       <Image
+                        style={{ color: "" }}
                         src={collateral.sourceLogo}
                         alt="icon image"
                         className="absolute w-[14px] h-[14px] xl:w-[18px] xl:h-[18px] top-0 left-0"
@@ -120,7 +125,12 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                   <div data-testid="max-supply-apy">
                     {formatAsPercentage(pool.maxSupplyAPY)}
                   </div>
-                  <Image src={InfoIcon} className="w-3 h-3" alt="Info Icon" />
+                  <Image
+                    style={{ color: "" }}
+                    src={InfoIcon}
+                    className="w-3 h-3"
+                    alt="Info Icon"
+                  />
                 </div>
               </div>
               <div className="mt-4 md:mt-6">
@@ -159,7 +169,12 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                   <div data-testid="max-borrow-apy">
                     {formatAsPercentage(pool.maxBorrowAPY)}
                   </div>
-                  <Image src={InfoIcon} className="w-3 h-3" alt="Info Icon" />
+                  <Image
+                    style={{ color: "" }}
+                    src={InfoIcon}
+                    className="w-3 h-3"
+                    alt="Info Icon"
+                  />
                 </div>
               </div>
               <div className="mt-4 md:mt-6">
@@ -187,6 +202,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                     {formatAsPercentage(pool.rewardsAPY)}
                   </div>
                   <Image
+                    style={{ color: "" }}
                     src={GradientInfoIcon}
                     className="w-3 h-3"
                     alt="Info Icon"

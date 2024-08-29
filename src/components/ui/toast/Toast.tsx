@@ -4,6 +4,7 @@ import LinkOut from "@/assets/icon/link-out.svg";
 import CopyIcon from "@/assets/icon/copy-icon-line.svg";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { currentEnvironment } from "@/data/environments";
+import { useNonce } from "@/hooks/useNonce";
 
 interface ToastProps {
   status?: "success" | "failed";
@@ -24,6 +25,7 @@ export const Toast: React.FC<ToastProps> = ({
   txPrefix,
   copyText,
 }) => {
+  const { nonce } = useNonce();
   const [toasts, setToasts] = useState([] as any[]);
   const [copyLabel, setCopyLabel] = useState("Copy");
 
@@ -122,6 +124,7 @@ export const Toast: React.FC<ToastProps> = ({
                         onClick={copyAddress}
                       >
                         <Image
+                          style={{ color: "" }}
                           src={CopyIcon}
                           alt="copy error message"
                           className="h-3 w-3 lg:h-4 lg:w-4"
@@ -144,7 +147,12 @@ export const Toast: React.FC<ToastProps> = ({
                       data-testid="toast-link"
                     >
                       <span>Review tx details</span>
-                      <Image src={LinkOut} alt="link out" className="h-3 w-3" />
+                      <Image
+                        style={{ color: "" }}
+                        src={LinkOut}
+                        alt="link out"
+                        className="h-3 w-3"
+                      />
                     </a>
                   )}
                 </div>
@@ -154,6 +162,7 @@ export const Toast: React.FC<ToastProps> = ({
                   toast.sliderWidth !== 0 && "rounded-br-none "
                 } ${status === "success" ? "bg-success" : "bg-error"}`}
                 style={{ width: `${toast.sliderWidth}%` }}
+                nonce={nonce}
                 data-testid="slider"
               ></div>
             </div>

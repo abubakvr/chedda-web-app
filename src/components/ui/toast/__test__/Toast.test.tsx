@@ -1,3 +1,4 @@
+import { NonceProvider } from "@/contexts/NonceContext";
 import "@testing-library/jest-dom";
 import {
   render,
@@ -15,13 +16,19 @@ jest.mock("../../../../hooks");
 describe("Toast Component", () => {
   it("renders without crashing", () => {
     const { container } = render(
-      <Toast isOpen={false} toastMessage="Test Message" />
+      <NonceProvider nonce="0x90">
+        <Toast isOpen={false} toastMessage="Test Message" />
+      </NonceProvider>
     );
     expect(container).toBeInTheDocument();
   });
 
   it("renders Toast component correctly and closes after duration", async () => {
-    render(<Toast isOpen={true} duration={1000} toastMessage="Test Message" />);
+    render(
+      <NonceProvider nonce="0x90">
+        <Toast isOpen={true} duration={1000} toastMessage="Test Message" />
+      </NonceProvider>
+    );
 
     // Check initial rendering
     expect(screen.getByTestId("toast-title")).toHaveTextContent(
@@ -47,7 +54,9 @@ describe("Toast Component", () => {
 
   it("calls onClose when close button is clicked", async () => {
     const { queryByText } = render(
-      <Toast isOpen={true} duration={5000} toastMessage="Test Message" />
+      <NonceProvider nonce="0x90">
+        <Toast isOpen={true} duration={5000} toastMessage="Test Message" />
+      </NonceProvider>
     );
 
     // Click close button
@@ -63,7 +72,9 @@ describe("Toast Component", () => {
 
   it("displays toast when isOpen is true", async () => {
     const { getByText } = render(
-      <Toast isOpen={true} toastMessage="Test Message" />
+      <NonceProvider nonce="0x90">
+        <Toast isOpen={true} toastMessage="Test Message" />
+      </NonceProvider>
     );
 
     await waitFor(() => {

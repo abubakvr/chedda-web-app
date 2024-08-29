@@ -25,7 +25,7 @@ describe("SuppyAndBorrowChart", () => {
 
   it("renders without crashing", async () => {
     render(
-      <div style={{ width: "500px", height: "300px" }}>
+      <div>
         <SuppyAndBorrowChart
           data={undefined}
           isLoading={false}
@@ -48,7 +48,7 @@ describe("SuppyAndBorrowChart", () => {
     });
 
     render(
-      <div style={{ width: "500px", height: "300px" }}>
+      <div>
         <SuppyAndBorrowChart
           data={undefined}
           isLoading={true}

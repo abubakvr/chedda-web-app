@@ -56,6 +56,7 @@ export const StakingInfoCard = ({
             Staking Pool
           </div>
           <Image
+            style={{ color: "" }}
             src={LinkOut}
             alt="link out"
             className="w-2.5 h-2.5 xl:w-4 xl:h-4"

@@ -78,11 +78,13 @@ export const BridgeAmountField: FC<InputWithMaxButtonProps> = ({
           <>
             <div className="w-max flex relative">
               <Image
+                style={{ color: "" }}
                 src={selectedToken.logo}
                 alt="icon image"
                 className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
               />
               <Image
+                style={{ color: "" }}
                 src={selectedChain?.logo}
                 alt="icon image"
                 className="absolute w-[10px] h-[10px] md:w-[14px] md:h-[14px] lg:w-[18px] lg:h-[18px] top-0 left-0"

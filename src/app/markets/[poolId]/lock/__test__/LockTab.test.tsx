@@ -15,6 +15,7 @@ import {
   useTransaction,
 } from "@/hooks";
 import { StaticImageData } from "next/image";
+import { NonceProvider } from "@/contexts/NonceContext";
 
 // Mocking hooks
 jest.mock("@web3-react/core", () => ({
@@ -86,7 +87,11 @@ describe("LockTab Component", () => {
       decimals: 18,
       color: "#ffffff",
     };
-    render(<LockTab asset={asset} fetchPoolStats={jest.fn()} />);
+    render(
+      <NonceProvider nonce="0xc8">
+        <LockTab asset={asset} fetchPoolStats={jest.fn()} />
+      </NonceProvider>
+    );
 
     expect(screen.getByTestId("lock-chedda-card")).toBeInTheDocument();
     expect(screen.getByTestId("lock-chedda-container")).toBeInTheDocument();

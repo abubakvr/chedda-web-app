@@ -4,6 +4,7 @@ import LinkOut from "@/assets/icon/link-out.svg";
 import CopyIcon from "@/assets/icon/copy-icon-line.svg";
 import { currentEnvironment } from "@/data/environments";
 import { copyToClipboard } from "@/utils/copyToClipboard";
+import { useNonce } from "@/hooks/useNonce";
 
 export interface IToast {
   id: number;
@@ -50,6 +51,8 @@ export const ToastItem: React.FC<ToastItemProps> = ({
   duration,
   removeToast,
 }) => {
+  const { nonce } = useNonce();
+
   const [sliderWidth, setSliderWidth] = useState(100);
   const [copyLabel, setCopyLabel] = useState("Copy");
 
@@ -131,6 +134,7 @@ export const ToastItem: React.FC<ToastItemProps> = ({
                     onClick={() => copyAddress(toast.copyText ?? "")}
                   >
                     <Image
+                      style={{ color: "" }}
                       src={CopyIcon}
                       alt="copy error message"
                       className="h-3 w-3 lg:h-4 lg:w-4"
@@ -160,7 +164,12 @@ export const ToastItem: React.FC<ToastItemProps> = ({
                   data-testid="toast-link"
                 >
                   <span>Review tx details</span>
-                  <Image src={LinkOut} alt="link out" className="h-3 w-3" />
+                  <Image
+                    style={{ color: "" }}
+                    src={LinkOut}
+                    alt="link out"
+                    className="h-3 w-3"
+                  />
                 </a>
               )}
             </div>
@@ -170,6 +179,7 @@ export const ToastItem: React.FC<ToastItemProps> = ({
               sliderWidth !== 0 && "rounded-br-none"
             } ${toast.type === "success" ? "bg-success" : "bg-error"}`}
             style={{ width: `${sliderWidth}%` }}
+            nonce={nonce}
             data-testid="slider"
           ></div>
         </div>

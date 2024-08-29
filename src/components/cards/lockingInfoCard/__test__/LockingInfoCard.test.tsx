@@ -1,7 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { LockingInfoCard } from "../LockingInfoCard";
-
 import { useGaugeAddress } from "@/hooks";
 
 jest.mock("../../../../hooks");
@@ -21,7 +20,7 @@ describe("StakingInfoCard Component", () => {
       totalAmountLocked: BigInt("200000000000000000000"),
     };
 
-    const { getByText, getByAltText } = render(<LockingInfoCard {...props} />);
+    const { getByText, getByTestId } = render(<LockingInfoCard {...props} />);
 
     // Check if elements with specific text content are rendered
     expect(getByText("LOCK INFO")).toBeInTheDocument();
@@ -30,13 +29,12 @@ describe("StakingInfoCard Component", () => {
     expect(getByText("Weight")).toBeInTheDocument();
     expect(getByText("Weight Percentage")).toBeInTheDocument();
     expect(getByText("Max Slashing")).toBeInTheDocument();
-
     expect(getByText("0.0% - 5.5%")).toBeInTheDocument();
     expect(getByText("200.00 ETH")).toBeInTheDocument();
     expect(getByText("50.00")).toBeInTheDocument();
     expect(getByText("20%")).toBeInTheDocument();
 
-    const externalLink = getByAltText("link out").closest("a");
+    const externalLink = getByTestId("gauge-link");
     expect(externalLink).toHaveAttribute(
       "href",
       "https://sepolia.basescan.org/address/0x00"

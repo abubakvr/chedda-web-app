@@ -34,6 +34,7 @@ export const SupplyTabInfo = ({
         <div className="flex space-x-2">
           <div className="font-bold">{supplied}</div>
           <Image
+            style={{ color: "" }}
             src={ArrowRight}
             alt="right arrow"
             className="flex self-center h-3 w-3 lg:h-[14px] lg:w-[14px]"
@@ -63,6 +64,7 @@ export const WithdrawTabInfo = ({
         <div className="flex space-x-2">
           <div className="font-bold">{liquidity}</div>
           <Image
+            style={{ color: "" }}
             src={ArrowRight}
             alt="right arrow"
             className="flex self-center h-3 w-3 lg:h-[14px] lg:w-[14px]"
@@ -75,6 +77,7 @@ export const WithdrawTabInfo = ({
         <div className="flex space-x-2">
           <div className="font-bold">{supplied}</div>
           <Image
+            style={{ color: "" }}
             src={ArrowRight}
             alt="right arrow"
             className="flex self-center"

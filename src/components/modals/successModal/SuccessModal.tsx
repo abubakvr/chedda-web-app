@@ -38,6 +38,7 @@ export const SuccessModal = ({
           </div>
           <div className="flex flex-col mt-1 lg:mt- rounded-lg justify-center items-center p-2">
             <Image
+              style={{ color: "" }}
               src={SuccessIcon}
               alt="success"
               className="flex self-center w-[56px] h-[56px] md:w-[72px] md:h-[72px] lg:w-[96px] lg:h-[96px]"

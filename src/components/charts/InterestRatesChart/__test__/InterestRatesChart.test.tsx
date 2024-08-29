@@ -24,8 +24,8 @@ describe("InterestRatesChart", () => {
 
   it("renders without crashing", async () => {
     render(
-      <div style={{ width: "500px", height: "300px" }}>
-        <InterestRatesChart poolId={mockPoolId} />
+      <div>
+        <InterestRatesChart />
       </div>
     );
 
@@ -43,8 +43,8 @@ describe("InterestRatesChart", () => {
     });
 
     render(
-      <div style={{ width: "500px", height: "300px" }}>
-        <InterestRatesChart poolId={mockPoolId} />
+      <div>
+        <InterestRatesChart />
       </div>
     );
 

@@ -18,6 +18,7 @@ export const PageTitle = ({
       </div>
       <div className="flex gap-x-2 xl:gap-x-4 mt-[10px] md:mt-4 xl:mt-6 items-center">
         <Image
+          style={{ color: "" }}
           src={InfoIcon}
           alt="info icon"
           className="w-4 h-4 md:w-[18px] md:h-[18px] xl:w-6 xl:h-6"

@@ -18,6 +18,7 @@ export const EmptyPositionCard = () => {
       >
         <span>Go to Markets</span>
         <Image
+          style={{ color: "" }}
           src={arrowForward}
           alt="arrow forward"
           className="w-2 h-2 lg:w-3 lg:h-3"

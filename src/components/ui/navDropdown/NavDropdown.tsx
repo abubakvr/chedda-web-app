@@ -37,6 +37,7 @@ export const NavDropdown: React.FC<DropdownMenuProps> = ({ menuItems }) => {
         <span className="flex items-center gap-x-1.5 hover:opacity-80">
           <p className="hidden lg:flex">More</p>
           <Image
+            style={{ color: "" }}
             src={ArrowDownIcon}
             className="w-2 h-2 self-center"
             alt="Arrow down"
@@ -60,6 +61,7 @@ export const NavDropdown: React.FC<DropdownMenuProps> = ({ menuItems }) => {
             >
               <div>
                 <Image
+                  style={{ color: "" }}
                   src={item.icon}
                   className="w-4 h-4"
                   alt={item.label}

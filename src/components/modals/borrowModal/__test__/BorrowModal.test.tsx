@@ -42,7 +42,7 @@ const mockProps: BorrowModalProps = {
     logo: {} as StaticImageData,
     decimals: 18,
     color: "#ffffff",
-  },
+  } as any,
   collaterals: [
     {
       name: "Ethereum",
@@ -51,7 +51,7 @@ const mockProps: BorrowModalProps = {
       logo: {} as StaticImageData,
       decimals: 18,
       color: "#ffffff",
-    },
+    } as any,
   ],
   totalBorrowed: 20000,
   assetPrice: 90,

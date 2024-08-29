@@ -69,6 +69,7 @@ export const MyPositions = ({
                 onChange={handleSearch}
               />
               <Image
+                style={{ color: "" }}
                 src={SearchIcon}
                 alt="Search Icon"
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white opacity-60 w-4 h-4"

@@ -1,4 +1,5 @@
 import connectors from "@/connectors";
+import { NonceProvider } from "@/contexts/NonceContext";
 import { Web3ReactProvider } from "@web3-react/core";
 
 export function MockAppProviders({ children }: { children: React.ReactNode }) {
@@ -8,6 +9,8 @@ export function MockAppProviders({ children }: { children: React.ReactNode }) {
   }));
 
   return (
-    <Web3ReactProvider connectors={connectors}>{children}</Web3ReactProvider>
+    <Web3ReactProvider connectors={connectors}>
+      <NonceProvider nonce={"0cx90"}>{children}</NonceProvider>
+    </Web3ReactProvider>
   );
 }

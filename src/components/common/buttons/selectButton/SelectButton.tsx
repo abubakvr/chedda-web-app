@@ -25,6 +25,7 @@ export const SelectButton: FC<ConnectButtonProps> = ({
         {label}
       </div>
       <Image
+        style={{ color: "" }}
         src={image}
         width={32}
         height={32}

@@ -9,6 +9,7 @@ import {
 import { IPositionResponse } from "@/utils/types";
 import { getAccountPositions } from "@/utils/helpers";
 import Link from "next/link";
+import { useNonce } from "@/hooks/useNonce";
 
 interface PositionSummaryProps {
   isWalletConnected: boolean;
@@ -21,6 +22,7 @@ export const PositionSummary = ({
   allPositions,
   allPositionsLoading,
 }: PositionSummaryProps) => {
+  const { nonce } = useNonce();
   const { data: positionSummary, isLoading: positionSummaryLoading } =
     usePositionSummary();
 
@@ -152,6 +154,7 @@ export const PositionSummary = ({
                         backgroundColor: asset.color,
                         width: `${(suppliedValue / totalSuppliedValue) * 100}%`,
                       }}
+                      nonce={nonce}
                       data-testid={`bar-${i}`}
                     ></div>
                   )
@@ -190,6 +193,7 @@ export const PositionSummary = ({
                         className="w-2 h-2 lg:w-3 lg:h-3 rounded-full m-1"
                         style={{ backgroundColor: asset.color }}
                         data-testid={`position-color-${i}`}
+                        nonce={nonce}
                       ></span>
                       <div className="text-left">
                         <p
