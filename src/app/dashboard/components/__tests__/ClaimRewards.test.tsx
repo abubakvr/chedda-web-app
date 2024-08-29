@@ -2,7 +2,12 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { ClaimRewards } from "../ClaimRewards";
-import { useAllClaimableRewards, useTokenValue, useTransaction } from "@/hooks";
+import {
+  useAllClaimableRewards,
+  useToast,
+  useTokenValue,
+  useTransaction,
+} from "@/hooks";
 import { NonceProvider } from "@/contexts/NonceContext";
 
 jest.mock("../../../../hooks");
@@ -36,6 +41,9 @@ describe("ClaimRewards Component", () => {
         wait: jest.fn().mockResolvedValue({ status: 1, hash: "0x123" }),
       }),
     });
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
+    }));
   });
 
   it("renders lock rewards and stake rewards correctly when wallet is connected", () => {

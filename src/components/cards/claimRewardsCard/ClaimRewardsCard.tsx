@@ -1,6 +1,6 @@
 "use client";
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { useTransaction } from "@/hooks";
+import { useToast, useTransaction } from "@/hooks";
 import {
   formatCurrency,
   formatLargeNumber,
@@ -8,7 +8,6 @@ import {
   parseBigNumberToFloat,
 } from "@/utils/formatters";
 import { Button } from "@/components/common";
-import { Toast } from "@/components/ui";
 
 interface ClaimRewardsCardProps {
   claimableRewards: bigint | undefined;
@@ -27,19 +26,9 @@ export const ClaimRewardsCard = ({
   fetchClaimableRewards,
   fetchCheddaTokenBalance,
 }: ClaimRewardsCardProps) => {
-  const [showToast, setShowToast] = useState(false);
   const [txLoading, setTxLoading] = useState(false);
-  const [{ txMessage, txHash, txStatus, copyText }, setTxDetails] = useState<{
-    txMessage: string;
-    txHash: string | null;
-    copyText: string | null;
-    txStatus: "success" | "failed";
-  }>({
-    copyText: "",
-    txMessage: "",
-    txHash: "",
-    txStatus: "success",
-  });
+  const { addToast } = useToast();
+
   const { claimStakeRewards, claimLockRewards } = useTransaction("");
 
   const parsedRewardsValue = parseBigNumberToFloat(claimableRewards, 18, 5);
@@ -66,35 +55,29 @@ export const ClaimRewardsCard = ({
         const result = await res.wait();
         if (result.status === 1) {
           const txMessage = `You've successfully Claimed ${formatNumber(parsedRewardsValue)} CHEDDA`;
-          setTxDetails({
-            txMessage,
-            copyText: null,
+          addToast({
+            message: txMessage,
             txHash: res.hash,
-            txStatus: "success",
+            type: "success",
           });
-          setShowToast(true);
           fetchClaimableRewards();
           fetchCheddaTokenBalance();
         } else {
           const txMessage = `An error occurred while processing your transaction`;
-          setTxDetails({
-            txMessage,
-            copyText: null,
+          addToast({
+            message: txMessage,
             txHash: res.hash,
-            txStatus: "failed",
+            type: "error",
           });
-          setShowToast(true);
         }
       }
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
-      setTxDetails({
-        txMessage: errorObject.errorMessage,
+      addToast({
+        message: errorObject.errorMessage,
         copyText: errorObject.fullText,
-        txHash: null,
-        txStatus: "failed",
+        type: "error",
       });
-      setShowToast(true);
     } finally {
       setTxLoading(false);
     }
@@ -102,13 +85,6 @@ export const ClaimRewardsCard = ({
 
   return (
     <>
-      <Toast
-        isOpen={showToast}
-        toastMessage={txMessage}
-        txHash={txHash}
-        status={txStatus}
-        copyText={copyText}
-      />
       <div className="w-full">
         <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 lg:px-8 h-10 lg:h-[50px] items-center">
           <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-sm uppercase">

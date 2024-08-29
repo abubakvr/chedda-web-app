@@ -49,7 +49,7 @@ export const SuccessModal = ({
             >
               Transaction Completed
             </div>
-            <div className="text-xs md:text-lg lg:text-2xl text-[#FFFFFF50] mt-4 md:mt-6 lg:mt-8">
+            <div className="text-xs text-center md:text-lg lg:text-2xl text-[#FFFFFF50] mt-4 md:mt-6 lg:mt-8">
               {modalMessage}
             </div>
             <div className="mt-6 md:mt-9 lg:mt-10 text-[10px] md:text-xs lg:text-lg text-[#FFFFFF50] justify-center text-center">

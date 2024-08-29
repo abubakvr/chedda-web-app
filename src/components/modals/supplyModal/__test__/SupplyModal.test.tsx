@@ -11,6 +11,7 @@ import {
   useAllowance,
   useAssetBalance,
   useAvailableLiquidity,
+  useToast,
   useTokenBalance,
   useTransaction,
 } from "@/hooks";
@@ -77,6 +78,9 @@ describe("SupplyModal", () => {
       depositAsset: jest.fn(),
       approveAsset: jest.fn(),
       withdrawAsset: jest.fn(),
+    }));
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
     }));
   });
 

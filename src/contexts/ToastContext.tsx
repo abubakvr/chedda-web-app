@@ -3,13 +3,18 @@ import React, { createContext, useState, useCallback, ReactNode } from "react";
 
 type ToastType = "success" | "error" | "info" | "fetchError";
 
-interface Toast {
-  id: number;
+interface ToastOptions {
   message: string;
-  type: ToastType;
+  type?: ToastType;
+  duration?: number;
   copyText?: string;
   txHash?: string;
   txPrefix?: string;
+}
+
+interface Toast extends ToastOptions {
+  id: number;
+  type: ToastType; // Overriding to make it required
 }
 
 type AddToastType = ({
@@ -19,14 +24,7 @@ type AddToastType = ({
   copyText,
   txHash,
   txPrefix,
-}: {
-  message: string;
-  type?: ToastType;
-  duration?: number;
-  copyText?: string;
-  txHash?: string;
-  txPrefix?: string;
-}) => void;
+}: ToastOptions) => void;
 
 export interface ToastContextType {
   addToast: AddToastType;
@@ -56,20 +54,17 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
       type = "success",
       duration = 10000,
       copyText,
-    }: {
-      message: string;
-      type?: ToastType;
-      duration?: number;
-      copyText?: string;
-    }) => {
+      txHash,
+      txPrefix,
+    }: ToastOptions) => {
       const id = Date.now();
 
       if (type === "fetchError") {
-        setToasts([{ id, message, type, copyText }]);
+        setToasts([{ id, message, type, copyText, txHash, txPrefix }]);
       } else {
         setToasts((prevToasts) => [
           ...prevToasts,
-          { id, message, type, copyText },
+          { id, message, type, copyText, txHash, txPrefix },
         ]);
       }
 

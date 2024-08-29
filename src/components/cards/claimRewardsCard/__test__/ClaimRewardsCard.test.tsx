@@ -2,7 +2,7 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { ClaimRewardsCard } from "../ClaimRewardsCard";
 
-import { useTokenPrice, useTransaction } from "@/hooks";
+import { useToast, useTokenPrice, useTransaction } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("../../../../hooks");
@@ -18,6 +18,9 @@ describe("ClaimRewardsCard Component", () => {
       data: "1000",
       isLoading: false,
     });
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn,
+    }));
   });
   test("renders with provided props", () => {
     const props = {
@@ -26,6 +29,8 @@ describe("ClaimRewardsCard Component", () => {
       rewardType: "Lock" as "Lock",
       setActiveTab: jest.fn(),
       fetchClaimableRewards: jest.fn(),
+      assetPrice: 1000,
+      fetchCheddaTokenBalance: jest.fn(),
     };
 
     const { getByText } = render(
@@ -51,6 +56,8 @@ describe("ClaimRewardsCard Component", () => {
       rewardType: "Lock" as "Lock",
       setActiveTab: jest.fn(),
       fetchClaimableRewards: jest.fn(),
+      assetPrice: 1000,
+      fetchCheddaTokenBalance: jest.fn(),
     };
 
     const { getByText, getByTestId } = render(

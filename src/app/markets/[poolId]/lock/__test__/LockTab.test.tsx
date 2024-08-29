@@ -7,6 +7,7 @@ import {
   useClaimableLockRewards,
   useGaugeAddress,
   useLockedChedda,
+  useToast,
   useTokenPrice,
   useTokenValue,
   useTotalAmountLocked,
@@ -77,6 +78,9 @@ describe("LockTab Component", () => {
       data: BigInt("0x00"),
       isLoading: false,
     });
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
+    }));
   });
   test("renders lock tab with correct data", () => {
     const asset = {

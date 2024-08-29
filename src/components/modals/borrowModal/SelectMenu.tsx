@@ -53,7 +53,6 @@ export const SelectMenu = ({
       >
         <div>
           <Image
-            style={{ color: "" }}
             src={selectedCollateral?.logo}
             className="w-4 h-4 md:w-5 md:h-5 self-center"
             alt="collateral image"
@@ -67,7 +66,6 @@ export const SelectMenu = ({
         </div>
         <div>
           <Image
-            style={{ color: "" }}
             src={ArrowDownIcon}
             className="w-2 h-2 self-center"
             alt="Arrow down"
@@ -90,7 +88,6 @@ export const SelectMenu = ({
             >
               <div>
                 <Image
-                  style={{ color: "" }}
                   src={c.logo}
                   className="w-4 h-4 self-center"
                   alt="Arrow down"

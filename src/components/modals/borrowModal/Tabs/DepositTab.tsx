@@ -5,12 +5,11 @@ import {
   formatNumber,
   parseBigNumberToFloat,
 } from "@/utils/formatters";
+import { ethers } from "ethers";
 import { DepositTabInfo } from "../TabInfo";
 import { SelectMenu } from "../SelectMenu";
 import { IToken } from "@/utils/types";
-import { useTransaction } from "@/hooks";
-import { ethers } from "ethers";
-import { Toast } from "@/components/ui";
+import { useToast, useTransaction } from "@/hooks";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
 import { displayProjectedHealthFactor } from "@/utils/helpers";
 
@@ -29,7 +28,7 @@ export interface DepositTabProps {
   healthFactor: bigint | undefined;
   tokenCollateralValue: bigint | undefined;
   setSelectedCollateral: Dispatch<SetStateAction<IToken>>;
-  fetchAllowance: () => void;
+  fetchAllowance: (showLoading: boolean) => void;
   refreshModal: () => void;
   openSupplyModal: (activeTab: "Deposit" | "Withdraw") => void;
 }
@@ -54,20 +53,10 @@ export const DepositTab = ({
   openSupplyModal,
 }: DepositTabProps) => {
   const [clearInputField, setClearInputField] = useState(false);
-  const [{ txMessage, txHash, txStatus, copyText }, setTxDetails] = useState<{
-    txMessage: string;
-    txHash: string | null;
-    copyText: string | null;
-    txStatus: "success" | "failed";
-  }>({
-    copyText: "",
-    txMessage: "",
-    txHash: "",
-    txStatus: "success",
-  });
-  const [showToast, setShowToast] = useState(false);
   const [inputAmount, setInputAmount] = useState(0);
   const [txLoading, setTxLoading] = useState(false);
+
+  const { addToast } = useToast();
   const { address: tokenAddress, decimals, symbol } = selectedCollateral;
   const { allowanceLoading, accountCollateralLoading, tokenBalanceLoading } =
     isLoading;
@@ -103,7 +92,6 @@ export const DepositTab = ({
 
       const parsedAmount = ethers.parseUnits(inputAmount.toString(), decimals);
       setTxLoading(true);
-      setShowToast(false);
       if (inputAmount <= parsedAllowance) {
         depositCollateral(parsedAmount)
           .then(async (res) => {
@@ -113,38 +101,32 @@ export const DepositTab = ({
                 const txMessage = `You've successfully deposited ${formatNumber(
                   inputAmount
                 )} ${symbol}`;
-                setTxDetails({
-                  txMessage,
-                  copyText: null,
+                addToast({
+                  message: txMessage,
                   txHash: res.hash,
-                  txStatus: "success",
+                  type: "success",
                 });
                 setInputAmount(0);
                 setClearInputField(true);
-                setShowToast(true);
                 refreshModal();
               } else {
                 const txMessage = `An error occurred while proccessing your transaction`;
-                setTxDetails({
-                  txMessage,
-                  copyText: null,
+                addToast({
+                  message: txMessage,
                   txHash: res.hash,
-                  txStatus: "failed",
+                  type: "error",
                 });
-                setShowToast(true);
               }
             }
             setTxLoading(false);
           })
           .catch((error) => {
             const errorObject = JSON.parse(error.message);
-            setTxDetails({
-              txMessage: errorObject.errorMessage,
+            addToast({
+              message: errorObject.errorMessage,
               copyText: errorObject.fullText,
-              txHash: null,
-              txStatus: "failed",
+              type: "error",
             });
-            setShowToast(true);
             setTxLoading(false);
           });
       } else {
@@ -156,61 +138,46 @@ export const DepositTab = ({
                 const txMessage = `You've successfully approved ${formatNumber(
                   inputAmount
                 )} ${symbol}`;
-                setTxDetails({
-                  txMessage,
-                  copyText: null,
+                addToast({
+                  message: txMessage,
                   txHash: res.hash,
-                  txStatus: "success",
+                  type: "success",
                 });
-                setShowToast(true);
-                fetchAllowance();
+                fetchAllowance(true);
                 setTxLoading(false);
               } else {
                 const txMessage = `An error occurred while proccessing your transaction`;
-                setTxDetails({
-                  txMessage,
-                  copyText: null,
+                addToast({
+                  message: txMessage,
                   txHash: res.hash,
-                  txStatus: "failed",
+                  type: "error",
                 });
-                setShowToast(true);
               }
             }
           })
           .catch((error) => {
             const errorObject = JSON.parse(error.message);
-            setTxDetails({
-              txMessage: errorObject.errorMessage,
+            addToast({
+              message: errorObject.errorMessage,
               copyText: errorObject.fullText,
-              txHash: null,
-              txStatus: "failed",
+              type: "error",
             });
-            setShowToast(true);
             setTxLoading(false);
           });
       }
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
-      setTxDetails({
-        txMessage: errorObject.errorMessage,
+      addToast({
+        message: errorObject.errorMessage,
         copyText: errorObject.fullText,
-        txHash: null,
-        txStatus: "failed",
+        type: "error",
       });
-      setShowToast(true);
       setTxLoading(false);
     }
   };
 
   return (
     <>
-      <Toast
-        isOpen={showToast}
-        toastMessage={txMessage}
-        txHash={txHash}
-        status={txStatus}
-        copyText={copyText}
-      />
       <div data-testid="deposit-tab-content" className="mt-4 lg:mt-6">
         <div className="text-xs md:text-sm lg:text-xl font-bold flex justify-between items-center">
           <div>Deposit your Collateral</div>

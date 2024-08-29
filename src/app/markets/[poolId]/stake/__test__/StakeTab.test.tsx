@@ -11,6 +11,7 @@ import {
   useLpTokenBalance,
   useStakingBalance,
   useStakingContractAddress,
+  useToast,
   useTokenPrice,
   useTokenValue,
   useTotalStaked,
@@ -96,6 +97,9 @@ describe("StakeTab Component", () => {
       data: "1000",
       isLoading: false,
     });
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
+    }));
   });
   test("renders stake tab with correct data", () => {
     const asset = {

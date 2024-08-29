@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { useBridge, useSwitchChain } from "@/hooks";
+import { useBridge, useSwitchChain, useToast } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
 import { BridgeInput } from "../BridgeInput";
 import { ISourceChain, IToken } from "@/utils/types";
@@ -15,6 +15,7 @@ jest.mock("@web3-react/core", () => ({
 jest.mock("../../../../hooks", () => ({
   useBridge: jest.fn(),
   useSwitchChain: jest.fn(),
+  useToast: jest.fn(),
 }));
 
 jest.mock("@web3-react/core", () => ({
@@ -116,6 +117,9 @@ describe("BridgeInput Component", () => {
     });
     (useBridge as jest.Mock).mockReturnValue(mockUseBridge);
     (useSwitchChain as jest.Mock).mockReturnValue(mockUseSwitchChain);
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
+    }));
   });
 
   test("renders BridgeInput component correctly", async () => {

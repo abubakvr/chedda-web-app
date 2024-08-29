@@ -11,6 +11,7 @@ import {
   useAllowance,
   useAssetBalance,
   useAvailableLiquidity,
+  useToast,
   useTokenBalance,
   useTransaction,
 } from "@/hooks";
@@ -70,6 +71,9 @@ describe("StakeCard", () => {
     (useTransaction as jest.Mock).mockImplementation(() => ({
       approveLpToken: jest.fn(),
       stakeLpToken: jest.fn(),
+    }));
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
     }));
   });
 

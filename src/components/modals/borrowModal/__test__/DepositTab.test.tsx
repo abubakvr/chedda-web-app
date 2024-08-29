@@ -8,7 +8,7 @@ import {
 } from "@testing-library/react";
 import { DepositTab, DepositTabProps } from "../Tabs";
 import { StaticImageData } from "next/image";
-import { useTransaction } from "@/hooks";
+import { useToast, useTransaction } from "@/hooks";
 
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
@@ -76,6 +76,9 @@ describe("DepositTab Component", () => {
       },
       approveAsset: mockApproveCollateral,
       depositCollateral: mockDepositCollateral,
+    }));
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
     }));
   });
 

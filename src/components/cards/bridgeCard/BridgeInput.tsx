@@ -9,12 +9,11 @@ import { Button } from "@/components/common";
 import { BridgeCardInfo } from "./BridgeCardInfo";
 import { ISourceChain, IToken } from "@/utils/types";
 import { useState } from "react";
-import { useBridge, useSwitchChain } from "@/hooks";
+import { useBridge, useSwitchChain, useToast } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
 import { formatNumber } from "@/utils/formatters";
 import { ConfirmationScreen } from "./ConfirmationScreen";
 import { getTokenBalanceAddress, getTokenBridgeAddress } from "@/utils/helpers";
-import { Toast } from "@/components/ui";
 import { TransactionDetails } from "./TransactionDetails";
 
 interface TokenBalances {
@@ -54,26 +53,17 @@ export const BridgeInput = ({
   fetchBalances,
   fetchTokenData,
 }: BridgeInputProps) => {
-  const switchChain = useSwitchChain();
-  const { sendOFT, approveAsset } = useBridge(selectedChain);
-  const { account, chainId } = useWeb3React();
   const [showMore, setShowMore] = useState(false);
+  const [txHash, setTxHash] = useState("");
   const [amount, setAmount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [confirmBridge, setConfirmBridge] = useState(false);
-  const [showToast, setShowToast] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
-  const [{ txMessage, txHash, txStatus, copyText }, setTxDetails] = useState<{
-    txMessage: string;
-    txHash: string | null;
-    copyText: string | null;
-    txStatus: "success" | "failed";
-  }>({
-    copyText: "",
-    txMessage: "",
-    txHash: "",
-    txStatus: "success",
-  });
+
+  const switchChain = useSwitchChain();
+  const { sendOFT, approveAsset } = useBridge(selectedChain);
+  const { account, chainId } = useWeb3React();
+  const { addToast } = useToast();
 
   const balanceAddress = getTokenBalanceAddress(selectedToken, selectedChain);
   const tokenAddress = getTokenBridgeAddress(selectedToken, selectedChain);
@@ -105,7 +95,6 @@ export const BridgeInput = ({
   };
 
   const handleSendToken = async () => {
-    setShowToast(false);
     setIsLoading(true);
     try {
       if (!amount || !account) {
@@ -127,27 +116,17 @@ export const BridgeInput = ({
       if (tx) {
         const result = await tx.wait();
         if (result.status === 1) {
-          const txMessage = `You've successfully bridged ${formatNumber(
-            amount
-          )} ${selectedToken.symbol}`;
-          setTxDetails({
-            txMessage,
-            copyText: null,
-            txHash: tx.hash,
-            txStatus: "success",
-          });
-          setShowToast(true);
+          setTxHash(tx.hash);
           setShowDetails(true);
           setConfirmBridge(false);
         } else {
           const txMessage = `An error occurred while proccessing your transaction`;
-          setTxDetails({
-            txMessage,
-            copyText: null,
+          addToast({
+            message: txMessage,
             txHash: tx.hash,
-            txStatus: "failed",
+            txPrefix: selectedChain.txUrlPrefix,
+            type: "error",
           });
-          setShowToast(true);
         }
       }
       fetchBalances(selectedChain);
@@ -155,13 +134,11 @@ export const BridgeInput = ({
       setIsLoading(false);
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
-      setTxDetails({
-        txMessage: errorObject.errorMessage,
+      addToast({
+        message: errorObject.errorMessage,
         copyText: errorObject.fullText,
-        txHash: null,
-        txStatus: "failed",
+        type: "error",
       });
-      setShowToast(true);
       setIsLoading(false);
     }
   };
@@ -191,35 +168,31 @@ export const BridgeInput = ({
           const txMessage = `You've successfully approved ${formatNumber(
             amount
           )} ${selectedToken.symbol}`;
-          setTxDetails({
-            txMessage,
-            copyText: null,
+          addToast({
+            message: txMessage,
             txHash: tx.hash,
-            txStatus: "success",
+            txPrefix: selectedChain.txUrlPrefix,
+            type: "success",
           });
-          setShowToast(true);
         } else {
           const txMessage = `An error occurred while proccessing your transaction`;
-          setTxDetails({
-            txMessage,
-            copyText: null,
+          addToast({
+            message: txMessage,
             txHash: tx.hash,
-            txStatus: "failed",
+            txPrefix: selectedChain.txUrlPrefix,
+            type: "error",
           });
-          setShowToast(true);
         }
       }
       setIsLoading(false);
       fetchTokenData();
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
-      setTxDetails({
-        txMessage: errorObject.errorMessage,
+      addToast({
+        message: errorObject.errorMessage,
         copyText: errorObject.fullText,
-        txHash: null,
-        txStatus: "failed",
+        type: "error",
       });
-      setShowToast(true);
       setIsLoading(false);
     }
   };
@@ -252,14 +225,6 @@ export const BridgeInput = ({
 
   return !confirmBridge && !showDetails ? (
     <>
-      <Toast
-        isOpen={showToast}
-        toastMessage={txMessage}
-        txHash={txHash}
-        status={txStatus}
-        copyText={copyText}
-        txPrefix={selectedChain.txUrlPrefix}
-      />
       <div className="flex justify-between" data-testid="bridge-input-title">
         <h1 className="text-lg md:text-2xl lg:text-3xl font-bold">Transfer</h1>
         <div className="flex gap-x-2 items-center font-bold text-xs md:text-lg">
@@ -442,13 +407,6 @@ export const BridgeInput = ({
     </>
   ) : confirmBridge && !showDetails ? (
     <>
-      <Toast
-        isOpen={showToast}
-        toastMessage={txMessage}
-        txHash={txHash}
-        status={txStatus}
-        copyText={copyText}
-      />
       <ConfirmationScreen
         returnToInput={returnToInput}
         bridgeToken={handleSendToken}

@@ -1,11 +1,10 @@
 "use client";
 import React, { FC, useState } from "react";
-import { Toast } from "@/components/ui";
 import { ethers } from "ethers";
 import { LockTab } from "./tabs/LockTab";
 import { formatNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { TabInfo } from "./TabInfo";
-import { useTransaction } from "@/hooks";
+import { useToast, useTransaction } from "@/hooks";
 import { formatDate, formatProjectedDate } from "@/utils/helpers";
 import { Lock } from "chedda-sdk";
 import { WithdrawTab } from "./tabs/WithdrawTab";
@@ -21,7 +20,7 @@ interface LockCardProps {
   isAllowanceLoading: boolean;
   openManageLockModal: () => void;
   updateCard: () => void;
-  fetchCheddaAllowance: () => void;
+  fetchCheddaAllowance: (showLoading: boolean) => void;
 }
 
 const Tab: FC<{
@@ -54,20 +53,8 @@ export const LockCheddaCard: FC<LockCardProps> = ({
   fetchCheddaAllowance,
 }) => {
   const [activeTab, setActiveTab] = useState(defaultTab || "Lock");
-  const [showToast, setShowToast] = useState(false);
   const [txLoading, setTxLoading] = useState(false);
   const [clearInputField, setClearInputField] = useState(false);
-  const [{ txMessage, txHash, txStatus, copyText }, setTxDetails] = useState<{
-    txMessage: string;
-    txHash: string | null;
-    copyText: string | null;
-    txStatus: "success" | "failed";
-  }>({
-    copyText: "",
-    txMessage: "",
-    txHash: "",
-    txStatus: "success",
-  });
   const [lockAmount, setLockAmount] = useState<number>(0);
   const [lockTime, setLockTime] = useState<{
     value: number | undefined;
@@ -82,6 +69,7 @@ export const LockCheddaCard: FC<LockCardProps> = ({
     withdrawCheddaToken,
     relockCheddaToken,
   } = useTransaction("");
+  const { addToast } = useToast();
 
   const parsedAllowance = parseBigNumberToFloat(cheddaAllowance);
   const parsedCheddaBalance = parseBigNumberToFloat(cheddaTokenBalance);
@@ -99,7 +87,6 @@ export const LockCheddaCard: FC<LockCardProps> = ({
   ) {
     try {
       setTxLoading(true);
-      setShowToast(false);
 
       const res = await promise;
       if (res) {
@@ -108,39 +95,38 @@ export const LockCheddaCard: FC<LockCardProps> = ({
           result.status === 1
             ? successMessage
             : "An error occurred while processing your transaction";
-        const txStatus = result.status === 1 ? "success" : "failed";
-
-        setTxDetails({
-          txMessage,
-          copyText: null,
-          txHash: res.hash,
-          txStatus,
-        });
+        const txStatus = result.status === 1 ? "success" : "error";
 
         if (result.status === 1) {
-          setShowToast(true);
+          addToast({
+            message: txMessage,
+            txHash: res.hash,
+            type: txStatus,
+          });
           if (isApprove) {
-            fetchCheddaAllowance();
+            fetchCheddaAllowance(true);
           } else {
             updateCard();
             setLockAmount(0);
             setClearInputField(true);
           }
         } else {
-          setShowToast(true);
+          addToast({
+            message: txMessage,
+            txHash: res.hash,
+            type: txStatus,
+          });
         }
       }
 
       setTxLoading(false);
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
-      setTxDetails({
-        txMessage: errorObject.errorMessage,
+      addToast({
+        message: errorObject.errorMessage,
         copyText: errorObject.fullText,
-        txHash: null,
-        txStatus: "failed",
+        type: "error",
       });
-      setShowToast(true);
       setTxLoading(false);
     }
   }
@@ -206,13 +192,6 @@ export const LockCheddaCard: FC<LockCardProps> = ({
 
   return (
     <>
-      <Toast
-        isOpen={showToast}
-        toastMessage={txMessage}
-        txHash={txHash}
-        status={txStatus}
-        copyText={copyText}
-      />
       <div
         className="lg:min-w-[400px] xl:min-w-[460px] text-white px-6 py-5 xl:px-8 xl:py-6"
         data-testid="lock-card-container"
