@@ -9,6 +9,8 @@ import {
   useLpStakers,
   useLpSymbol,
   useStakingBalance,
+  useStakingContractAddress,
+  useTokenPrice,
   useTokenValue,
   useTotalStaked,
   useTotalSupply,
@@ -16,6 +18,7 @@ import {
 import { IToken } from "@/utils/types";
 import { ClaimRewardsCard } from "@/components/cards";
 import { InfoCardSkeleton, SwitchTabSkeleton } from "@/components/ui";
+import { currentEnvironment } from "@/data/environments";
 
 const StakeTab = ({
   asset,
@@ -67,6 +70,10 @@ const StakeTab = ({
     isLoading: totalSupplyLoading,
     fetchData: fetchTotalSupply,
   } = useTotalSupply();
+  const { data: CheddaTokenPrice } = useTokenPrice(
+    currentEnvironment?.contracts.CheddaToken
+  );
+  const { data: stakingPoolAddress } = useStakingContractAddress();
 
   const updateCard = () => {
     fetchStakingBalance();
@@ -138,6 +145,7 @@ const StakeTab = ({
           lpSymbol={lpSymbol}
           lpAssetValue={lpAssetValue}
           totalSupply={totalSupply}
+          stakingPoolAddress={stakingPoolAddress}
         />
       </div>
       <div
@@ -165,6 +173,7 @@ const StakeTab = ({
       >
         <ClaimRewardsCard
           claimableRewards={claimableRewards}
+          assetPrice={CheddaTokenPrice}
           setActiveTab={setActiveTab}
           fetchClaimableRewards={fetchClaimableRewards}
           fetchCheddaTokenBalance={fetchCheddaTokenBalance}

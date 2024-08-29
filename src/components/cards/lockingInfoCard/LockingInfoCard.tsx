@@ -2,16 +2,15 @@
 import React from "react";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
+import { currentEnvironment } from "@/data/environments";
 import {
   formatAsPercentage,
   formatNumber,
   parseBigNumberToFloat,
 } from "@/utils/formatters";
 
-import { useGaugeAddress } from "@/hooks";
-import { currentEnvironment } from "@/data/environments";
-
 interface LockingInfoCardProps {
+  lockingGaugeAddress: string | undefined;
   assetSymbol: string | undefined;
   totalWeightSum: bigint | undefined;
   totalWeight: bigint | undefined;
@@ -20,12 +19,11 @@ interface LockingInfoCardProps {
 
 export const LockingInfoCard = ({
   assetSymbol,
+  lockingGaugeAddress,
   totalWeight,
   totalWeightSum,
   totalAmountLocked,
 }: LockingInfoCardProps) => {
-  const { data: lockingGaugeAddress } = useGaugeAddress();
-
   const parsedTotalWeight = parseBigNumberToFloat(totalWeight);
   const parsedTotalAmountLocked = parseBigNumberToFloat(totalAmountLocked);
   const parsedTotalWeightSum = parseBigNumberToFloat(totalWeightSum);

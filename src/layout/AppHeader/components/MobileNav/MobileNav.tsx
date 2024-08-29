@@ -23,7 +23,6 @@ export const MobileNav = ({
       className={`fixed inset-0 bg-gray-900 text-white bg-opacity-75 overflow-y-auto backdrop-blur-sm z-20 flex justify-end transition-transform ${
         navOpen ? "translate-x-0" : "translate-x-full"
       }`}
-      nonce={nonce}
       data-testid="mobile-nav"
     >
       <div className={`bg-black w-4/5 h-screen p-8 mobile-nav`}>

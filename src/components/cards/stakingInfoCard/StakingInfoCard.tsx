@@ -7,8 +7,6 @@ import {
   formatNumber,
   parseBigNumberToFloat,
 } from "@/utils/formatters";
-
-import { useStakingContractAddress } from "@/hooks";
 import { currentEnvironment } from "@/data/environments";
 
 interface StakingInfoCardProps {
@@ -20,6 +18,7 @@ interface StakingInfoCardProps {
   totalSupply: bigint | undefined;
   lpDecimals: number | undefined;
   lpSymbol: string | undefined;
+  stakingPoolAddress: string | undefined;
 }
 
 export const StakingInfoCard = ({
@@ -31,8 +30,8 @@ export const StakingInfoCard = ({
   lpSymbol,
   lpAssetValue,
   totalSupply,
+  stakingPoolAddress,
 }: StakingInfoCardProps) => {
-  const { data: stakingPoolAddress } = useStakingContractAddress();
   const parsedAssetValue = parseBigNumberToFloat(lpAssetValue, lpDecimals);
   const parsedTotalStaked = parseBigNumberToFloat(totalStaked, lpDecimals);
   const parsedTotalSupply = parseBigNumberToFloat(totalSupply, assetDecimals);
