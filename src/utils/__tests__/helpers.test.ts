@@ -84,16 +84,19 @@ describe("Helper functions", () => {
 
   describe("formatProjectedDate", () => {
     it("should return a date one day in the future", () => {
-      const result = formatProjectedDate(1);
+      const result = formatProjectedDate(1); // Assuming this function gives you the future date
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
 
-      const expectedMonth = tomorrow.toLocaleString("default", {
+      const expectedMonth = tomorrow.toLocaleString("en-GB", {
         month: "short",
       });
       const expectedYear = tomorrow.getFullYear();
 
-      expect(result).toMatch(new RegExp(`${expectedMonth} ${expectedYear}`));
+      // Adjust the regex to handle the "day month year" format
+      expect(result).toMatch(
+        new RegExp(`\\d{1,2} ${expectedMonth} ${expectedYear}`)
+      );
     });
   });
 
