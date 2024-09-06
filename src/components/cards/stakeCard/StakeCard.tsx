@@ -74,11 +74,11 @@ export const StakeCard: FC<StakeModalProps> = ({
   const lpTokenPrice = parsedAssetPrice * parsedAssetValue;
 
   const handleStake = async () => {
-    try {
-      if (!stakeAmount || stakeAmount > parsedAssetBalance) {
-        return alert("Enter valid amount");
-      }
+    if (!stakeAmount || stakeAmount > parsedAssetBalance) {
+      return alert("Enter valid amount");
+    }
 
+    try {
       setTxLoading(true);
       const parsedAmount = ethers.parseUnits(
         stakeAmount.toString(),
@@ -86,77 +86,55 @@ export const StakeCard: FC<StakeModalProps> = ({
       );
 
       if (stakeAmount <= parsedAllowance) {
-        stakeLpToken(parsedAmount)
-          .then(async (res: any) => {
-            if (res) {
-              const result = await res.wait();
-              if (result.status === 1) {
-                const txMessage = `You've successfully staked ${formatNumber(
-                  stakeAmount
-                )} ${lpSymbol}`;
-                addToast({
-                  message: txMessage,
-                  txHash: res.hash,
-                  type: "success",
-                });
-                setStakeAmount(0);
-                setClearInputField(true);
-                updateCard();
-              } else {
-                const txMessage = `An error occurred while proccessing your transaction`;
-                addToast({
-                  message: txMessage,
-                  txHash: res.hash,
-                  type: "error",
-                });
-              }
-            }
-            setTxLoading(false);
-          })
-          .catch((error: any) => {
-            const errorObject = JSON.parse(error.message);
+        const res = await stakeLpToken(parsedAmount);
+        if (res) {
+          const result = await res.wait();
+          if (result.status === 1) {
+            const txMessage = `You've successfully staked ${formatNumber(
+              stakeAmount
+            )} ${lpSymbol}`;
             addToast({
-              message: errorObject.errorMessage,
-              copyText: errorObject.fullText,
+              message: txMessage,
+              txHash: res.hash,
+              type: "success",
+            });
+            setStakeAmount(0);
+            setClearInputField(true);
+            updateCard();
+          } else {
+            const txMessage = `An error occurred while proccessing your transaction`;
+            addToast({
+              message: txMessage,
+              txHash: res.hash,
               type: "error",
             });
-            setTxLoading(false);
-          });
+          }
+        }
+        setTxLoading(false);
       } else {
-        approveLpToken(parsedAmount)
-          .then(async (res: any) => {
-            if (res) {
-              const result = await res.wait();
-              if (result.status === 1) {
-                const txMessage = `You've successfully approved ${formatNumber(
-                  stakeAmount
-                )} ${lpSymbol}`;
-                addToast({
-                  message: txMessage,
-                  txHash: res.hash,
-                  type: "success",
-                });
-                fetchLpAllowance(true);
-              } else {
-                const txMessage = `An error occurred while proccessing your transaction`;
-                addToast({
-                  message: txMessage,
-                  txHash: res.hash,
-                  type: "error",
-                });
-              }
-            }
-            setTxLoading(false);
-          })
-          .catch((error: any) => {
-            const errorObject = JSON.parse(error.message);
+        const res = await approveLpToken(parsedAmount);
+        if (res) {
+          const result = await res.wait();
+          if (result.status === 1) {
+            const txMessage = `You've successfully approved ${formatNumber(
+              stakeAmount
+            )} ${lpSymbol}`;
             addToast({
-              message: errorObject.errorMessage,
-              copyText: errorObject.fullText,
+              message: txMessage,
+              txHash: res.hash,
+              type: "success",
+            });
+            fetchLpAllowance(true);
+          } else {
+            const txMessage = `An error occurred while proccessing your transaction`;
+            addToast({
+              message: txMessage,
+              txHash: res.hash,
               type: "error",
             });
-            setTxLoading(false);
-          });
+          }
+        }
+        setTxLoading(false);
       }
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
@@ -170,53 +148,41 @@ export const StakeCard: FC<StakeModalProps> = ({
   };
 
   const handleUnStake = async () => {
+    if (!unStakeAmount || unStakeAmount > parsedStakingBalance) {
+      return alert("Enter valid amount");
+    }
     try {
-      if (!unStakeAmount || unStakeAmount > parsedStakingBalance) {
-        return alert("Enter valid amount");
-      }
-
       setTxLoading(true);
       const parsedAmount = ethers.parseUnits(
         unStakeAmount.toString(),
         lpDecimals
       );
 
-      unStakeLpToken(parsedAmount)
-        .then(async (res: any) => {
-          if (res) {
-            const result = await res.wait();
-            if (result.status === 1) {
-              const txMessage = `You've successfully Unstaked ${formatNumber(
-                unStakeAmount
-              )} ${lpSymbol}`;
-              addToast({
-                message: txMessage,
-                txHash: res.hash,
-                type: "success",
-              });
-              setStakeAmount(0);
-              setClearInputField(true);
-              updateCard();
-            } else {
-              const txMessage = `An error occurred while proccessing your transaction`;
-              addToast({
-                message: txMessage,
-                txHash: res.hash,
-                type: "error",
-              });
-            }
-          }
-          setTxLoading(false);
-        })
-        .catch((error: any) => {
-          const errorObject = JSON.parse(error.message);
+      const res = await unStakeLpToken(parsedAmount);
+      if (res) {
+        const result = await res.wait();
+        if (result.status === 1) {
+          const txMessage = `You've successfully Unstaked ${formatNumber(
+            unStakeAmount
+          )} ${lpSymbol}`;
           addToast({
-            message: errorObject.errorMessage,
-            copyText: errorObject.fullText,
+            message: txMessage,
+            txHash: res.hash,
+            type: "success",
+          });
+          setStakeAmount(0);
+          setClearInputField(true);
+          updateCard();
+        } else {
+          const txMessage = `An error occurred while proccessing your transaction`;
+          addToast({
+            message: txMessage,
+            txHash: res.hash,
             type: "error",
           });
-          setTxLoading(false);
-        });
+        }
+      }
+      setTxLoading(false);
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
       addToast({

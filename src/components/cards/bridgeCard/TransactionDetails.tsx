@@ -24,7 +24,7 @@ interface TransactionDetailsProps {
   txHash: string;
 }
 
-enum MessageStatus {
+export enum MessageStatus {
   INFLIGHT = "INFLIGHT",
   DELIVERED = "DELIVERED",
   FAILED = "FAILED",

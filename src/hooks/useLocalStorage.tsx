@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 export function useLocalStorageGet(key: string) {
   // State to store our value
-  const [storedValue, setStoredValue] = useState("initialValue");
+  const [storedValue, setStoredValue] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -14,7 +14,7 @@ export function useLocalStorageGet(key: string) {
       // Parse stored json or if none return initialValue
       setStoredValue(item ? JSON.parse(item) : null);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, [key]);
 

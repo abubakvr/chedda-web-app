@@ -121,11 +121,11 @@ export const SupplyModal: FC<SupplyModalProps> = ({
   ]);
 
   const handleDeposit = async (useAsCollateral: boolean) => {
-    try {
-      if (!supplyAmount || supplyAmount > parsedMaxAmount) {
-        return alert("Enter valid amount");
-      }
+    if (!supplyAmount || supplyAmount > parsedMaxAmount) {
+      return alert("Enter valid amount");
+    }
 
+    try {
       setTxLoading(true);
       const parsedAmount = ethers.parseUnits(
         supplyAmount.toString(),
@@ -133,76 +133,52 @@ export const SupplyModal: FC<SupplyModalProps> = ({
       );
 
       if (supplyAmount <= parsedAllowance) {
-        depositAsset(parsedAmount, useAsCollateral)
-          .then(async (res) => {
-            if (res) {
-              const result = await res.wait();
-              if (result.status === 1) {
-                const txMessage = `You've successfully supplied ${formatNumber(
-                  supplyAmount
-                )} ${asset.symbol}`;
-                setSuccessMessage(txMessage);
-                setSupplyAmount(0);
-                setClearInputField(true);
-                setOpenSuccessModal(true);
-                fetchModalData();
-              } else {
-                const txMessage = `An error occurred while proccessing your transaction`;
-                addToast({
-                  message: txMessage,
-                  type: "error",
-                  txHash: res.hash,
-                });
-              }
-            }
-            setTxLoading(false);
-          })
-          .catch((error) => {
-            const errorObject = JSON.parse(error.message);
+        const res = await depositAsset(parsedAmount, useAsCollateral);
+        if (res) {
+          const result = await res.wait();
+          if (result.status === 1) {
+            const txMessage = `You've successfully supplied ${formatNumber(
+              supplyAmount
+            )} ${asset.symbol}`;
+            setSuccessMessage(txMessage);
+            setSupplyAmount(0);
+            setClearInputField(true);
+            setOpenSuccessModal(true);
+            fetchModalData();
+          } else {
+            const txMessage = `An error occurred while proccessing your transaction`;
             addToast({
-              message: errorObject.errorMessage,
+              message: txMessage,
               type: "error",
-              copyText: errorObject.fullText,
-              txHash: undefined,
+              txHash: res.hash,
             });
-            setTxLoading(false);
-          });
+          }
+        }
+        setTxLoading(false);
       } else {
-        approveAsset(parsedAmount)
-          .then(async (res) => {
-            if (res) {
-              const result = await res.wait();
-              if (result.status === 1) {
-                const txMessage = `You've successfully approved ${formatNumber(
-                  supplyAmount
-                )} ${asset.symbol}`;
-                addToast({
-                  message: txMessage,
-                  type: "success",
-                  txHash: res.hash,
-                });
-                fetchAllowance(true);
-              } else {
-                const txMessage = `An error occurred while proccessing your transaction`;
-                addToast({
-                  message: txMessage,
-                  type: "error",
-                  txHash: res.hash,
-                });
-              }
-            }
-            setTxLoading(false);
-          })
-          .catch((error) => {
-            const errorObject = JSON.parse(error.message);
+        const res = await approveAsset(parsedAmount);
+        if (res) {
+          const result = await res.wait();
+          if (result.status === 1) {
+            const txMessage = `You've successfully approved ${formatNumber(
+              supplyAmount
+            )} ${asset.symbol}`;
             addToast({
-              message: errorObject.errorMessage,
-              type: "error",
-              copyText: errorObject.fullText,
-              txHash: undefined,
+              message: txMessage,
+              type: "success",
+              txHash: res.hash,
             });
-            setTxLoading(false);
-          });
+            fetchAllowance(true);
+          } else {
+            const txMessage = `An error occurred while proccessing your transaction`;
+            addToast({
+              message: txMessage,
+              type: "error",
+              txHash: res.hash,
+            });
+          }
+        }
+        setTxLoading(false);
       }
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
@@ -220,48 +196,47 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     if (!withdrawAmount || withdrawAmount > parsedSupplied) {
       return alert("Enter valid amount");
     }
-    setTxLoading(true);
-    const parsedAmount = ethers.parseUnits(
-      withdrawAmount.toString(),
-      asset.decimals
-    );
-    withdrawAsset(parsedAmount)
-      .then(async (res) => {
-        if (res) {
-          const result = await res.wait();
-          if (result.status === 1) {
-            const txMessage = `You've successfully withdrawn ${formatNumber(
-              withdrawAmount
-            )} ${asset.symbol}`;
-            addToast({
-              message: txMessage,
-              type: "success",
-              txHash: res.hash,
-            });
-            setWithdrawAmount(0);
-            setClearInputField(true);
-            fetchModalData();
-          } else {
-            const txMessage = `An error occurred while proccessing your transaction`;
-            addToast({
-              message: txMessage,
-              type: "error",
-              txHash: res.hash,
-            });
-          }
+    try {
+      setTxLoading(true);
+      const parsedAmount = ethers.parseUnits(
+        withdrawAmount.toString(),
+        asset.decimals
+      );
+      const res = await withdrawAsset(parsedAmount);
+      if (res) {
+        const result = await res.wait();
+        if (result.status === 1) {
+          const txMessage = `You've successfully withdrawn ${formatNumber(
+            withdrawAmount
+          )} ${asset.symbol}`;
+          addToast({
+            message: txMessage,
+            type: "success",
+            txHash: res.hash,
+          });
+          setWithdrawAmount(0);
+          setClearInputField(true);
+          fetchModalData();
+        } else {
+          const txMessage = `An error occurred while proccessing your transaction`;
+          addToast({
+            message: txMessage,
+            type: "error",
+            txHash: res.hash,
+          });
         }
-        setTxLoading(false);
-      })
-      .catch((error) => {
-        const errorObject = JSON.parse(error.message);
-        addToast({
-          message: errorObject.errorMessage,
-          type: "error",
-          copyText: errorObject.fullText,
-          txHash: undefined,
-        });
-        setTxLoading(false);
+      }
+      setTxLoading(false);
+    } catch (error: any) {
+      const errorObject = JSON.parse(error.message);
+      addToast({
+        message: errorObject.errorMessage,
+        type: "error",
+        copyText: errorObject.fullText,
+        txHash: undefined,
       });
+      setTxLoading(false);
+    }
   };
 
   const closeSuccessModal = () => {

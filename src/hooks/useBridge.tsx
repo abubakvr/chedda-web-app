@@ -212,5 +212,6 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
     getTokenPrice,
     getTokenAllowance,
     getEthPrice,
+    getSendParam,
   };
 };

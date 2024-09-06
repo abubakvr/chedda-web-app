@@ -47,7 +47,7 @@ describe("SupplyModalContent Component", () => {
     setClearInputField: jest.fn(),
     setAmount: jest.fn(),
     amount: 0,
-  };
+  } as any;
 
   it("renders component with correct data-testid", () => {
     jest.mock("@web3-react/core", () => {

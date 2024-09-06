@@ -1,5 +1,5 @@
 import { Chedda } from "chedda-sdk";
-import { ethers, Signer, ErrorCode } from "ethers";
+import { Signer, ErrorCode } from "ethers";
 import { ISourceChain, IToken, IPositionResponse } from "./types";
 
 export function findNearestIndex(sortedArray: number[], targetNumber: number) {

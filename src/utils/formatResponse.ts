@@ -82,7 +82,7 @@ export const formatPoolStats = (
   };
 };
 
-const mapCollateralsToTokens = (
+export const mapCollateralsToTokens = (
   collaterals: string[],
   tokens: ITokenConfig
 ): IToken[] => {

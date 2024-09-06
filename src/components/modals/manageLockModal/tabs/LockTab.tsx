@@ -104,6 +104,7 @@ export const LockTab: FC<LockTabProps> = ({
                   setLockTime({ value: item.value, days: item.duration });
                   setShowWarning(false);
                 }}
+                data-testid={`extend-lock-button-${index}`}
                 className={`bg-[#201D47] rounded-lg flex justify-center items-center w-full relative lock-time-box transition-all ${lockTime?.value === item.value ? "modal-button" : ""}`}
               >
                 <div className="absolute -top-2 lg:-top-3 right-0">
