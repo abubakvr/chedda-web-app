@@ -132,7 +132,7 @@ export function formatProjectedDate(days: number): string {
 }
 
 export function formatDate(projectedDate: Date): string {
-  const formattedDate = projectedDate.toLocaleString(undefined, {
+  const formattedDate = projectedDate.toLocaleString("en-GB", {
     year: "numeric",
     month: "short",
     day: "numeric",
