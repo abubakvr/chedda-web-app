@@ -196,7 +196,7 @@ export const TransactionDetails = ({
               />
             </div>
             <div>
-              <p className="font-bold text-sm md:text-lguppercase">
+              <p className="font-bold text-sm md:text-lg uppercase">
                 {amountToSend} {selectedToken.symbol}
               </p>
               <p className="font-bold text-[10px] md:text-xs mt-0.5 text-[#FFFFFF70]">
