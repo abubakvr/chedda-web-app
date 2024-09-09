@@ -40,9 +40,9 @@ const InfoItem = ({ title, value, isLoading, subValue }: InfoItemProps) => (
       <div className="lg:space-y-2">
         <p className="text-sm lg:text-2xl text-white font-bold">{value}</p>
         {subValue && (
-          <p className="text-[10px] lg:text-sm text-[#FFFFFF70] w-max">
+          <div className="text-[10px] lg:text-sm text-[#FFFFFF70] w-max">
             {subValue}
-          </p>
+          </div>
         )}
       </div>
     )}
