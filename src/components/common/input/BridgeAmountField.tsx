@@ -96,7 +96,7 @@ export const BridgeAmountField: FC<InputWithMaxButtonProps> = ({
           </>
         )}
       </div>
-      <div className="w-full flex py-1.5 md:py-2 px-3 lg:px-4 justify-between">
+      <div className="w-full flex py-1.5 md:py-2 px-3 lg:px-4 justify-between items-center">
         <div className="relative w-full pr-2">
           <input
             type="text"

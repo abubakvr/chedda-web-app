@@ -111,7 +111,7 @@ export const HeaderComponent: React.FC = () => {
               <Link
                 key={index}
                 href={item.path}
-                className="relative hover:opacity-80"
+                className="relative hover:opacity-75 transition-all duration-300"
               >
                 <div data-testid={`menu-item-${index}`}>{item.name}</div>
                 {pathname.startsWith(item.path) ? (

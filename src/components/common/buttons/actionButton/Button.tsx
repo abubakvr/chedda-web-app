@@ -109,7 +109,7 @@ export const Button: FC<ButtonProps> = ({
           isLoading || disabled
             ? "opacity-50 hover:opacity-50"
             : "hover:opacity-80 "
-        }  font-bold flex justify-center gap-x-3 ${className} `}
+        }  font-bold flex justify-center gap-x-3 ${className} transition-all duration-500`}
         onClick={handleButtonClick}
         disabled={isLoading || disabled}
       >

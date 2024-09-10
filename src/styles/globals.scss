@@ -132,6 +132,9 @@ body {
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
+  -webkit-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .success-toast::before {
@@ -407,9 +410,62 @@ input:checked + .slider:before {
 
 .token-select,
 .bridge-box,
-.market-card,
 .token-select-active {
   position: relative;
+}
+
+.market-card {
+  position: relative;
+  background: var(--card-bg);
+  transition: all 0.5s ease; /* Remove invalid properties */
+}
+
+.market-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px;
+  background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: opacity 0.5s ease; /* Only animate opacity */
+}
+
+.market-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px;
+  background: linear-gradient(68.02deg, #54d0fa10 40%, #b854dd 84%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: opacity 0.5s ease; /* Only animate opacity */
+}
+
+.market-card::before {
+  z-index: 1;
+  opacity: 1; /* Default visible */
+}
+
+.market-card::after {
+  z-index: 2;
+  opacity: 0; /* Initially hidden */
+}
+
+.market-card:hover::before {
+  opacity: 0; /* Fade out the ::before pseudo-element */
+}
+
+.market-card:hover::after {
+  opacity: 1; /* Fade in the ::after pseudo-element */
 }
 
 .token-select:hover,
@@ -582,11 +638,6 @@ input:checked + .slider:before {
   color: #ffffff70;
   font-size: 14px;
   font-weight: 500;
-}
-
-.market-card:hover::before {
-  background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
-  transition: opacity 0.7s ease; /* Smooth transition for the hover effect */
 }
 
 /* In your CSS file or <style> tag */

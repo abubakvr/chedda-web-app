@@ -35,7 +35,7 @@ describe("NavDropdown component", () => {
       getByTestId("nav-dropdown").querySelector(".more-container");
     const dropdownMenu = getByTestId("dropdown-menu");
 
-    expect(dropdownMenu).toHaveClass("hidden");
+    expect(dropdownMenu).toHaveClass("invisible");
 
     fireEvent.click(moreButton!);
 
@@ -52,6 +52,6 @@ describe("NavDropdown component", () => {
     expect(dropdownMenu).toHaveClass("visible");
 
     fireEvent.click(moreButton!); // Click outside the dropdown menu
-    expect(dropdownMenu).toHaveClass("hidden");
+    expect(dropdownMenu).toHaveClass("invisible");
   });
 });

@@ -46,13 +46,15 @@ export const NavDropdown: React.FC<DropdownMenuProps> = ({ menuItems }) => {
         </span>
       </button>
       <ul
-        className={`more-dropdown p-2 transition-all absolute mt-1 w-28 left-0 bg-[#201D47] menu-ng text-white rounded-sm shadow-lg z-10 font-bold ${openMoreMenu ? "visible" : "hidden"}`}
+        className={`more-dropdown p-2 transition-all duration-300 ease-in-out absolute mt-1 w-28 left-0 bg-[#201D47] menu-ng text-white rounded-sm shadow-lg z-10 font-bold ${
+          openMoreMenu ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
         data-testid="dropdown-menu"
       >
         {menuItems.map((item, index) => (
           <li
             key={index}
-            className="w-full py-1 px-2 relative flex items-center rounded-sm  hover:bg-[#4c37a740]"
+            className="w-full py-1 px-2 relative flex items-center rounded-sm hover:bg-[#4c37a740]"
           >
             <a
               href={item.url}
