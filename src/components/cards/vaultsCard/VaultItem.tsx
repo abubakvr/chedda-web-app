@@ -31,7 +31,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
       <Link href={`/markets/${pool.pool}`} passHref prefetch={true}>
         <div
           data-testid="vault-item"
-          className="market-card rounded-lg w-full xl:px-7 xl:py-5 text-white hover:opacity-90"
+          className="market-card rounded-lg w-full xl:px-7 xl:py-5 text-white hover:opacity-90 cursor-pointer p-4 xl:p-6 transition-all"
         >
           <div className="flex justify-between">
             <div className="flex items-center gap-x-2">

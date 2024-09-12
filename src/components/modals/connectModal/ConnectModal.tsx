@@ -1,4 +1,5 @@
-import { useCallback, useEffect } from "react";
+"use client";
+import { useCallback } from "react";
 import coinbase_Logo from "@/assets/images/coinbase_Logo.png";
 import metamask_Logo from "@/assets/svg/metamask_Logo.svg";
 import walletconnect_Logo from "@/assets/svg/walletconnect_Logo.svg";

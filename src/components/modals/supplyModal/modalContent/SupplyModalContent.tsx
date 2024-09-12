@@ -1,3 +1,4 @@
+"use client";
 import React, {
   ChangeEvent,
   Dispatch,
@@ -16,13 +17,13 @@ interface DepositSectionProps {
   asset: IToken;
   assetPrice: number;
   allowance: number;
+  amount: number;
   modalInfo: ReactElement<any, any>;
-  buttonAction: (useAsCollateral: boolean) => void;
   isTransactionLoading: boolean;
   clearInputField: boolean;
+  buttonAction: (useAsCollateral: boolean) => void;
   setClearInputField: Dispatch<SetStateAction<boolean>>;
   setAmount: Dispatch<SetStateAction<number>>;
-  amount: number;
 }
 
 export const SupplyModalContent: FC<DepositSectionProps> = ({
@@ -32,12 +33,12 @@ export const SupplyModalContent: FC<DepositSectionProps> = ({
   assetPrice,
   modalInfo,
   allowance,
-  buttonAction,
+  amount,
   isTransactionLoading,
   clearInputField,
+  buttonAction,
   setClearInputField,
   setAmount,
-  amount,
 }) => {
   const [useAsCollateral, setUseAsCollateral] = useState(true);
 

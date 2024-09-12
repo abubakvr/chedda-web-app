@@ -1,4 +1,5 @@
-import React, { Dispatch, SetStateAction } from "react";
+"use client";
+import React from "react";
 import SuccessIcon from "@/assets/icon/success-icon.svg";
 import Image from "next/image";
 import { Button } from "@/components/common";

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { AppProviders } from "@/components/AppProviders/AppProviders";
 import { AppHeader } from "@/layout";
 import { headers } from "next/headers";
+import { WelcomeModal } from "@/components/modals";
 
 export const metadata: Metadata = {
   title: "Chedda Markets",
@@ -21,6 +22,7 @@ export default function RootLayout({
       <body suppressHydrationWarning={true}>
         <AppProviders nonce={nonce}>
           <AppHeader />
+          <WelcomeModal />
           <div className="py-20 xl:pt-24 pb-10 ">{children}</div>
         </AppProviders>
       </body>

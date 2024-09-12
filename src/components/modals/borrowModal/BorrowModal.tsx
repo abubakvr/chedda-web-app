@@ -1,3 +1,4 @@
+"use client";
 import React, { FC, useCallback, useState } from "react";
 import { IToken } from "@/utils/types";
 import { DepositTab, WithdrawTab, BorrowTab, RepayTab } from "./Tabs";

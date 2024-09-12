@@ -16,6 +16,7 @@ interface ButtonProps {
   isLoading?: boolean;
   disabled?: boolean;
   onClick: () => void;
+  ignoreChecks?: boolean;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -26,6 +27,7 @@ export const Button: FC<ButtonProps> = ({
   isLoading,
   disabled,
   onClick,
+  ignoreChecks = false,
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [openWalletModal, setOpenWalletModal] = useState(false);
@@ -44,6 +46,12 @@ export const Button: FC<ButtonProps> = ({
   const pathname = usePathname();
 
   const handleButtonClick = () => {
+    //Ignore checks where wallet connection is not needed
+    if (ignoreChecks) {
+      onClick();
+      return;
+    }
+
     if (!account) {
       setOpenDialog(true);
       setDialogDetails({
@@ -93,9 +101,9 @@ export const Button: FC<ButtonProps> = ({
         data-testid="custom-button"
         className={`${
           type === "primary"
-            ? "primary-button text-xs md:text-sm xl:text-xl uppercase"
+            ? "primary-button text-xs md:text-sm lg:text-lg xl:text-xl uppercase"
             : type === "secondary"
-              ? "secondary-button button-gradient-text text-xs md:text-sm xl:text-xl uppercase"
+              ? "secondary-button button-gradient-text text-xs md:text-sm lg:text-lg xl:text-xl uppercase"
               : type === "tertiary"
                 ? "modal-button text-[8px] md:text-[8px] xl:text-sm h-auto"
                 : ""
