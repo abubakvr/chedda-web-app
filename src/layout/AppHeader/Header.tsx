@@ -85,7 +85,7 @@ export const HeaderComponent: React.FC = () => {
             chainName={currentEnvironment?.environmentName}
           />
         )}
-        <div className="flex h-16 lg:h-20 xl:h-24 flex-row justify-between w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto items-center">
+        <div className="flex h-16 lg:h-20 xl:h-24 flex-row justify-between w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-[1600px] mx-auto items-center">
           <div>
             <Image
               style={{ color: "" }}

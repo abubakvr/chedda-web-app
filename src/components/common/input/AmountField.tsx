@@ -65,7 +65,7 @@ export const AmountField: FC<InputWithMaxButtonProps> = ({
   const maxActive = inputValue === maxValue;
 
   return (
-    <div className="py-2 px-3 lg:px-4 rounded-lg border-[1.5px] border-[#8080CC] mt-2 lg:mt-3 flex justify-between">
+    <div className="py-2 px-3 lg:px-4 rounded-lg border-[1.5px] border-[#8080CC] mt-2 lg:mt-3 flex justify-between items-center">
       <div className="relative w-full">
         <input
           type="text"

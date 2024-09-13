@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import arrowForward from "@/assets/icon/arrow-forward.svg";
+import LinkOut from "@/assets/icon/link-out-gradient.svg";
 
 import { Card } from "@/components/common";
 import { ConnectWalletBox } from "./ConnectWalletBox";
@@ -39,9 +40,9 @@ const InfoItem = ({ title, value, isLoading, subValue }: InfoItemProps) => (
       <div className="lg:space-y-2">
         <p className="text-sm lg:text-2xl text-white font-bold">{value}</p>
         {subValue && (
-          <p className="text-[10px] lg:text-sm text-[#FFFFFF70] w-max">
+          <div className="text-[10px] lg:text-sm text-[#FFFFFF70] w-max">
             {subValue}
-          </p>
+          </div>
         )}
       </div>
     )}
@@ -91,9 +92,20 @@ export const CheddaInfo = ({
               title="CHEDDA PRICE"
               value={`$${formatLargeNumber(parsedCheddaTokenPrice)}`}
               subValue={
-                <span className="underline card-gradient-text">
-                  See market trend
-                </span>
+                <a
+                  href="#"
+                  className="flex gap-x-1 items-center relative hover:opacity-80"
+                >
+                  <span className="underline card-gradient-text">
+                    See market trend
+                  </span>
+                  <Image
+                    style={{ color: "" }}
+                    src={LinkOut}
+                    alt="link out"
+                    className="w-3 h-3 lg:w-4 lg:h-4"
+                  />
+                </a>
               }
               isLoading={isLoading}
             />

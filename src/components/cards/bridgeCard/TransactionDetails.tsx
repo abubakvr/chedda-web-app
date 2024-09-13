@@ -1,5 +1,5 @@
 import Image, { StaticImageData } from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import leftIcon from "@/assets/icon/left-icon.svg";
 import linkOut from "@/assets/icon/link-out-grey.svg";
 import loadingIcon from "@/assets/icon/gradient-loading-icon.svg";
@@ -59,11 +59,8 @@ export const TransactionDetails = ({
     router.push("/markets");
   };
 
-  const txCompleted =
-    txDetails.status === MessageStatus.DELIVERED ||
-    txDetails.status === MessageStatus.FAILED;
-
-  const getTxMessages = async () => {
+  const [txCompleted, setTxCompleted] = useState(false);
+  const getTxMessages = useCallback(async () => {
     try {
       const client = createClient("testnet");
       const { messages } = await client.getMessagesBySrcTxHash(txHash);
@@ -81,10 +78,12 @@ export const TransactionDetails = ({
         case MessageStatus.DELIVERED:
           message = "Transaction Delivered";
           icon = checkIcon;
+          setTxCompleted(true);
           break;
         case MessageStatus.FAILED:
           message = "Transaction Failed";
           icon = failIcon;
+          setTxCompleted(true);
           break;
         case MessageStatus.BLOCKED:
           message = "Transaction Blocked";
@@ -97,6 +96,7 @@ export const TransactionDetails = ({
         case MessageStatus.PAYLOAD_STORED:
           message = "Transaction Error";
           icon = errorIcon;
+          setTxCompleted(true);
           break;
         case undefined:
           message = "Processing Transaction";
@@ -104,6 +104,7 @@ export const TransactionDetails = ({
           break;
         default:
           message = "Transaction Error";
+          setTxCompleted(true);
           icon = errorIcon;
           break;
       }
@@ -123,7 +124,7 @@ export const TransactionDetails = ({
         icon: errorIcon,
       });
     }
-  };
+  }, [txHash, setTxCompleted, setTxDetails]);
 
   useEffect(() => {
     const pollingInterval = 5000;
@@ -151,7 +152,7 @@ export const TransactionDetails = ({
       clearInterval(intervalId);
       clearTimeout(timeoutId);
     };
-  });
+  }, [txCompleted, getTxMessages]);
 
   return (
     <div>
@@ -196,7 +197,7 @@ export const TransactionDetails = ({
               />
             </div>
             <div>
-              <p className="font-bold text-sm md:text-lguppercase">
+              <p className="font-bold text-sm md:text-lg uppercase">
                 {amountToSend} {selectedToken.symbol}
               </p>
               <p className="font-bold text-[10px] md:text-xs mt-0.5 text-[#FFFFFF70]">
