@@ -131,7 +131,10 @@ export const HeaderComponent: React.FC = () => {
             />
             <ProfileMenu account={account} data-testid="profile-menu" />
             <div className="flex md:hidden hover:opacity-75 pl-1">
-              <button onClick={() => setNavOpen(true)}>
+              <button
+                onClick={() => setNavOpen(true)}
+                data-testid="mobile-menu-button"
+              >
                 <Image
                   style={{ color: "" }}
                   src={MenuIcon}

@@ -145,6 +145,7 @@ export interface ISummaryStats {
 export interface HookResult<T> {
   data: T | undefined;
   isLoading: boolean;
+  isError: boolean;
   fetchData: (showLoading?: boolean) => void;
 }
 

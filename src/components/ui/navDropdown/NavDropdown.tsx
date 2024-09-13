@@ -33,6 +33,7 @@ export const NavDropdown: React.FC<DropdownMenuProps> = ({ menuItems }) => {
       <button
         className="more-container"
         onClick={() => setOpenMoreMenu(!openMoreMenu)}
+        data-testid="nav-dropdown-button"
       >
         <span className="flex items-center gap-x-1.5 hover:opacity-80">
           <p className="hidden lg:flex">More</p>

@@ -6,12 +6,17 @@ import { mockPoolStateEvents } from "@/utils/Mocks/MockTestData";
 
 jest.mock("ethers");
 jest.mock("recharts");
-jest.mock("../../../../hooks", () => ({
-  usePoolState: jest.fn(),
+jest.mock("../../../../hooks");
+
+// Mocking the utilities
+jest.mock("../../../../utils/formatters", () => ({
+  formatAsPercentage: jest.fn((value: number) => `${value}%`),
+  formatLargeNumber: jest.fn((value: number) => `${value}`),
+  parseBigNumberToFloat: jest.fn((value: string) => parseFloat(value)),
+  toFixedTrunc: jest.fn((value: number) => value.toFixed(2)),
 }));
 
 describe("SuppyAndBorrowChart", () => {
-  const mockPoolId = "mockPoolId";
   const mockDecimals = 18;
 
   beforeEach(() => {
@@ -64,5 +69,11 @@ describe("SuppyAndBorrowChart", () => {
         screen.queryByTestId("supply-borrow-chart")
       ).not.toBeInTheDocument();
     });
+  });
+
+  test("renders loading state correctly", () => {
+    render(<SuppyAndBorrowChart isLoading={true} data={undefined} />);
+    expect(screen.getByTestId("loading-container")).toBeInTheDocument();
+    expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
   });
 });

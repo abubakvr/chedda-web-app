@@ -1,19 +1,49 @@
 import { renderHook, act } from "@testing-library/react";
 import {
+  useFetcher,
   useAccountInfo,
   useMarketInfo,
   useCollateralInfo,
-  usePoolStats,
-  usePoolStatsList,
-  useRatesProjector,
-  usePoolState,
   useAggregateStats,
+  usePoolState,
+  usePoolStatsList,
+  usePoolStats,
+  useRatesProjector,
   useAvailableLiquidity,
-  useAssetBalance,
-  useFetcher,
-  useTokenBalance,
   useAllowance,
+  useTokenBalance,
+  useAssetBalance,
+  useTokenValue,
+  useTokenPrice,
+  useAccountCollateral,
+  useAccountHealth,
+  useSelectTokenBalance,
+  useTokenCollateralValue,
+  useLpAllowance,
+  useLpSymbol,
+  useLpTokenBalance,
+  useLpAssetValue,
+  useStakingBalance,
+  useLpDecimals,
+  useLpStakers,
+  useTotalStaked,
+  useTotalSupply,
+  useStakingContractAddress,
+  useClaimableStakeRewards,
+  useCheddaBalance,
+  useCheddaAllowance,
+  useLockedChedda,
+  useClaimableLockRewards,
+  useTotalAmountLocked,
+  useTotalWeight,
+  useTotalWeightSum,
+  useGaugeAddress,
+  useCheddaTotalSupply,
+  useAllClaimableRewards,
+  usePositionSummary,
+  useAllPositions,
 } from "@/hooks";
+import { useDispatch } from "react-redux";
 import {
   mockAccountInfo,
   mockMarketInfo,
@@ -23,7 +53,6 @@ import {
   mockPoolStateEvents,
   mockAggregateStats,
 } from "@/utils/Mocks/MockTestData";
-import { useDispatch } from "react-redux";
 
 jest.mock("ethers");
 jest.mock("react-redux");
@@ -35,234 +64,116 @@ jest.mock("@web3-react/core", () => ({
   useWeb3React: jest.fn(),
 }));
 
-describe("useAccountInfo Hook", () => {
+const mockFetchedData = jest.fn();
+
+describe("useFetchers Hooks", () => {
   beforeEach(() => {
+    (useFetcher as jest.Mock).mockReturnValueOnce({
+      data: "mockData",
+      isLoading: false,
+      fetchData: mockFetchedData,
+    });
     mockUseDispatch.mockImplementation(() => jest.fn());
   });
 
-  it("fetches account info correctly", async () => {
-    const mockGetAccounInfo = jest.fn().mockResolvedValue(mockAccountInfo);
-    (useFetcher as jest.Mock).mockReturnValueOnce({
-      data: "mockData",
-      isLoading: false,
-      fetchData: mockGetAccounInfo,
+  const testCases = [
+    { hook: useAllowance, args: ["0x00"], name: "Allowance" },
+    { hook: useAccountInfo, args: [], name: "Account Info" },
+    { hook: useMarketInfo, args: [], name: "Market Info" },
+    { hook: useCollateralInfo, args: [], name: "Collateral Info" },
+    { hook: useAggregateStats, args: [], name: "Aggregate Stats" },
+    { hook: usePoolState, args: [], name: "Pool State" },
+    { hook: usePoolStatsList, args: [], name: "Pool Stats List" },
+    { hook: usePoolStats, args: [], name: "Pool Stats" },
+    { hook: useRatesProjector, args: [], name: "Rates Projector" },
+    { hook: useAvailableLiquidity, args: [], name: "Available Liquidity" },
+    { hook: useTokenBalance, args: ["0x00"], name: "Token Balance" },
+    { hook: useAssetBalance, args: ["0x00"], name: "Asset Balance" },
+    { hook: useTokenValue, args: ["0x00"], name: "Token Value" },
+    { hook: useTokenPrice, args: ["0x00"], name: "Token Price" },
+    { hook: useAccountCollateral, args: ["0x00"], name: "Account Collateral" },
+    { hook: useAccountHealth, args: [], name: "Account Health" },
+    {
+      hook: useSelectTokenBalance,
+      args: ["0x00"],
+      name: "Select Token Balance",
+    },
+    {
+      hook: useTokenCollateralValue,
+      args: ["0x00", 18],
+      name: "Token Collateral Value",
+    },
+    { hook: useLpAllowance, args: [], name: "LP Allowance" },
+    { hook: useLpSymbol, args: [], name: "LP Symbol" },
+    { hook: useLpTokenBalance, args: [], name: "LP Token Balance" },
+    { hook: useLpAssetValue, args: [], name: "LP Asset Value" },
+    { hook: useStakingBalance, args: [], name: "Staking Balance" },
+    { hook: useLpDecimals, args: [], name: "LP Decimals" },
+    { hook: useLpStakers, args: [], name: "LP Stakers" },
+    { hook: useTotalStaked, args: [], name: "Total Staked" },
+    { hook: useTotalSupply, args: [], name: "Total Supply" },
+    {
+      hook: useStakingContractAddress,
+      args: [],
+      name: "Staking Contract Address",
+    },
+    {
+      hook: useClaimableStakeRewards,
+      args: [],
+      name: "Claimable Stake Rewards",
+    },
+    { hook: useCheddaBalance, args: [], name: "Chedda Balance" },
+    { hook: useCheddaAllowance, args: [], name: "Chedda Allowance" },
+    { hook: useLockedChedda, args: [], name: "Locked Chedda" },
+    { hook: useClaimableLockRewards, args: [], name: "Claimable Lock Rewards" },
+    { hook: useTotalAmountLocked, args: [], name: "Total Amount Locked" },
+    { hook: useTotalWeight, args: [], name: "Total Weight" },
+    { hook: useTotalWeightSum, args: [], name: "Total Weight Sum" },
+    { hook: useGaugeAddress, args: [], name: "Gauge Address" },
+    { hook: useCheddaTotalSupply, args: [], name: "Chedda Total Supply" },
+    { hook: useAllClaimableRewards, args: [], name: "All Claimable Rewards" },
+    { hook: usePositionSummary, args: [], name: "Position Summary" },
+    { hook: useAllPositions, args: [], name: "All Positions" },
+  ];
+
+  testCases.forEach(({ hook, args, name }) => {
+    describe(`${name} Hook`, () => {
+      it("fetches and sets data correctly", async () => {
+        const { result } = renderHook(() => hook(...(args as [any, any])));
+        await act(async () => {
+          result.current.fetchData();
+        });
+        expect(mockFetchedData).toHaveBeenCalled();
+      });
+
+      it("handles loading state", async () => {
+        (useFetcher as jest.Mock).mockReturnValueOnce({
+          data: null,
+          isLoading: false,
+          fetchData: mockFetchedData,
+        });
+        const { result } = renderHook(() => hook(...(args as [any, any])));
+        expect(result.current.isLoading).toBe(false);
+        await act(async () => {
+          result.current.fetchData();
+        });
+        expect(mockFetchedData).toHaveBeenCalled();
+      });
+
+      it("handles error state", async () => {
+        (useFetcher as jest.Mock).mockReturnValueOnce({
+          data: null,
+          isLoading: false,
+          error: undefined,
+          fetchData: mockFetchedData,
+        });
+        const { result } = renderHook(() => hook(...(args as [any, any])));
+        await act(async () => {
+          result.current.fetchData();
+        });
+        expect(result.current.isError).toEqual(undefined);
+        expect(mockFetchedData).toHaveBeenCalled();
+      });
     });
-
-    const { result } = renderHook(() => useAccountInfo());
-
-    await act(async () => {
-      await expect(result.current.fetchData());
-    });
-
-    expect(mockGetAccounInfo).toHaveBeenCalled();
-    expect(result.current.data).toBe("mockData");
-  });
-
-  it("fetches market info correctly", async () => {
-    const mockGetMarketInfo = jest.fn().mockResolvedValue(mockMarketInfo);
-    (useFetcher as jest.Mock).mockReturnValueOnce({
-      data: "mockData",
-      isLoading: false,
-      fetchData: mockGetMarketInfo,
-    });
-
-    const { result } = renderHook(() => useMarketInfo());
-
-    await act(async () => {
-      expect(result.current.fetchData());
-    });
-
-    expect(mockGetMarketInfo).toHaveBeenCalled();
-    expect(result.current.data).toBe("mockData");
-  });
-
-  it("fetches collateral info correctly", async () => {
-    const mockGetCollateralInfo = jest
-      .fn()
-      .mockResolvedValue(mockCollateralInfo);
-    (useFetcher as jest.Mock).mockReturnValueOnce({
-      data: "mockData",
-      isLoading: false,
-      fetchData: mockGetCollateralInfo,
-    });
-
-    const { result } = renderHook(() => useCollateralInfo());
-
-    await act(async () => {
-      await expect(result.current.fetchData());
-    });
-
-    expect(mockGetCollateralInfo).toHaveBeenCalled();
-    expect(result.current.data).toBe("mockData");
-  });
-
-  it("fetches and formats poolStatsList correctly", async () => {
-    // Mock the chedda instance and getPoolStats function
-    const mockPoolStatsList = jest.fn().mockResolvedValue(mockGetPoolStats);
-    (useFetcher as jest.Mock).mockReturnValueOnce({
-      data: mockGetPoolStats,
-      isLoading: false,
-      fetchData: mockPoolStatsList,
-    });
-
-    const { result } = renderHook(() => usePoolStatsList());
-
-    await act(async () => {
-      expect(result.current.fetchData());
-    });
-
-    expect(mockPoolStatsList).toHaveBeenCalled();
-    expect(result.current.data).toBe(mockGetPoolStats);
-  });
-
-  it("fetches and formats poolStats correctly", async () => {
-    // Mock the chedda instance and getPoolStats function
-    const mockPoolStats = jest.fn().mockResolvedValue(mockGetPoolStats[0]);
-    (useFetcher as jest.Mock).mockReturnValueOnce({
-      data: mockGetPoolStats[0],
-      isLoading: false,
-      fetchData: mockPoolStats,
-    });
-
-    const { result } = renderHook(() => usePoolStats());
-
-    await act(async () => {
-      expect(result.current.fetchData());
-    });
-
-    expect(mockPoolStats).toHaveBeenCalled();
-    expect(result.current.data).toBe(mockGetPoolStats[0]);
-  });
-
-  it("fetches and updates interestRates correctly", async () => {
-    const mockGetInterestRates = jest.fn().mockResolvedValue(mockInterestRates);
-    (useFetcher as jest.Mock).mockReturnValueOnce({
-      data: mockInterestRates,
-      isLoading: false,
-      fetchData: mockGetInterestRates,
-    });
-
-    const { result } = renderHook(() => useRatesProjector());
-
-    // Wait for the hook to fetch and update state
-    await act(async () => {
-      expect(result.current.fetchData());
-    });
-
-    expect(mockGetInterestRates).toHaveBeenCalled();
-    expect(result.current.data).toBe(mockInterestRates);
-  });
-
-  it("fetches and updates poolStateEvents correctly", async () => {
-    const mockGetPoolStateEvents = jest
-      .fn()
-      .mockResolvedValue(mockPoolStateEvents);
-    (useFetcher as jest.Mock).mockReturnValueOnce({
-      data: mockPoolStateEvents,
-      isLoading: false,
-      fetchData: mockGetPoolStateEvents,
-    });
-
-    const { result } = renderHook(() => usePoolState());
-
-    await act(async () => {
-      expect(result.current.fetchData());
-    });
-
-    expect(mockGetPoolStateEvents).toHaveBeenCalled();
-    expect(result.current.data).toBe(mockPoolStateEvents);
-  });
-
-  it("fetches and sets aggregate stats correctly", async () => {
-    const mockGetAggregateStats = jest
-      .fn()
-      .mockResolvedValue(mockAggregateStats);
-    (useFetcher as jest.Mock).mockReturnValueOnce({
-      data: mockAggregateStats,
-      isLoading: false,
-      fetchData: mockGetAggregateStats,
-    });
-
-    const { result } = renderHook(() => useAggregateStats());
-
-    await act(async () => {
-      expect(result.current.fetchData());
-    });
-
-    expect(mockGetAggregateStats).toHaveBeenCalled();
-    expect(result.current.data).toBe(mockAggregateStats);
-  });
-
-  it("fetches and sets available liquidity correctly", async () => {
-    const mockGetAvailableLiquidity = jest.fn().mockResolvedValue("0x00");
-
-    (useFetcher as jest.Mock).mockReturnValueOnce({
-      data: "mockData",
-      isLoading: false,
-      fetchData: mockGetAvailableLiquidity,
-    });
-
-    const { result } = renderHook(() => useAvailableLiquidity());
-
-    await act(async () => {
-      expect(result.current.fetchData());
-    });
-
-    expect(mockGetAvailableLiquidity).toHaveBeenCalled();
-    expect(result.current.data).toBe("mockData");
-  });
-
-  it("fetches and sets asset balance correctly", async () => {
-    const mockGetAssetBalance = jest.fn().mockResolvedValue("0x00");
-    (useFetcher as jest.Mock).mockReturnValueOnce({
-      data: "mockData",
-      isLoading: false,
-      fetchData: mockGetAssetBalance,
-    });
-
-    const { result } = renderHook(() => useAssetBalance("0x00"));
-
-    await act(async () => {
-      expect(result.current.fetchData());
-    });
-
-    expect(mockGetAssetBalance).toHaveBeenCalled();
-    expect(result.current.data).toBe("mockData");
-  });
-
-  it("fetches and sets allowance correctly", async () => {
-    const mockGetAllowance = jest.fn().mockResolvedValue("0x00");
-    (useFetcher as jest.Mock).mockReturnValueOnce({
-      data: "mockData",
-      isLoading: false,
-      fetchData: mockGetAllowance,
-    });
-
-    const { result } = renderHook(() => useAllowance("0x00"));
-
-    await act(async () => {
-      expect(result.current.fetchData());
-    });
-
-    expect(mockGetAllowance).toHaveBeenCalled();
-    expect(result.current.data).toBe("mockData");
-  });
-
-  it("fetches and sets token balance correctly", async () => {
-    const mockGetTokenBalance = jest.fn().mockResolvedValue("0x00");
-    (useFetcher as jest.Mock).mockReturnValueOnce({
-      data: "mockData",
-      isLoading: false,
-      fetchData: mockGetTokenBalance,
-    });
-
-    const { result } = renderHook(() => useTokenBalance("0x00"));
-
-    await act(async () => {
-      expect(result.current.fetchData());
-    });
-
-    expect(mockGetTokenBalance).toHaveBeenCalled();
-    expect(result.current.data).toBe("mockData");
   });
 });

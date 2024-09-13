@@ -20,8 +20,8 @@ export const useFetcher = <T = any,>(
   decimals?: number
 ) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { chedda } = useCheddaSdk();
   const pathname = usePathname();
+  const { chedda } = useCheddaSdk();
   const { account } = useWeb3React();
   const { poolId } = useParams();
   const { signer } = useSigner();
@@ -102,7 +102,6 @@ export const useFetcher = <T = any,>(
       if (errorCountRef.current === 0) {
         fetchDataCallback();
         errorCountRef.current += 1; // Increment error count after first fetch
-        console.log(errorCountRef.current);
       } else if (errorCountRef.current === 1) {
         addToast({
           message: "An error occurred.",

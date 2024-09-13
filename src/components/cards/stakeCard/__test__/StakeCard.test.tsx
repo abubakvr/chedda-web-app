@@ -1,11 +1,4 @@
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  act,
-} from "@testing-library/react";
-import { StaticImageData } from "next/image";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { StakeCard } from "../StakeCard";
 import {
   useAllowance,
@@ -16,160 +9,200 @@ import {
   useTransaction,
 } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
-import { ethers } from "ethers";
 
-jest.mock("ethers");
-jest.mock("../../../../hooks");
+jest.mock("../../../../hooks", () => ({
+  ...jest.requireActual("../../../../hooks"), // Use the actual implementation of the hooks module
+  useTransaction: jest.fn().mockImplementation(() => ({
+    lockMoreCheddaToken: jest.fn(),
+    approveCheddaToken: jest.fn(),
+    relockCheddaToken: jest.fn(),
+  })),
+  useToast: jest.fn().mockImplementation(() => ({
+    addToast: jest.fn(),
+  })),
+  useAllowance: jest.fn(),
+  useAssetBalance: jest.fn(),
+  useTokenBalance: jest.fn(),
+  useAvailableLiquidity: jest.fn(),
+}));
+
+jest.mock("@web3-react/core", () => ({
+  ...jest.requireActual("@web3-react/core"),
+  useWeb3React: jest.fn(() => ({
+    account: "0x123",
+    chainId: 1,
+    isActivating: false,
+  })),
+}));
+jest.mock("next/navigation", () => ({
+  ...jest.requireActual("next/navigation"),
+  usePathname: jest.fn(() => "/bridge"),
+}));
+
 jest.mock("chedda-sdk");
 
-const mockAsset = {
-  name: "Token3",
-  symbol: "T3",
-  address: "0xfed321",
-  logo: {} as StaticImageData,
-  decimals: 18,
-  color: "#ffffff",
-};
+jest.spyOn(window, "alert").mockImplementation(() => {});
+
+const MockApproveLpToken = jest.fn();
+const MockStakeLpToken = jest.fn();
+const MockUnstakeLpToken = jest.fn();
 
 const mockProps = {
   assetSymbol: "ETH",
   lpSymbol: "chETH",
   lpDecimals: 18,
-  lpAssetValue: BigInt("50"),
-  lpAllowance: BigInt("50"),
-  lpStakingBalance: BigInt("50"),
-  lpTokenBalance: BigInt("50"),
+  lpAssetValue: BigInt("50000000000000000000"),
+  lpAllowance: BigInt("500000000000000000000"),
+  lpStakingBalance: BigInt("50000000000000000000000"),
+  lpTokenBalance: BigInt("50000000000000000000000"),
+  lpAllowanceLoading: false,
   assetValue: 10000,
   defaultTab: "Pool",
   updateCard: jest.fn(),
   fetchLpAllowance: jest.fn(),
 };
 
-jest.spyOn(window, "alert").mockImplementation(() => {});
-
-describe("StakeCard", () => {
+describe("Stake Tab", () => {
   beforeEach(() => {
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
+    }));
+    (useTransaction as jest.Mock).mockImplementation(() => ({
+      approveLpToken: MockApproveLpToken,
+      stakeLpToken: MockStakeLpToken,
+      unStakeLpToken: MockUnstakeLpToken,
+    }));
     (useAllowance as jest.Mock).mockImplementation(() => ({
       isLoading: false,
-      data: "1000",
+      data: BigInt("500000000000000000000"),
     }));
 
     (useAssetBalance as jest.Mock).mockImplementation(() => ({
       isLoading: false,
-      data: "1000",
+      data: BigInt("500000000000000000000"),
     }));
 
     (useTokenBalance as jest.Mock).mockImplementation(() => ({
       isLoading: false,
-      data: "1000",
+      data: BigInt("500000000000000000000"),
     }));
     (useAvailableLiquidity as jest.Mock).mockImplementation(() => ({
       isLoading: false,
-      data: "1000",
+      data: BigInt("500000000000000000000"),
     }));
 
-    (useTransaction as jest.Mock).mockImplementation(() => ({
-      approveLpToken: jest.fn(),
-      stakeLpToken: jest.fn(),
-    }));
+    render(
+      <MockAppProviders>
+        <StakeCard {...mockProps} />
+      </MockAppProviders>
+    );
+    fireEvent.click(screen.getByTestId("stake-tab"));
+  });
+
+  it("shows error when input amount is invalid", async () => {
+    const inputElement = screen.getByTestId("amount-input");
+    fireEvent.change(inputElement, { target: { value: "0" } });
+
+    const approveButton = screen.getByTestId("custom-button");
+    fireEvent.click(approveButton);
+
+    await waitFor(() => {
+      expect(MockApproveLpToken).not.toHaveBeenCalled();
+      expect(MockStakeLpToken).not.toHaveBeenCalled();
+      expect(window.alert).toHaveBeenCalledWith("Enter valid amount");
+    });
+  });
+
+  it("handles approving chedda lp token", async () => {
+    const inputElement = screen.getByTestId("amount-input");
+    fireEvent.change(inputElement, { target: { value: "6000" } });
+
+    const approveButton = screen.getByText("Approve");
+    fireEvent.click(approveButton);
+
+    await waitFor(() => {
+      expect(MockApproveLpToken).toHaveBeenCalled();
+    });
+  });
+
+  it("handles staking chedda token", async () => {
+    const inputElement = screen.getByTestId("amount-input");
+    fireEvent.change(inputElement, { target: { value: "300" } });
+
+    const stakeButton = screen.getByTestId("custom-button");
+    fireEvent.click(stakeButton);
+
+    await waitFor(() => {
+      expect(MockStakeLpToken).toHaveBeenCalled();
+    });
+  });
+});
+
+describe("Unstake Tab", () => {
+  beforeEach(() => {
     (useToast as jest.Mock).mockImplementation(() => ({
       addToast: jest.fn(),
     }));
+    (useTransaction as jest.Mock).mockImplementation(() => ({
+      approveLpToken: MockApproveLpToken,
+      stakeLpToken: MockStakeLpToken,
+      unStakeLpToken: MockUnstakeLpToken,
+    }));
+    (useAllowance as jest.Mock).mockImplementation(() => ({
+      isLoading: false,
+      data: BigInt("500000000000000000000"),
+    }));
+
+    (useAssetBalance as jest.Mock).mockReturnValue(() => ({
+      isLoading: false,
+      data: BigInt("500000000000000000000"),
+    }));
+
+    (useTokenBalance as jest.Mock).mockReturnValue(() => ({
+      isLoading: false,
+      data: BigInt("500000000000000000000"),
+    }));
+    (useAvailableLiquidity as jest.Mock).mockImplementation(() => ({
+      isLoading: false,
+      data: BigInt("500000000000000000000"),
+    }));
   });
 
-  it("renders stake tab content correctly", async () => {
+  it("displays an error when trying to withdraw more than balance", async () => {
     render(
       <MockAppProviders>
         <StakeCard {...mockProps} />
       </MockAppProviders>
     );
-
-    waitFor(() => {
-      expect(screen.getByTestId("stake-tab")).toHaveClass(
-        "modal-button rounded"
-      );
-
-      expect(screen.getByTestId("stake-content")).toBeInTheDocument();
-
-      expect(screen.queryByTestId("unstake-content")).not.toBeInTheDocument();
-    });
-  });
-
-  it("renders unstake tab content correctly", async () => {
-    render(
-      <MockAppProviders>
-        <StakeCard {...mockProps} />
-      </MockAppProviders>
-    );
-
-    act(() => {
-      // Switch to the unstake tab
-      fireEvent.click(screen.getByTestId("unstake-tab"));
-    });
-
-    waitFor(() => {
-      // Check if the unstake tab is now active
-      expect(screen.getByTestId("unstake-tab")).toHaveClass(
-        "modal-button rounded"
-      );
-
-      expect(screen.getByTestId("unstake-content")).toBeInTheDocument();
-
-      expect(screen.queryByTestId("stake-content")).not.toBeInTheDocument();
-    });
-  });
-
-  it("handles stake action correctly", async () => {
-    render(
-      <MockAppProviders>
-        <StakeCard {...mockProps} />
-      </MockAppProviders>
-    );
-
-    fireEvent.click(screen.getByTestId("stake-tab"));
-
-    expect(screen.getByTestId("stake-tab")).toHaveClass("modal-button rounded");
-
-    // Enter a valid unstake amount
-    const input = screen.queryByTestId("amount-input") as HTMLInputElement;
-
-    act(() => {
-      // Type a value into the input
-      fireEvent.input(input, { target: { value: "0" } });
-
-      fireEvent.click(screen.getByTestId("custom-button"));
-    });
-
-    // Ensure the success modal is opened
-    await waitFor(() =>
-      expect(screen.getByTestId("loading-button-icon")).toBeInTheDocument()
-    );
-  });
-
-  it("handles unstake action correctly", async () => {
-    render(
-      <MockAppProviders>
-        <StakeCard {...mockProps} />
-      </MockAppProviders>
-    );
-
-    // Switch to the unstake tab
     fireEvent.click(screen.getByTestId("unstake-tab"));
 
-    expect(screen.getByTestId("unstake-tab")).toHaveClass(
-      "modal-button rounded"
+    const inputElement = screen.getByTestId("amount-input");
+    fireEvent.change(inputElement, { target: { value: "0" } });
+
+    const unstakeButton = screen.getByTestId("custom-button");
+    fireEvent.click(unstakeButton);
+
+    await waitFor(() => {
+      expect(window.alert).toHaveBeenCalledWith("Enter valid amount");
+    });
+  });
+
+  it("handles withdrawing staked lp tokens", async () => {
+    render(
+      <MockAppProviders>
+        <StakeCard {...mockProps} />
+      </MockAppProviders>
     );
+    fireEvent.click(screen.getByTestId("unstake-tab"));
 
-    const input = screen.queryByTestId("amount-input") as HTMLInputElement;
+    const inputElement = screen.getByTestId("amount-input");
+    fireEvent.change(inputElement, { target: { value: "6000" } });
 
-    // Type a value into the input
-    fireEvent.input(input, { target: { value: "0" } });
+    const unstakeButton = screen.getByTestId("custom-button");
+    fireEvent.click(unstakeButton);
 
-    fireEvent.click(screen.getByTestId("custom-button"));
-
-    // Ensure the success modal is opened
-    await waitFor(() =>
-      expect(screen.getByTestId("loading-button-icon")).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(MockUnstakeLpToken).toHaveBeenCalled();
+    });
   });
 });

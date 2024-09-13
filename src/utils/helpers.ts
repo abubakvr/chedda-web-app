@@ -1,5 +1,5 @@
 import { Chedda } from "chedda-sdk";
-import { ethers, Signer, ErrorCode } from "ethers";
+import { Signer, ErrorCode } from "ethers";
 import { ISourceChain, IToken, IPositionResponse } from "./types";
 
 export function findNearestIndex(sortedArray: number[], targetNumber: number) {
@@ -132,7 +132,7 @@ export function formatProjectedDate(days: number): string {
 }
 
 export function formatDate(projectedDate: Date): string {
-  const formattedDate = projectedDate.toLocaleString(undefined, {
+  const formattedDate = projectedDate.toLocaleString("en-GB", {
     year: "numeric",
     month: "short",
     day: "numeric",

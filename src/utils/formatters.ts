@@ -64,18 +64,19 @@ export const parseBigNumberToFloat = (
     return 0.0;
   }
 
-  const formatted = ethers.formatUnits(val, decimals);
+  try {
+    const formatted = ethers.formatUnits(val, decimals);
+    const parsedValue = parseFloat(formatted);
+    if (isNaN(parsedValue)) {
+      return 0.0;
+    }
 
-  // Use parseFloat directly and add error handling
-  const parsedValue = parseFloat(formatted);
-  if (isNaN(parsedValue)) {
+    const validFloatPoint = Number.isInteger(floatPoint) ? floatPoint : 2;
+    return toFixedTrunc(parsedValue, validFloatPoint ?? 0);
+  } catch (error) {
+    // Handle unexpected errors and return default value
     return 0.0;
   }
-
-  // Check if floatPoint is a valid number, otherwise default to 2
-  const validFloatPoint = Number.isInteger(floatPoint) ? floatPoint : 2;
-
-  return toFixedTrunc(parsedValue, validFloatPoint ?? 0);
 };
 
 /**
@@ -150,7 +151,7 @@ export const formatAsPercentage = (
   floatPlaces?: number
 ) => {
   if (value === undefined) {
-    return "0.00";
+    return "0.00%";
   }
 
   return toFixedTruncString(Number(value) * 100, floatPlaces || 2) + "%";

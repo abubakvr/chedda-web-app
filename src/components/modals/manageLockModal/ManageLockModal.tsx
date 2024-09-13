@@ -231,7 +231,7 @@ export const ManageLockCard: FC<ManageLockCardProps> = ({
                     days: undefined,
                   });
                 }}
-                testId="add-more-tab"
+                testId="manage-add-more-tab"
               />
             </div>
             {activeTab === "ExtendLock" && (
