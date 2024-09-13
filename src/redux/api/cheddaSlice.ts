@@ -86,11 +86,10 @@ export const cheddaSlice = createSlice({
         const existingData =
           state.fetchDataStates[`${hookName} + ${pathname}`]?.data;
         const showLoading =
-          hookName === "getSelectTokenBalance"
-            ? true
-            : action.meta.arg.showLoading ||
-              existingData === undefined ||
-              existingData === null;
+          hookName === "getSelectTokenBalance" ||
+          action.meta.arg.showLoading ||
+          existingData === undefined ||
+          existingData === null;
 
         state.fetchDataStates[`${hookName} + ${pathname}`] = {
           data: existingData ?? undefined,

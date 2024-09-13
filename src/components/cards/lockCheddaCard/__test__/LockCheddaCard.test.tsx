@@ -5,9 +5,8 @@ import {
   waitFor,
   act,
 } from "@testing-library/react";
-
 import { LockCheddaCard } from "../LockCheddaCard";
-import { useTransaction } from "@/hooks";
+import { useToast, useTransaction } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("../../../../hooks");
@@ -30,6 +29,9 @@ describe("LockCheddaCard", () => {
       lockCheddaToken: jest.fn(),
       approveCheddaToken: jest.fn(),
     });
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
+    }));
   });
 
   it("renders Lock tab content correctly", async () => {

@@ -91,7 +91,6 @@ const StakeTab = ({
     lpSymbolLoading ||
     lpAssetLoading ||
     claimableRewardsLoading ||
-    lpAllowanceLoading ||
     lpDecimalsLoading ||
     tokenValueLoading ||
     lpStakersLoading ||

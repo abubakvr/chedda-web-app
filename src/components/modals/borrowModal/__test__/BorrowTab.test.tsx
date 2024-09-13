@@ -10,7 +10,7 @@ import {
 import { BorrowTab, BorrowTabProps } from "../Tabs";
 import { StaticImageData } from "next/image";
 
-import { useTransaction } from "@/hooks";
+import { useToast, useTransaction } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("@web3-react/core", () => ({
@@ -63,6 +63,9 @@ describe("BorrowTab Component", () => {
         isAssetBorrowed: false,
       },
       borrowAsset: mockBorrowAsset,
+    }));
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
     }));
   });
   it("renders BorrowTab component", async () => {

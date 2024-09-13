@@ -3,7 +3,7 @@ import BridgeCard, { IBridgeCardProps } from "../BridgeCard";
 import { render, screen, waitFor } from "@testing-library/react";
 import { WalletConnect } from "@web3-react/walletconnect-v2";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
-import { useBridge } from "@/hooks";
+import { useBridge, useToast } from "@/hooks";
 import { useSearchParams } from "next/navigation";
 import { useLocalStorageGet } from "@/hooks";
 import { ISourceChain, IToken } from "@/utils/types";
@@ -21,6 +21,7 @@ jest.mock("../../../../hooks", () => ({
   })),
   useSwitchChain: jest.fn(),
   useLocalStorageGet: jest.fn(),
+  useToast: jest.fn(),
 }));
 
 jest.mock("@web3-react/core", () => ({
@@ -116,6 +117,9 @@ describe("BridgeCard Component", () => {
         return null;
       }),
     });
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
+    }));
   });
 
   test("renders TokenSelect component when activeScreen is 'tokenselect'", async () => {

@@ -14,6 +14,7 @@ import {
   useAllowance,
   useAvailableLiquidity,
   useSelectTokenBalance,
+  useToast,
   useTokenCollateralValue,
   useTokenValue,
   useTransaction,
@@ -103,6 +104,9 @@ describe("BorrowModal Component", () => {
       },
       approveAsset: jest.fn().mockResolvedValue({ hash: "0x00" }),
       depositCollateral: jest.fn().mockResolvedValue({ hash: "0x00" }),
+    }));
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
     }));
   });
 

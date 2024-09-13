@@ -84,7 +84,7 @@ export const ToastItem: React.FC<ToastItemProps> = ({
   }, [startSlider]);
 
   const copyAddress = useCallback((copyText: string) => {
-    copyToClipboard(copyText)
+    copyToClipboard(JSON.stringify(copyText))
       .then(() => {
         setCopyLabel("Copied");
         setTimeout(() => {
@@ -104,7 +104,7 @@ export const ToastItem: React.FC<ToastItemProps> = ({
             toast.type === "success" ? "success-toast" : "error-toast"
           } rounded-lg shadow-lg w-auto`}
         >
-          <div className="p-4 md:p-5 lg:p-6 md:pb-3 lg:pb-4 pb-3 min-w-[210px] md:min-w-[270px] max-w-[290px] md:max-w-[350px]">
+          <div className="p-4 md:p-5 lg:p-6 md:pb-2 lg:pb-3 pb-2 min-w-[210px] md:min-w-[270px] max-w-[290px] md:max-w-[350px]">
             <button
               className="absolute top-1 right-2 text-xl cursor-pointer text-[#CCD2E3]"
               onClick={() => removeToast(toast.id)}
@@ -122,57 +122,55 @@ export const ToastItem: React.FC<ToastItemProps> = ({
                   ? "Transaction Failed"
                   : toast.type === "fetchError" && "Fetch Error"}
             </div>
-            <div>
-              <div
-                className="w-max text-[10px] md:text-xs lg:text-sm text-[#ffffff70] flex items-start mt-2 gap-x-1"
-                data-testid="toast-message"
-              >
-                {toast.message}
-                {toast.type === "error" ? (
-                  <button
-                    className="hover:opacity-70 relative address-container mt-1"
-                    onClick={() => copyAddress(toast.copyText ?? "")}
-                  >
-                    <Image
-                      style={{ color: "" }}
-                      src={CopyIcon}
-                      alt="copy error message"
-                      className="h-3 w-3 lg:h-4 lg:w-4"
-                    />
-                    <div className="tooltip" data-testid="address-copy-tooltip">
-                      {copyLabel}
-                    </div>
-                  </button>
-                ) : (
-                  toast.type === "fetchError" && (
-                    <button
-                      onClick={() => refreshPage()}
-                      className="w-max relative text-error underline text-[8px] md:text-xs lg:text-sm font-bold hover:opacity-90"
-                      data-testid="buy-chedda-link"
-                    >
-                      refresh page.
-                    </button>
-                  )
-                )}
-              </div>
-              {toast.txHash && (
-                <a
-                  href={`${toast.txPrefix ? toast.txPrefix : currentEnvironment?.txUrlPrefix}/${toast.txHash}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-[10px] md:text-xs text-[#ffffff] flex justify-end items-center gap-x-1 mt-1 md:mt-2 opacity-50 hover:opacity-90"
-                  data-testid="toast-link"
+            <div
+              className="w-fit text-[10px] md:text-xs lg:text-sm text-[#ffffff70] flex items-start mt-2 gap-x-1"
+              data-testid="toast-message"
+            >
+              {toast.message}
+              {toast.type === "error" ? (
+                <button
+                  className="hover:opacity-70 relative address-container mt-0.5"
+                  onClick={() => copyAddress(toast.copyText ?? "")}
                 >
-                  <span>Review tx details</span>
                   <Image
                     style={{ color: "" }}
-                    src={LinkOut}
-                    alt="link out"
-                    className="h-3 w-3"
+                    src={CopyIcon}
+                    alt="copy error message"
+                    className="h-3 w-3 lg:h-4 lg:w-4"
                   />
-                </a>
+                  <div className="tooltip" data-testid="address-copy-tooltip">
+                    {copyLabel}
+                  </div>
+                </button>
+              ) : (
+                toast.type === "fetchError" && (
+                  <button
+                    onClick={() => refreshPage()}
+                    className="w-max relative text-error underline text-[8px] md:text-xs lg:text-sm font-bold hover:opacity-90"
+                    data-testid="buy-chedda-link"
+                  >
+                    refresh page.
+                  </button>
+                )
               )}
             </div>
+            {toast.txHash && (
+              <a
+                href={`${toast.txPrefix ? toast.txPrefix : currentEnvironment?.txUrlPrefix}/${toast.txHash}`}
+                target="_blank"
+                rel="noreferrer"
+                className="text-[10px] md:text-xs text-[#ffffff] flex justify-end items-center gap-x-1 mt-1 md:mt-2 opacity-50 hover:opacity-90"
+                data-testid="toast-link"
+              >
+                <span>Review tx details</span>
+                <Image
+                  style={{ color: "" }}
+                  src={LinkOut}
+                  alt="link out"
+                  className="h-3 w-3"
+                />
+              </a>
+            )}
           </div>
           <div
             className={`h-[5px] transition-all duration-100 linear rounded-b-[16px] ${

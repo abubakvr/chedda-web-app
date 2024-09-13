@@ -8,7 +8,7 @@ import {
 } from "@testing-library/react";
 import { WithdrawTab, WithdrawTabProps } from "../Tabs/WithdrawTab";
 import { StaticImageData } from "next/image";
-import { useTransaction } from "@/hooks";
+import { useToast, useTransaction } from "@/hooks";
 
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
@@ -75,6 +75,9 @@ describe("WithdrawTab Component", () => {
         isCollaterWithdrawn: false,
       },
       withdrawCollateral: mockWithdrawCollateral,
+    }));
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
     }));
   });
 

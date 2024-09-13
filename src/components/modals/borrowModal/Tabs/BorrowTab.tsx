@@ -7,9 +7,8 @@ import {
 } from "@/utils/formatters";
 import { BorrowTabInfo } from "../TabInfo";
 import { IToken } from "@/utils/types";
-import { useTransaction } from "@/hooks";
+import { useToast, useTransaction } from "@/hooks";
 import { ethers } from "ethers";
-import { Toast } from "@/components/ui";
 import { RefreshSpinner } from "@/components/ui/refreshSpinner/RefreshSpinner";
 import { displayProjectedHealthFactor } from "@/utils/helpers";
 
@@ -41,22 +40,11 @@ export const BorrowTab = ({
 }: BorrowTabProps) => {
   const [clearInputField, setClearInputField] = useState(false);
   const [txLoading, setTxLoading] = useState(false);
-  const [{ txMessage, txHash, txStatus }, setTxDetails] = useState<{
-    txMessage: string;
-    txHash: string | null;
-    copyText: string | null;
-    txStatus: "success" | "failed";
-  }>({
-    copyText: "",
-    txMessage: "",
-    txHash: "",
-    txStatus: "success",
-  });
-  const [showToast, setShowToast] = useState(false);
   const [inputAmount, setInputAmount] = useState(0);
   const { address: tokenAddress, decimals, symbol } = asset;
   const { accountCollateralLoading, healthFactorLoading } = isLoading;
   const { borrowAsset } = useTransaction(tokenAddress);
+  const { addToast } = useToast();
 
   const parsedAvailableLiquidity = parseBigNumberToFloat(
     availableLiquidity,
@@ -83,59 +71,49 @@ export const BorrowTab = ({
       }
 
       setTxLoading(true);
-      setShowToast(false);
       const parsedAmount = ethers.parseUnits(inputAmount.toString(), decimals);
       const tx = await borrowAsset(parsedAmount);
       if (tx) {
         const result = await tx.wait();
-        console.log(result);
         if (result.status === 1) {
           const txMessage = `You've successfully borrowed ${formatNumber(
             inputAmount
           )} ${symbol}`;
-          setTxDetails({
-            copyText: null,
-            txMessage,
+          addToast({
+            copyText: undefined,
+            message: txMessage,
             txHash: tx.hash,
-            txStatus: "success",
+            type: "success",
           });
           setInputAmount(0);
           setClearInputField(true);
-          setShowToast(true);
+
           refreshModal();
         } else {
           const txMessage = `An error occurred while proccessing your transaction`;
-          setTxDetails({
-            copyText: null,
-            txMessage,
+          addToast({
+            copyText: undefined,
+            message: txMessage,
             txHash: tx.hash,
-            txStatus: "failed",
+            type: "error",
           });
-          setShowToast(true);
         }
       }
       setTxLoading(false);
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
-      setTxDetails({
-        txMessage: errorObject.errorMessage,
+      addToast({
+        message: errorObject.errorMessage,
         copyText: errorObject.fullText,
-        txHash: null,
-        txStatus: "failed",
+        txHash: undefined,
+        type: "error",
       });
-      setShowToast(true);
       setTxLoading(false);
     }
   };
 
   return (
     <>
-      <Toast
-        isOpen={showToast}
-        toastMessage={txMessage}
-        txHash={txHash}
-        status={txStatus}
-      />
       <div data-testid="withdraw-tab-content" className="mt-4 lg:mt-6">
         <div className="text-xs md:text-sm lg:text-xl font-bold flex justify-between">
           <div>Select amount to Borrow</div>

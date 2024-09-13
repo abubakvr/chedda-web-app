@@ -81,7 +81,12 @@ export const useFetcher = <T = any,>(
   // Fetch data only once when on the markets route.
   // Data updates on the pool page are managed manually.
   const shouldFetchData =
-    !pathname.startsWith("/markets") || data === undefined || data === null;
+    hookName === "getSelectTokenBalance" ||
+    hookName === "getAccountCollateral" ||
+    hookName === "getAllowance" ||
+    !pathname.startsWith("/markets") ||
+    data === undefined ||
+    data === null;
 
   useEffect(() => {
     if (shouldFetchData) {

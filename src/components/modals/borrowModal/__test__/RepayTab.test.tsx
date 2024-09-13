@@ -3,7 +3,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { RepayTab, RepayTabProps } from "../Tabs";
 import { StaticImageData } from "next/image";
-import { useTransaction } from "@/hooks";
+import { useToast, useTransaction } from "@/hooks";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
 
 jest.mock("@web3-react/core", () => ({
@@ -57,6 +57,9 @@ describe("RepayTab Component", () => {
         isAssetRepaid: false,
       },
       repayAsset: mockRepayAsset,
+    }));
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
     }));
   });
   it("renders BorrowTab component", async () => {

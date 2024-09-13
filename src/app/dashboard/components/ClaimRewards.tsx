@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button, Card } from "@/components/common";
-import { Toast } from "@/components/ui";
-import { useAllClaimableRewards, useTransaction } from "@/hooks";
+import { useAllClaimableRewards, useToast, useTransaction } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { ConnectWalletBox } from "./ConnectWalletBox";
 
@@ -16,26 +15,14 @@ export const ClaimRewards = ({
   cheddaTokenPrice,
   cheddaTokenPriceLoading,
 }: ClaimRewardsProps) => {
-  const [showToast, setShowToast] = useState(false);
   const [txLoading, setTxLoading] = useState(false);
-  const [{ txMessage, txHash, txStatus, copyText }, setTxDetails] = useState<{
-    txMessage: string;
-    txHash: string | null;
-    copyText: string | null;
-    txStatus: "success" | "failed";
-  }>({
-    copyText: "",
-    txMessage: "",
-    txHash: "",
-    txStatus: "success",
-  });
-
   const {
     data: claimableRewards,
     isLoading: claimableRewardsLoading,
     fetchData: fetchAllClaimableRewards,
   } = useAllClaimableRewards();
   const { claimAllRewards } = useTransaction("");
+  const { addToast } = useToast();
 
   const parsedCheddaTokenPrice = Number(cheddaTokenPrice);
   const parsedLockRewards = parseBigNumberToFloat(claimableRewards?.[1], 18, 5);
@@ -51,67 +38,51 @@ export const ClaimRewards = ({
     try {
       if (parsedLockRewards || parsedStakeRewards) {
         setTxLoading(true);
-        setShowToast(false);
         claimAllRewards()
           .then(async (res: any) => {
             if (res) {
               const result = await res.wait();
               if (result.status === 1) {
                 const txMessage = "You've successfully claimed all rewards";
-                setTxDetails({
-                  txMessage,
-                  copyText: null,
+                addToast({
+                  message: txMessage,
                   txHash: res.hash,
-                  txStatus: "success",
+                  type: "success",
                 });
-                setShowToast(true);
                 fetchAllClaimableRewards(false);
               } else {
                 const txMessage = `An error occurred while proccessing your transaction`;
-                setTxDetails({
-                  txMessage,
-                  copyText: null,
+                addToast({
+                  message: txMessage,
                   txHash: res.hash,
-                  txStatus: "failed",
+                  type: "error",
                 });
-                setShowToast(true);
               }
             }
             setTxLoading(false);
           })
           .catch((error: any) => {
             const errorObject = JSON.parse(error.message);
-            setTxDetails({
-              txMessage: errorObject.errorMessage,
+            addToast({
+              message: errorObject.errorMessage,
               copyText: errorObject.fullText,
-              txHash: null,
-              txStatus: "failed",
+              type: "error",
             });
-            setShowToast(true);
             setTxLoading(false);
           });
       }
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
-      setTxDetails({
-        txMessage: errorObject.errorMessage,
+      addToast({
+        message: errorObject.errorMessage,
         copyText: errorObject.fullText,
-        txHash: null,
-        txStatus: "failed",
+        type: "error",
       });
-      setShowToast(true);
       setTxLoading(false);
     }
   };
   return (
     <>
-      <Toast
-        isOpen={showToast}
-        toastMessage={txMessage}
-        txHash={txHash}
-        status={txStatus}
-        copyText={copyText}
-      />
       <Card title="CLAIM REWARDS" data-test-id="custom-card">
         {isWalletConnected ? (
           <>

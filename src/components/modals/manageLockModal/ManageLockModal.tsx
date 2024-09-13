@@ -1,12 +1,11 @@
 "use client";
 import React, { FC, useState } from "react";
 import { Lock } from "chedda-sdk";
-import { Toast } from "@/components/ui";
 import { ethers } from "ethers";
 import { LockTab } from "./tabs/LockTab";
 import { formatNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { TabInfo } from "./TabInfo";
-import { useTransaction } from "@/hooks";
+import { useToast, useTransaction } from "@/hooks";
 import { formatDate, formatProjectedDate } from "@/utils/helpers";
 
 interface ManageLockCardProps {
@@ -20,7 +19,7 @@ interface ManageLockCardProps {
   isAllowanceLoading: boolean;
   onClose: () => void;
   updateCard: () => void;
-  fetchCheddaAllowance: () => void;
+  fetchCheddaAllowance: (showLoading: boolean) => void;
 }
 
 const Tab: FC<{
@@ -54,20 +53,8 @@ export const ManageLockCard: FC<ManageLockCardProps> = ({
   fetchCheddaAllowance,
 }) => {
   const [activeTab, setActiveTab] = useState(defaultTab || "ExtendLock");
-  const [showToast, setShowToast] = useState(false);
   const [txLoading, setTxLoading] = useState(false);
   const [clearInputField, setClearInputField] = useState(false);
-  const [{ txMessage, txHash, txStatus, copyText }, setTxDetails] = useState<{
-    txMessage: string;
-    txHash: string | null;
-    copyText: string | null;
-    txStatus: "success" | "failed";
-  }>({
-    copyText: "",
-    txMessage: "",
-    txHash: "",
-    txStatus: "success",
-  });
   const [lockAmount, setLockAmount] = useState<number>(0);
   const [lockTime, setLockTime] = useState<{
     value: number | undefined;
@@ -78,6 +65,7 @@ export const ManageLockCard: FC<ManageLockCardProps> = ({
   });
   const { lockMoreCheddaToken, approveCheddaToken, relockCheddaToken } =
     useTransaction("");
+  const { addToast } = useToast();
 
   const parsedAllowance = parseBigNumberToFloat(cheddaAllowance);
   const parsedCheddaBalance = parseBigNumberToFloat(cheddaTokenBalance);
@@ -93,7 +81,6 @@ export const ManageLockCard: FC<ManageLockCardProps> = ({
   ) {
     try {
       setTxLoading(true);
-      setShowToast(false);
 
       const res = await promise;
       if (res) {
@@ -102,19 +89,16 @@ export const ManageLockCard: FC<ManageLockCardProps> = ({
           result.status === 1
             ? successMessage
             : "An error occurred while processing your transaction";
-        const txStatus = result.status === 1 ? "success" : "failed";
-
-        setTxDetails({
-          txMessage,
-          copyText: null,
-          txHash: res.hash,
-          txStatus,
-        });
 
         if (result.status === 1) {
-          setShowToast(true);
+          addToast({
+            message: txMessage,
+            copyText: undefined,
+            txHash: res.hash,
+            type: "success",
+          });
           if (isApprove) {
-            fetchCheddaAllowance();
+            fetchCheddaAllowance(true);
           } else {
             updateCard();
             setLockTime({
@@ -126,20 +110,24 @@ export const ManageLockCard: FC<ManageLockCardProps> = ({
             onClose();
           }
         } else {
-          setShowToast(true);
+          addToast({
+            message: txMessage,
+            copyText: undefined,
+            txHash: res.hash,
+            type: "error",
+          });
         }
       }
 
       setTxLoading(false);
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
-      setTxDetails({
-        txMessage: errorObject.errorMessage,
+      addToast({
+        message: errorObject.errorMessage,
         copyText: errorObject.fullText,
-        txHash: null,
-        txStatus: "failed",
+        txHash: undefined,
+        type: "error",
       });
-      setShowToast(true);
       setTxLoading(false);
     }
   }
@@ -201,13 +189,6 @@ export const ManageLockCard: FC<ManageLockCardProps> = ({
 
   return (
     <>
-      <Toast
-        isOpen={showToast}
-        toastMessage={txMessage}
-        txHash={txHash}
-        status={txStatus}
-        copyText={copyText}
-      />
       <div
         data-testid="modal-container"
         className={`fixed inset-0 ${

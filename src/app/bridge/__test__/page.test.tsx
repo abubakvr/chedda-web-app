@@ -1,7 +1,7 @@
 import React from "react";
 import Page from "../page";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import { useBridge } from "@/hooks";
+import { useBridge, useToast } from "@/hooks";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { WalletConnect } from "@web3-react/walletconnect-v2";
 import { NonceProvider } from "@/contexts/NonceContext";
@@ -22,6 +22,7 @@ jest.mock("../../../hooks", () => ({
   })),
   useSwitchChain: jest.fn(),
   useLocalStorageGet: jest.fn(),
+  useToast: jest.fn(),
 }));
 
 jest.mock("ethers");
@@ -61,6 +62,9 @@ describe("Page Component", () => {
       getEthPrice: mockGetEthPrice,
       getTokenBalance: jest.fn(),
     });
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
+    }));
 
     mockGetTokenPrice.mockResolvedValue(100);
     mockGetTokenAllowance.mockResolvedValue("1000000000000000000");

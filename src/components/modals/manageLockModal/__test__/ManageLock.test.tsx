@@ -2,8 +2,7 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { ManageLockCard } from "../ManageLockModal";
 import { MockAppProviders } from "@/utils/Mocks/MockAppProvider";
-
-import { useTransaction } from "@/hooks";
+import { useToast, useTransaction } from "@/hooks";
 
 jest.mock("../../../../hooks");
 jest.mock("@web3-react/core", () => ({
@@ -21,7 +20,7 @@ describe("ManageLockCard", () => {
     cheddaSymbol: "CHEDDA",
     cheddaAllowance: BigInt(100),
     cheddaTokenBalance: BigInt(500),
-    cheddaPrice: "200",
+    cheddaPrice: 200,
     defaultTab: null,
     lockedChedda: undefined,
     isAllowanceLoading: false,
@@ -35,6 +34,9 @@ describe("ManageLockCard", () => {
       lockCheddaToken: jest.fn(),
       approveCheddaToken: jest.fn(),
     });
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
+    }));
   });
 
   it("renders with default props", async () => {

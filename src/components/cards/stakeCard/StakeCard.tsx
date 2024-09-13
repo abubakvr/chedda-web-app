@@ -1,11 +1,10 @@
 "use client";
 import React, { FC, useState } from "react";
-import { Toast } from "@/components/ui";
 import { ethers } from "ethers";
 import { StakeCardContent } from "./StakeCardContent";
 import { formatNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { TabInfo } from "./TabInfo";
-import { useTransaction } from "@/hooks";
+import { useToast, useTransaction } from "@/hooks";
 
 interface StakeModalProps {
   assetSymbol: string | undefined;
@@ -19,7 +18,7 @@ interface StakeModalProps {
   defaultTab: string | null;
   lpAllowanceLoading: boolean;
   updateCard: () => void;
-  fetchLpAllowance: () => void;
+  fetchLpAllowance: (showLoading: boolean) => void;
 }
 
 const Tab: FC<{
@@ -54,23 +53,12 @@ export const StakeCard: FC<StakeModalProps> = ({
   fetchLpAllowance,
 }) => {
   const [activeTab, setActiveTab] = useState(defaultTab || "Stake");
-  const [showToast, setShowToast] = useState(false);
   const [txLoading, setTxLoading] = useState(false);
   const [clearInputField, setClearInputField] = useState(false);
-  const [{ txMessage, txHash, txStatus, copyText }, setTxDetails] = useState<{
-    txMessage: string;
-    txHash: string | null;
-    copyText: string | null;
-    txStatus: "success" | "failed";
-  }>({
-    copyText: "",
-    txMessage: "",
-    txHash: "",
-    txStatus: "success",
-  });
   const [stakeAmount, setStakeAmount] = useState<number>(0);
   const [unStakeAmount, setUnstakeAmount] = useState<number>(0);
   const { stakeLpToken, unStakeLpToken, approveLpToken } = useTransaction("");
+  const { addToast } = useToast();
 
   const parsedAllowance = parseBigNumberToFloat(lpAllowance, lpDecimals);
 
@@ -92,7 +80,6 @@ export const StakeCard: FC<StakeModalProps> = ({
       }
 
       setTxLoading(true);
-      setShowToast(false);
       const parsedAmount = ethers.parseUnits(
         stakeAmount.toString(),
         lpDecimals
@@ -107,38 +94,32 @@ export const StakeCard: FC<StakeModalProps> = ({
                 const txMessage = `You've successfully staked ${formatNumber(
                   stakeAmount
                 )} ${lpSymbol}`;
-                setTxDetails({
-                  txMessage,
-                  copyText: null,
+                addToast({
+                  message: txMessage,
                   txHash: res.hash,
-                  txStatus: "success",
+                  type: "success",
                 });
                 setStakeAmount(0);
                 setClearInputField(true);
-                setShowToast(true);
                 updateCard();
               } else {
                 const txMessage = `An error occurred while proccessing your transaction`;
-                setTxDetails({
-                  txMessage,
-                  copyText: null,
+                addToast({
+                  message: txMessage,
                   txHash: res.hash,
-                  txStatus: "failed",
+                  type: "error",
                 });
-                setShowToast(true);
               }
             }
             setTxLoading(false);
           })
           .catch((error: any) => {
             const errorObject = JSON.parse(error.message);
-            setTxDetails({
-              txMessage: errorObject.errorMessage,
+            addToast({
+              message: errorObject.errorMessage,
               copyText: errorObject.fullText,
-              txHash: null,
-              txStatus: "failed",
+              type: "error",
             });
-            setShowToast(true);
             setTxLoading(false);
           });
       } else {
@@ -150,48 +131,40 @@ export const StakeCard: FC<StakeModalProps> = ({
                 const txMessage = `You've successfully approved ${formatNumber(
                   stakeAmount
                 )} ${lpSymbol}`;
-                setTxDetails({
-                  txMessage,
-                  copyText: null,
+                addToast({
+                  message: txMessage,
                   txHash: res.hash,
-                  txStatus: "success",
+                  type: "success",
                 });
-                setShowToast(true);
-                fetchLpAllowance();
+                fetchLpAllowance(true);
               } else {
                 const txMessage = `An error occurred while proccessing your transaction`;
-                setTxDetails({
-                  txMessage,
-                  copyText: null,
+                addToast({
+                  message: txMessage,
                   txHash: res.hash,
-                  txStatus: "failed",
+                  type: "error",
                 });
-                setShowToast(true);
               }
             }
             setTxLoading(false);
           })
           .catch((error: any) => {
             const errorObject = JSON.parse(error.message);
-            setTxDetails({
-              txMessage: errorObject.errorMessage,
+            addToast({
+              message: errorObject.errorMessage,
               copyText: errorObject.fullText,
-              txHash: null,
-              txStatus: "failed",
+              type: "error",
             });
-            setShowToast(true);
             setTxLoading(false);
           });
       }
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
-      setTxDetails({
-        txMessage: errorObject.errorMessage,
+      addToast({
+        message: errorObject.errorMessage,
         copyText: errorObject.fullText,
-        txHash: null,
-        txStatus: "failed",
+        type: "error",
       });
-      setShowToast(true);
       setTxLoading(false);
     }
   };
@@ -203,7 +176,6 @@ export const StakeCard: FC<StakeModalProps> = ({
       }
 
       setTxLoading(true);
-      setShowToast(false);
       const parsedAmount = ethers.parseUnits(
         unStakeAmount.toString(),
         lpDecimals
@@ -217,62 +189,47 @@ export const StakeCard: FC<StakeModalProps> = ({
               const txMessage = `You've successfully Unstaked ${formatNumber(
                 unStakeAmount
               )} ${lpSymbol}`;
-              setTxDetails({
-                txMessage,
-                copyText: null,
+              addToast({
+                message: txMessage,
                 txHash: res.hash,
-                txStatus: "success",
+                type: "success",
               });
               setStakeAmount(0);
               setClearInputField(true);
-              setShowToast(true);
               updateCard();
             } else {
               const txMessage = `An error occurred while proccessing your transaction`;
-              setTxDetails({
-                txMessage,
-                copyText: null,
+              addToast({
+                message: txMessage,
                 txHash: res.hash,
-                txStatus: "failed",
+                type: "error",
               });
-              setShowToast(true);
             }
           }
           setTxLoading(false);
         })
         .catch((error: any) => {
           const errorObject = JSON.parse(error.message);
-          setTxDetails({
-            txMessage: errorObject.errorMessage,
+          addToast({
+            message: errorObject.errorMessage,
             copyText: errorObject.fullText,
-            txHash: null,
-            txStatus: "failed",
+            type: "error",
           });
-          setShowToast(true);
           setTxLoading(false);
         });
     } catch (error: any) {
       const errorObject = JSON.parse(error.message);
-      setTxDetails({
-        txMessage: errorObject.errorMessage,
+      addToast({
+        message: errorObject.errorMessage,
         copyText: errorObject.fullText,
-        txHash: null,
-        txStatus: "failed",
+        type: "error",
       });
-      setShowToast(true);
       setTxLoading(false);
     }
   };
 
   return (
     <>
-      <Toast
-        isOpen={showToast}
-        toastMessage={txMessage}
-        txHash={txHash}
-        status={txStatus}
-        copyText={copyText}
-      />
       <div
         className="lg:min-w-[400px] xl:min-w-[460px] text-white px-4 py-4 md:px-6 md:py-5 xl:px-8 xl:py-6"
         data-testid="stake-card-container"
