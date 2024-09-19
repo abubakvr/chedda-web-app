@@ -407,9 +407,62 @@ input:checked + .slider:before {
 
 .token-select,
 .bridge-box,
-.market-card,
 .token-select-active {
   position: relative;
+}
+
+.market-card {
+  position: relative;
+  background: var(--card-bg);
+  transition: all 0.5s ease; /* Remove invalid properties */
+}
+
+.market-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px;
+  background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: opacity 0.5s ease; /* Only animate opacity */
+}
+
+.market-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px;
+  background: linear-gradient(68.02deg, #54d0fa10 40%, #b854dd 84%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: opacity 0.5s ease; /* Only animate opacity */
+}
+
+.market-card::before {
+  z-index: 1;
+  opacity: 1; /* Default visible */
+}
+
+.market-card::after {
+  z-index: 2;
+  opacity: 0; /* Initially hidden */
+}
+
+.market-card:hover::before {
+  opacity: 0; /* Fade out the ::before pseudo-element */
+}
+
+.market-card:hover::after {
+  opacity: 1; /* Fade in the ::after pseudo-element */
 }
 
 .token-select:hover,
@@ -584,11 +637,6 @@ input:checked + .slider:before {
   font-weight: 500;
 }
 
-.market-card:hover::before {
-  background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
-  transition: opacity 0.7s ease; /* Smooth transition for the hover effect */
-}
-
 /* In your CSS file or <style> tag */
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Hide scrollbar in Chrome, Safari and Opera */
@@ -628,7 +676,52 @@ input:checked + .slider:before {
   grid-row: 1 / 2;
 }
 
-@media screen and (min-width: 768px) and (max-width: 1200px) {
+/* Hide the default checkbox */
+.custom-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+/* Create the custom checkbox */
+.custom-checkbox .checkmark {
+  display: inline-block;
+  border: 2px solid #8080cc;
+  border-radius: 4px;
+  background-color: transparent; /* No background */
+  position: relative;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+/* Style the checkmark when the input is checked */
+.custom-checkbox input[type="checkbox"]:checked + .checkmark {
+  background: linear-gradient(137deg, #51d5fa 8.34%, #b74af1 95.26%);
+  border: none;
+}
+
+.custom-checkbox .checkmark::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 8.5px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  transition: all 0.3s ease;
+  opacity: 0; /* Hidden by default */
+}
+
+/* Show the checkmark when the checkbox is checked */
+.custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
+  opacity: 1;
+}
+
+.terms-text {
+  line-height: 25px !important;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
   .custom-grid-card {
     display: grid;
     overflow: hidden;
@@ -643,6 +736,21 @@ input:checked + .slider:before {
 
   .token-select-active::before {
     border-radius: 12px;
+  }
+
+  .custom-checkbox .checkmark {
+    border-radius: 3px;
+  }
+
+  .custom-checkbox .checkmark::after {
+    top: 3.5px;
+    left: 6px;
+    width: 4px;
+    height: 8px;
+  }
+
+  .terms-text {
+    line-height: 17px !important;
   }
 }
 
@@ -677,5 +785,20 @@ input:checked + .slider:before {
 
   .token-select-active::before {
     border-radius: 8px;
+  }
+
+  .custom-checkbox .checkmark {
+    border-radius: 3px;
+  }
+
+  .custom-checkbox .checkmark::after {
+    top: 3.5px;
+    left: 6px;
+    width: 4px;
+    height: 8px;
+  }
+
+  .terms-text {
+    line-height: 12px !important;
   }
 }

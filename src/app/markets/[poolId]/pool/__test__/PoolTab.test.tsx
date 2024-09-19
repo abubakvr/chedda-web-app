@@ -2,14 +2,22 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import PoolTab from "../PoolTab";
 import {
+  useAccountCollateral,
+  useAccountHealth,
   useAccountInfo,
+  useAllowance,
+  useAssetBalance,
   useAvailableLiquidity,
   useCollateralInfo,
   useMarketInfo,
   usePoolState,
   usePoolStats,
   useRatesProjector,
+  useSelectTokenBalance,
+  useToast,
   useTokenBalance,
+  useTokenCollateralValue,
+  useTokenValue,
   useTransaction,
 } from "@/hooks";
 
@@ -97,6 +105,45 @@ describe("PoolTab", () => {
       isLoading: false,
       data: mockInterestRates,
     });
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
+    }));
+    (useAllowance as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useAssetBalance as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useAvailableLiquidity as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useTransaction as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useAccountCollateral as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useSelectTokenBalance as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useAccountHealth as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useTokenValue as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useTokenCollateralValue as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
   });
   it("renders without crashing", () => {
     render(

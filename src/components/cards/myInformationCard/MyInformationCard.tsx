@@ -148,35 +148,31 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           Borrow
         </Button>
       </div>
-      {isSupplyModalOpen && (
-        <SupplyModal
-          isOpen={isSupplyModalOpen}
-          onClose={closeSupplyModal}
-          asset={poolStats?.asset}
-          assetPrice={assetPrice}
-          supplied={accountInfo?.supplied}
-          available={available}
-          tokenBalance={accountInfo?.walletAssetBalance}
-          baseSupplyAPY={poolStats.baseSupplyAPY}
-          fetchPoolInfo={fetchPoolInfo}
-          defaultTab={defaultTab}
-          setActivePoolTab={setActivePoolTab}
-        />
-      )}
-      {isBorrowModalOpen && (
-        <BorrowModal
-          asset={poolStats?.asset}
-          isOpen={isBorrowModalOpen}
-          collaterals={poolStats.collaterals}
-          assetPrice={assetPrice}
-          availableLiquidity={available}
-          totalBorrowed={totalBorrowed}
-          totalCollateralValue={totalCollateralValue}
-          onClose={closeBorrowModal}
-          fetchPoolInfo={fetchPoolInfo}
-          openSupplyModal={openSupplyModal}
-        />
-      )}
+      <SupplyModal
+        isOpen={isSupplyModalOpen}
+        onClose={closeSupplyModal}
+        asset={poolStats?.asset}
+        assetPrice={assetPrice}
+        supplied={accountInfo?.supplied}
+        available={available}
+        tokenBalance={accountInfo?.walletAssetBalance}
+        baseSupplyAPY={poolStats.baseSupplyAPY}
+        fetchPoolInfo={fetchPoolInfo}
+        defaultTab={defaultTab}
+        setActivePoolTab={setActivePoolTab}
+      />
+      <BorrowModal
+        asset={poolStats?.asset}
+        isOpen={isBorrowModalOpen}
+        collaterals={poolStats.collaterals}
+        assetPrice={assetPrice}
+        availableLiquidity={available}
+        totalBorrowed={totalBorrowed}
+        totalCollateralValue={totalCollateralValue}
+        onClose={closeBorrowModal}
+        fetchPoolInfo={fetchPoolInfo}
+        openSupplyModal={openSupplyModal}
+      />
     </div>
   );
 };

@@ -65,7 +65,7 @@ export const FilterCard: React.FC<FilterCardProps> = ({
           <div className="mt-2 md:mt-4 w-full border-b border-[#51D5FA30]"></div>
         </div>
         <div className="md:flex mt-2 md:mt-4 xl:mt-6 items-center justify-between w-full md:pb-4 md:px-4 xl:px-8">
-          <div className="flex space-x-2 md:space-x-2 lg:space-x-3 relative items-center overflow-auto w-full md:w-fit px-4 md:px-2 no-scrollbar md:border  md:border-[#ffffff19] md:bg-[#ffffff02] rounded-lg p-2">
+          <div className="flex space-x-2 md:space-x-2 lg:space-x-3 relative items-center overflow-auto w-full md:w-fit px-4 md:px-2 no-scrollbar md:border  md:border-[#ffffff19] md:bg-[#ffffff02] rounded-lg p-2 transition-all duration-400">
             {poolCategories.map((item, i) => {
               const isFilterSelected = currentFilter === item.keyword;
 
@@ -78,7 +78,7 @@ export const FilterCard: React.FC<FilterCardProps> = ({
                   key={i}
                   onClick={() => handleFilter(item.keyword ?? "")}
                   data-testid={`button-${i}`}
-                  className={`relative border ${isFilterSelected ? item.activeClass : `${item.hoverClass} border-white bg-none py-1 h-7 md:h-8 lg:h-9 transition-all`} px-4 md:px-4 lg:px-3 rounded-lg flex items-center justify-center space-x-1 ${item.hoverClass}`}
+                  className={`relative border ${isFilterSelected ? item.activeClass : `${item.hoverClass} border-white bg-none py-1 h-7 md:h-8 lg:h-9 transition-all duration-500`} px-4 md:px-4 lg:px-3 rounded-lg flex items-center justify-center space-x-1 ${item.hoverClass}`}
                 >
                   <Image
                     style={{ color: "" }}

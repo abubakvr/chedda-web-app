@@ -1,3 +1,4 @@
+"use client";
 import React, {
   Dispatch,
   FC,
@@ -255,8 +256,10 @@ export const SupplyModal: FC<SupplyModalProps> = ({
       />
       <div
         data-testid="modal-container"
-        className={`fixed inset-0 ${
-          isOpen && !openSuccessModal ? "block" : "hidden"
+        className={`fixed inset-0 transition-all duration-300 ${
+          isOpen && !openSuccessModal
+            ? "opacity-100 visible"
+            : "opacity-0 invisible"
         } bg-[#00000024] bg-opacity-75 overflow-y-auto backdrop-filter backdrop-blur-sm z-20`}
       >
         <div className="flex items-center justify-center min-h-screen">

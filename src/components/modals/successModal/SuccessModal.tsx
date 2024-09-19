@@ -1,4 +1,5 @@
-import React, { Dispatch, SetStateAction } from "react";
+"use client";
+import React from "react";
 import SuccessIcon from "@/assets/icon/success-icon.svg";
 import Image from "next/image";
 import { Button } from "@/components/common";
@@ -21,8 +22,8 @@ export const SuccessModal = ({
   return isOpen ? (
     <div
       data-testid="successModalContainer"
-      className={`fixed inset-0 ${
-        isOpen ? "block" : "hidden"
+      className={`fixed inset-0 transition-all duration-500 ${
+        isOpen ? "opacity-100 visible" : "opacity-0 invisible"
       } bg-[#00000024] bg-opacity-75 overflow-y-auto backdrop-filter backdrop-blur-sm z-20`}
     >
       <div className="flex items-center justify-center min-h-screen">

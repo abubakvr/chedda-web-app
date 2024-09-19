@@ -56,6 +56,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
       }
     }
   };
+
   const disconnectWallet = useCallback(async () => {
     const connector = metaMask || walletConnect || coinbaseWallet;
     clearWeb3ConnectorCache();
@@ -89,7 +90,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
 
   return (
     <>
-      {isConnected ? (
+      {isConnected && account ? (
         <div
           className="relative profile-menu-container"
           data-testid="profile-menu-container"
@@ -115,79 +116,75 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
               />
             </div>
           </button>
-          {isOpenProfileMenu && (
-            <div
-              className={`absolute mt-2.5 min-w-[230px] right-0 bg-[#13161F] menu-bg text-white rounded-md shadow-lg z-10
-               `}
-              id="mySelectMenu"
-              data-testid="profile-menu-dropdown"
-            >
-              <ul className="more-dropdown list-reset font-semibold px-4">
-                <li
-                  className="py-4 rounded-t-md border-b border-[#2D2A6B]"
-                  onClick={copyAddress}
-                >
-                  <div className="flex gap-3 justify-between items-center">
-                    <div className="flex items-center gap-2">
-                      <Blockie accountAddress={account} size={11} />
-                      <span className="text-[18px] font-bold">
-                        {account?.substring(0, 6)}...
-                        {account?.substring(account?.length - 4)}
-                      </span>
-                    </div>
-                    <button
-                      className="relative address-container hover:opacity-70"
-                      data-testid="copy-address-button"
-                      onClick={copyAddress}
-                    >
-                      <Image
-                        style={{ color: "" }}
-                        src={CopyIcon}
-                        width={21}
-                        alt="Copy"
-                      />
-                      <div
-                        className="tooltip"
-                        data-testid="address-copy-tooltip"
-                      >
-                        {copyLabel}
-                      </div>
-                    </button>
+          <div
+            className={`absolute mt-2.5 min-w-[230px] right-0 bg-[#13161F] menu-bg text-white rounded-md shadow-lg z-10 transition-all duration-300 ease-in-out transform ${
+              isOpenProfileMenu ? "opacity-100 visible" : "opacity-0 invisible"
+            }`}
+            id="mySelectMenu"
+            data-testid="profile-menu-dropdown"
+          >
+            <ul className="more-dropdown list-reset font-semibold px-4">
+              <li
+                className="py-4 rounded-t-md border-b border-[#2D2A6B]"
+                onClick={copyAddress}
+              >
+                <div className="flex gap-3 justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <Blockie accountAddress={account} size={11} />
+                    <span className="text-[18px] font-bold">
+                      {account?.substring(0, 6)}...
+                      {account?.substring(account?.length - 4)}
+                    </span>
                   </div>
-                </li>
-                <li
-                  className="pt-2 pb-4 border-b border-[#2D2A6B] font-bold"
-                  data-testid="chedda-balance"
-                >
-                  <p className="text-lg text-[#ffffff50]">Balance:</p>
-                  <p className="text-[18px]">
-                    {formatNumber(parsedCheddaBalance)} CHEDDA
-                  </p>
-                  <a
-                    href=""
-                    className="text-xs card-gradient-text relative flex mt-1.5 items-center gap-x-1"
+                  <button
+                    className="relative address-container hover:opacity-70"
+                    data-testid="copy-address-button"
+                    onClick={copyAddress}
                   >
-                    <span>Buy CHEDDA</span>
                     <Image
                       style={{ color: "" }}
-                      src={LinkOut}
-                      width={12}
+                      src={CopyIcon}
+                      width={21}
                       alt="Copy"
                     />
-                  </a>
-                </li>
-                <li className="py-4 rounded-b-md cursor-pointer flex items-center">
-                  <button
-                    onClick={disconnectWallet}
-                    className="h-11 primary-button w-full rounded font-bold uppercase text-lg hover:opacity-90"
-                    data-testid="disconnect-button"
-                  >
-                    Disconnect Wallet
+                    <div className="tooltip" data-testid="address-copy-tooltip">
+                      {copyLabel}
+                    </div>
                   </button>
-                </li>
-              </ul>
-            </div>
-          )}
+                </div>
+              </li>
+              <li
+                className="pt-2 pb-4 border-b border-[#2D2A6B] font-bold"
+                data-testid="chedda-balance"
+              >
+                <p className="text-lg text-[#ffffff50]">Balance:</p>
+                <p className="text-[18px]">
+                  {formatNumber(parsedCheddaBalance)} CHEDDA
+                </p>
+                <a
+                  href=""
+                  className="text-xs card-gradient-text relative flex mt-1.5 items-center gap-x-1"
+                >
+                  <span>Buy CHEDDA</span>
+                  <Image
+                    style={{ color: "" }}
+                    src={LinkOut}
+                    width={12}
+                    alt="Link Out"
+                  />
+                </a>
+              </li>
+              <li className="py-4 rounded-b-md cursor-pointer flex items-center">
+                <button
+                  onClick={disconnectWallet}
+                  className="h-11 primary-button w-full rounded font-bold uppercase text-lg hover:opacity-90"
+                  data-testid="disconnect-button"
+                >
+                  Disconnect Wallet
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       ) : (
         <ConnectButton data-testid="connect-button" />

@@ -1,3 +1,4 @@
+"use client";
 import React, { FC, useCallback, useState } from "react";
 import { IToken } from "@/utils/types";
 import { DepositTab, WithdrawTab, BorrowTab, RepayTab } from "./Tabs";
@@ -114,8 +115,8 @@ export const BorrowModal: FC<BorrowModalProps> = ({
     <>
       <div
         data-testid="modal-container"
-        className={`fixed inset-0 ${
-          isOpen ? "block overflow-hidden" : "hidden"
+        className={`fixed inset-0 transition-all duration-500 ${
+          isOpen ? "opacity-100 visible" : "opacity-0 invisible"
         } bg-[#00000024] bg-opacity-75 overflow-y-auto backdrop-filter backdrop-blur-sm z-20`}
       >
         <div className="flex items-center justify-center min-h-screen">

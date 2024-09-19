@@ -16,7 +16,7 @@ export const SelectButton: FC<ConnectButtonProps> = ({
 }) => {
   return (
     <button
-      className="w-full flex items-center justify-between cursor-pointer p-4 mb-3 rounded-md text-white bg-blue-400 hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 transition-all"
+      className="w-full flex items-center justify-between cursor-pointer p-4 mb-3 rounded-md text-white bg-blue-400 hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 transition-all duration-500"
       key={label}
       onClick={onClick}
       data-testid="select-button"

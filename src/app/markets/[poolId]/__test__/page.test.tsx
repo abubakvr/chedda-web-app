@@ -33,6 +33,13 @@ import {
   useTotalAmountLocked,
   useClaimableLockRewards,
   useGaugeAddress,
+  useTokenCollateralValue,
+  useAccountHealth,
+  useSelectTokenBalance,
+  useAccountCollateral,
+  useAssetBalance,
+  useAllowance,
+  useToast,
 } from "@/hooks";
 import { getPoolSummaryData } from "@/utils/formatResponse";
 import {
@@ -209,6 +216,45 @@ describe("Pool details component", () => {
       data: BigInt("1000"),
       isLoading: false,
     });
+    (useToast as jest.Mock).mockImplementation(() => ({
+      addToast: jest.fn(),
+    }));
+    (useAllowance as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useAssetBalance as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useAvailableLiquidity as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useTransaction as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useAccountCollateral as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useSelectTokenBalance as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useAccountHealth as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useTokenValue as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
+    (useTokenCollateralValue as jest.Mock).mockImplementation(() => ({
+      fetchTokenBalance: jest.fn(),
+      tokenBalance: "1000",
+    }));
 
     render(
       <MockAppProviders>

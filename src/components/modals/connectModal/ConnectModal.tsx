@@ -1,4 +1,5 @@
-import { useCallback, useEffect } from "react";
+"use client";
+import { useCallback } from "react";
 import coinbase_Logo from "@/assets/images/coinbase_Logo.png";
 import metamask_Logo from "@/assets/svg/metamask_Logo.svg";
 import walletconnect_Logo from "@/assets/svg/walletconnect_Logo.svg";
@@ -29,37 +30,44 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
   const isWCActivating = useWCIsActivating();
   const isCBActivating = useCBIsActivating();
 
-  const activateConnector = useCallback(async (label: string) => {
-    try {
-      switch (label) {
-        case "MetaMask":
-          await metaMask.activate();
-          window.localStorage.setItem(connectorIdKey, getName(metaMask));
-          break;
+  const activateConnector = useCallback(
+    async (label: string) => {
+      try {
+        switch (label) {
+          case "MetaMask":
+            await metaMask.activate();
+            window.localStorage.setItem(connectorIdKey, getName(metaMask));
+            break;
 
-        case "WalletConnect":
-          console.log("Pressed");
-          await walletConnect.activate();
-          window.localStorage.setItem(connectorIdKey, getName(walletConnect));
-          break;
+          case "WalletConnect":
+            console.log("Pressed");
+            await walletConnect.activate();
+            window.localStorage.setItem(connectorIdKey, getName(walletConnect));
+            break;
 
-        case "Coinbase Wallet":
-          await coinbaseWallet.activate();
-          window.localStorage.setItem(connectorIdKey, getName(coinbaseWallet));
-          break;
+          case "Coinbase Wallet":
+            await coinbaseWallet.activate();
+            window.localStorage.setItem(
+              connectorIdKey,
+              getName(coinbaseWallet)
+            );
+            break;
 
-        default:
-          break;
+          default:
+            break;
+        }
+        setIsModalOpen(false);
+      } catch (error) {
+        console.log("Failed to connect wallet. Please try again.");
       }
-    } catch (error) {
-      console.log("Failed to connect wallet. Please try again.");
-    }
-  }, []);
+    },
+    [setIsModalOpen]
+  );
 
   return (
     <div
-      className={`fixed inset-0 overflow-y-auto backdrop-filter backdrop-blur-sm bg-opacity-75 z-50 ${
-        isModalOpen ? "" : "hidden"
+      className={`fixed inset-0 overflow-y-auto backdrop-filter backdrop-blur-sm bg-opacity-75 z-50 transition-all duration-300 ${
+        isModalOpen ? "opacity-100 visible" : "opacity-0 invisible"
       }`}
       data-testid="connect-modal"
     >

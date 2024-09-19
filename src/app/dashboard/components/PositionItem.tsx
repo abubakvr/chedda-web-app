@@ -23,7 +23,7 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
         {/** Web View */}
         <div
           data-testid="position-item"
-          className="lg:h-28 w-full px-7 py-5 lg:py-5 hidden md:grid grid-cols-7 grid-row-bg gap-x-20 text-white hover:opacity-80 hover:bg-blue-200 hover:bg-opacity-10 cursor-pointer"
+          className="lg:h-28 w-full px-7 py-5 lg:py-5 hidden md:grid grid-cols-7 grid-row-bg gap-x-20 text-white hover:opacity-80 hover:bg-blue-200 hover:bg-opacity-10 transition-all duration-500 cursor-pointer"
         >
           <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-2 w-max">
             <div className="flex items-center ">
