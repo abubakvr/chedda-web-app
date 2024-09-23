@@ -32,6 +32,7 @@ jest.mock("@web3-react/core", () => ({
 }));
 jest.mock("ethers");
 jest.mock("../../../../hooks");
+jest.mock("@next/third-parties/google");
 
 const mockProps: BorrowModalProps = {
   isOpen: true,

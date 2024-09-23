@@ -3,6 +3,7 @@ import InfoIcon from "@/assets/icon/info-gradient-icon.svg";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { sendGAEvent } from "@next/third-parties/google";
 
 export const RouteCard = ({
   setActiveTab,
@@ -32,6 +33,9 @@ export const RouteCard = ({
   const handleTabButton = (tab: string) => {
     setActiveTab(tab);
     handleActiveScreen(tab);
+    sendGAEvent("event", `${tab}`, {
+      value: `Clicked ${tab}`,
+    });
   };
 
   return (

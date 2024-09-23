@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { ISourceChain, IToken } from "@/utils/types";
 import { createClient } from "@layerzerolabs/scan-client";
 import { LAYERZERO_TESTNET } from "@/utils/constants";
+import { sendGAEvent } from "@next/third-parties/google";
 
 interface TransactionDetailsProps {
   handleActiveScreen: (term: string) => void;
@@ -115,6 +116,9 @@ export const TransactionDetails = ({
         message,
         icon,
       });
+      sendGAEvent("event", `Bridge Success`, {
+        value: `Bridge Success`,
+      });
     } catch (error) {
       console.error("Error fetching transaction messages:", error);
       setTxDetails({
@@ -122,6 +126,9 @@ export const TransactionDetails = ({
         status: MessageStatus.FAILED,
         message: "Transaction Error",
         icon: errorIcon,
+      });
+      sendGAEvent("event", `Bridge Error`, {
+        value: `Bridge Error`,
       });
     }
   }, [txHash, setTxCompleted, setTxDetails]);

@@ -24,6 +24,7 @@ import { IToken } from "@/utils/types";
 import { SuccessModal } from "@/components/modals";
 import { SupplyTabInfo, WithdrawTabInfo } from "./TabInfo";
 import { SupplyModalContent } from "./modalContent/SupplyModalContent";
+import { sendGAEvent } from "@next/third-parties/google";
 
 interface SupplyModalProps {
   asset: IToken;
@@ -146,6 +147,9 @@ export const SupplyModal: FC<SupplyModalProps> = ({
             setClearInputField(true);
             setOpenSuccessModal(true);
             fetchModalData();
+            sendGAEvent("event", `Success`, {
+              value: txMessage,
+            });
           } else {
             const txMessage = `An error occurred while proccessing your transaction`;
             addToast({

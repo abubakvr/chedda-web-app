@@ -11,6 +11,7 @@ import {
 import { NonceProvider } from "@/contexts/NonceContext";
 
 jest.mock("../../../../hooks");
+jest.mock("@next/third-parties/google");
 
 jest.mock("@web3-react/core", () => ({
   ...jest.requireActual("@web3-react/core"),

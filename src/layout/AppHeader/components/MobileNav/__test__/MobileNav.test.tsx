@@ -9,6 +9,8 @@ jest.mock("next/navigation", () => ({
   usePathname: jest.fn().mockReturnValue("/markets"),
 }));
 
+jest.mock("@next/third-parties/google");
+
 describe("MobileNav", () => {
   const setNavOpenMock = jest.fn();
 

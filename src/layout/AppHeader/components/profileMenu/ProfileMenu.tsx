@@ -12,6 +12,7 @@ import { connectorIdKey } from "@/utils/constants";
 import { Blockie } from "@/components/ui";
 import { useCheddaBalance } from "@/hooks";
 import { formatNumber, parseBigNumberToFloat } from "@/utils/formatters";
+import { sendGAEvent } from "@next/third-parties/google";
 
 interface ProfileMenuProps {
   account: string | undefined;
@@ -40,6 +41,9 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
 
   const openProfileMenu = () => {
     setIsOpenProfileMenu(!isOpenProfileMenu);
+    sendGAEvent("event", `Profile Menu`, {
+      value: `Opened Profile Menu`,
+    });
   };
 
   const onDocumentClick = (event: MouseEvent) => {
@@ -72,6 +76,9 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
       await connector.close();
     }
     setIsConnected(false);
+    sendGAEvent("event", `Disconnect Wallet`, {
+      value: `Disconnect Wallet Event`,
+    });
   }, []);
 
   useEffect(() => {

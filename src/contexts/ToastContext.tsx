@@ -1,5 +1,6 @@
 import { ToastContainer } from "@/components/ui";
 import React, { createContext, useState, useCallback, ReactNode } from "react";
+import { sendGAEvent } from "@next/third-parties/google";
 
 type ToastType = "success" | "error" | "info" | "fetchError";
 
@@ -66,6 +67,9 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
           ...prevToasts,
           { id, message, type, copyText, txHash, txPrefix },
         ]);
+        sendGAEvent("event", type, {
+          value: message,
+        });
       }
 
       setTimeout(() => {

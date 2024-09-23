@@ -2,6 +2,8 @@ import React from "react";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { ConnectModal } from "../ConnectModal";
 
+jest.mock("@next/third-parties/google");
+
 describe("ConnectModal Component", () => {
   it("renders the modal when it's open", () => {
     render(<ConnectModal isModalOpen={true} setIsModalOpen={() => {}} />);
