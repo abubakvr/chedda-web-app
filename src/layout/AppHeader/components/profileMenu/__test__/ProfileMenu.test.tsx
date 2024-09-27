@@ -12,6 +12,7 @@ jest.mock("../../../../..//utils/copyToClipboard", () => ({
   copyToClipboard: jest.fn(),
 }));
 jest.mock("react-blockies");
+jest.mock("@next/third-parties/google");
 
 describe("ProfileMenu", () => {
   beforeAll(() => {

@@ -4,7 +4,7 @@ export function middleware(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const cspHeader = `
     default-src 'self';
-    connect-src 'self' https://base-sepolia.g.alchemy.com https://sepolia.infura.io/ https://api-testnet.layerzero-scan.com/; 
+    connect-src 'self' https://base-sepolia.g.alchemy.com https://sepolia.infura.io/ https://api-testnet.layerzero-scan.com/ https://www.google-analytics.com/; 
     script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval';
     style-src 'self' 'nonce-${nonce}' https://fonts.cdnfonts.com;
     img-src 'self' blob: data:;

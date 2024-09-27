@@ -26,6 +26,7 @@ jest.mock("../../../../components/ui", () => ({
   Toast: jest.fn(() => null),
   Button: jest.fn(() => null),
 }));
+jest.mock("@next/third-parties/google");
 
 const mockProps: WithdrawTabProps = {
   asset: {

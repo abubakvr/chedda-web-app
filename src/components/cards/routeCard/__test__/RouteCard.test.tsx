@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { RouteCard } from "../RouteCard";
 
+jest.mock("@next/third-parties/google");
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),
   useRouter: jest.fn(() => ({

@@ -15,6 +15,8 @@ jest.mock("@web3-react/core", () => ({
   })),
 }));
 
+jest.mock("@next/third-parties/google");
+
 describe("LockTab", () => {
   beforeEach(() => {
     (useWeb3React as jest.Mock).mockImplementation(() => ({

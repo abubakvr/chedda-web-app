@@ -13,6 +13,7 @@ import {
   hooks as walletConnecthooks,
   walletConnect,
 } from "@/connectors/walletConnect";
+import { sendGAEvent } from "@next/third-parties/google";
 
 import { SelectButton } from "../../common/buttons/selectButton/SelectButton";
 import { ConnectModalProps } from "@/utils/types";
@@ -32,6 +33,10 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
 
   const activateConnector = useCallback(
     async (label: string) => {
+      sendGAEvent("event", `${label}`, {
+        value: `${label} - Clicked`,
+      });
+
       try {
         switch (label) {
           case "MetaMask":
@@ -58,7 +63,10 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
         }
         setIsModalOpen(false);
       } catch (error) {
-        console.log("Failed to connect wallet. Please try again.");
+        console.error("Failed to connect wallet. Please try again.");
+        sendGAEvent("event", `${label} - Fail`, {
+          value: `${label} failed to connect`,
+        });
       }
     },
     [setIsModalOpen]

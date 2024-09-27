@@ -4,6 +4,8 @@ import { AppProviders } from "@/components/AppProviders/AppProviders";
 import { AppHeader } from "@/layout";
 import { headers } from "next/headers";
 import { WelcomeModal } from "@/components/modals";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { GA_TRACKING_ID } from "@/utils/constants";
 
 export const metadata: Metadata = {
   title: "Chedda Markets",
@@ -20,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-black" suppressHydrationWarning={true}>
       <body suppressHydrationWarning={true}>
+        <GoogleAnalytics gaId={GA_TRACKING_ID} />
         <AppProviders nonce={nonce}>
           <AppHeader />
           <WelcomeModal />

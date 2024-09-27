@@ -13,6 +13,7 @@ import { useParams, usePathname } from "next/navigation";
 import { GetDataFunction } from "@/utils/types";
 import { currentEnvironment } from "@/data/environments";
 import { useSigner, useToast } from "@/hooks";
+import { sendGAEvent } from "@next/third-parties/google";
 
 export const useFetcher = <T = any,>(
   getData: GetDataFunction<T>,
@@ -99,6 +100,9 @@ export const useFetcher = <T = any,>(
     // Refetch data on the first error occurrence
     // Display an error message if the second fetch attempt fails
     if (isError) {
+      sendGAEvent("event", `Fetch Error`, {
+        value: `Failed to fetch ${hookName}`,
+      });
       if (errorCountRef.current === 0) {
         fetchDataCallback();
         errorCountRef.current += 1; // Increment error count after first fetch
@@ -110,7 +114,7 @@ export const useFetcher = <T = any,>(
         errorCountRef.current += 1; // Increment error count to prevent further toasts
       }
     }
-  }, [isError, addToast, fetchDataCallback]);
+  }, [hookName, isError, addToast, fetchDataCallback]);
 
   return {
     data,

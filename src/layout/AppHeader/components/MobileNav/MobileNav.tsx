@@ -4,9 +4,9 @@ import Image from "next/image";
 import { menuItems, moreMenuItems } from "@/utils/constants";
 import { PacmanLogo } from "@/components/ui";
 import { usePathname } from "next/navigation";
+import { sendGAEvent } from "@next/third-parties/google";
 import LinkOut from "@/assets/icon/link-out-grey.svg";
 import Link from "next/link";
-import { useNonce } from "@/hooks/useNonce";
 
 export const MobileNav = ({
   navOpen,
@@ -16,7 +16,6 @@ export const MobileNav = ({
   setNavOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const pathname = usePathname();
-  const { nonce } = useNonce();
 
   return (
     <nav
@@ -27,7 +26,12 @@ export const MobileNav = ({
     >
       <div className={`bg-black w-4/5 h-screen p-8 mobile-nav`}>
         <button
-          onClick={() => setNavOpen(false)}
+          onClick={() => {
+            setNavOpen(false);
+            sendGAEvent("event", `Mobile Menu`, {
+              value: `Opened Profile Menu`,
+            });
+          }}
           className="hover:opacity-80"
           data-testid="close-button"
         >

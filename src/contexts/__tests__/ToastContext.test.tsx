@@ -12,6 +12,8 @@ jest.mock("../../components/ui", () => ({
   ToastContainer: jest.fn(() => <div data-testid="toast-container"></div>),
 }));
 
+jest.mock("@next/third-parties/google");
+
 // Test Component to use the ToastContext
 const TestComponent: React.FC = () => {
   const { addToast } = useToast();

@@ -25,10 +25,12 @@ import DocumentIcon from "@/assets/icon/document-icon.svg";
 
 export const infuraKey = process.env.NEXT_PUBLIC_INFURA_KEY;
 export const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_KEY;
+export const GA_TRACKING_ID = "G-XL1Y4DPW9J";
 
 // localstorage constants
 export const connectorIdKey = "connectorId";
 export const savedChainId = "savedChainId";
+
 export const TWITTER_URL = "https://twitter.com/chedda_crypto";
 export const DISCORD_URL = "https://discord.gg/4ZMWVez73A";
 export const DOCS_URL = "https://docs.chedda.finance";

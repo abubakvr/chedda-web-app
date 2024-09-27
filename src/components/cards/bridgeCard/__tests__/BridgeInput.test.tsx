@@ -28,6 +28,7 @@ jest.mock("@web3-react/core", () => ({
   })),
 }));
 
+jest.mock("@next/third-parties/google");
 jest.mock("next/navigation", () => ({
   ...jest.requireActual("next/navigation"),
   usePathname: jest.fn(() => "/bridge"),

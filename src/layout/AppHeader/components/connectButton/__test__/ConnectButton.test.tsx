@@ -2,6 +2,8 @@ import React from "react";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import { ConnectButton } from "../ConnectButton";
 
+jest.mock("@next/third-parties/google");
+
 describe("ConnectButton Component", () => {
   it("opens the modal when the button is clicked", () => {
     render(<ConnectButton />);

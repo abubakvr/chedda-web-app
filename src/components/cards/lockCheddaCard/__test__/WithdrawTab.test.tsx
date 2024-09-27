@@ -12,6 +12,7 @@ jest.mock("@web3-react/core", () => ({
     isActivating: false,
   })),
 }));
+jest.mock("@next/third-parties/google");
 
 describe("WithdrawTab", () => {
   const mockProps = {

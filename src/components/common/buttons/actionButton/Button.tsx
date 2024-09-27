@@ -7,6 +7,7 @@ import { LoadingIcon } from "./LoadingIcon";
 import { useSwitchChain } from "@/hooks";
 import { currentEnvironment } from "@/data/environments";
 import { usePathname } from "next/navigation";
+import { sendGAEvent } from "@next/third-parties/google";
 
 interface ButtonProps {
   children: ReactNode;
@@ -46,6 +47,11 @@ export const Button: FC<ButtonProps> = ({
   const pathname = usePathname();
 
   const handleButtonClick = () => {
+    // Send google analytics event on button click
+    sendGAEvent("event", `${children?.toString()}`, {
+      value: `${children?.toString()} on ${pathname}`,
+    });
+
     //Ignore checks where wallet connection is not needed
     if (ignoreChecks) {
       onClick();

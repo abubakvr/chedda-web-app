@@ -22,6 +22,8 @@ enum MessageStatus {
 jest.mock("ethers");
 jest.mock("../../../../hooks");
 
+jest.mock("@next/third-parties/google");
+
 jest.mock("next/navigation", () => ({
   ...jest.requireActual("next/navigation"),
   usePathname: jest.fn(() => "/bridge"),
