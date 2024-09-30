@@ -31,12 +31,14 @@ export const GA_TRACKING_ID = "G-XL1Y4DPW9J";
 export const connectorIdKey = "connectorId";
 export const savedChainId = "savedChainId";
 
-export const TWITTER_URL = "https://twitter.com/chedda_crypto";
+export const TWITTER_URL = "https://twitter.com/chedda_finance";
 export const DISCORD_URL = "https://discord.gg/4ZMWVez73A";
 export const DOCS_URL = "https://docs.chedda.finance";
 export const LAYERZERO_TESTNET = "https://testnet.layerzeroscan.com/tx";
 export const BRIDGE_DOC_URL =
   "https://docs.chedda.finance/chedda/protocol/cross-chain-tokens";
+export const HOMEPAGE_LINK = "https://www.chedda.finance";
+export const CHEDDA_TERMS_LINK = "https://www.chedda.finance/terms";
 
 export const ethAddress = "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511";
 

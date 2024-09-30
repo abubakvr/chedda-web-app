@@ -241,3 +241,7 @@ export function getAccountPositions(
       position.borrowed > 0
   );
 }
+
+export function getIpUrl(ipAddress: string, access_key: string) {
+  return `https://api.ipstack.com/${ipAddress}?access_key=${access_key}`;
+}

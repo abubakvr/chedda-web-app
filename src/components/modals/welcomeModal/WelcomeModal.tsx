@@ -2,11 +2,15 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/common";
 import { useLocalStorageGet } from "@/hooks";
+import { usePathname } from "next/navigation";
 
 export const WelcomeModal = () => {
   const userAcceptance = useLocalStorageGet("userAcceptance");
+  const pathname = usePathname();
 
-  const openModal = !userAcceptance || userAcceptance !== "accepted";
+  const openModal =
+    (!userAcceptance || userAcceptance !== "accepted") &&
+    !pathname.startsWith("/restricted");
 
   const [checkboxes, setCheckboxes] = useState({
     terms: false,
