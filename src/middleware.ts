@@ -3,6 +3,8 @@ import { RESTRICTED_COUNTRIES_CODE } from "./data/restrictedCountries";
 import { getIpUrl } from "./utils/helpers";
 
 const ACCESS_KEY = process.env.IPSTACK_ACCESS_KEY as string;
+// Set the cookie with an expiry of 2 days (in seconds)
+const MAX_AGE = 2 * 24 * 60 * 60;
 
 export async function middleware(request: NextRequest) {
   // Generate a nonce for CSP
@@ -52,13 +54,14 @@ export async function middleware(request: NextRequest) {
   }
 
   // If no cookie, extract IP address
-  let ip = request.headers.get("x-forwarded-for") || request.ip || "Unknown IP";
-  if (ip.includes(",")) {
-    ip = ip.split(",")[0].trim(); // Handle multiple IPs in case of proxies
+  let ipAddress =
+    request.headers.get("x-forwarded-for") || request.ip || "Unknown IP";
+  if (ipAddress.includes(",")) {
+    ipAddress = ipAddress.split(",")[0].trim(); // Handle multiple IPs in case of proxies
   }
 
   // Fetch geolocation data from IP
-  const geoRes = await fetch(getIpUrl(ip, ACCESS_KEY));
+  const geoRes = await fetch(getIpUrl(ipAddress, ACCESS_KEY));
   const geoData = await geoRes.json();
 
   const isRestricted = RESTRICTED_COUNTRIES_CODE.includes(geoData.country_code);
@@ -70,6 +73,7 @@ export async function middleware(request: NextRequest) {
   // Set a cookie to store the user's country for future requests
   response.cookies.set("client-ip-country", geoData.country_code, {
     path: "/",
+    expires: MAX_AGE,
   });
 
   // Redirect '/' to '/markets'
