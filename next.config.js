@@ -5,15 +5,6 @@ const nextConfig = {
     REACT_APP_ALCHEMY_KEY: process.env.REACT_APP_ALCHEMY_KEY,
     WALLECONNECT_PROJECT_ID: process.env.WALLETCONNECT_PROJECT_ID,
   },
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "/markets",
-        permanent: true,
-      },
-    ];
-  },
 };
 
 module.exports = nextConfig;
