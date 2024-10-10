@@ -11,7 +11,7 @@ export const ErrorCard = ({ children }: { children: React.ReactNode }) => {
       <p>{children}</p>
       <button
         onClick={() => refreshPage()}
-        className="w-max relative card-gradient-text underline text-[8px] md:text-xs lg:text-sm font-bold hover:opacity-90"
+        className="w-max relative card-gradient-text underline text-3xs md:text-xs lg:text-sm font-bold hover:opacity-90"
         data-testid="refresh-button"
       >
         Refresh page

@@ -238,7 +238,7 @@ export const BridgeInput = ({
         </div>
       </div>
       <div
-        className={`hidden w-full md:flex items-center space-x-2 border p-4 border-[#ffffff19] bg-[#ffffff02] rounded-lg mt-6`}
+        className={`hidden w-full md:flex items-center space-x-2 border p-4 border-frost bg-glass rounded-lg mt-6`}
       >
         <Image
           style={{ color: "" }}
@@ -278,7 +278,7 @@ export const BridgeInput = ({
       </div>
       <div className="mt-6 flex gap-x-2" data-testid="bridge-input-chains">
         <div className="w-full">
-          <p className="text-xs md:text-sm lg:text-lg text-[#FFFFFF70] font-bold">
+          <p className="text-xs md:text-sm lg:text-lg text-mist font-bold">
             From
           </p>
           <button
@@ -312,7 +312,7 @@ export const BridgeInput = ({
           </button>
         </div>
         <div className="w-full">
-          <p className="text-xs md:text-sm lg:text-lg text-[#FFFFFF70] font-bold">
+          <p className="text-xs md:text-sm lg:text-lg text-mist font-bold">
             To
           </p>
           <button
@@ -335,10 +335,10 @@ export const BridgeInput = ({
         className="flex justify-between mt-4 md:mt-6 lg:mt-8"
         data-testid="bridge-input-amount-section"
       >
-        <p className="text-[10px] lg:text-xs text-[#FFFFFF70] font-bold">
+        <p className="text-2xs lg:text-xs text-mist font-bold">
           Select Amount:
         </p>
-        <p className="text-[10px] lg:text-xs text-[#FFFFFF] font-bold">
+        <p className="text-2xs lg:text-xs text-[#FFFFFF] font-bold">
           Balance:{" "}
           {fetchTokenBalanceLoading
             ? "loading..."

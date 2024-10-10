@@ -108,7 +108,7 @@ export const BridgeAmountField: FC<InputWithMaxButtonProps> = ({
             data-testid="amount-input"
           />
           <div
-            className="text-[8px] md:text-[10px] lg:text-sm text-[#ffffff50] mt-1"
+            className="text-3xs md:text-2xs lg:text-sm text-mist mt-1"
             data-testid="value-box"
           >
             {calculatedValue || "$0.00"}

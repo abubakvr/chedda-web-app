@@ -26,7 +26,7 @@ export const RestrictedModal = () => {
           <h1 className="flex justify-center text-lg md:text-2xl lg:text-3xl font-bold mt-4 md:mt-6 lg:mt-8">
             Access Restricted
           </h1>
-          <p className="text-[10px] md:text-sm lg:text-[18px] mt-4 md:mt-6 lg:mt-8 terms-text text-center text-[#FFFFFF70]">
+          <p className="text-2xs md:text-sm lg:text-[18px] mt-4 md:mt-6 lg:mt-8 terms-text text-center text-mist">
             Access to residents that are located or incorporated in, or have a
             registered agent in a blocked country or a restricted territory is
             prohibited. More details can be found in our

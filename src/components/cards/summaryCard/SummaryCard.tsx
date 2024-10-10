@@ -53,7 +53,7 @@ export const SummaryCard = ({ stats, isLoading }: SummaryCardProps) => {
           <div className="w-full flex flex-col">
             <div
               data-testid="summary-title"
-              className="text-white opacity-50 font-open-sans md:text-[10px] lg:text-xs font-semibold leading-6 tracking-wide"
+              className="text-white opacity-50 font-open-sans md:text-2xs lg:text-xs font-semibold leading-6 tracking-wide"
             >
               {item.title}
             </div>

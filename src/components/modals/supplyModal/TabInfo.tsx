@@ -25,11 +25,11 @@ export const SupplyTabInfo = ({
 }: SupplyInfoProps) => {
   return (
     <div>
-      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
+      <div className="flex justify-between text-2xs md:text-xs lg:text-sm pb-5">
         <div className="opacity-50 font-semibold">Allowance</div>
         <div className="font-bold">{allowance}</div>
       </div>
-      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
+      <div className="flex justify-between text-2xs md:text-xs lg:text-sm pb-5">
         <div className="opacity-50 font-semibold">Supplied</div>
         <div className="flex space-x-2">
           <div className="font-bold">{supplied}</div>
@@ -42,7 +42,7 @@ export const SupplyTabInfo = ({
           <div className="font-bold">{projectedSupply}</div>
         </div>
       </div>
-      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
+      <div className="flex justify-between text-2xs md:text-xs lg:text-sm pb-5">
         <div className="opacity-50 font-semibold">Base Supply APY</div>
         <div className="font-bold">{baseSupplyAPY}</div>
       </div>
@@ -59,7 +59,7 @@ export const WithdrawTabInfo = ({
 }: WithdrawInfoProps) => {
   return (
     <div>
-      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
+      <div className="flex justify-between text-2xs md:text-xs lg:text-sm pb-5">
         <div className="opacity-50 font-semibold">Liquidity</div>
         <div className="flex space-x-2">
           <div className="font-bold">{liquidity}</div>
@@ -72,7 +72,7 @@ export const WithdrawTabInfo = ({
           <div className="font-bold">{projectedLiquidity}</div>
         </div>
       </div>
-      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
+      <div className="flex justify-between text-2xs md:text-xs lg:text-sm pb-5">
         <div className="opacity-50 font-semibold">Supplied</div>
         <div className="flex space-x-2">
           <div className="font-bold">{supplied}</div>
@@ -85,7 +85,7 @@ export const WithdrawTabInfo = ({
           <div className="font-bold">{projectedSupply}</div>
         </div>
       </div>
-      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm">
+      <div className="flex justify-between text-2xs md:text-xs lg:text-sm">
         <div className="opacity-50 font-semibold">Base Supply APY</div>
         <div className="font-bold">{baseSupplyAPY}</div>
       </div>

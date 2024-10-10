@@ -52,30 +52,30 @@ const CustomTooltip: React.FC<CustomTooltipProps<Payload>> = (props) => {
       data-testid="custom-tooltip"
       className="tooltip-bg rounded-lg p-4 pb-2 auto"
     >
-      <div className="text-[#ffffff50] text-xs pb-3 font-bold">
+      <div className="text-mist text-xs pb-3 font-bold">
         {formattedDate && <div>{formattedDate()}</div>}
       </div>
       <div className="grid grid-cols-3 justify-between gap-y-2 gap-x-2 mb-2 text-xs font-bold">
-        <div className="text-[#ffffff60] col-span-2">Supply APR:</div>
+        <div className="text-mist col-span-2">Supply APR:</div>
         <div className="supply-gradient-text col-span-1">
           {formatAsPercentage(
             parseBigNumberToFloat(dataPoint?.payload.supplyRate, 18, 3)
           )}
         </div>
-        <div className="text-[#ffffff60] col-span-2">Borrow APR:</div>
+        <div className="text-mist col-span-2">Borrow APR:</div>
         <div className="borrow-gradient-text col-span-1">
           {formatAsPercentage(
             parseBigNumberToFloat(dataPoint?.payload.borrowRate, 18, 3)
           )}
         </div>
 
-        <div className="text-[#ffffff60] col-span-2 ">Supplied:</div>
+        <div className="text-mist col-span-2 ">Supplied:</div>
         <div className="supply-gradient-text col-span-1">
           {formatLargeNumber(
             parseBigNumberToFloat(dataPoint?.payload.supplied, props.decimals)
           )}
         </div>
-        <div className="text-[#ffffff60] col-span-2">Borrowed:</div>
+        <div className="text-mist col-span-2">Borrowed:</div>
         <div className="borrow-gradient-text col-span-1">
           {formatLargeNumber(
             parseBigNumberToFloat(dataPoint?.payload.borrowed, props.decimals)
@@ -102,7 +102,7 @@ export const SuppyAndBorrowChart = ({
         className="w-full h-72 items-center justify-center"
       >
         <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 xl:px-8 h-11 xl:h-[50px] items-center">
-          <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-xs xl:text-sm uppercase">
+          <div className="text-white text-opacity-50 font-bold text-2xs lg:text-xs xl:text-sm uppercase">
             Total Supply and Borrow
           </div>
         </div>
@@ -119,7 +119,7 @@ export const SuppyAndBorrowChart = ({
   return (
     <div data-testid="supply-borrow-chart">
       <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 xl:px-8 h-11 xl:h-[50px] items-center">
-        <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-xs xl:text-sm uppercase">
+        <div className="text-white text-opacity-50 font-bold text-2xs lg:text-xs xl:text-sm uppercase">
           Total Supply and Borrow
         </div>
       </div>

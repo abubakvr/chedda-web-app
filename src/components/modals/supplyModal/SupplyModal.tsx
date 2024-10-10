@@ -48,7 +48,7 @@ const Tab: FC<{
 }> = ({ label, isActive, onClick, testId }) => (
   <button
     data-testid={testId}
-    className={`text-[10px] md:text-xs lg:text-sm font-bold px-4 py-2 focus:outline-none relative w-full hover:bg-[#4c37a740] ${
+    className={`text-2xs md:text-xs lg:text-sm font-bold px-4 py-2 focus:outline-none relative w-full hover:bg-haze-purple ${
       isActive && "modal-button rounded"
     }`}
     onClick={onClick}
@@ -276,7 +276,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                 Supply Asset
               </h2>
               <button
-                className="text-2xl md:text-3xl lg:text-4xl cursor-pointer font-bold text-white relative"
+                className="text-2xl md:text-3xl lg:text-4xl cursor-pointer font-bold text-white relative hover:opacity-85"
                 onClick={onClose}
               >
                 &times;

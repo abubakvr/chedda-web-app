@@ -77,7 +77,7 @@ export const AmountField: FC<InputWithMaxButtonProps> = ({
           data-testid="amount-input"
         />
         <div
-          className="text-[10px] lg:text-sm text-[#ffffff50] mt-0.5 lg:mt-1"
+          className="text-2xs lg:text-sm text-mist mt-0.5 lg:mt-1"
           data-testid="value-box"
         >
           {calculatedValue || "$0.00"}

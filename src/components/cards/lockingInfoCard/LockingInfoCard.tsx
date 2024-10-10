@@ -33,7 +33,7 @@ export const LockingInfoCard = ({
   return (
     <div className="w-full">
       <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 lg:px-8 h-10 lg:h-[50px] items-center">
-        <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-sm uppercase">
+        <div className="text-white text-opacity-50 font-bold text-2xs lg:text-sm uppercase">
           LOCK INFO
         </div>
         <a
@@ -43,7 +43,7 @@ export const LockingInfoCard = ({
           className="flex items-center gap-x-1 border-2 rounded-md py-1 px-2 md:py-[6px] md:px-3 border-[#ffffff60] hover:opacity-70"
           data-testid="gauge-link"
         >
-          <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-[8px] xl:text-[10px]">
+          <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-3xs xl:text-2xs">
             GUAGE CONTRACT
           </div>
           <Image

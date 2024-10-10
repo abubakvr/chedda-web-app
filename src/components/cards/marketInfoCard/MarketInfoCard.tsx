@@ -43,7 +43,7 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
       data-testid="market-info-card"
     >
       <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 xl:px-8 h-11 xl:h-[50px] items-center">
-        <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-xs xl:text-sm uppercase">
+        <div className="text-white text-opacity-50 font-bold text-2xs lg:text-xs xl:text-sm uppercase">
           Market Information
         </div>
       </div>

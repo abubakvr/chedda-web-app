@@ -37,11 +37,11 @@ export const WithdrawTab: FC<LockTabProps> = ({
   return (
     <div data-testid="lock-card-content" className="mt-4 lg:mt-6">
       <div className="text-lg lg:text-2xl font-bold">{title} your CHEDDA</div>
-      <div className="text-[#FFFFFF50] text-xs lg:text-sm mt-2">{subTitle}</div>
+      <div className="text-mist text-xs lg:text-sm mt-2">{subTitle}</div>
 
       <div className="mt-6 text-5xl text-white relative">
-        <div className="text-xl text-white  border-[#ffffff19] bg-[#ffffff02] border rounded-lg p-3">
-          <div className="text-xs lg:text-sm font-bold text-[#ffffff70]">
+        <div className="text-xl text-white  border-frost bg-glass border rounded-lg p-3">
+          <div className="text-xs lg:text-sm font-bold text-mist">
             Available Asset to withdraw
           </div>
           <div
@@ -51,7 +51,7 @@ export const WithdrawTab: FC<LockTabProps> = ({
             {lockedChedda} {cheddaSymbol}
           </div>
           <div
-            className="text-xs text-[#ffffff70] lg:mt-2"
+            className="text-xs text-mist lg:mt-2"
             data-testid="locked-chedda-price"
           >
             {formatCurrency(cheddaPrice * (lockedChedda || 0))}
@@ -70,7 +70,7 @@ export const WithdrawTab: FC<LockTabProps> = ({
         >
           WITHDRAW
         </Button>
-        <div className="uppercase text-sm text-[#FFFFFF50] my-1 lg:my-2 text-center">
+        <div className="uppercase text-sm text-mist my-1 lg:my-2 text-center">
           Or
         </div>
         <Button

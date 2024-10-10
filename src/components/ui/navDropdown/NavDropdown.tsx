@@ -54,7 +54,7 @@ export const NavDropdown: React.FC<DropdownMenuProps> = ({ menuItems }) => {
         {menuItems.map((item, index) => (
           <li
             key={index}
-            className="w-full py-1 px-2 relative flex items-center rounded-sm hover:bg-[#4c37a740]"
+            className="w-full py-1 px-2 relative flex items-center rounded-sm hover:bg-haze-purple"
           >
             <a
               href={item.url}

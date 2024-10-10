@@ -40,7 +40,7 @@ export const DepositTabInfo = ({
 }: DepositTabInfoProps) => {
   return (
     <div data-testid="deposit-tab-info">
-      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
+      <div className="flex justify-between text-2xs md:text-xs lg:text-sm pb-5">
         <div className="opacity-50 font-semibold" data-testid="symbol-label">
           {symbol} Collateral
         </div>
@@ -65,7 +65,7 @@ export const DepositTabInfo = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
+      <div className="flex justify-between text-2xs md:text-xs lg:text-sm pb-5">
         <div
           className="opacity-50 font-semibold"
           data-testid="collateral-value-label"
@@ -92,7 +92,7 @@ export const DepositTabInfo = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-between items-center text-[10px] md:text-xs lg:text-sm">
+      <div className="flex justify-between items-center text-2xs md:text-xs lg:text-sm">
         <div
           className="flex items-center opacity-50 font-semibold gap-x-2"
           data-testid="health-factor-label"
@@ -144,7 +144,7 @@ export const BorrowTabInfo = ({
 }: BorrowTabInfoProps) => {
   return (
     <div data-testid="borrow-tab-info">
-      <div className="flex justify-between items-center text-[10px] md:text-xs lg:text-sm pb-5">
+      <div className="flex justify-between items-center text-2xs md:text-xs lg:text-sm pb-5">
         <div
           className="flex items-center opacity-50 font-semibold gap-x-2"
           data-testid="total-borrowed-label"
@@ -175,7 +175,7 @@ export const BorrowTabInfo = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
+      <div className="flex justify-between text-2xs md:text-xs lg:text-sm pb-5">
         <div
           className="opacity-50 flex items-center font-semibold gap-x-2"
           data-testid="collateral-value-label"
@@ -196,7 +196,7 @@ export const BorrowTabInfo = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm pb-5">
+      <div className="flex justify-between text-2xs md:text-xs lg:text-sm pb-5">
         <div
           className="flex items-center opacity-50 font-semibold gap-x-2"
           data-testid="health-factor-label"
@@ -232,7 +232,7 @@ export const BorrowTabInfo = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-between text-[10px] md:text-xs lg:text-sm">
+      <div className="flex justify-between text-2xs md:text-xs lg:text-sm">
         <div
           className="flex items-center opacity-50 font-semibold gap-x-2"
           data-testid="liquidity-label"

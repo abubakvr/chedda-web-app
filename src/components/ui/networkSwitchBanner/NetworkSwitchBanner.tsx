@@ -36,7 +36,7 @@ export const NetworkSwitchBanner = ({
         You are on the wrong network. Please switch network to {chainName}
       </span>
       <button
-        className="text-white modal-button rounded text-[10px] md:text-xs px-2 py-1 lg:px-3 lg:py-2 lg:text-sm ml-2 hover:opacity-90"
+        className="text-white modal-button rounded text-2xs md:text-xs px-2 py-1 lg:px-3 lg:py-2 lg:text-sm ml-2 hover:opacity-90"
         onClick={switchNetwork}
         data-testid="switch-button"
       >

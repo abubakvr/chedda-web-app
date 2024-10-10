@@ -42,7 +42,7 @@ export const MobileNav = ({
             &times;
           </span>
         </button>
-        <div className="mt-16 text-2xl text-[#FFFFFF80] font-bold">
+        <div className="mt-16 text-2xl text-mist font-bold">
           {menuItems.map((item, index) => (
             <Link
               key={index}
@@ -75,7 +75,7 @@ export const MobileNav = ({
           {moreMenuItems.map((item, index) => (
             <li
               key={index}
-              className="w-full py-1 px-2 relative flex items-center rounded-sm hover:bg-[#4c37a740] pb-4"
+              className="w-full py-1 px-2 relative flex items-center rounded-sm hover:bg-haze-purple pb-4"
               data-testid={`more-menu-item-${index}`}
             >
               <a

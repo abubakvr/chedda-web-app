@@ -88,7 +88,7 @@ export const ClaimRewards = ({
           <>
             <div className="hazy-bg flex justift-between gap-x-2">
               <div className="flex flex-col items-center p-2 md:p- lg:p-7 w-full justify-center">
-                <p className="text-[8px] lg:text-xs text-[#FFFFFF70] font-semibold w-max">
+                <p className="text-3xs lg:text-xs text-mist font-semibold w-max">
                   Lock Rewards
                 </p>
                 {isDataLoading ? (
@@ -105,11 +105,11 @@ export const ClaimRewards = ({
                     >
                       {formatLargeNumber(parsedLockRewards)}
                     </p>
-                    <p className="text-[10px] lg:text-sm font-bold card-gradient-text">
+                    <p className="text-2xs lg:text-sm font-bold card-gradient-text">
                       CHEDDA
                     </p>
                     <p
-                      className="lg:mt-2 text-[8px] lg:text-xs text-[#FFFFFF70]"
+                      className="lg:mt-2 text-3xs lg:text-xs text-mist"
                       data-testid="lock-rewards-value"
                     >
                       $
@@ -120,9 +120,9 @@ export const ClaimRewards = ({
                   </div>
                 )}
               </div>
-              <div className="border-0.5 border-l border-[#7F56D9] h-10/12 my-3 opacity-70"></div>
+              <div className="border-0.5 border-l border-accent-purple h-10/12 my-3 opacity-70"></div>
               <div className="flex flex-col items-center p-1 md:p-1 lg:p-7 w-full space-y-1">
-                <p className="text-[8px] lg:text-xs text-[#FFFFFF70] font-semibold w-max">
+                <p className="text-3xs lg:text-xs text-mist font-semibold w-max">
                   Stake Rewards
                 </p>
                 {isDataLoading ? (
@@ -139,11 +139,11 @@ export const ClaimRewards = ({
                     >
                       {formatLargeNumber(parsedStakeRewards)}
                     </p>
-                    <p className="text-[10px] lg:text-sm font-bold card-gradient-text">
+                    <p className="text-2xs lg:text-sm font-bold card-gradient-text">
                       CHEDDA
                     </p>
                     <p
-                      className="lg:mt-2 text-[8px] lg:text-xs text-[#FFFFFF70]"
+                      className="lg:mt-2 text-3xs lg:text-xs text-mist"
                       data-testid="stake-rewards-value"
                     >
                       $
@@ -156,14 +156,14 @@ export const ClaimRewards = ({
               </div>
             </div>
             <div className="mt-2 lg:mt-4 flex items-center justify-between relative gap-x-2">
-              <div className="text-[8px] lg:text-xs text-[#FFFFFF70]">
+              <div className="text-3xs lg:text-xs text-mist">
                 Claim all your rewards on the protocol in one place
               </div>
               <div className="w-20 lg:w-32">
                 <Button
                   type="tertiary"
                   onClick={() => handleClaimAllRewards()}
-                  className="py-2 lg:py-3 xl:py-2.5 text-[8px] lg:text-xs"
+                  className="py-2 lg:py-3 xl:py-2.5 text-3xs lg:text-xs"
                   isLoading={txLoading}
                   disabled={!parsedLockRewards && !parsedStakeRewards}
                   data-testid="custom-button"

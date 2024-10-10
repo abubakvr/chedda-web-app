@@ -56,7 +56,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
               >
                 {pool.asset?.symbol}
               </div>
-              <div className="defi-box uppercase h-5 xl:h-6 w-16 xl:w-20 flex items-center justify-center text-[8px] md:text-[10px] font-bold">
+              <div className="defi-box uppercase h-5 xl:h-6 w-16 xl:w-20 flex items-center justify-center text-3xs md:text-2xs font-bold">
                 {pool.characterization}
               </div>
             </div>
@@ -70,9 +70,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
             </div>
           </div>
           <div className="mt-4">
-            <p className="text-[10px] lg:text-xs text-[#FFFFFF70]">
-              Collateral
-            </p>
+            <p className="text-2xs lg:text-xs text-mist">Collateral</p>
             <div className="flex gap-x-3 items-center">
               <div className="flex w-max mt-2 ml-1">
                 {pool.collaterals?.map((collateral: IToken, i: number) => {
@@ -114,13 +112,11 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
               </div>
             </div>
           </div>
-          <div className="my-4 opacity-90 border-b border-[#7F56D9]"></div>
+          <div className="my-4 opacity-90 border-b border-accent-purple"></div>
           <div className="grid grid-cols-2">
             <div className="colspan-1">
               <div>
-                <p className="text-[10px] xl:text-xs text-[#FFFFFF70]">
-                  Supply APR
-                </p>
+                <p className="text-2xs xl:text-xs text-mist">Supply APR</p>
                 <div className="mt-2 text-sm xl:text-lg flex items-center space-x-1 font-bold">
                   <div data-testid="max-supply-apy">
                     {formatAsPercentage(pool.maxSupplyAPY)}
@@ -134,9 +130,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                 </div>
               </div>
               <div className="mt-4 md:mt-6">
-                <p className="text-[10px] xl:text-xs text-[#FFFFFF70]">
-                  Supplied
-                </p>
+                <p className="text-2xs xl:text-xs text-mist">Supplied</p>
                 <div className="mt-2 text-sm xl:text-lg items-center font-bold">
                   <div data-testid="supplied">
                     {formatLargeNumber(pool.supplied)} {pool.asset?.symbol}
@@ -150,9 +144,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                 </div>
               </div>
               <div className="mt-4 md:mt-6">
-                <p className="text-[10px] xl:text-xs text-[#FFFFFF70]">
-                  Utilization
-                </p>
+                <p className="text-2xs xl:text-xs text-mist">Utilization</p>
                 <div className="mt-2 text-sm xl:text-lg flex items-center font-bold">
                   <div data-testid="utilization">
                     {formatAsPercentage(pool.utilization)}
@@ -162,9 +154,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
             </div>
             <div className="colspan-1">
               <div>
-                <p className="text-[10px] xl:text-xs text-[#FFFFFF70]">
-                  Borrow APR
-                </p>
+                <p className="text-2xs xl:text-xs text-mist">Borrow APR</p>
                 <div className="mt-2 text-sm xl:text-lg flex items-center space-x-1 font-bold">
                   <div data-testid="max-borrow-apy">
                     {formatAsPercentage(pool.maxBorrowAPY)}
@@ -178,9 +168,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                 </div>
               </div>
               <div className="mt-4 md:mt-6">
-                <p className="text-[10px] xl:text-xs text-[#FFFFFF70]">
-                  Borrowed
-                </p>
+                <p className="text-2xs xl:text-xs text-mist">Borrowed</p>
                 <div className="mt-2 text-sm lg:text-lg items-center font-bold">
                   <div data-testid="borrowed">
                     {formatLargeNumber(pool.borrowed)} {pool.asset?.symbol}
@@ -194,9 +182,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                 </div>
               </div>
               <div className="mt-4 md:mt-6">
-                <p className="text-[10px] xl:text-xs text-[#FFFFFF70]">
-                  Rewards APR
-                </p>
+                <p className="text-2xs xl:text-xs text-mist">Rewards APR</p>
                 <div className="mt-2 text-sm xl:text-lg flex items-center space-x-1 font-bold card-gradient-text ">
                   <div data-testid="rewards">
                     {formatAsPercentage(pool.rewardsAPY)}

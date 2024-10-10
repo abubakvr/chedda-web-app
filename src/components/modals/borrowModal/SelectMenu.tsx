@@ -48,7 +48,7 @@ export const SelectMenu = ({
     >
       <button
         onClick={openSelectMenu}
-        className="py-2 px-2 lg:px-3 rounded text-[10px] md:text-xs gap-x-1 flex modal-button justify-between items-center hover:opacity-90 font-bold"
+        className="py-2 px-2 lg:px-3 rounded text-2xs md:text-xs gap-x-1 flex modal-button justify-between items-center hover:opacity-90 font-bold"
         data-testid="select-menu-button"
       >
         <div>
@@ -82,7 +82,7 @@ export const SelectMenu = ({
           {collaterals?.map((c) => (
             <li
               key={c.symbol}
-              className="py-2 px-2 flex items-center gap-x-2 rounded-sm text-sm hover:cursor-pointer hover:bg-[#4c37a740] transition-all last:border-none"
+              className="py-2 px-2 flex items-center gap-x-2 rounded-sm text-sm hover:cursor-pointer hover:bg-haze-purple transition-all last:border-none"
               onClick={() => handleCollateralSelect(c)}
               data-testid={`collateral-item-${c.symbol}`}
             >

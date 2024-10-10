@@ -33,7 +33,7 @@ const Tab: FC<{
 }> = ({ label, isActive, onClick, testId }) => (
   <button
     data-testid={testId}
-    className={`text-[10px] md:text-xs lg:text-sm px-4 py-2 focus:outline-none font-bold relative w-full hover:bg-[#4c37a740] ${
+    className={`text-2xs md:text-xs lg:text-sm px-4 py-2 focus:outline-none font-bold relative w-full hover:bg-haze-purple ${
       isActive && "modal-button rounded"
     }`}
     onClick={onClick}
@@ -129,7 +129,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 Borrow Asset
               </h2>
               <button
-                className="text-2xl md:text-3xl lg:text-4xl cursor-pointer font-bold text-white relative"
+                className="text-2xl md:text-3xl lg:text-4xl cursor-pointer font-bold text-white relative hover:opacity-85"
                 onClick={() => {
                   onClose();
                   setSelectedCollateral(collaterals[0]);

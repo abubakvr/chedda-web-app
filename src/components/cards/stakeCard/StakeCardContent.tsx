@@ -42,8 +42,8 @@ export const StakeCardContent: FC<StakeCardContentProps> = ({
       <div className="text-lg lg:text-2xl font-bold">
         {title} your LP Tokens
       </div>
-      <div className="text-[#FFFFFF50] text-xs lg:text-sm mt-2">{subTitle}</div>
-      <div className="flex justify-between mt-4 lg:mt-6 items-center text-[10px] lg:text-xs">
+      <div className="text-mist text-xs lg:text-sm mt-2">{subTitle}</div>
+      <div className="flex justify-between mt-4 lg:mt-6 items-center text-2xs lg:text-xs">
         <div data-testid="amount-label" className="text-[#DEDEDE]">
           Enter amount to {title}
         </div>

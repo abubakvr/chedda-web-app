@@ -79,7 +79,7 @@ export const LockTab: FC<LockTabProps> = ({
 
   return (
     <div data-testid="lock-card-content" className="mt-2 md:mt-3">
-      <div className="text-warning text-[10px] lg:text-sm flex gap-x-2 items-center">
+      <div className="text-warning text-2xs lg:text-sm flex gap-x-2 items-center">
         <Image
           style={{ color: "" }}
           src={InfoIcon}
@@ -93,7 +93,7 @@ export const LockTab: FC<LockTabProps> = ({
       </div>
       {isExtendTab ? (
         <>
-          <div className="mt-3 md:mt-4 lg:mt-6 text-xs text-[#FFFFFF80]">
+          <div className="mt-3 md:mt-4 lg:mt-6 text-xs text-mist">
             Select Lock Period
           </div>
           <div className="flex space-between gap-x-2 mt-3 md:mt-4 lg:mt-5">
@@ -108,7 +108,7 @@ export const LockTab: FC<LockTabProps> = ({
                 className={`bg-[#201D47] rounded-lg flex justify-center items-center w-full relative lock-time-box transition-all ${lockTime?.value === item.value ? "modal-button" : ""}`}
               >
                 <div className="absolute -top-2 lg:-top-3 right-0">
-                  <span className="multiplier-circle  bg-[#151532] text-white rounded-full w-4 h-4 lg:w-7 lg:h-7 text-[5px] lg:text-[8px] flex justify-center items-center">
+                  <span className="multiplier-circle  bg-[#151532] text-white rounded-full w-4 h-4 lg:w-7 lg:h-7 text-[5px] lg:text-3xs flex justify-center items-center">
                     {item.multiplier}x
                   </span>
                 </div>
@@ -121,8 +121,8 @@ export const LockTab: FC<LockTabProps> = ({
         </>
       ) : (
         <>
-          <div className="flex justify-between mt-3 md:mt-4 lg:mt-6 items-center text-[10px] lg:text-xs">
-            <div data-testid="amount-label" className="text-[#FFFFFF70]">
+          <div className="flex justify-between mt-3 md:mt-4 lg:mt-6 items-center text-2xs lg:text-xs">
+            <div data-testid="amount-label" className="text-mist">
               Enter amount to Lock
             </div>
             <div data-testid="max-amount" className="font-bold">
@@ -150,7 +150,7 @@ export const LockTab: FC<LockTabProps> = ({
         {isExtendTab ? "Extend Lock" : buttonTitle}
       </Button>
       {showWarning && isExtendTab ? (
-        <div className="text-error mt-2 text-[10px] md:text-xs">
+        <div className="text-error mt-2 text-2xs md:text-xs">
           {warningMessage}
         </div>
       ) : null}

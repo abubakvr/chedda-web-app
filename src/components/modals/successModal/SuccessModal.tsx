@@ -30,7 +30,7 @@ export const SuccessModal = ({
         <div className="app-modal p-4 md:p-6 lg:p-8 rounded shadow-lg  w-11/12 max-w-[380px] md:max-w-[450px] lg:max-w-[550px]">
           <div className="flex justify-end items-center">
             <button
-              className="text-2xl md:text-3xl lg:text-4xl cursor-pointer font-bold text-white relative"
+              className="text-2xl md:text-3xl lg:text-4xl cursor-pointer font-bold text-white relative hover:opacity-85"
               onClick={onClose}
               data-testid="close-success-modal"
             >
@@ -50,10 +50,10 @@ export const SuccessModal = ({
             >
               Transaction Completed
             </div>
-            <div className="text-xs text-center md:text-lg lg:text-2xl text-[#FFFFFF50] mt-4 md:mt-6 lg:mt-8">
+            <div className="text-xs text-center md:text-lg lg:text-2xl text-mist mt-4 md:mt-6 lg:mt-8">
               {modalMessage}
             </div>
-            <div className="mt-6 md:mt-9 lg:mt-10 text-[10px] md:text-xs lg:text-lg text-[#FFFFFF50] justify-center text-center">
+            <div className="mt-6 md:mt-9 lg:mt-10 text-2xs md:text-xs lg:text-lg text-mist justify-center text-center">
               Stake LP tokens, earn CHEDDA — secure rewards in a streamlined and
               rewarding staking venture.
             </div>

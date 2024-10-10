@@ -12,7 +12,7 @@ export const Card = ({ title, children }: Props) => {
       data-testid="custom-card"
     >
       <div className="card-header-bg flex justify-between rounded-t-lg  px-4 md:px-6 lg:px-8 h-9 lg:h-[50px] items-center">
-        <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-sm uppercase ">
+        <div className="text-white text-opacity-50 font-bold text-2xs lg:text-sm uppercase ">
           {title}
         </div>
       </div>
