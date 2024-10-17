@@ -73,7 +73,7 @@ export const RouteCard = ({
             alt="info icon"
             className="w-[18px] h-[18px] xl:w-6 xl:h-6"
           />
-          <p className="text-[#FFFFFF80] text-[10px] text-xs lg:text-sm xl:text-lg">
+          <p className="text-mist text-2xs text-xs lg:text-sm xl:text-lg">
             {routeInfo}
           </p>
         </div>

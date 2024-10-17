@@ -30,10 +30,10 @@ export const BridgeSection = () => {
             Bridge assets from other networks to use on CHEDDA
           </h2>
           <div
-            className="list-disc list-inside text-sm text-[#FFFFFF70] mb-4 lg:mb-6"
+            className="list-disc list-inside text-sm text-mist mb-4 lg:mb-6"
             data-testid="bridge-description"
           >
-            <div className="flex text-[8px] md:text-[10px] text-xs xl:text-sm space-x-3 text-center leading-3">
+            <div className="flex text-3xs md:text-2xs text-xs xl:text-sm space-x-3 text-center leading-3">
               Bridged assets can be supplied or as collateral in CHEDDA lending
               pools and
               <br className="hidden sm:flex" /> can be bridged back at any time.
@@ -42,7 +42,7 @@ export const BridgeSection = () => {
           <div className="flex space-x-4" data-testid="bridge-links">
             <Link
               href={"/bridge"}
-              className="modal-button text-white rounded-md lg:rounded-lg px-3 lg:py-2 lg:px-4 text-[8px] lg:text-sm font-bold hover:opacity-80 h-7 lg:h-9 flex items-center gap-x-1.5"
+              className="modal-button text-white rounded-md lg:rounded-lg px-3 lg:py-2 lg:px-4 text-3xs lg:text-sm font-bold hover:opacity-80 h-7 lg:h-9 flex items-center gap-x-1.5"
               data-testid="go-to-bridge"
             >
               <span>Go to Bridge</span>
@@ -55,7 +55,7 @@ export const BridgeSection = () => {
             <a
               href={BRIDGE_DOC_URL}
               target="_blank"
-              className="secondary-button button-gradient-text flex gap-x-1.5 items-center text-white h-7 lg:h-9 rounded-lg px-3 lg:py-2 lg:px-4 text-center text-[8px] lg:text-sm font-bold hover:opacity-80"
+              className="secondary-button button-gradient-text flex gap-x-1.5 items-center text-white h-7 lg:h-9 rounded-lg px-3 lg:py-2 lg:px-4 text-center text-3xs lg:text-sm font-bold hover:opacity-80"
               data-testid="learn-more"
             >
               <span>Learn more</span>

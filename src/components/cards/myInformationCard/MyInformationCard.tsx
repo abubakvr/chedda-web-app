@@ -72,7 +72,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
       data-testid="my-information-card"
     >
       <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 xl:px-8 h-11 xl:h-[50px] items-center">
-        <div className="text-white text-opacity-50 font-bold text-[10px] text-xs xl:text-sm uppercase">
+        <div className="text-white text-opacity-50 font-bold text-2xs text-xs xl:text-sm uppercase">
           My Information
         </div>
         <a
@@ -81,7 +81,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           rel="noreferrer"
           className="flex items-center gap-x-1 border-2 rounded-md py-1 px-2 md:py-[6px] md:px-3 border-[#ffffff60] hover:opacity-70"
         >
-          <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-[8px] xl:text-[10px]">
+          <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-3xs xl:text-2xs">
             Vault Contract
           </div>
           <Image
@@ -93,7 +93,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
         </a>
       </div>
       <div className="p-4 md:p-6 xl:p-8 pb-0 md:pb-0 xl:pb-0">
-        <div className="flex justify-between text-[10px] md:text-xs text-xs xl:text-sm pb-4 md:pb-5">
+        <div className="flex justify-between text-2xs md:text-xs text-xs xl:text-sm pb-4 md:pb-5">
           <div className="opacity-50 font-semibold">Available to Supply</div>
           <div className=" font-bold">
             {`${formatLargeNumber(
@@ -104,7 +104,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
             )} ${poolStats?.asset.symbol}`}
           </div>
         </div>
-        <div className="flex justify-between text-[10px] md:text-xs text-xs xl:text-sm pb-4 md:pb-5">
+        <div className="flex justify-between text-2xs md:text-xs text-xs xl:text-sm pb-4 md:pb-5">
           <div className="opacity-50 font-semibold">Total Supplied</div>
           <div className="font-bold">
             {`${formatLargeNumber(
@@ -115,13 +115,13 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
             )} ${poolStats?.asset.symbol}`}
           </div>
         </div>
-        <div className="flex justify-between text-[10px] md:text-xs text-xs xl:text-sm pb-4 md:pb-5">
+        <div className="flex justify-between text-2xs md:text-xs text-xs xl:text-sm pb-4 md:pb-5">
           <div className="opacity-50 font-semibold">Total Borrowed</div>
           <div className="font-bold">
             {`${formatLargeNumber(totalBorrowed)} ${poolStats?.asset.symbol}`}
           </div>
         </div>
-        <div className="flex justify-between text-[10px] md:text-xs text-xs xl:text-sm ">
+        <div className="flex justify-between text-2xs md:text-xs text-xs xl:text-sm ">
           <div className={`opacity-50 font-semibold`}>Health Factor</div>
           <div
             className={`font-bold ${getHealthFactorColor(parseBigNumberToFloat(accountInfo?.healthFactor))}`}

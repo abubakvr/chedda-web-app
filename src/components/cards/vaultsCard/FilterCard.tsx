@@ -65,7 +65,7 @@ export const FilterCard: React.FC<FilterCardProps> = ({
           <div className="mt-2 md:mt-4 w-full border-b border-[#51D5FA30]"></div>
         </div>
         <div className="md:flex mt-2 md:mt-4 xl:mt-6 items-center justify-between w-full md:pb-4 md:px-4 xl:px-8">
-          <div className="flex space-x-2 md:space-x-2 lg:space-x-3 relative items-center overflow-auto w-full md:w-fit px-4 md:px-2 no-scrollbar md:border  md:border-[#ffffff19] md:bg-[#ffffff02] rounded-lg p-2 transition-all duration-400">
+          <div className="flex space-x-2 md:space-x-2 lg:space-x-3 relative items-center overflow-auto w-full md:w-fit px-4 md:px-2 no-scrollbar md:border  md:border-frost md:bg-glass rounded-lg p-2 transition-all duration-400">
             {poolCategories.map((item, i) => {
               const isFilterSelected = currentFilter === item.keyword;
 
@@ -86,10 +86,10 @@ export const FilterCard: React.FC<FilterCardProps> = ({
                     alt={item.label}
                     className="h-3 w-3 md:h-4 md:w-4"
                   />
-                  <p className="font-bold text-[8px] lg:text-[10px] uppercase text-white ">
+                  <p className="font-bold text-3xs lg:text-2xs uppercase text-white ">
                     {item.label}
                   </p>
-                  <div className="bg-[#FFFFFF15] rounded-md text-[#FFFFFF70] text-[8px] md:text-[10px] py-0.5 px-1.5">
+                  <div className="bg-[#FFFFFF15] rounded-md text-mist text-3xs md:text-2xs py-0.5 px-1.5">
                     {item.itemCount}
                   </div>
                 </button>
@@ -105,7 +105,7 @@ export const FilterCard: React.FC<FilterCardProps> = ({
                 <input
                   name="query"
                   type="search"
-                  className="w-full md:w-48 lg:w-64 h-full bg-transparent focus:outline-none text-[10px] md:text-lg text-white pl-2 md:pl-3 md:pr-10 flex items-center"
+                  className="w-full md:w-48 lg:w-64 h-full bg-transparent focus:outline-none text-2xs md:text-lg text-white pl-2 md:pl-3 md:pr-10 flex items-center"
                   placeholder="Search"
                   onChange={(e) => handleSearch(e.target.value)}
                 />

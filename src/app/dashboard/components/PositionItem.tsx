@@ -43,18 +43,18 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
                 />
               </div>
               <div
-                className="ml-2 tracking-widest text-[10px] lg:text-lg font-bold"
+                className="ml-2 tracking-widest text-2xs lg:text-lg font-bold"
                 data-testid="asset-symbol"
               >
                 {pool.asset?.symbol}
               </div>
             </div>
-            {/* <div className="defi-box uppercase h-6 w-20 mt-3 flex items-center justify-center text-[10px] font-bold">
+            {/* <div className="defi-box uppercase h-6 w-20 mt-3 flex items-center justify-center text-2xs font-bold">
               {pool.characterization}
             </div> */}
           </div>
           <div className="flex justify-left items-center w-max">
-            <div className="text-[10px] lg:text-sm flex flex-col font-semibold md:col-span-1">
+            <div className="text-2xs lg:text-sm flex flex-col font-semibold md:col-span-1">
               <div data-testid="supplied-amount">
                 {formatLargeNumber(pool.supplied)} {pool.asset?.symbol}
               </div>
@@ -64,7 +64,7 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
             </div>
           </div>
           <div className="flex justify-start items-center w-max">
-            <div className="text-[10px] lg:text-sm flex flex-col font-semibold md:col-span-1">
+            <div className="text-2xs lg:text-sm flex flex-col font-semibold md:col-span-1">
               <div data-testid="borrowed-amount">
                 {formatLargeNumber(pool.borrowed)} {pool.asset?.symbol}
               </div>
@@ -74,7 +74,7 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
             </div>
           </div>
           <div className="flex justify-start w-max">
-            <div className="text-[10px] lg:text-sm flex items-center font-semibold md:col-span-1">
+            <div className="text-2xs lg:text-sm flex items-center font-semibold md:col-span-1">
               <div
                 data-testid="health-factor-value"
                 className={getHealthFactorColor(pool.healthFactor)}
@@ -84,7 +84,7 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
             </div>
           </div>
           <div className="flex justify-start items-center w-max">
-            <div className="text-[10px] lg:text-sm flex flex-col font-semibold md:col-span-1">
+            <div className="text-2xs lg:text-sm flex flex-col font-semibold md:col-span-1">
               <div data-testid="staked-amount">
                 {formatLargeNumber(pool.staked)} CHEDDA
               </div>
@@ -94,7 +94,7 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
             </div>
           </div>
           <div className="flex justify-start items-center w-max">
-            <div className="text-[10px] lg:text-sm flex flex-col font-semibold md:col-span-1">
+            <div className="text-2xs lg:text-sm flex flex-col font-semibold md:col-span-1">
               <div data-testid="locked-amount">
                 {formatLargeNumber(pool.locked)} CHEDDA
               </div>
@@ -138,36 +138,30 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
               </div>
             </div>
             <div className="flex justify-between mt-4">
-              <div className="text-[10px] md:text-xs text-[#FFFFFF70]">
-                Supplied
-              </div>
-              <div className="flex flex-col items-end text-[10px] md:text-xs">
+              <div className="text-2xs md:text-xs text-mist">Supplied</div>
+              <div className="flex flex-col items-end text-2xs md:text-xs">
                 <span className="font-bold">
                   {formatLargeNumber(pool.supplied)} {pool.asset?.symbol}
                 </span>
-                <span className="text-[#ffffff50]">
+                <span className="text-mist">
                   {formatCurrency(pool.suppliedValue)}
                 </span>
               </div>
             </div>
             <div className="flex justify-between mt-4">
-              <div className="text-[10px] md:text-xs text-[#FFFFFF70]">
-                Borrowed
-              </div>
-              <div className="flex flex-col items-end text-[10px] md:text-xs">
+              <div className="text-2xs md:text-xs text-mist">Borrowed</div>
+              <div className="flex flex-col items-end text-2xs md:text-xs">
                 <span className="font-bold">
                   {formatLargeNumber(pool.borrowed)} {pool.asset?.symbol}
                 </span>
-                <span className="text-[#ffffff50]">
+                <span className="text-mist">
                   {formatCurrency(pool.borrowedValue)}
                 </span>
               </div>
             </div>
             <div className="flex justify-between mt-4">
-              <div className="text-[10px] md:text-xs text-[#FFFFFF70]">
-                Health Factor
-              </div>
-              <div className="flex flex-col items-end text-[10px] md:text-xs">
+              <div className="text-2xs md:text-xs text-mist">Health Factor</div>
+              <div className="flex flex-col items-end text-2xs md:text-xs">
                 <span
                   className={`font-bold ${getHealthFactorColor(pool.healthFactor)}`}
                 >
@@ -176,25 +170,23 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
               </div>
             </div>
             <div className="flex justify-between mt-8">
-              <div className="text-[10px] md:text-xs text-[#FFFFFF70]">
-                Stake/Earn
-              </div>
-              <div className="flex flex-col items-end text-[10px] md:text-xs">
+              <div className="text-2xs md:text-xs text-mist">Stake/Earn</div>
+              <div className="flex flex-col items-end text-2xs md:text-xs">
                 <span className="font-bold">
                   {formatLargeNumber(pool.staked)} CHEDDA
                 </span>
-                <span className="text-[#ffffff50]">
+                <span className="text-mist">
                   {formatCurrency(pool.staked * cheddaTokenPrice)}
                 </span>
               </div>
             </div>
             <div className="flex justify-between mt-4">
-              <div className="text-[10px] text-[#FFFFFF70]">Lock/Earn</div>
-              <div className="flex flex-col items-end text-[10px] md:text-xs">
+              <div className="text-2xs text-mist">Lock/Earn</div>
+              <div className="flex flex-col items-end text-2xs md:text-xs">
                 <span className="font-bold">
                   {formatLargeNumber(pool.locked)} CHEDDA
                 </span>
-                <span className="text-[#ffffff50]">
+                <span className="text-mist">
                   {formatCurrency(pool.locked * cheddaTokenPrice)}
                 </span>
               </div>

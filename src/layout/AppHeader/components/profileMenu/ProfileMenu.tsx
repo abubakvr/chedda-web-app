@@ -104,7 +104,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
         >
           <button
             onClick={openProfileMenu}
-            className="h-8 w-28 lg:h-10 xl:h-12 lg:w-36 xl:w-40 p-2 px-1 rounded-md md:rounded-lg text-[8px] lg:text-sm account_button flex justify-evenly items-center hover:opacity-90 font-bold"
+            className="h-8 w-28 lg:h-10 xl:h-12 lg:w-36 xl:w-40 p-2 px-1 rounded-md md:rounded-lg text-3xs lg:text-sm account_button flex justify-evenly items-center hover:opacity-90 font-bold"
             data-testid="profile-menu-button"
           >
             <div className="rounded-full flex items-center">
@@ -164,7 +164,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
                 className="pt-2 pb-4 border-b border-[#2D2A6B] font-bold"
                 data-testid="chedda-balance"
               >
-                <p className="text-lg text-[#ffffff50]">Balance:</p>
+                <p className="text-lg text-mist">Balance:</p>
                 <p className="text-[18px]">
                   {formatNumber(parsedCheddaBalance)} CHEDDA
                 </p>

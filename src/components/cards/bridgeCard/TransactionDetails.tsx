@@ -183,7 +183,7 @@ export const TransactionDetails = ({
           Transaction Details
         </div>
       </div>
-      <div className="mt-3 md:mt-4 lg:mt-6 px-4 lg:px-8 border border-[#ffffff20] bg-[#ffffff07] rounded-xl">
+      <div className="mt-3 md:mt-4 lg:mt-6 px-4 lg:px-8 border border-frost bg-[#ffffff07] rounded-xl">
         <div
           className="relative flex justify-between py-1 md:py-2 lg:py-3"
           data-testid="source-chain"
@@ -207,7 +207,7 @@ export const TransactionDetails = ({
               <p className="font-bold text-sm md:text-lg uppercase">
                 {amountToSend} {selectedToken.symbol}
               </p>
-              <p className="font-bold text-[10px] md:text-xs mt-0.5 text-[#FFFFFF70]">
+              <p className="font-bold text-2xs md:text-xs mt-0.5 text-mist">
                 ~ ${(amountToSend * tokenPrice).toFixed(2)} •{" "}
                 {selectedToken.symbol} on {selectedChain.name}
               </p>
@@ -254,7 +254,7 @@ export const TransactionDetails = ({
               alt="icon-logo"
               className="w-3 h-3 md:w-4 md:h-4"
             />
-            <p className="font-bold text-[#FFFFFF70] text-[10px] md:text-xs lg:text-sm">
+            <p className="font-bold text-mist text-2xs md:text-xs lg:text-sm">
               on {selectedChain.name}
             </p>
           </a>
@@ -290,7 +290,7 @@ export const TransactionDetails = ({
               alt="icon-logo"
               className="w-3 h-3 md:w-4 md:h-4"
             />
-            <p className="font-bold text-[#FFFFFF70] text-[10px] md:text-xs lg:text-sm">
+            <p className="font-bold text-mist text-2xs md:text-xs lg:text-sm">
               on {destinationChain.name}
             </p>
           </a>
@@ -318,7 +318,7 @@ export const TransactionDetails = ({
               <p className="font-bold text-sm md:text-lg uppercase">
                 {amountToSend} {selectedToken.symbol}
               </p>
-              <p className="font-bold text-[10px] md:text-xs mt-0.5 text-[#FFFFFF70]">
+              <p className="font-bold text-2xs md:text-xs mt-0.5 text-mist">
                 ~ ${(amountToSend * tokenPrice).toFixed(2)} •{" "}
                 {selectedToken.symbol} on {destinationChain.name}
               </p>
@@ -326,7 +326,7 @@ export const TransactionDetails = ({
           </div>
         </div>
       </div>
-      <p className="text-[#FFFFFF70] text-[10px] md:text-xs lg:text-lg text-center mt-2 md:mt-4 lg:mt-6 relative">
+      <p className="text-mist text-2xs md:text-xs lg:text-lg text-center mt-2 md:mt-4 lg:mt-6 relative">
         Transaction is processing. You can track your transaction on{" "}
         <a
           href={`${LAYERZERO_TESTNET}/${txHash}`}

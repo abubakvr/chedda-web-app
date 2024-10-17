@@ -15,7 +15,7 @@ describe("ErrorCard component", () => {
 
     const button = screen.getByTestId("refresh-button");
     expect(button).toHaveClass(
-      "card-gradient-text underline text-[8px] md:text-xs lg:text-sm font-bold hover:opacity-90"
+      "card-gradient-text underline text-3xs md:text-xs lg:text-sm font-bold hover:opacity-90"
     );
   });
 });

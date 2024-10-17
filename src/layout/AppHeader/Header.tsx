@@ -106,7 +106,7 @@ export const HeaderComponent: React.FC = () => {
               data-testid="chedda-logo"
             />
           </div>
-          <div className="hidden md:flex flex-row text-white space-x-5 lg:space-x-10 text-[10px] lg:text-sm xl:text-lg font-bold md:ml-24 mt-4 lg:mt-4 xl:ml-0">
+          <div className="hidden md:flex flex-row text-white space-x-5 lg:space-x-10 text-2xs lg:text-sm xl:text-lg font-bold md:ml-24 mt-4 lg:mt-4 xl:ml-0">
             {menuItems.map((item, index) => (
               <Link
                 key={index}

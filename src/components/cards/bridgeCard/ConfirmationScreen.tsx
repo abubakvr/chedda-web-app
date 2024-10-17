@@ -71,7 +71,7 @@ export const ConfirmationScreen = ({
               <p className="font-bold text-xs md:text-sm lg:text-lg uppercase">
                 {formatNumber(amountToSend)} {selectedToken.symbol}
               </p>
-              <p className="font-bold text-[10px] md:text-xs mt-0.5 text-[#FFFFFF70]">
+              <p className="font-bold text-2xs md:text-xs mt-0.5 text-mist">
                 ~ ${formatNumber(amountToSend * tokenPrice)}
               </p>
             </div>
@@ -101,7 +101,7 @@ export const ConfirmationScreen = ({
               <p className="font-bold text-xs md:text-sm lg:text-lg uppercase">
                 {formatNumber(amountToSend)} {selectedToken.symbol}
               </p>
-              <p className="font-bold text-[10px] md:text-xs mt-0.5 text-[#FFFFFF70]">
+              <p className="font-bold text-2xs md:text-xs mt-0.5 text-mist">
                 ~ ${formatNumber(amountToSend * tokenPrice)}
               </p>
             </div>

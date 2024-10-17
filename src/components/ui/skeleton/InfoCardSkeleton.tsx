@@ -16,7 +16,7 @@ export const InfoCardSkeleton = ({
     >
       <div className="placeholder-header card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 lg:px-8 h-10 lg:h-[50px] items-center">
         <div
-          className="text-white text-opacity-50 font-bold text-[10px] lg:text-sm uppercase"
+          className="text-white text-opacity-50 font-bold text-2xs lg:text-sm uppercase"
           data-testid="info-card-title"
         >
           {title}

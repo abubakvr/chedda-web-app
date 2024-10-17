@@ -38,19 +38,19 @@ const CustomTooltip: React.FC<CustomTooltipProps<Payload>> = (props) => {
       className="tooltip-bg rounded-lg p-4 pb-2 auto"
     >
       <div className="grid grid-cols-3 justify-between gap-y-2 gap-x-2 mb-2 text-xs">
-        <div className="text-[#ffffff60] col-span-2 ">Utilization:</div>
+        <div className="text-mist col-span-2 ">Utilization:</div>
         <div className="text-white col-span-1 font-bold">
           {formatAsPercentage(
             parseBigNumberToFloat(dataPoint?.payload.utilization, 18)
           )}
         </div>
-        <div className="text-[#ffffff60] col-span-2">Supply APR:</div>
+        <div className="text-mist col-span-2">Supply APR:</div>
         <div className="supply-gradient-text col-span-1 font-bold">
           {formatAsPercentage(
             parseBigNumberToFloat(dataPoint?.payload.supplyRate, 18, 5)
           )}
         </div>
-        <div className="text-[#ffffff60] col-span-2">Borrow APR:</div>
+        <div className="text-mist col-span-2">Borrow APR:</div>
         <div className="borrow-gradient-text col-span-1 font-bold">
           {formatAsPercentage(
             parseBigNumberToFloat(dataPoint?.payload.borrowRate, 18, 5)
@@ -71,7 +71,7 @@ export const InterestRatesChart = () => {
         className="w-full h-72 items-center justify-center"
       >
         <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 xl:px-8 h-11 xl:h-[50px] items-center">
-          <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-xs xl:text-sm uppercase">
+          <div className="text-white text-opacity-50 font-bold text-2xs lg:text-xs xl:text-sm uppercase">
             Interest Rate Model
           </div>
         </div>
@@ -88,10 +88,10 @@ export const InterestRatesChart = () => {
   return (
     <div data-testid="interest-rates-chart">
       <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 xl:px-8 h-11 xl:h-[50px] items-center">
-        <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-xs xl:text-sm uppercase">
+        <div className="text-white text-opacity-50 font-bold text-2xs lg:text-xs xl:text-sm uppercase">
           Interest Rate Model
         </div>
-        <div className="hidden md:flex gap-x-6 text-white text-opacity-50 text-[8px] lg:text-xs uppercase font-bold">
+        <div className="hidden md:flex gap-x-6 text-white text-opacity-50 text-3xs lg:text-xs uppercase font-bold">
           <div className="flex items-center gap-x-2">
             <div className="rounded-full bg-[#6FBFF7] w-[10px] h-[10px]"></div>
             <div className="">Supply APR</div>
@@ -111,7 +111,7 @@ export const InterestRatesChart = () => {
           rel="noreferrer"
           className="flex items-center gap-x-1 border-2 rounded-md py-1 px-2 md:py-[6px] md:px-3 border-[#ffffff60] hover:opacity-70"
         >
-          <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-[8px] xl:text-[10px]">
+          <div className="relative opacity-100 text-[#D9D9D9] uppercase font-bold text-3xs xl:text-2xs">
             Contract
           </div>
           <Image

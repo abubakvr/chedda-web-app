@@ -59,12 +59,12 @@ export const MyPositions = ({
           </div>
           <div
             data-testid="search-input"
-            className="flex flex-col justify-center mt-4 items-center gap-4 h-8 md:h-9 lg:h-11 rounded-md border border-[#FFFFFF50] bg-transparent focus:border-blue sm:mt-1"
+            className="flex flex-col justify-center mt-4 items-center gap-4 h-8 md:h-9 lg:h-11 rounded-md border border-mist bg-transparent focus:border-blue sm:mt-1"
           >
             <div className="relative w-full">
               <input
                 type="text"
-                className="w-full sm:w-48 md:w-52 lg:w-64 h-full bg-transparent focus:outline-none text-[10px] lg:text-lg text-white pl-3 pr-10 flex items-center"
+                className="w-full sm:w-48 md:w-52 lg:w-64 h-full bg-transparent focus:outline-none text-2xs lg:text-lg text-white pl-3 pr-10 flex items-center"
                 placeholder="Search"
                 onChange={handleSearch}
               />
@@ -82,7 +82,7 @@ export const MyPositions = ({
             {positionsHeaderItem.map((item: string, index: number) => (
               <div key={index} className={`w-max flex  justify-start`}>
                 <div
-                  className={`w-fit text-white  col-span-1 opacity-50 flex font-open-sans text-[8px] lg:text-xs font-bold leading-6 tracking-wide`}
+                  className={`w-fit text-white  col-span-1 opacity-50 flex font-open-sans text-3xs lg:text-xs font-bold leading-6 tracking-wide`}
                   data-testid={`vault-header-item-${index}`}
                 >
                   {item}
@@ -94,7 +94,7 @@ export const MyPositions = ({
       </div>
       {isWalletConnected ? (
         <div className="p-4 md:p-0">
-          <div className="border rounded-lg text-[#ffffff70] border-[#ffffff19] bg-[#ffffff02] md:border-none md:bg-transparent md:m-0">
+          <div className="border rounded-lg text-mist border-frost bg-glass md:border-none md:bg-transparent md:m-0">
             {!allPositionsLoading ? (
               getAccountPositions(allPositions).length ? (
                 getAccountPositions(allPositions)?.map(

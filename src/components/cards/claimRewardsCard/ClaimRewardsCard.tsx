@@ -87,19 +87,19 @@ export const ClaimRewardsCard = ({
     <>
       <div className="w-full">
         <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 lg:px-8 h-10 lg:h-[50px] items-center">
-          <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-sm uppercase">
+          <div className="text-white text-opacity-50 font-bold text-2xs lg:text-sm uppercase">
             CLAIM REWARDS
           </div>
         </div>
         <div className="px-4 md:px-6 py-4 lg:px-8 lg:py-6 text-5xl text-white relative">
-          <div className="text-xl text-white  border-[#ffffff19] bg-[#ffffff02] border rounded-lg p-3">
-            <div className="text-xs lg:text-sm font-bold text-[#ffffff70]">
+          <div className="text-xl text-white  border-frost bg-glass border rounded-lg p-3">
+            <div className="text-xs lg:text-sm font-bold text-mist">
               Claimable Rewards
             </div>
             <div className="mt-2 text-lg lg:text-2xl card-gradient-text font-bold">
               {formatLargeNumber(parsedRewardsValue)} CHEDDA
             </div>
-            <div className="text-xs  text-[#ffffff70] lg:mt-2">
+            <div className="text-xs  text-mist lg:mt-2">
               {rewardValue ? formatCurrency(rewardValue) : "$0.00"}
             </div>
           </div>
@@ -114,7 +114,7 @@ export const ClaimRewardsCard = ({
             Claim
           </Button>
           {setActiveTab && (
-            <div className="text-[8px] md:text-[10px] lg:text-xs text-[#ffffff70] flex gap-x-1 mt-4 lg:mt-6 justify-between items-center">
+            <div className="text-3xs md:text-2xs lg:text-xs text-mist flex gap-x-1 mt-4 lg:mt-6 justify-between items-center">
               Lock CHEDDA to maximise your rewards
               <button
                 onClick={() => setActiveTab("Lock")}

@@ -31,7 +31,7 @@ const Tab: FC<{
 }> = ({ label, isActive, onClick, testId }) => (
   <button
     data-testid={testId}
-    className={`text-[10px] lg:text-sm font-bold px-4 py-2 focus:outline-none relative w-full hover:bg-[#4c37a740] ${
+    className={`text-2xs lg:text-sm font-bold px-4 py-2 focus:outline-none relative w-full hover:bg-haze-purple ${
       isActive && "modal-button rounded"
     }`}
     onClick={onClick}

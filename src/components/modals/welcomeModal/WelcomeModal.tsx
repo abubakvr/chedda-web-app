@@ -55,10 +55,10 @@ export const WelcomeModal = () => {
             Welcome to CHEDDA
           </h1>
           <div>
-            <p className="text-[10px] md:text-sm lg:text-[18px] mt-4 md:mt-6 lg:mt-8 terms-text">
+            <p className="text-2xs md:text-sm lg:text-[18px] mt-4 md:mt-6 lg:mt-8 terms-text">
               Chedda is a decentralized, non-custodial lending protocol.
             </p>
-            <p className="text-[10px] md:text-sm lg:text-[18px] mt-4 md:mt-6 lg:mt-8 terms-text">
+            <p className="text-2xs md:text-sm lg:text-[18px] mt-4 md:mt-6 lg:mt-8 terms-text">
               By accessing the Chedda website, you agree to the{" "}
               <a
                 href="https://www.chedda.finance/terms"
@@ -83,7 +83,7 @@ export const WelcomeModal = () => {
                 />
                 <span className="checkmark w-4 h-4 lg:w-6 lg:h-6"></span>
               </label>
-              <p className="text-[8px] md:text-xs lg:text-lg font-bold terms-text">
+              <p className="text-3xs md:text-xs lg:text-lg font-bold terms-text">
                 I have read, understood, and agree to the terms and conditions.
               </p>
             </div>
@@ -99,7 +99,7 @@ export const WelcomeModal = () => {
                 />
                 <span className="checkmark w-4 h-4 lg:w-6 lg:h-6"></span>
               </label>
-              <p className="text-[8px] md:text-xs lg:text-lg font-bold terms-text">
+              <p className="text-3xs md:text-xs lg:text-lg font-bold terms-text">
                 I confirm that the funds I am using are not involved in any
                 illicit activities.
               </p>
@@ -116,7 +116,7 @@ export const WelcomeModal = () => {
                 />
                 <span className="checkmark w-4 h-4 lg:w-6 lg:h-6"></span>
               </label>
-              <p className="text-[8px] md:text-xs lg:text-lg font-bold terms-text">
+              <p className="text-3xs md:text-xs lg:text-lg font-bold terms-text">
                 I acknowledge that there is a risk of losing assets and I agree
                 to proceed at my own discretion.
               </p>

@@ -114,7 +114,7 @@ export const Toast: React.FC<ToastProps> = ({
                 </div>
                 <div>
                   <div
-                    className="text-[10px] text-xs lg:text-sm text-[#ffffff70] flex items-start mt-2 gap-x-1"
+                    className="text-2xs text-xs lg:text-sm text-mist flex items-start mt-2 gap-x-1"
                     data-testid="toast-message"
                   >
                     {status === "success" ? toastMessage : `${toastMessage}`}
@@ -143,7 +143,6 @@ export const Toast: React.FC<ToastProps> = ({
                       href={`${txPrefix ? txPrefix : currentEnvironment?.txUrlPrefix}/${txHash}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-[10px] md:text-xs text-[#ffffff] flex justify-end items-center gap-x-1 mt-1 md:mt-2 opacity-50 hover:opacity-90"
                       data-testid="toast-link"
                     >
                       <span>Review tx details</span>

@@ -56,7 +56,7 @@ export const PositionSummary = ({
             <h2 className="text-[sm] md:text-lg lg:text-2xl font-bold">
               Position Summary
             </h2>
-            <p className="text-[8px] md:text-[10px] lg:text-lg text-[#FFFFFF70] text-center md:text-start mt-2 md:mt-3 lg:mt-6 w-max">
+            <p className="text-3xs md:text-2xs lg:text-lg text-mist text-center md:text-start mt-2 md:mt-3 lg:mt-6 w-max">
               Review your overall portfolio value here. <br />
               You can manage positions from the Markets page.
             </p>
@@ -64,7 +64,7 @@ export const PositionSummary = ({
           <div className="lg:px-7 w-full md:w-max ">
             <div className="flex justify-evenly items-center text-center lg:pt-4 text-[#F9FAFB] w-full md:gap-x-6 lg:gap-x-8 xl:gap-x-16">
               <div data-testid="net-value" className="w-max">
-                <p className="text-[8px] md:text-[10px] lg:text-sm text-[#FFFFFF70] font-semibold">
+                <p className="text-3xs md:text-2xs lg:text-sm text-mist font-semibold">
                   Net Value
                 </p>
                 {positionSummaryLoading ? (
@@ -81,7 +81,7 @@ export const PositionSummary = ({
                 )}
               </div>
               <div data-testid="total-supplied" className="w-max">
-                <p className="text-[8px] md:text-[10px] lg:text-sm text-[#FFFFFF70] font-semibold">
+                <p className="text-3xs md:text-2xs lg:text-sm text-mist font-semibold">
                   Total Supplied
                 </p>
                 {positionSummaryLoading ? (
@@ -98,7 +98,7 @@ export const PositionSummary = ({
                 )}
               </div>
               <div data-testid="total-borrowed" className="w-max">
-                <p className="text-[8px] md:text-[10px] lg:text-sm text-[#FFFFFF70] font-semibold">
+                <p className="text-3xs md:text-2xs lg:text-sm text-mist font-semibold">
                   Total Borrowed
                 </p>
 
@@ -116,7 +116,7 @@ export const PositionSummary = ({
                 )}
               </div>
               <div data-testid="locked" className="w-max">
-                <p className="text-[8px] md:text-[10px] lg:text-sm text-[#FFFFFF70] font-semibold">
+                <p className="text-3xs md:text-2xs lg:text-sm text-mist font-semibold">
                   Locked
                 </p>
                 {positionSummaryLoading ? (
@@ -185,7 +185,7 @@ export const PositionSummary = ({
                 getAccountPositions(allPositions)?.map(
                   ({ asset, suppliedValue, supplied }, i) => (
                     <div
-                      className="flex font-bold text-[8px] md:text-[10px] lg:text-sm gap-x-1.5"
+                      className="flex font-bold text-3xs md:text-2xs lg:text-sm gap-x-1.5"
                       key={`info-${i}`}
                       data-testid={`position-item-${i}`}
                     >
@@ -203,7 +203,7 @@ export const PositionSummary = ({
                           {formatNumber(supplied)} {asset.symbol}
                         </p>
                         <p
-                          className="text-[#FFFFFF50] mt-0.5"
+                          className="text-mist mt-0.5"
                           data-testid={`position-supplied-value-${i}`}
                         >
                           {formatCurrency(suppliedValue)}
@@ -214,7 +214,7 @@ export const PositionSummary = ({
                 )
               ) : (
                 <p
-                  className="text-[#FFFFFF70] text-[10px] md:text-xs lg:text-lg"
+                  className="text-mist text-2xs md:text-xs lg:text-lg"
                   data-testid="no-open-positions"
                 >
                   You do not have any open positions. Supply assets{" "}

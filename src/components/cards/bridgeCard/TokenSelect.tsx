@@ -108,7 +108,7 @@ export const TokenSelect = ({
               <p className="font-bold text-sm md:text-lg uppercase">
                 {token.symbol}
               </p>
-              <p className="font-bold text-[10px] md:text-xs mt-0.5">
+              <p className="font-bold text-2xs md:text-xs mt-0.5">
                 {selectedChain.name}
               </p>
             </div>
@@ -166,7 +166,7 @@ export const TokenSelect = ({
                 className="w-6 h-6 md:w-8 md:h-8"
               />
             </div>
-            <p className="font-bold text-[10px] md:text-xs text-[#B5B5B5] mt-2">
+            <p className="font-bold text-2xs md:text-xs text-[#B5B5B5] mt-2">
               {chain.name}
             </p>
           </button>

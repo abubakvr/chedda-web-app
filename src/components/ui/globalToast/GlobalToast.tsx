@@ -123,7 +123,7 @@ export const ToastItem: React.FC<ToastItemProps> = ({
                   : toast.type === "fetchError" && "Fetch Error"}
             </div>
             <div
-              className="w-fit text-[10px] md:text-xs lg:text-sm text-[#ffffff70] flex items-start mt-2 gap-x-1"
+              className="w-fit text-2xs md:text-xs lg:text-sm text-mist flex items-start mt-2 gap-x-1"
               data-testid="toast-message"
             >
               {toast.message}
@@ -146,7 +146,7 @@ export const ToastItem: React.FC<ToastItemProps> = ({
                 toast.type === "fetchError" && (
                   <button
                     onClick={() => refreshPage()}
-                    className="w-max relative text-error underline text-[8px] md:text-xs lg:text-sm font-bold hover:opacity-90"
+                    className="w-max relative text-error underline text-3xs md:text-xs lg:text-sm font-bold hover:opacity-90"
                     data-testid="buy-chedda-link"
                   >
                     refresh page.
@@ -159,7 +159,7 @@ export const ToastItem: React.FC<ToastItemProps> = ({
                 href={`${toast.txPrefix ? toast.txPrefix : currentEnvironment?.txUrlPrefix}/${toast.txHash}`}
                 target="_blank"
                 rel="noreferrer"
-                className="text-[10px] md:text-xs text-[#ffffff] flex justify-end items-center gap-x-1 mt-1 md:mt-2 opacity-50 hover:opacity-90"
+                className="text-2xs md:text-xs text-white flex justify-end items-center gap-x-1 mt-1 md:mt-2 opacity-50 hover:opacity-90"
                 data-testid="toast-link"
               >
                 <span>Review tx details</span>

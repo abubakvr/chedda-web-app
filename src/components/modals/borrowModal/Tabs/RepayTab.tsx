@@ -171,8 +171,8 @@ export const RepayTab = ({
         <div className="text-xs md:text-sm lg:text-xl font-bold flex justify-between">
           <div>Repay your borrowed asset</div>
         </div>
-        <div className="flex justify-between mt-3 lg:mt-4 md:mt-6 items-center text-[10px] md:text-xs">
-          <div data-testid="amount-label" className="text-[#FFFFFF70]">
+        <div className="flex justify-between mt-3 lg:mt-4 md:mt-6 items-center text-2xs md:text-xs">
+          <div data-testid="amount-label" className="text-mist">
             Enter amount to Repay
           </div>
           <div

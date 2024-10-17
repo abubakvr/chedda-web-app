@@ -44,13 +44,13 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
       data-testid="collateral-info-card"
     >
       <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 xl:px-8 h-11 xl:h-[50px] items-center">
-        <div className="text-white text-opacity-50 font-bold text-[10px] lg:text-xs xl:text-sm uppercase">
+        <div className="text-white text-opacity-50 font-bold text-2xs lg:text-xs xl:text-sm uppercase">
           Collateral Info
         </div>
       </div>
       <div className="p-4 md:p-6 xl:p-8 md:pt-4 xl:pt-4">
         <div
-          className="w-full flex pb-4 border rounded-lg  text-[#ffffff70] border-[#ffffff19] bg-[#ffffff02]"
+          className="w-full flex pb-4 border rounded-lg  text-mist border-frost bg-glass"
           data-testid="collateral-info-container"
         >
           <div className="w-2/5 flex items-center justify-center">
@@ -58,7 +58,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
           </div>
           <div className="w-3/5">
             <div
-              className="mt-4 flex justify-start gap-x-4 font-bold text-[10px] text-sm xl:text-lg flex-wrap overflow-x-hidden"
+              className="mt-4 flex justify-start gap-x-4 font-bold text-2xs text-sm xl:text-lg flex-wrap overflow-x-hidden"
               data-testid="collateral-chart-labels"
             >
               {collateralInfo?.map((item, index) => {
@@ -78,7 +78,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                 );
               })}
             </div>
-            <div className="mt-4 md:mt-6 xl:mt-8 md:flex space-y-1 md:space-y-0 md:gap-x-16 text-[8px] md:text-[10px] lg:text-xs font-[400]">
+            <div className="mt-4 md:mt-6 xl:mt-8 md:flex space-y-1 md:space-y-0 md:gap-x-16 text-3xs md:text-2xs lg:text-xs font-[400]">
               <div
                 data-testid="liquidation-threshold"
                 className="grid grid-cols-2 gap-x-8 md:grid-cols-1"
@@ -119,7 +119,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
               </div>
             </div>
             <div className="mt-4 md:mt-6 xl:mt-8">
-              <div className="text-white text-[10px] md:text-xs sm:text-sm font-bold">
+              <div className="text-white text-2xs md:text-xs sm:text-sm font-bold">
                 MY COLLATERAL
               </div>
               <div
@@ -139,7 +139,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
             return (
               <div
                 key={index}
-                className="text-[#ffffff60] text-[10px] lg:text-xs font-bold w-28"
+                className="text-mist text-2xs lg:text-xs font-bold w-28"
                 data-testid={`collateral-header-item-${index}`}
               >
                 {item}
@@ -181,7 +181,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                   <span className="font-bold">
                     {item.amountDeposited} {item.asset.symbol}
                   </span>
-                  <span className="text-[#ffffff50] mt-1">
+                  <span className="text-mist mt-1">
                     {formatCurrency(item.value)}
                   </span>
                 </div>
@@ -189,7 +189,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                   <span className="font-bold">
                     {item.myCollateralAmount} {item.asset.symbol}
                   </span>
-                  <span className="text-[#ffffff50] mt-1">
+                  <span className="text-mist mt-1">
                     {item.myCollateralValue}
                   </span>
                 </div>
@@ -204,11 +204,11 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
           })}
         </div>
         {/* Mobile view */}
-        <div className="md:hidden mt-4 border rounded-lg  text-[#ffffff70] border-[#ffffff19] bg-[#ffffff02]">
+        <div className="md:hidden mt-4 border rounded-lg  text-mist border-frost bg-glass">
           {collateralInfo?.map((item, index) => {
             return (
               <div
-                className="justify-between text-white text-sm mt-3 p-4 border-b border-[#ffffff19]"
+                className="justify-between text-white text-sm mt-3 p-4 border-b border-frost"
                 key={index}
                 data-testid={`mobile-collateral-item-${index}`}
               >
@@ -233,35 +233,29 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                   </div>
                 </div>
                 <div className="flex justify-between mt-4">
-                  <div className="text-[10px] text-[#FFFFFF70]">Deposited</div>
-                  <div className="flex flex-col items-end text-[10px]">
+                  <div className="text-2xs text-mist">Deposited</div>
+                  <div className="flex flex-col items-end text-2xs">
                     <span className="font-bold">
                       {item.amountDeposited} {item.asset.symbol}
                     </span>
-                    <span className="text-[#ffffff50]">
+                    <span className="text-mist">
                       {formatCurrency(item.value)}
                     </span>
                   </div>
                 </div>
                 <div className="flex justify-between mt-2">
-                  <div className="text-[10px] text-[#FFFFFF70]">
-                    My Deposits
-                  </div>
-                  <div className="flex flex-col items-end text-[10px]">
+                  <div className="text-2xs text-mist">My Deposits</div>
+                  <div className="flex flex-col items-end text-2xs">
                     <span className="font-bold">
                       {item.myCollateralAmount} {item.asset.symbol}
                     </span>
-                    <span className="text-[#ffffff50]">
-                      {item.myCollateralValue}
-                    </span>
+                    <span className="text-mist">{item.myCollateralValue}</span>
                   </div>
                 </div>
                 <div className="flex justify-between mt-2">
-                  <div className="text-[10px] text-[#FFFFFF70]">
-                    Collateral Factor
-                  </div>
+                  <div className="text-2xs text-mist">Collateral Factor</div>
                   <div
-                    className="pl-1 text-[10px]"
+                    className="pl-1 text-2xs"
                     data-testid={`mobile-collateral-factor-${index}`}
                   >
                     <span className="font-bold">{item.collateralFactor}</span>

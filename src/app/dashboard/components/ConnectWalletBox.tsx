@@ -23,12 +23,12 @@ export const ConnectWalletBox = ({
       >
         <p
           data-testid="connect-wallet-message"
-          className="text-white text-[10px] lg:text-lg"
+          className="text-white text-2xs lg:text-lg"
         >
           Connect your wallet to see your {title}
         </p>
         <button
-          className="modal-button text-white rounded-md lg:rounded-lg p-2 py-1.5 lg:p-2.5 lg:px-3 text-[8px] lg:text-sm font-bold mt-3 lg:mt-4 hover:opacity-80"
+          className="modal-button text-white rounded-md lg:rounded-lg p-2 py-1.5 lg:p-2.5 lg:px-3 text-3xs lg:text-sm font-bold mt-3 lg:mt-4 hover:opacity-80"
           onClick={() => setOpenWalletModal(true)}
           data-testid="connect-wallet-button"
         >
