@@ -82,8 +82,8 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
   ) =>
     executeTransaction(async () => {
       if (!amount || !account || !chedda || !signer) return;
-      const genericOFT = chedda.genericOFT(tokenAddress, signer);
-      return genericOFT?.approve(oftAddress, amount);
+      const cxToken = chedda.cxToken(tokenAddress, signer);
+      return cxToken?.approve(oftAddress, amount);
     });
 
   const quoteSend = useCallback(
@@ -92,8 +92,8 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
         if (!account || !chedda || !endpointId || !signer) return [];
         const sendParam = getSendParam(endpointId, amountToSend);
         if (!sendParam) return [];
-        const genericOFT = chedda.genericOFT(tokenAddress, signer);
-        const result = await genericOFT?.quoteSend(sendParam, false);
+        const cxToken = chedda.cxToken(tokenAddress, signer);
+        const result = await cxToken?.quoteSend(sendParam, false);
         return result ? [result] : []; // Ensure result is an array
       } catch (error) {
         console.error("Error in quoteSend:", error);
@@ -117,14 +117,14 @@ export const useBridge = (selectedChain: ISourceChain | null) => {
       if (!account || !chedda || !signer) return;
       const sendParam = getSendParam(endpointId, amountToSend);
       if (!sendParam) return;
-      const genericOFT = chedda.genericOFT(tokenAddress, signer);
+      const cxToken = chedda.cxToken(tokenAddress, signer);
 
       const [nativeFee] = await quoteSend(
         tokenAddress,
         endpointId,
         amountToSend
       );
-      return genericOFT?.send(sendParam, nativeFee[0], refundAddress);
+      return cxToken?.send(sendParam, nativeFee[0], refundAddress);
     });
 
   const getTokenPrice = useCallback(

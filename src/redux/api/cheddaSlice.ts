@@ -83,10 +83,12 @@ export const cheddaSlice = createSlice({
       .addCase(fetchData.pending, (state, action) => {
         const hookName = action.meta.arg.hookName;
         const pathname = action.meta.arg.pathname;
+        const asset = action.meta.arg.asset;
         const existingData =
           state.fetchDataStates[`${hookName} + ${pathname}`]?.data;
         const showLoading =
           hookName === "getSelectTokenBalance" ||
+          hookName === "getTokenValue" ||
           action.meta.arg.showLoading ||
           existingData === undefined ||
           existingData === null;
@@ -104,10 +106,11 @@ export const cheddaSlice = createSlice({
           action: PayloadAction<{
             hookName: string;
             pathname: string;
+            asset: string;
             data: any;
           }>
         ) => {
-          const { hookName, pathname, data } = action.payload || {};
+          const { hookName, pathname, data, asset } = action.payload || {};
           state.fetchDataStates[`${hookName} + ${pathname}`] = {
             data,
             isLoading: false,
@@ -118,6 +121,7 @@ export const cheddaSlice = createSlice({
       .addCase(fetchData.rejected, (state, action) => {
         const hookName = action.meta.arg.hookName;
         const pathname = action.meta.arg.pathname;
+        const asset = action.meta.arg.asset;
         state.fetchDataStates[`${hookName} + ${pathname}`] = {
           data: undefined,
           isLoading: false,

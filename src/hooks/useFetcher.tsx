@@ -85,6 +85,7 @@ export const useFetcher = <T = any,>(
     hookName === "getSelectTokenBalance" ||
     hookName === "getAccountCollateral" ||
     hookName === "getAllowance" ||
+    hookName === "getTokenValue" ||
     !pathname.startsWith("/markets") ||
     data === undefined ||
     data === null;

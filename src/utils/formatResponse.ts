@@ -1,27 +1,27 @@
 import { currentEnvironment } from "@/data/environments";
 import {
-  IAccountCollateralDeposited,
-  IAggregateStats,
-  IMarketInfo,
-  IPoolStats,
   IPosition,
+  IPoolStats,
+  IMarketInfo,
+  IAggregateStats,
+  IAccountCollateralDeposited,
 } from "chedda-sdk";
 import { poolFilters } from "./constants";
 import {
-  formatAsPercentage,
+  formatNumber,
   formatCurrency,
   formatLargeNumber,
-  formatNumber,
+  formatAsPercentage,
   parseBigNumberToFloat,
 } from "./formatters";
 import {
-  ICollateralInfo,
-  IFormattedCollateral,
-  IPoolStatsResponse,
-  IPositionResponse,
-  ISummaryStats,
   IToken,
   ITokenConfig,
+  ISummaryStats,
+  ICollateralInfo,
+  IPositionResponse,
+  IPoolStatsResponse,
+  IFormattedCollateral,
 } from "./types";
 
 export const formatPoolStatsList = (
@@ -187,7 +187,7 @@ export const formatCollateralInfo = (
         parseBigNumberToFloat(myCollateral?.amount, myCollateral?.decimals)
       ),
       collateralFactor: formatAsPercentage(
-        parseBigNumberToFloat(item.collateralFactor, 18, 10)
+        parseBigNumberToFloat(item.ltv, 18, 10)
       ),
     };
   });

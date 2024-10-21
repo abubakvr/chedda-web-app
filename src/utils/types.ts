@@ -7,9 +7,9 @@ import {
   IPoolState,
   IPoolStats,
 } from "chedda-sdk";
-import { JsonRpcSigner, Signer } from "ethers";
-import { StaticImageData } from "next/image";
 import React from "react";
+import { JsonRpcSigner } from "ethers";
+import { StaticImageData } from "next/image";
 
 export interface IMenuItem {
   name: string;
@@ -51,7 +51,7 @@ export interface ITokenConfig {
 
 export interface IPoolCategories {
   [poolAddress: string]: {
-    categories: string[];
+    categories: ("stable coin" | "defi" | "bluechip" | "gamefi")[];
   };
 }
 

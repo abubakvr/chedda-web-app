@@ -142,7 +142,7 @@ export const poolCategories: IPoolCategory[] = [
   },
   {
     label: "#GAMEFI",
-    keyword: "Base Gaming",
+    keyword: "Gamefi",
     itemCount: 0,
     icon: gameFiIcon,
     activeIcon: gameFiIconActive,
@@ -163,10 +163,13 @@ export const poolCategories: IPoolCategory[] = [
 ];
 
 export const poolFilters: IPoolCategories = {
-  "0x40cf99BDD816a691CB0bb2c674ADc06577b21964": {
-    categories: ["bluechip"],
+  "0x3153dE50b45868fF2B8bf38C6A29B8822e35c771": {
+    categories: ["stable coin"],
   },
-  "0xcFDD95d6f98FF9db4A7a35b9b49822E1b381147b": {
+  "0x0fFD5fB4B3160A2709E120A7484AEE03500c55b3": {
+    categories: ["stable coin"],
+  },
+  "0x2c01212f051A59D88A1361db1E2041896dB4af64": {
     categories: ["defi"],
   },
 };

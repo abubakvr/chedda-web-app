@@ -398,7 +398,7 @@ describe("formatCollateralInfo", () => {
         decimals: 18,
         value: BigInt("1000000000000000000"),
         amountDeposited: BigInt("2000000000000000000"),
-        collateralFactor: BigInt("3000000000000000000"),
+        ltv: BigInt("3000000000000000000"),
       },
     ];
 
