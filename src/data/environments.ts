@@ -14,7 +14,7 @@ import galaLogo from "@/assets/logos/gala-logo.png";
 import beamLogo from "@/assets/logos/beam-logo.png";
 import sandLogo from "@/assets/logos/sand-logo.png";
 import baseLogo from "@/assets/logos/base-logo.png";
-import cbETHLogo from "@/assets/logos/cbEth-logo.png";
+import cbETHLogo from "@/assets/logos/cbETH-logo.png";
 import cbBTCLogo from "@/assets/logos/cbBTC-logo.png";
 
 import { alchemyKey } from "@/utils/constants";
