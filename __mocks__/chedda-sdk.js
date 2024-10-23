@@ -51,7 +51,7 @@ export class Chedda {
     return { address, signer };
   });
 
-  genericOFT = jest.fn().mockImplementation((address, signer) => {
+  cxToken = jest.fn().mockImplementation((address, signer) => {
     return { address, signer };
   });
 

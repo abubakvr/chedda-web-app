@@ -56,7 +56,7 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
               >
                 {pool.asset?.symbol}
               </div>
-              <div className="defi-box uppercase h-5 xl:h-6 w-16 xl:w-20 flex items-center justify-center text-3xs md:text-2xs font-bold">
+              <div className="defi-box uppercase h-5 xl:h-6 px-2 flex items-center justify-center text-3xs md:text-2xs font-bold">
                 {pool.characterization}
               </div>
             </div>

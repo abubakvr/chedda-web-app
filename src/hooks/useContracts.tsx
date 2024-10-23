@@ -237,7 +237,7 @@ export const getAccountHealth: GetDataFunction<bigint> = async ({
   return await lendingPool?.accountHealth(account);
 };
 
-export const getTokenCollateralValue: GetDataFunction<bigint> = async ({
+export const getTokenMaxLoanValue: GetDataFunction<bigint> = async ({
   poolId,
   signer,
   chedda,
@@ -247,7 +247,7 @@ export const getTokenCollateralValue: GetDataFunction<bigint> = async ({
   if (!asset) return null;
   const lendingPool = chedda.lendingPool(poolId, signer);
   const amount = ethers.parseUnits("1", decimals);
-  return await lendingPool.getTokenCollateralValue(asset, amount);
+  return await lendingPool.tokenMaxLoanValue(asset, amount);
 };
 
 const getStakingBalance: GetDataFunction<bigint> = async ({
@@ -599,11 +599,11 @@ export const useSelectTokenBalance = (asset: string): HookResult<bigint> => {
   return useFetcher<bigint>(getSelectTokenBalance, asset);
 };
 
-export const useTokenCollateralValue = (
+export const useTokenMaxLoanValue = (
   asset: string,
   decimals: number
 ): HookResult<bigint> => {
-  return useFetcher<bigint>(getTokenCollateralValue, asset, decimals);
+  return useFetcher<bigint>(getTokenMaxLoanValue, asset, decimals);
 };
 
 export const useLpAllowance = (): HookResult<bigint> => {

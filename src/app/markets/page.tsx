@@ -1,11 +1,10 @@
 import React from "react";
-import { VaultCard, SummaryCard, MobileSummaryCard } from "@/components/cards";
 import { PageTitle } from "@/components/common";
-import { useMarkets } from "@/hooks/useMarkets";
 import { ErrorCard } from "@/components/cards/errorCard/ErrorCard";
+import { VaultCard, SummaryCard, MobileSummaryCard } from "@/components/cards";
+import { getAggregateStats, getPoolStatsList } from "./services";
 
 const Page = async () => {
-  const { getAggregateStats, getPoolStatsList } = useMarkets();
   const aggregateStats = await getAggregateStats();
   const poolStatsList = await getPoolStatsList();
 

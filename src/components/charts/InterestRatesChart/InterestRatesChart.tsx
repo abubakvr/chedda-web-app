@@ -47,7 +47,7 @@ const CustomTooltip: React.FC<CustomTooltipProps<Payload>> = (props) => {
         <div className="text-mist col-span-2">Supply APR:</div>
         <div className="supply-gradient-text col-span-1 font-bold">
           {formatAsPercentage(
-            parseBigNumberToFloat(dataPoint?.payload.supplyRate, 18, 5)
+            parseBigNumberToFloat(dataPoint?.payload.effectiveSupplyRate, 18, 5)
           )}
         </div>
         <div className="text-mist col-span-2">Borrow APR:</div>
@@ -157,7 +157,7 @@ export const InterestRatesChart = () => {
               name="Supply rate"
               type="monotone"
               dataKey={(value) =>
-                parseBigNumberToFloat(value?.supplyRate, 18, 10)
+                parseBigNumberToFloat(value?.effectiveSupplyRate, 18, 10)
               }
               stroke="#6FBFF7"
               strokeWidth={4}

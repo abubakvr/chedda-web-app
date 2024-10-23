@@ -48,7 +48,7 @@ describe("useBridge", () => {
   };
 
   const mockChedda = {
-    genericOFT: jest.fn(() => ({
+    cxToken: jest.fn(() => ({
       approve: approveMock,
       quoteSend: quoteSendMock,
       send: mockSend,
@@ -152,7 +152,7 @@ describe("useBridge", () => {
   it("should handle errors in quoteSend", async () => {
     const { result } = renderHook(() => useBridge(selectedChain));
 
-    const quoteSendMock = mockChedda.genericOFT().quoteSend;
+    const quoteSendMock = mockChedda.cxToken().quoteSend;
     quoteSendMock.mockRejectedValueOnce(new Error("Test Error"));
 
     let response;

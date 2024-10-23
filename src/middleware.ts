@@ -50,7 +50,6 @@ export async function middleware(request: NextRequest) {
     if (isRestricted && !request.nextUrl.pathname.startsWith("/restricted")) {
       return NextResponse.redirect(new URL("/restricted", request.url));
     }
-    return response;
   }
 
   // If no cookie, extract IP address
@@ -77,7 +76,7 @@ export async function middleware(request: NextRequest) {
   });
 
   // Redirect '/' to '/markets'
-  if (request.nextUrl.pathname === "/") {
+  if (!isRestricted && request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/markets", request.url));
   }
 
