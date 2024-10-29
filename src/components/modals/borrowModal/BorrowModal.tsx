@@ -9,7 +9,7 @@ import {
   useAvailableLiquidity,
   useSelectTokenBalance,
   useTokenMaxLoanValue,
-  useTokenValue,
+  useTokenPrice,
 } from "@/hooks";
 
 export interface BorrowModalProps {
@@ -81,7 +81,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
     data: healthFactor,
     fetchData: fetchHealthFactor,
   } = useAccountHealth();
-  const { data: tokenValue } = useTokenValue(tokenAddress);
+  const { data: tokenValue } = useTokenPrice(tokenAddress);
   const { data: tokenCollateralValue } = useTokenMaxLoanValue(
     tokenAddress,
     decimals

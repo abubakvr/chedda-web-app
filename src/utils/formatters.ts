@@ -87,7 +87,7 @@ export const parseBigNumberToFloat = (
  * @returns {string} The formatted currency string.
  */
 export const formatCurrency = (number?: string | number, plain?: boolean) => {
-  if (number === undefined) {
+  if (number === undefined || isNaN(parseFloat(String(number)))) {
     return "0.00";
   }
 
@@ -111,7 +111,7 @@ export const formatLargeNumber = (
   value?: string | number,
   isFloat: boolean = true
 ): string => {
-  if (value === undefined) {
+  if (value === undefined || isNaN(parseFloat(String(value)))) {
     return "0.00";
   }
 
@@ -150,7 +150,7 @@ export const formatAsPercentage = (
   value?: number | string,
   floatPlaces?: number
 ) => {
-  if (value === undefined) {
+  if (value === undefined || isNaN(parseFloat(String(value)))) {
     return "0.00%";
   }
 

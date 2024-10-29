@@ -30,11 +30,11 @@ export const currentEnvironment: IEnvironment = {
   chainId: 84532,
   contracts: {
     LendingPoolLens: "0x5b3AaF77dd6E086241a101A47E8cDA34A1059ee6",
-    AccountActor: "0x87d60889D6BCBBe773805D6663A255d8a8aB85D9",
+    AccountActor: "0xC04B0FCf0d2c58b68C1C5927ed649557690A546d",
     InterestRatesProjector: "0xcbaA2bBCE7d15131914Cf7Db7944E06b2143dEB1",
-    PriceFeed: "0xFe09e4d727Eda07D5C0e961EbE04c7c0f0B0C2C6",
+    PriceFeed: "0x4f69E2b5c3a93F33932e0faFAb3B516510aa5ab6",
     LockingGaugeRewardsDistributor:
-      "0x09116D3De0D2A5ef27e36599f4Ed81F444e00Dba",
+      "0x1afE6732d880Fa3714Dac4857723f6407140a510",
     CheddaToken: "0x28041a8147eB37509BDd8aAFc7006f15E0746bbD",
     veChedda: "0x0",
     Faucet: "0x0A5Fe3dd684B1aA04d156d42C259a9feF887255e",

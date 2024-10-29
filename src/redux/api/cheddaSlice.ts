@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Chedda } from "chedda-sdk";
 import { RootState } from "@/redux/store";
 import { IEnvironment } from "@/utils/types";
+import { createKey } from "@/utils/helpers";
 
 interface CheddaSliceState {
   fetchDataStates: Record<string, AsyncState<any>>;
@@ -66,7 +67,7 @@ export const fetchData = createAsyncThunk<any, FetchDataParams>(
         decimals,
         environment: currentEnvironment,
       });
-      return { showLoading, hookName, pathname, data };
+      return { showLoading, hookName, pathname, data, asset };
     } catch (error) {
       console.error(`Error fetching data in ${hookName} `, error);
       throw error;
@@ -81,20 +82,16 @@ export const cheddaSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchData.pending, (state, action) => {
-        const hookName = action.meta.arg.hookName;
-        const pathname = action.meta.arg.pathname;
-        const asset = action.meta.arg.asset;
-        const existingData =
-          state.fetchDataStates[`${hookName} + ${pathname}`]?.data;
+        const { hookName, pathname, asset } = action.meta.arg;
+        const key = createKey(hookName, pathname, asset);
+        const existingData = state.fetchDataStates[key]?.data;
         const showLoading =
-          hookName === "getSelectTokenBalance" ||
-          hookName === "getTokenValue" ||
           action.meta.arg.showLoading ||
           existingData === undefined ||
           existingData === null;
 
-        state.fetchDataStates[`${hookName} + ${pathname}`] = {
-          data: existingData ?? undefined,
+        state.fetchDataStates[key] = {
+          data: existingData,
           isLoading: showLoading,
           isError: false,
         };
@@ -111,7 +108,8 @@ export const cheddaSlice = createSlice({
           }>
         ) => {
           const { hookName, pathname, data, asset } = action.payload || {};
-          state.fetchDataStates[`${hookName} + ${pathname}`] = {
+          const key = createKey(hookName, pathname, asset);
+          state.fetchDataStates[key] = {
             data,
             isLoading: false,
             isError: false,
@@ -119,10 +117,10 @@ export const cheddaSlice = createSlice({
         }
       )
       .addCase(fetchData.rejected, (state, action) => {
-        const hookName = action.meta.arg.hookName;
-        const pathname = action.meta.arg.pathname;
-        const asset = action.meta.arg.asset;
-        state.fetchDataStates[`${hookName} + ${pathname}`] = {
+        const { hookName, pathname, asset } = action.meta.arg;
+        const key = createKey(hookName, pathname, asset);
+
+        state.fetchDataStates[key] = {
           data: undefined,
           isLoading: false,
           isError: true,

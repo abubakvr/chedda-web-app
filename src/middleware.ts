@@ -59,25 +59,32 @@ export async function middleware(request: NextRequest) {
     ipAddress = ipAddress.split(",")[0].trim(); // Handle multiple IPs in case of proxies
   }
 
-  // Fetch geolocation data from IP
-  const geoRes = await fetch(getIpUrl(ipAddress, ACCESS_KEY));
-  const geoData = await geoRes.json();
+  try {
+    // Fetch geolocation data from IP
+    const geoRes = await fetch(getIpUrl(ipAddress, ACCESS_KEY));
+    const geoData = await geoRes.json();
 
-  const isRestricted = RESTRICTED_COUNTRIES_CODE.includes(geoData.country_code);
-  // Redirect to /restricted if the country is restricted
-  if (isRestricted && !request.nextUrl.pathname.startsWith("/restricted")) {
-    return NextResponse.redirect(new URL("/restricted", request.url));
-  }
+    const isRestricted = RESTRICTED_COUNTRIES_CODE.includes(
+      geoData.country_code
+    );
+    // Redirect to /restricted if the country is restricted
+    if (isRestricted && !request.nextUrl.pathname.startsWith("/restricted")) {
+      return NextResponse.redirect(new URL("/restricted", request.url));
+    }
 
-  // Set a cookie to store the user's country for future requests
-  response.cookies.set("client-ip-country", geoData.country_code, {
-    path: "/",
-    expires: MAX_AGE,
-  });
+    // Set a cookie to store the user's country for future requests
+    response.cookies.set("client-ip-country", geoData.country_code, {
+      path: "/",
+      expires: MAX_AGE,
+    });
 
-  // Redirect '/' to '/markets'
-  if (!isRestricted && request.nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL("/markets", request.url));
+    // Redirect '/' to '/markets'
+    if (!isRestricted && request.nextUrl.pathname === "/") {
+      return NextResponse.redirect(new URL("/markets", request.url));
+    }
+  } catch (error) {
+    console.error("Error fetching geolocation data:", error);
+    // Handle the error gracefully, perhaps by logging it or displaying a message to the user
   }
 
   return response;

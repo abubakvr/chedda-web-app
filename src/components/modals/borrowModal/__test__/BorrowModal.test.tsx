@@ -16,7 +16,7 @@ import {
   useSelectTokenBalance,
   useToast,
   useTokenMaxLoanValue,
-  useTokenValue,
+  useTokenPrice,
   useTransaction,
 } from "@/hooks";
 
@@ -88,7 +88,7 @@ describe("BorrowModal Component", () => {
       data: "1000",
     }));
 
-    (useTokenValue as jest.Mock).mockImplementation(() => ({
+    (useTokenPrice as jest.Mock).mockImplementation(() => ({
       isLoading: false,
       data: "1000",
     }));

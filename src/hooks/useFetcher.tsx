@@ -14,6 +14,7 @@ import { GetDataFunction } from "@/utils/types";
 import { currentEnvironment } from "@/data/environments";
 import { useSigner, useToast } from "@/hooks";
 import { sendGAEvent } from "@next/third-parties/google";
+import { createKey } from "@/utils/helpers";
 
 export const useFetcher = <T = any,>(
   getData: GetDataFunction<T>,
@@ -52,28 +53,30 @@ export const useFetcher = <T = any,>(
     },
     [
       dispatch,
-      getData,
+      hookName,
+      pathname,
       chedda,
       account,
       strPoolId,
-      signer,
-      hookName,
-      pathname,
+      getData,
       asset,
+      signer,
       decimals,
     ]
   );
 
+  const key = createKey(hookName, pathname, asset);
+
   const isLoading = useSelector((state: RootState) =>
-    selectCheddaSliceLoading(`${hookName} + ${pathname}`)(state)
+    selectCheddaSliceLoading(key)(state)
   );
 
   const isError = useSelector((state: RootState) =>
-    selectCheddaSliceError(`${hookName} + ${pathname}`)(state)
+    selectCheddaSliceError(key)(state)
   );
 
   const data = useSelector((state: RootState) =>
-    selectCheddaSliceData(`${hookName} + ${pathname}`)(state)
+    selectCheddaSliceData(key)(state)
   );
 
   const fetchHookData = (showLoading: boolean = false) =>
@@ -82,13 +85,7 @@ export const useFetcher = <T = any,>(
   // Fetch data only once when on the markets route.
   // Data updates on the pool page are managed manually.
   const shouldFetchData =
-    hookName === "getSelectTokenBalance" ||
-    hookName === "getAccountCollateral" ||
-    hookName === "getAllowance" ||
-    hookName === "getTokenValue" ||
-    !pathname.startsWith("/markets") ||
-    data === undefined ||
-    data === null;
+    data === undefined || data === null || !pathname.startsWith("/markets");
 
   useEffect(() => {
     if (shouldFetchData) {

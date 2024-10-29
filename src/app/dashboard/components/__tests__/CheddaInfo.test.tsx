@@ -2,7 +2,11 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { CheddaInfo } from "../CheddaInfo";
-import { useCheddaBalance, useCheddaTotalSupply, useTokenValue } from "@/hooks";
+import {
+  useCheddaBalance,
+  useCheddaTotalSupply,
+  useCheddaPrice,
+} from "@/hooks";
 
 jest.mock("../../../../hooks");
 
@@ -16,7 +20,7 @@ describe("CheddaInfo", () => {
       data: BigInt("200000000000000000"),
       isLoading: false,
     });
-    (useTokenValue as jest.Mock).mockReturnValue({
+    (useCheddaPrice as jest.Mock).mockReturnValue({
       data: BigInt("1000"),
       isLoading: false,
     });
@@ -38,7 +42,7 @@ describe("CheddaInfo", () => {
       data: null,
       isLoading: true,
     });
-    (useTokenValue as jest.Mock).mockReturnValueOnce({
+    (useCheddaPrice as jest.Mock).mockReturnValueOnce({
       data: null,
       isLoading: true,
     });

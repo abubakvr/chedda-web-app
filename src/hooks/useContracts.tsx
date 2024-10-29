@@ -190,7 +190,7 @@ export const getAssetBalance: GetDataFunction<bigint> = async ({
   return await lendingPool.assetBalance(account);
 };
 
-const getTokenValue: GetDataFunction<number> = async ({
+const getCheddaPrice: GetDataFunction<number> = async ({
   asset,
   chedda,
   environment,
@@ -205,12 +205,15 @@ const getTokenValue: GetDataFunction<number> = async ({
 const getTokenPrice: GetDataFunction<number> = async ({
   asset,
   chedda,
-  environment,
+  poolId,
+  signer,
 }) => {
   if (!asset) return null;
-  const priceOracle = chedda.priceOracle(environment.contracts.PriceFeed);
-  const decimals = await priceOracle.decimals();
+  const lendingPool = chedda.lendingPool(poolId, signer);
+  const priceFeed = await lendingPool.priceFeed();
+  const priceOracle = chedda.priceOracle(priceFeed);
   const assetPrice = await priceOracle.readPrice(asset);
+  const decimals = await priceOracle.decimals();
   return parseBigNumberToFloat(assetPrice, decimals, 10);
 };
 
@@ -579,8 +582,8 @@ export const useAssetBalance = (asset: string): HookResult<bigint> => {
   return useFetcher<bigint>(getAssetBalance, asset);
 };
 
-export const useTokenValue = (asset: string): HookResult<number> => {
-  return useFetcher<number>(getTokenValue, asset);
+export const useCheddaPrice = (asset: string): HookResult<number> => {
+  return useFetcher<number>(getCheddaPrice, asset);
 };
 
 export const useTokenPrice = (asset: string): HookResult<number> => {

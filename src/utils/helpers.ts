@@ -245,3 +245,11 @@ export function getAccountPositions(
 export function getIpUrl(ipAddress: string, access_key: string) {
   return `https://api.ipstack.com/${ipAddress}?access_key=${access_key}`;
 }
+
+export const createKey = (
+  hookName: string,
+  pathname: string,
+  asset: string = ""
+) => {
+  return `${hookName} + ${pathname} + ${asset}`;
+};

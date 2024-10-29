@@ -10,10 +10,10 @@ import {
   useClaimableLockRewards,
   useTotalWeightSum,
   useLockedChedda,
-  useTokenValue,
+  useTokenPrice,
   useTotalAmountLocked,
   useTotalWeight,
-  useTokenPrice,
+  useCheddaPrice,
   useGaugeAddress,
 } from "@/hooks";
 import { IToken } from "@/utils/types";
@@ -38,7 +38,7 @@ const LockTab = ({
     fetchData: fetchCheddaAllowance,
     isLoading: cheddaAllowanceLoading,
   } = useCheddaAllowance();
-  const { data: cheddaPrice, isLoading: cheddaPriceLoading } = useTokenValue(
+  const { data: cheddaPrice, isLoading: cheddaPriceLoading } = useCheddaPrice(
     currentEnvironment?.contracts.CheddaToken
   );
   const {
