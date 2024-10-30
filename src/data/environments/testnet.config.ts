@@ -20,7 +20,7 @@ import cbBTCLogo from "@/assets/logos/cbBTC-logo.png";
 import { alchemyKey } from "@/utils/constants";
 import { IEnvironment } from "@/utils/types";
 
-export const currentEnvironment: IEnvironment = {
+export const testnetEnvironment: IEnvironment = {
   production: false,
   environmentName: "Base Sepolia",
   jsonRpcUrl: `https://base-sepolia.g.alchemy.com/v2/${alchemyKey}`,
