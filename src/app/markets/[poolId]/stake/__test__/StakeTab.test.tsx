@@ -13,7 +13,7 @@ import {
   useStakingContractAddress,
   useToast,
   useTokenPrice,
-  useTokenValue,
+  useCheddaPrice,
   useTotalStaked,
   useTotalSupply,
   useTransaction,
@@ -57,7 +57,7 @@ describe("StakeTab Component", () => {
       data: BigInt("1000"),
       isLoading: false,
     });
-    (useTokenValue as jest.Mock).mockReturnValue({
+    (useCheddaPrice as jest.Mock).mockReturnValue({
       data: "1000",
       isLoading: false,
     });

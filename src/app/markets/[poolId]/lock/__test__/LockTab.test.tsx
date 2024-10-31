@@ -9,7 +9,7 @@ import {
   useLockedChedda,
   useToast,
   useTokenPrice,
-  useTokenValue,
+  useCheddaPrice,
   useTotalAmountLocked,
   useTotalWeight,
   useTotalWeightSum,
@@ -42,7 +42,7 @@ describe("LockTab Component", () => {
       data: BigInt("1000"),
       isLoading: false,
     });
-    (useTokenValue as jest.Mock).mockReturnValue({
+    (useCheddaPrice as jest.Mock).mockReturnValue({
       data: BigInt("1000"),
       isLoading: false,
     });

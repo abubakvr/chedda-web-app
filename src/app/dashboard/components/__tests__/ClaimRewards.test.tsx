@@ -5,7 +5,7 @@ import { ClaimRewards } from "../ClaimRewards";
 import {
   useAllClaimableRewards,
   useToast,
-  useTokenValue,
+  useCheddaPrice,
   useTransaction,
 } from "@/hooks";
 import { NonceProvider } from "@/contexts/NonceContext";
@@ -24,7 +24,7 @@ jest.mock("@web3-react/core", () => ({
 
 describe("ClaimRewards Component", () => {
   const mockUseAllClaimableRewards = useAllClaimableRewards as jest.Mock;
-  const mockUseTokenValue = useTokenValue as jest.Mock;
+  const mockUseTokenPrice = useCheddaPrice as jest.Mock;
   const mockUseTransaction = useTransaction as jest.Mock;
 
   beforeEach(() => {
@@ -33,7 +33,7 @@ describe("ClaimRewards Component", () => {
       isLoading: false,
       fetchData: jest.fn(),
     });
-    mockUseTokenValue.mockReturnValue({
+    mockUseTokenPrice.mockReturnValue({
       data: "3",
       isLoading: false,
     });

@@ -7,7 +7,7 @@ import { ClaimRewards } from "./components/ClaimRewards";
 import { CheddaInfo } from "./components/CheddaInfo";
 import { useWeb3React } from "@web3-react/core";
 import { PositionSummary } from "./components/PositionSummary";
-import { useAllPositions, useTokenValue } from "@/hooks";
+import { useAllPositions, useCheddaPrice } from "@/hooks";
 import { currentEnvironment } from "@/data/environments";
 
 const Page = () => {
@@ -18,7 +18,7 @@ const Page = () => {
     useAllPositions();
 
   const { data: cheddaTokenPrice, isLoading: cheddaTokenPriceLoading } =
-    useTokenValue(currentEnvironment?.contracts.CheddaToken || "");
+    useCheddaPrice(currentEnvironment?.contracts.CheddaToken);
 
   return (
     <PageContainer>

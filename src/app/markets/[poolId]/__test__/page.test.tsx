@@ -15,7 +15,7 @@ import {
   useLpSymbol,
   useLpAssetValue,
   useLpDecimals,
-  useTokenValue,
+  useCheddaPrice,
   useLpAllowance,
   useLpTokenBalance,
   useTransaction,
@@ -106,7 +106,7 @@ describe("Pool details component", () => {
       data: BigInt("1000"),
       isLoading: false,
     });
-    (useTokenValue as jest.Mock).mockReturnValue({
+    (useCheddaPrice as jest.Mock).mockReturnValue({
       data: "1000",
       isLoading: false,
     });
@@ -247,7 +247,7 @@ describe("Pool details component", () => {
       fetchTokenBalance: jest.fn(),
       tokenBalance: "1000",
     }));
-    (useTokenValue as jest.Mock).mockImplementation(() => ({
+    (useCheddaPrice as jest.Mock).mockImplementation(() => ({
       fetchTokenBalance: jest.fn(),
       tokenBalance: "1000",
     }));

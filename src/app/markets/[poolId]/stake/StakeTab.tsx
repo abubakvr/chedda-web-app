@@ -11,7 +11,7 @@ import {
   useStakingBalance,
   useStakingContractAddress,
   useTokenPrice,
-  useTokenValue,
+  useCheddaPrice,
   useTotalStaked,
   useTotalSupply,
 } from "@/hooks";
@@ -47,7 +47,7 @@ const StakeTab = ({
   const { data: lpSymbol, isLoading: lpSymbolLoading } = useLpSymbol();
   const { data: lpAssetValue, isLoading: lpAssetLoading } = useLpAssetValue();
   const { data: lpDecimals, isLoading: lpDecimalsLoading } = useLpDecimals();
-  const { data: assetPrice, isLoading: tokenValueLoading } = useTokenValue(
+  const { data: assetPrice, isLoading: tokenValueLoading } = useTokenPrice(
     asset?.address || ""
   );
   const {
@@ -70,7 +70,7 @@ const StakeTab = ({
     isLoading: totalSupplyLoading,
     fetchData: fetchTotalSupply,
   } = useTotalSupply();
-  const { data: CheddaTokenPrice } = useTokenPrice(
+  const { data: CheddaTokenPrice } = useCheddaPrice(
     currentEnvironment?.contracts.CheddaToken
   );
   const { data: stakingPoolAddress } = useStakingContractAddress();

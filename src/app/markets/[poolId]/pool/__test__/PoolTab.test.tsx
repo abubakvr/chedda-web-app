@@ -17,7 +17,7 @@ import {
   useToast,
   useTokenBalance,
   useTokenMaxLoanValue,
-  useTokenValue,
+  useTokenPrice,
   useTransaction,
 } from "@/hooks";
 
@@ -136,7 +136,7 @@ describe("PoolTab", () => {
       fetchTokenBalance: jest.fn(),
       tokenBalance: "1000",
     }));
-    (useTokenValue as jest.Mock).mockImplementation(() => ({
+    (useTokenPrice as jest.Mock).mockImplementation(() => ({
       fetchTokenBalance: jest.fn(),
       tokenBalance: "1000",
     }));
