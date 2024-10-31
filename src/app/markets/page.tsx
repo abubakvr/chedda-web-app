@@ -1,5 +1,5 @@
 import React from "react";
-import { PageTitle } from "@/components/common";
+import { PageContainer, PageTitle } from "@/components/common";
 import { ErrorCard } from "@/components/cards/errorCard/ErrorCard";
 import { VaultCard, SummaryCard, MobileSummaryCard } from "@/components/cards";
 import { getAggregateStats, getPoolStatsList } from "./services";
@@ -9,10 +9,7 @@ const Page = async () => {
   const poolStatsList = await getPoolStatsList();
 
   return (
-    <div
-      className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-[1600px] mx-auto"
-      data-testid="page-container"
-    >
+    <PageContainer>
       <PageTitle title="MARKETS">
         Supply assets to earn interest and token rewards.
       </PageTitle>
@@ -33,7 +30,7 @@ const Page = async () => {
           <ErrorCard>An error occurred while loading pools.</ErrorCard>
         )}
       </div>
-    </div>
+    </PageContainer>
   );
 };
 
