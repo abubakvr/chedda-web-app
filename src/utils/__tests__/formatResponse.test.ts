@@ -193,7 +193,7 @@ describe("getAggregateInfo", () => {
       { title: "Total Supplied", value: "$1.00" },
       { title: "Total Borrowed", value: "$2.00" },
       { title: "Total Available", value: "$3.00" },
-      { title: "No. Of Vaults", value: "4.00" },
+      { title: "No. Of Vaults", value: 4 },
       { title: "Total Earned", value: "$5.00" },
       { title: "TVL", value: "$6.00" },
     ]);
