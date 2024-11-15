@@ -93,7 +93,7 @@ export const sourceChains: ISourceChain[] = [
     endpointId: 40245,
     jsonRpcUrl: `https://base-sepolia.g.alchemy.com/v2/${alchemyKey}`,
     txUrlPrefix: "https://sepolia.basescan.org/tx",
-    priceFeed: "0xFe09e4d727Eda07D5C0e961EbE04c7c0f0B0C2C6",
+    priceFeed: "0xE831DFd1DDFCce163c0B16B35aD2dc411129EC7d",
     ethAddress: "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511",
   },
   {
@@ -163,13 +163,13 @@ export const poolCategories: IPoolCategory[] = [
 ];
 
 export const poolFilters: IPoolCategories = {
-  "0x3153dE50b45868fF2B8bf38C6A29B8822e35c771": {
+  "0x05114B1B2E548eFCD44Ba1d945141CfF086780Bb": {
     categories: ["stable coin"],
   },
-  "0x0fFD5fB4B3160A2709E120A7484AEE03500c55b3": {
+  "0x4898d781C7816b945E4713b54e0316e495d1Afbb": {
     categories: ["stable coin"],
   },
-  "0x2c01212f051A59D88A1361db1E2041896dB4af64": {
+  "0xA2cfE619cDd3bc1F051890Cea945CC145a45770B": {
     categories: ["defi"],
   },
 };

@@ -29,21 +29,21 @@ export const stagingEnvironment: IEnvironment = {
   contractPrefix: "https://sepolia.basescan.org/address",
   chainId: 84532,
   contracts: {
-    LendingPoolLens: "0x5b3AaF77dd6E086241a101A47E8cDA34A1059ee6",
-    AccountActor: "0xC04B0FCf0d2c58b68C1C5927ed649557690A546d",
+    LendingPoolLens: "0xB99Caa9905cf847AD19e5435FaB5743F37dDf0d7",
+    AccountActor: "0x86C61197E8fc0904F0458C81Ab32E3fB5F2e138C",
     InterestRatesProjector: "0xcbaA2bBCE7d15131914Cf7Db7944E06b2143dEB1",
     PriceFeed: "0x4f69E2b5c3a93F33932e0faFAb3B516510aa5ab6",
     LockingGaugeRewardsDistributor:
-      "0x1afE6732d880Fa3714Dac4857723f6407140a510",
-    CheddaToken: "0x28041a8147eB37509BDd8aAFc7006f15E0746bbD",
+      "0xB0A47be6707E3122F1CF4C2259897E6e97380E1A",
+    CheddaToken: "0xAB3ABb5C1B69dC4fFe6B6FA0D633DD436E1639c2",
     veChedda: "0x0",
     Faucet: "0x0A5Fe3dd684B1aA04d156d42C259a9feF887255e",
   },
   tokens: {
-    "0x28041a8147eB37509BDd8aAFc7006f15E0746bbD": {
+    "0xAB3ABb5C1B69dC4fFe6B6FA0D633DD436E1639c2": {
       name: "Chedda Token",
       symbol: "CHEDDA",
-      address: "0x28041a8147eB37509BDd8aAFc7006f15E0746bbD",
+      address: "0xAB3ABb5C1B69dC4fFe6B6FA0D633DD436E1639c2",
       logo: cheddaLogo,
       decimals: 18,
       color: "#3498db",

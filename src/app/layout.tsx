@@ -28,7 +28,6 @@ export default function RootLayout({
           <AppHeader />
           <WelcomeModal />
           <div className="py-20 xl:pt-24 pb-10 ">{children}</div>
-          <Footer />
         </AppProviders>
       </body>
     </html>
