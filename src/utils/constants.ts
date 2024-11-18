@@ -77,7 +77,6 @@ export const positionsHeaderItem = [
 ];
 
 export const LOCKTIMES = [
-  { title: "1 hr", duration: 0.0418, multiplier: 0, value: 0 },
   { title: "30 days", duration: 30, multiplier: 0.25, value: 1 },
   { title: "90 days", duration: 90, multiplier: 1, value: 2 },
   { title: "180 days", duration: 180, multiplier: 2, value: 3 },
@@ -93,7 +92,7 @@ export const sourceChains: ISourceChain[] = [
     endpointId: 40245,
     jsonRpcUrl: `https://base-sepolia.g.alchemy.com/v2/${alchemyKey}`,
     txUrlPrefix: "https://sepolia.basescan.org/tx",
-    priceFeed: "0xFe09e4d727Eda07D5C0e961EbE04c7c0f0B0C2C6",
+    priceFeed: "0xE831DFd1DDFCce163c0B16B35aD2dc411129EC7d",
     ethAddress: "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511",
   },
   {
@@ -163,13 +162,13 @@ export const poolCategories: IPoolCategory[] = [
 ];
 
 export const poolFilters: IPoolCategories = {
-  "0x3153dE50b45868fF2B8bf38C6A29B8822e35c771": {
+  "0x00Eb935e3Dd65CCa9834f635CF7839a81F37727E": {
     categories: ["stable coin"],
   },
-  "0x0fFD5fB4B3160A2709E120A7484AEE03500c55b3": {
+  "0xe16BEAEDCA1Ad25407A83FB0F452F643CF1d171D": {
     categories: ["stable coin"],
   },
-  "0x2c01212f051A59D88A1361db1E2041896dB4af64": {
+  "0x2bcbD83C50b56698342bf77Ea2223386553BeF3F": {
     categories: ["defi"],
   },
 };

@@ -7,8 +7,10 @@ import {
   useToast,
   useCheddaPrice,
   useTransaction,
+  useCheddaBalance,
 } from "@/hooks";
 import { NonceProvider } from "@/contexts/NonceContext";
+import { fetchData } from "@/redux/api/cheddaSlice";
 
 jest.mock("../../../../hooks");
 jest.mock("@next/third-parties/google");
@@ -45,6 +47,9 @@ describe("ClaimRewards Component", () => {
     (useToast as jest.Mock).mockImplementation(() => ({
       addToast: jest.fn(),
     }));
+    (useCheddaBalance as jest.Mock).mockImplementation(() => ({
+      fetchData: jest.fn(),
+    }));
   });
 
   it("renders lock rewards and stake rewards correctly when wallet is connected", () => {
@@ -52,6 +57,7 @@ describe("ClaimRewards Component", () => {
       <NonceProvider nonce="0x78b">
         <ClaimRewards
           isWalletConnected={true}
+          fetchCheddaBalance={jest.fn()}
           cheddaTokenPrice={3}
           cheddaTokenPriceLoading={false}
         />
@@ -75,6 +81,7 @@ describe("ClaimRewards Component", () => {
       <NonceProvider nonce="0x78b">
         <ClaimRewards
           isWalletConnected={false}
+          fetchCheddaBalance={jest.fn()}
           cheddaTokenPrice={3}
           cheddaTokenPriceLoading={false}
         />
@@ -92,6 +99,7 @@ describe("ClaimRewards Component", () => {
         <ClaimRewards
           isWalletConnected={true}
           cheddaTokenPrice={3}
+          fetchCheddaBalance={jest.fn()}
           cheddaTokenPriceLoading={false}
         />
       </NonceProvider>

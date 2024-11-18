@@ -72,7 +72,10 @@ export const SupplyModal: FC<SupplyModalProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState(defaultTab || "Deposit");
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState({
+    message: "",
+    txHash: "",
+  });
   const [txLoading, setTxLoading] = useState(false);
   const [clearInputField, setClearInputField] = useState(false);
   const [supplyAmount, setSupplyAmount] = useState<number>(0);
@@ -142,7 +145,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
             const txMessage = `You've successfully supplied ${formatNumber(
               supplyAmount
             )} ${asset.symbol}`;
-            setSuccessMessage(txMessage);
+            setSuccessMessage({ message: txMessage, txHash: res.hash });
             setSupplyAmount(0);
             setClearInputField(true);
             setOpenSuccessModal(true);
@@ -254,7 +257,8 @@ export const SupplyModal: FC<SupplyModalProps> = ({
       <SuccessModal
         onClose={closeSuccessModal}
         isOpen={openSuccessModal}
-        modalMessage={successMessage}
+        modalMessage={successMessage.message}
+        txHash={successMessage.txHash}
         continueAction={() => setOpenSuccessModal(false)}
         stakeAction={() => setActivePoolTab("Stake")}
       />
