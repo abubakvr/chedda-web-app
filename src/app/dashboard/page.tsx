@@ -7,7 +7,7 @@ import { ClaimRewards } from "./components/ClaimRewards";
 import { CheddaInfo } from "./components/CheddaInfo";
 import { useWeb3React } from "@web3-react/core";
 import { PositionSummary } from "./components/PositionSummary";
-import { useAllPositions, useCheddaPrice } from "@/hooks";
+import { useAllPositions, useCheddaBalance, useCheddaPrice } from "@/hooks";
 import { currentEnvironment } from "@/data/environments";
 
 const Page = () => {
@@ -16,6 +16,12 @@ const Page = () => {
 
   const { data: allPositions, isLoading: allPositionsLoading } =
     useAllPositions();
+
+  const {
+    data: cheddaTokenBalance,
+    isLoading: cheddaTokenBalanceLoading,
+    fetchData: fetchCheddaBalance,
+  } = useCheddaBalance();
 
   const { data: cheddaTokenPrice, isLoading: cheddaTokenPriceLoading } =
     useCheddaPrice(currentEnvironment?.contracts.CheddaToken);
@@ -29,6 +35,8 @@ const Page = () => {
         <div className="md:w-1/2 lg:w-[59%] xl:w-[62%]">
           <CheddaInfo
             isWalletConnected={isWalletConnected}
+            cheddaTokenBalance={cheddaTokenBalance}
+            cheddaTokenBalanceLoading={cheddaTokenBalanceLoading}
             cheddaTokenPrice={cheddaTokenPrice}
             cheddaTokenPriceLoading={cheddaTokenPriceLoading}
           />
@@ -38,6 +46,7 @@ const Page = () => {
             isWalletConnected={isWalletConnected}
             cheddaTokenPrice={cheddaTokenPrice}
             cheddaTokenPriceLoading={cheddaTokenPriceLoading}
+            fetchCheddaBalance={fetchCheddaBalance}
           />
         </div>
       </div>

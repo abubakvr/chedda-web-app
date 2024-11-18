@@ -5,11 +5,13 @@ import LinkOut from "@/assets/icon/link-out-gradient.svg";
 
 import { Card } from "@/components/common";
 import { ConnectWalletBox } from "./ConnectWalletBox";
-import { useCheddaBalance, useCheddaTotalSupply } from "@/hooks";
+import { useCheddaTotalSupply } from "@/hooks";
 import { formatLargeNumber, parseBigNumberToFloat } from "@/utils/formatters";
 
 interface CheddaInfoProps {
   isWalletConnected: boolean;
+  cheddaTokenBalance: bigint | undefined;
+  cheddaTokenBalanceLoading: boolean;
   cheddaTokenPrice: number | undefined;
   cheddaTokenPriceLoading: boolean;
 }
@@ -48,11 +50,10 @@ const InfoItem = ({ title, value, isLoading, subValue }: InfoItemProps) => (
 export const CheddaInfo = ({
   isWalletConnected,
   cheddaTokenPrice,
+  cheddaTokenBalance,
+  cheddaTokenBalanceLoading,
   cheddaTokenPriceLoading,
 }: CheddaInfoProps) => {
-  const { data: cheddaTokenBalance, isLoading: cheddaTokenBalanceLoading } =
-    useCheddaBalance();
-
   const { data: cheddaTotalSupply, isLoading: cheddaTotalSupplyLoading } =
     useCheddaTotalSupply();
 

@@ -77,7 +77,6 @@ export const positionsHeaderItem = [
 ];
 
 export const LOCKTIMES = [
-  { title: "1 hr", duration: 0.0418, multiplier: 0, value: 0 },
   { title: "30 days", duration: 30, multiplier: 0.25, value: 1 },
   { title: "90 days", duration: 90, multiplier: 1, value: 2 },
   { title: "180 days", duration: 180, multiplier: 2, value: 3 },
@@ -163,13 +162,13 @@ export const poolCategories: IPoolCategory[] = [
 ];
 
 export const poolFilters: IPoolCategories = {
-  "0x05114B1B2E548eFCD44Ba1d945141CfF086780Bb": {
+  "0x00Eb935e3Dd65CCa9834f635CF7839a81F37727E": {
     categories: ["stable coin"],
   },
-  "0x4898d781C7816b945E4713b54e0316e495d1Afbb": {
+  "0xe16BEAEDCA1Ad25407A83FB0F452F643CF1d171D": {
     categories: ["stable coin"],
   },
-  "0xA2cfE619cDd3bc1F051890Cea945CC145a45770B": {
+  "0x2bcbD83C50b56698342bf77Ea2223386553BeF3F": {
     categories: ["defi"],
   },
 };
