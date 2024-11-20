@@ -162,13 +162,13 @@ export const poolCategories: IPoolCategory[] = [
 ];
 
 export const poolFilters: IPoolCategories = {
-  "0x00Eb935e3Dd65CCa9834f635CF7839a81F37727E": {
+  "0x2a9dc7463EA224dDCa477296051D95694b0bb05C": {
     categories: ["stable coin"],
   },
-  "0xe16BEAEDCA1Ad25407A83FB0F452F643CF1d171D": {
+  "0x461fb6906dD46e4ED8fA354b3e4E5e7cB102171F": {
     categories: ["stable coin"],
   },
-  "0x2bcbD83C50b56698342bf77Ea2223386553BeF3F": {
+  "0x7e41fF84f262a182C2928D4817220F47eb89aeCc": {
     categories: ["defi"],
   },
 };
