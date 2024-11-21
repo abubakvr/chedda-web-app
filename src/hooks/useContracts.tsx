@@ -68,7 +68,7 @@ const getPoolState: GetDataFunction<IPoolStateResponse[]> = async ({
   chedda,
   signer,
 }) => {
-  const graphTimes = createTimestamps(0.5, 25);
+  const graphTimes = createTimestamps(0.0417, 25);
   const lendingPool = chedda.lendingPool(poolId, signer);
   const events = (await lendingPool.getEventLogs(
     "PoolState",

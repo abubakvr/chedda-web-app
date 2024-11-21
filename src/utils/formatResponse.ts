@@ -8,7 +8,6 @@ import {
 } from "chedda-sdk";
 import { poolFilters } from "./constants";
 import {
-  formatNumber,
   formatCurrency,
   formatLargeNumber,
   formatAsPercentage,
