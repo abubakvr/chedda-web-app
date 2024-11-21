@@ -105,7 +105,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           </div>
         </div>
         <div className="flex justify-between text-2xs md:text-xs text-xs xl:text-sm pb-4 md:pb-5">
-          <div className="opacity-50 font-semibold">Total Supplied</div>
+          <div className="opacity-50 font-semibold">You Supplied</div>
           <div className="font-bold">
             {`${formatLargeNumber(
               parseBigNumberToFloat(
@@ -116,7 +116,7 @@ export const MyInformationCard: React.FC<MyInformationCardProps> = ({
           </div>
         </div>
         <div className="flex justify-between text-2xs md:text-xs text-xs xl:text-sm pb-4 md:pb-5">
-          <div className="opacity-50 font-semibold">Total Borrowed</div>
+          <div className="opacity-50 font-semibold">You Borrowed</div>
           <div className="font-bold">
             {`${formatLargeNumber(totalBorrowed)} ${poolStats?.asset.symbol}`}
           </div>
