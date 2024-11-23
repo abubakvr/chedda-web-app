@@ -49,7 +49,7 @@ export const testnetEnvironment: IEnvironment = {
       color: "#3498db",
       type: "OFT",
       oftAdapter: "0x0",
-      bridgedOft: "0x0C9942D770527A54C803C60789B59D13CfbCde3a",
+      bridgedOft: "0xe4884e486a9f820AC82aDeCFB7F662eBa83A04dC",
       nativeChain: "base",
       source: "base",
       sourceLogo: baseLogo,
