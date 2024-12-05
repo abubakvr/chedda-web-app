@@ -92,7 +92,7 @@ const PoolTab = ({
           />
         </div>
         <div className="pool-card rounded-lg">
-          <InterestRatesChart />
+          <InterestRatesChart utilizationRate={marketInfo?.utilization} />
         </div>
       </div>
       <div className="w-full lg:w-[33%] text-white flex flex-col md:flex-row-reverse justify-between lg:justify-start gap-x-6 lg:md:gap-x-0 lg:flex-col gap-y-6">
