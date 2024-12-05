@@ -158,12 +158,13 @@ export const InterestRatesChart = ({
             <ReferenceLine
               x={parsedUtilizationRate}
               stroke="#FFFFFF"
-              strokeWidth={0.4}
+              strokeWidth={0.7}
+              strokeDasharray="3 3"
             />
             <CartesianGrid
               strokeDasharray="3 3"
               vertical={false}
-              strokeWidth={0.7}
+              strokeWidth={0.4}
             />
             <Line
               name="Supply rate"
