@@ -95,7 +95,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     asset.address
   );
 
-  const parsedAllowance = parseBigNumberToFloat(allowance, asset.decimals);
+  const parsedAllowance = parseBigNumberToFloat(allowance, asset.decimals, 10);
   const parsedSupplied = parseBigNumberToFloat(supplied, asset.decimals);
   const parsedAssetBalance = parseBigNumberToFloat(
     assetBalance,
@@ -259,7 +259,10 @@ export const SupplyModal: FC<SupplyModalProps> = ({
         isOpen={openSuccessModal}
         modalMessage={successMessage.message}
         txHash={successMessage.txHash}
-        continueAction={() => setOpenSuccessModal(false)}
+        continueAction={() => {
+          setOpenSuccessModal(false);
+          setClearInputField(true);
+        }}
         stakeAction={() => setActivePoolTab("Stake")}
       />
       <div
@@ -281,7 +284,12 @@ export const SupplyModal: FC<SupplyModalProps> = ({
               </h2>
               <button
                 className="text-2xl md:text-3xl lg:text-4xl cursor-pointer font-bold text-white relative hover:opacity-85"
-                onClick={onClose}
+                onClick={() => {
+                  onClose;
+                  setSupplyAmount(0);
+                  setWithdrawAmount(0);
+                  setClearInputField(true);
+                }}
               >
                 &times;
               </button>
