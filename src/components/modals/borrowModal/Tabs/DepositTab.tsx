@@ -62,7 +62,7 @@ export const DepositTab = ({
     isLoading;
   const { depositCollateral, approveAsset } = useTransaction(tokenAddress);
 
-  const parsedAllowance = parseBigNumberToFloat(allowance, decimals);
+  const parsedAllowance = parseBigNumberToFloat(allowance, decimals, 10);
   const parsedAssetBalance = parseBigNumberToFloat(tokenBalance, decimals);
   const parsedAccountCollateral = parseBigNumberToFloat(
     accountCollateralAmount,
@@ -92,6 +92,7 @@ export const DepositTab = ({
 
       const parsedAmount = ethers.parseUnits(inputAmount.toString(), decimals);
       setTxLoading(true);
+
       if (inputAmount <= parsedAllowance) {
         depositCollateral(parsedAmount)
           .then(async (res) => {

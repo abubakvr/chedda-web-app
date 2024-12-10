@@ -60,7 +60,7 @@ export const StakeCard: FC<StakeModalProps> = ({
   const { stakeLpToken, unStakeLpToken, approveLpToken } = useTransaction("");
   const { addToast } = useToast();
 
-  const parsedAllowance = parseBigNumberToFloat(lpAllowance, lpDecimals);
+  const parsedAllowance = parseBigNumberToFloat(lpAllowance, lpDecimals, 10);
 
   const parsedAssetBalance = parseBigNumberToFloat(lpTokenBalance, lpDecimals);
   const parsedStakingBalance = parseBigNumberToFloat(

@@ -154,6 +154,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 isActive={activeTab === "Borrow"}
                 onClick={() => {
                   setActiveTab("Borrow");
+                  setSelectedCollateral(collaterals[0]);
                 }}
                 testId="borrow-tab"
               />

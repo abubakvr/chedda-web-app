@@ -66,7 +66,7 @@ export const RepayTab = ({
   const parsedHealthFactor = parseBigNumberToFloat(healthFactor);
 
   const maxInputValue = Math.min(totalBorrowed, parsedAssetBalance);
-  const parsedAllowance = parseBigNumberToFloat(allowance, decimals);
+  const parsedAllowance = parseBigNumberToFloat(allowance, decimals, 10);
   const projectedHealthFactor =
     parsedTotalAccountCollateralValue /
     (valueOfAssetsBorrowed - valueOfNewCollateral);
