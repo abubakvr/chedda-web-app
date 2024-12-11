@@ -285,7 +285,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
               <button
                 className="text-2xl md:text-3xl lg:text-4xl cursor-pointer font-bold text-white relative hover:opacity-85"
                 onClick={() => {
-                  onClose;
+                  onClose();
                   setSupplyAmount(0);
                   setWithdrawAmount(0);
                   setClearInputField(true);
