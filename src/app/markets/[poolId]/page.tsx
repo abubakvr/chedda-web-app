@@ -87,7 +87,7 @@ const Page = () => {
   return (
     <div>
       <div
-        className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:[w-5/6] 3xl:w-[1600px] mx-auto pb-10"
+        className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-[1600px] mx-auto pb-10"
         data-testid="pool-container"
       >
         <div className="mt-4 lg:mt-7 mb-6 lg:mb-7">
