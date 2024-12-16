@@ -56,6 +56,7 @@ export const AmountField: FC<InputWithMaxButtonProps> = ({
   };
 
   const onMaxButtonClick = () => {
+    setClearInputField(false);
     setInputValue(maxValue);
     onChange(maxValue);
   };
