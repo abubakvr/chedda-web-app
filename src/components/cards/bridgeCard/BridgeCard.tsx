@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { BridgeInput } from "./BridgeInput";
 import { TokenSelect } from "./TokenSelect";
-import { ISourceChain, IToken } from "@/utils/types";
+import { IBridgeToken, ISourceChain, IToken } from "@/utils/types";
 import { sourceChains } from "@/utils/constants";
 import { useBridge } from "@/hooks";
 import { parseBigNumberToFloat } from "@/utils/formatters";
@@ -18,12 +18,12 @@ export interface IBridgeCardProps {
   tokenDataLoading: boolean;
   allowance: number;
   tokenPrice: number;
-  tokenList: IToken[];
+  tokenList: IBridgeToken[];
   getEstimatedGas: () => void;
   fetchTokenData: () => void;
-  selectedToken: IToken;
+  selectedToken: IBridgeToken;
   selectedChain: ISourceChain;
-  setSelectedToken: React.Dispatch<React.SetStateAction<IToken>>;
+  setSelectedToken: React.Dispatch<React.SetStateAction<IBridgeToken>>;
   setSelectedChain: React.Dispatch<React.SetStateAction<ISourceChain>>;
 }
 
@@ -73,7 +73,7 @@ export const BridgeCard = ({
           const balanceAddress =
             token.source === chain.key ? token.address : token.bridgedOft;
 
-          if (token.bridgeToken && balanceAddress) {
+          if (balanceAddress) {
             try {
               const balance = await getTokenBalance(balanceAddress);
               newBalances[balanceAddress] = parseBigNumberToFloat(

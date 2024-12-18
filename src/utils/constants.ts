@@ -159,6 +159,16 @@ export const poolCategories: IPoolCategory[] = [
       "border-[#00F0FF] bg-[#01212864] md:px-1 py-1 h-7 md:h-8 lg:h-9 ",
     hoverClass: "hover:border-[#00F0FF] hover:bg-[#01212864]",
   },
+  {
+    label: "#Memes",
+    keyword: "Memes",
+    itemCount: 0,
+    icon: stackIcon,
+    activeIcon: stackIconActive,
+    activeClass:
+      "border-[#C142F0] bg-[#2D142D68] md:px-1 py-1 h-7 md:h-8 lg:h-9 ",
+    hoverClass: "hover:border-[#C142F0] hover:bg-[#2D142D68]",
+  },
 ];
 
 export const poolFilters: IPoolCategories = {
@@ -170,6 +180,15 @@ export const poolFilters: IPoolCategories = {
   },
   "0x7e41fF84f262a182C2928D4817220F47eb89aeCc": {
     categories: ["defi"],
+  },
+  "0xDf9d65417f19bb0163dB229b04e6d64C13A45831": {
+    categories: ["memes"],
+  },
+  "0xdeD28C268Ce92bB28f96a89F132dDA99B72b03A5": {
+    categories: ["gamefi"],
+  },
+  "0x3Fc994F7646CE3c65A2259eE3C66F673D7f306f1": {
+    categories: ["gamefi"],
   },
 };
 

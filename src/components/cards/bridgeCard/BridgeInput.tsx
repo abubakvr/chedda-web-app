@@ -7,7 +7,7 @@ import { ethers } from "ethers";
 import { BridgeAmountField } from "@/components/common/input/BridgeAmountField";
 import { Button } from "@/components/common";
 import { BridgeCardInfo } from "./BridgeCardInfo";
-import { ISourceChain, IToken } from "@/utils/types";
+import { ISourceChain, IBridgeToken } from "@/utils/types";
 import { useState } from "react";
 import { useBridge, useSwitchChain, useToast } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
@@ -22,8 +22,8 @@ interface TokenBalances {
 
 interface BridgeInputProps {
   selectedChain: ISourceChain;
-  selectedToken: IToken;
-  tokenList: IToken[];
+  selectedToken: IBridgeToken;
+  tokenList: IBridgeToken[];
   tokenBalances: TokenBalances;
   estimatedGasFee: any;
   destinationChain: ISourceChain;

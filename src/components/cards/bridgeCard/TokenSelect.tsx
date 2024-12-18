@@ -2,7 +2,7 @@ import Image from "next/image";
 import React, { ChangeEvent, useState } from "react";
 import leftIcon from "@/assets/icon/left-icon.svg";
 import SearchIcon from "@/assets/icon/search-icon.svg";
-import { ISourceChain, IToken } from "@/utils/types";
+import { ISourceChain, IBridgeToken } from "@/utils/types";
 import { sourceChains } from "@/utils/constants";
 import { useSwitchChain } from "@/hooks";
 import { formatNumber } from "@/utils/formatters";
@@ -13,13 +13,13 @@ interface TokenBalances {
 
 interface TokenSelectProps {
   selectedChain: ISourceChain;
-  selectedToken: IToken;
-  tokenList: IToken[];
+  selectedToken: IBridgeToken;
+  tokenList: IBridgeToken[];
   fetchTokenBalanceLoading: boolean;
   tokenBalances: TokenBalances;
   handleActiveScreen: (term: string) => void;
   switchToSelectedChain: (chain: ISourceChain) => void;
-  setSelectedToken: React.Dispatch<React.SetStateAction<IToken>>;
+  setSelectedToken: React.Dispatch<React.SetStateAction<IBridgeToken>>;
 }
 
 export const TokenSelect = ({
@@ -50,7 +50,7 @@ export const TokenSelect = ({
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) =>
     setSearchKeyword(e.target.value);
 
-  const matchSearchItem = (item: IToken, searchKeyword: string) => {
+  const matchSearchItem = (item: IBridgeToken, searchKeyword: string) => {
     const normalizedSearchKeyword = searchKeyword?.toLowerCase() || "";
 
     const matchesTokenName = item.name
@@ -74,7 +74,7 @@ export const TokenSelect = ({
     }
   };
 
-  const renderTokenList = (token: IToken, index: number) => {
+  const renderTokenList = (token: IBridgeToken, index: number) => {
     const balanceAddress =
       token.source === selectedChain.key ? token.address : token.bridgedOft;
     return (
@@ -195,13 +195,11 @@ export const TokenSelect = ({
       </div>
       <div className="mt-4 md:mt-6 h-64 lg:h-72 overflow-y-auto bridge-scroll-element">
         {sortedTokenList.map((token, index) => {
-          if (token.bridgeToken) {
-            return !searchKeyword
+          return !searchKeyword
+            ? renderTokenList(token, index)
+            : searchKeyword && matchSearchItem(token, searchKeyword)
               ? renderTokenList(token, index)
-              : searchKeyword && matchSearchItem(token, searchKeyword)
-                ? renderTokenList(token, index)
-                : null;
-          }
+              : null;
         })}
       </div>
     </div>
