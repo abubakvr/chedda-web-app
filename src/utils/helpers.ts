@@ -1,6 +1,6 @@
 import { Chedda } from "chedda-sdk";
 import { Signer, ErrorCode } from "ethers";
-import { ISourceChain, IToken, IPositionResponse } from "./types";
+import { ISourceChain, IPositionResponse, IBridgeToken } from "./types";
 
 export function findNearestIndex(sortedArray: number[], targetNumber: number) {
   // Check if the array is empty
@@ -182,7 +182,7 @@ export function projectDateTime(days: number) {
  * - It returns the token's bridged address if the source does not match the destination.
  */
 export const getTokenBridgeAddress = (
-  selectedToken: IToken,
+  selectedToken: IBridgeToken,
   selectedChain: ISourceChain
 ) => {
   return selectedToken.source === selectedChain.key &&
@@ -206,7 +206,7 @@ export const getTokenBridgeAddress = (
  * - It returns the token's bridged address if the source does not match the destination chain key.
  */
 export const getTokenBalanceAddress = (
-  selectedToken: IToken,
+  selectedToken: IBridgeToken,
   selectedChain: ISourceChain
 ) => {
   return selectedToken.source === selectedChain.key
