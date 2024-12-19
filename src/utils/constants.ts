@@ -181,13 +181,13 @@ export const poolFilters: IPoolCategories = {
   "0x7e41fF84f262a182C2928D4817220F47eb89aeCc": {
     categories: ["defi"],
   },
-  "0xDf9d65417f19bb0163dB229b04e6d64C13A45831": {
+  "0x81df92DE8FD8bEa04A84E4c5Bad94A3daeEB2Fc1": {
     categories: ["memes"],
   },
-  "0xdeD28C268Ce92bB28f96a89F132dDA99B72b03A5": {
+  "0xc097580d41176d56f1c42ad20d11Bc2247A8d2Be": {
     categories: ["gamefi"],
   },
-  "0x3Fc994F7646CE3c65A2259eE3C66F673D7f306f1": {
+  "0xBA2E65D461d3F6066E88A34988EAae9Fb7143396": {
     categories: ["gamefi"],
   },
 };
