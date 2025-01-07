@@ -59,7 +59,7 @@ export function displayProjectedHealthFactor(
   parsedHealthFactor: number
 ): number {
   if (
-    totalBorrowed !== 0 &&
+    totalBorrowed !== null &&
     projectedHealthFactor !== null &&
     projectedHealthFactor !== undefined &&
     projectedHealthFactor < 100 &&
