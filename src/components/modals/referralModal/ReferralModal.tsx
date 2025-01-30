@@ -130,7 +130,9 @@ export const ReferralModal = ({
             type="secondary"
             size="large"
             className="mt-2 md:mt-4"
-            onClick={() => {}}
+            onClick={() =>
+              window.open("https://chedda.finance/points", "_blank")
+            }
             disabled={false}
             ignoreChecks={true}
           >
