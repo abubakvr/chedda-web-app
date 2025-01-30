@@ -1,5 +1,11 @@
 import Image from "next/image";
-import React, { useEffect, useState, MouseEvent, useCallback } from "react";
+import React, {
+  useEffect,
+  useState,
+  MouseEvent,
+  useCallback,
+  useRef,
+} from "react";
 import ArrowDown from "@/assets/icon/arrow-down.svg";
 import CopyIcon from "@/assets/icon/copy-icon-white.svg";
 import LinkOut from "@/assets/icon/link-out-gradient.svg";
@@ -24,6 +30,7 @@ import { generateSignature, getReferrerFromUrl } from "@/utils/helpers";
 import TourStep from "@/components/ui/tourStep/TourStep";
 
 const SIGN_MESSAGE = "Sign this message to authenticate your wallet.";
+const recvWindow = 5000;
 
 interface ProfileMenuProps {
   account: string | undefined;
@@ -38,12 +45,9 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
   const { data: cheddaTokenBalance } = useCheddaBalance();
   const { referralCode, getUserReferralCode } = useUserReferralCode();
   const { isActive, provider } = useWeb3React();
-
-  const recvWindow = 5000;
-  const timestamp = Date.now().toString();
+  const isRegisteredRef = useRef(false);
 
   const qrCodeData = `https://chedda.finance/markets?ref=${referralCode}`;
-
   const parsedCheddaBalance = parseBigNumberToFloat(cheddaTokenBalance, 18, 5);
 
   const copyAddress = (field: "refcode" | "wallet") => {
@@ -66,6 +70,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
         const signer = provider.getSigner();
         const signature = await signer.signMessage(SIGN_MESSAGE);
 
+        const timestamp = Date.now().toString(); // Move inside the function
         const parameters = JSON.stringify({
           walletAddress,
           message: SIGN_MESSAGE,
@@ -95,7 +100,6 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
           const refCode = await getUserReferralCode();
           if (refCode) {
             setIsRefModalOpen(true);
-          } else {
           }
           return true;
         }
@@ -103,7 +107,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
         console.error("Error registering user:", error);
       }
     },
-    [provider, timestamp, getUserReferralCode]
+    [provider, getUserReferralCode]
   );
 
   const openProfileMenu = () => {
@@ -160,22 +164,17 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (account !== undefined) setIsConnected(true);
-  }, [account]);
-
   const checkAndRegister = useCallback(async () => {
-    const paramRefCode = getReferrerFromUrl();
+    if (isRegisteredRef.current) return;
 
-    if (!account || !isActive) return; // Exit if no account or wallet is not active
+    const paramRefCode = getReferrerFromUrl();
+    if (!account || !isActive) return;
 
     const registeredWallet = localStorage.getItem("registeredWallet");
-
-    // If the wallet is already registered, skip registration
     if (registeredWallet === account) return;
 
     try {
-      const refCode = await getUserReferralCode(); // Get referral code for the connected wallet
+      const refCode = await getUserReferralCode();
       if (refCode?.length) {
         localStorage.setItem("referralModalCount", "0");
         setIsRefModalOpen(true);
@@ -183,16 +182,19 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
       }
 
       const registrationSuccess = await registerUser(account, paramRefCode);
-
-      // Only save the wallet if registration was successful
       if (registrationSuccess) {
         localStorage.setItem("registeredWallet", account);
         localStorage.setItem("referralModalCount", "0");
+        isRegisteredRef.current = true;
       }
     } catch (error) {
       console.error("Error checking and registering:", error);
     }
   }, [account, isActive, registerUser, getUserReferralCode]);
+
+  useEffect(() => {
+    if (account !== undefined) setIsConnected(true);
+  }, [account]);
 
   useEffect(() => {
     checkAndRegister();
