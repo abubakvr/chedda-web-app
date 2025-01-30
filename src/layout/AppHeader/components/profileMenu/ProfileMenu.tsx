@@ -21,6 +21,7 @@ import { useUserReferralCode } from "@/hooks/useReferralCode";
 import { ReferralModal } from "@/components/modals";
 import { useWeb3React } from "@web3-react/core";
 import { generateSignature, getReferrerFromUrl } from "@/utils/helpers";
+import TourStep from "@/components/ui/tourStep/TourStep";
 
 const SIGN_MESSAGE = "Sign this message to authenticate your wallet.";
 
@@ -33,6 +34,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
   const [isConnected, setIsConnected] = useState(false);
   const [copyLabel, setCopyLabel] = useState("Copy");
   const [isRefModalOpen, setIsRefModalOpen] = useState(false);
+  const [isTourBoxOpen, setIsTourBoxOpen] = useState(false);
   const { data: cheddaTokenBalance } = useCheddaBalance();
   const { referralCode, getUserReferralCode } = useUserReferralCode();
   const { isActive, provider } = useWeb3React();
@@ -106,6 +108,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
 
   const openProfileMenu = () => {
     setIsOpenProfileMenu(!isOpenProfileMenu);
+    setIsTourBoxOpen(false);
     sendGAEvent("event", `Profile Menu`, {
       value: `Opened Profile Menu`,
     });
@@ -115,6 +118,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
     const targetElement = event.target as HTMLElement;
     if (!targetElement.closest(".profile-menu-container")) {
       setIsOpenProfileMenu(false);
+      setIsTourBoxOpen(false);
     }
   };
 
@@ -174,6 +178,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
       const refCode = await getUserReferralCode(); // Get referral code for the connected wallet
       if (refCode?.length) {
         localStorage.setItem("referralModalCount", "0");
+        setIsRefModalOpen(true);
         return;
       }
 
@@ -204,6 +209,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
             referralCode={referralCode}
             isRefModalOpen={isRefModalOpen}
             setIsRefModalOpen={setIsRefModalOpen}
+            setIsTourBoxOpen={setIsTourBoxOpen}
           />
           <button
             onClick={openProfileMenu}
@@ -226,6 +232,16 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
               />
             </div>
           </button>
+          <div
+            className={`absolute mt-4 min-w-[230px] right-0 text-white rounded-md shadow-lg z-10 transition-all duration-300 ease-in-out transform ${
+              isTourBoxOpen ? "opacity-100 visible" : "opacity-0 invisible"
+            }`}
+          >
+            <TourStep
+              closeModal={() => setIsTourBoxOpen(false)}
+              position="top"
+            />
+          </div>
           <div
             className={`absolute mt-2.5 min-w-[230px] right-0 bg-[#13161F] menu-bg text-white rounded-md shadow-lg z-10 transition-all duration-300 ease-in-out transform ${
               isOpenProfileMenu ? "opacity-100 visible" : "opacity-0 invisible"

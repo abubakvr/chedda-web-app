@@ -10,12 +10,14 @@ interface ReferralModalProps {
   referralCode: string | undefined;
   isRefModalOpen: boolean;
   setIsRefModalOpen: Dispatch<SetStateAction<boolean>>;
+  setIsTourBoxOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export const ReferralModal = ({
   referralCode,
   isRefModalOpen,
   setIsRefModalOpen,
+  setIsTourBoxOpen,
 }: ReferralModalProps) => {
   const userAcceptance = useLocalStorageGet("userAcceptance");
   const getRegisteredWallet = useLocalStorageGet("registeredWallet");
@@ -46,6 +48,7 @@ export const ReferralModal = ({
       localStorage.setItem("registeredWallet", account);
     }
     setIsRefModalOpen(false);
+    setIsTourBoxOpen(true);
   };
 
   const openModal =
