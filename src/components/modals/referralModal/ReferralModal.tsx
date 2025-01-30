@@ -71,7 +71,7 @@ export const ReferralModal = ({
       } bg-[#00000024] bg-opacity-75 overflow-y-auto backdrop-filter backdrop-blur-sm z-20`}
     >
       <div className="flex items-center justify-center min-h-screen">
-        <div className="app-modal p-4 md:p-8 rounded shadow-lg w-11/12 max-w-[320px] sm:max-w-[330px] md:max-w-[450px] lg:max-w-[550px] text-white">
+        <div className="app-modal p-4 md:p-8 rounded shadow-lg w-11/12 max-w-[320px] sm:max-w-[330px] md:max-w-[450px] lg:max-w-[560px] text-white">
           <h1 className="flex justify-center text-lg md:text-2xl lg:text-3xl font-bold">
             Referral Guide
           </h1>
