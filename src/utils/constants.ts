@@ -39,6 +39,8 @@ export const BRIDGE_DOC_URL =
   "https://docs.chedda.finance/chedda/protocol/cross-chain-tokens";
 export const HOMEPAGE_LINK = "https://www.chedda.finance";
 export const CHEDDA_TERMS_LINK = "https://www.chedda.finance/terms";
+export const BASE_CHEDDA_API_URL =
+  "https://leaderboard-api-422055794768.us-central1.run.app/api";
 
 export const ethAddress = "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511";
 

@@ -1,4 +1,5 @@
 import { Chedda } from "chedda-sdk";
+import * as crypto from "crypto";
 import { Signer, ErrorCode } from "ethers";
 import { ISourceChain, IPositionResponse, IBridgeToken } from "./types";
 
@@ -252,4 +253,30 @@ export const createKey = (
   asset: string = ""
 ) => {
   return `${hookName} + ${pathname} + ${asset}`;
+};
+
+export const generateSignature = (
+  parameters: string,
+  secret: string,
+  timestamp: string,
+  recvWindow: number
+): string => {
+  return crypto
+    .createHmac("sha256", secret)
+    .update(timestamp + recvWindow + parameters)
+    .digest("hex");
+};
+
+export const getReferrerFromUrl = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const refCode = urlParams.get("ref");
+  const savedRefCode = localStorage.getItem("referrer");
+  if (refCode) {
+    localStorage.setItem("referrer", refCode);
+    return refCode;
+  } else if (savedRefCode) {
+    return savedRefCode;
+  } else {
+    return undefined;
+  }
 };

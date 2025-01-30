@@ -6,6 +6,7 @@ const nextConfig = {
     WALLECONNECT_PROJECT_ID: process.env.WALLETCONNECT_PROJECT_ID,
     DEPLOYED_ENV: process.env.DEPLOYED_ENV,
   },
+  trailingSlash: false,
 };
 
 module.exports = nextConfig;

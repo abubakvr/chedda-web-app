@@ -6,7 +6,6 @@ import { headers } from "next/headers";
 import { WelcomeModal } from "@/components/modals";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { GA_TRACKING_ID } from "@/utils/constants";
-import { Footer } from "@/layout/AppFooter";
 
 export const metadata: Metadata = {
   title: "Chedda Markets",
