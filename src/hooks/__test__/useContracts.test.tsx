@@ -18,7 +18,7 @@ import {
   useAccountCollateral,
   useAccountHealth,
   useSelectTokenBalance,
-  useTokenMaxLoanValue,
+  useTokenLoanValue,
   useLpAllowance,
   useLpSymbol,
   useLpTokenBalance,
@@ -99,7 +99,7 @@ describe("useFetchers Hooks", () => {
       name: "Select Token Balance",
     },
     {
-      hook: useTokenMaxLoanValue,
+      hook: useTokenLoanValue,
       args: ["0x00", 18],
       name: "Token Collateral Value",
     },

@@ -1,5 +1,4 @@
 import { Chedda } from "chedda-sdk";
-import * as crypto from "crypto";
 import { Signer, ErrorCode } from "ethers";
 import { ISourceChain, IPositionResponse, IBridgeToken } from "./types";
 
@@ -255,16 +254,28 @@ export const createKey = (
   return `${hookName} + ${pathname} + ${asset}`;
 };
 
-export const generateSignature = (
+export const generateSignature = async (
   parameters: string,
   secret: string,
   timestamp: string,
   recvWindow: number
-): string => {
-  return crypto
-    .createHmac("sha256", secret)
-    .update(timestamp + recvWindow + parameters)
-    .digest("hex");
+): Promise<string> => {
+  const data = timestamp + recvWindow + parameters;
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    new TextEncoder().encode(data)
+  );
+  return Array.from(new Uint8Array(signature))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
 };
 
 export const getReferrerFromUrl = () => {

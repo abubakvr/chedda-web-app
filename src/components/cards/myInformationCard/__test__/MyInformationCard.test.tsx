@@ -11,7 +11,7 @@ import {
   useSelectTokenBalance,
   useToast,
   useTokenBalance,
-  useTokenMaxLoanValue,
+  useTokenLoanValue,
   useTokenPrice,
   useTransaction,
 } from "@/hooks";
@@ -61,7 +61,7 @@ describe("MyInformationCard", () => {
       fetchTokenBalance: jest.fn(),
       tokenBalance: "1000",
     }));
-    (useTokenMaxLoanValue as jest.Mock).mockImplementation(() => ({
+    (useTokenLoanValue as jest.Mock).mockImplementation(() => ({
       fetchTokenBalance: jest.fn(),
       tokenBalance: "1000",
     }));

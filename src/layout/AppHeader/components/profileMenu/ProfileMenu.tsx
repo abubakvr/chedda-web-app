@@ -78,7 +78,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
           referralCode: referrer,
         });
 
-        const apiSignature = generateSignature(
+        const apiSignature = await generateSignature(
           parameters,
           alchemyKey!,
           timestamp,

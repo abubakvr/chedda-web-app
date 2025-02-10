@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { sendGAEvent } from "@next/third-parties/google";
+import { isPostToken } from "@/utils/constants";
 
 export const RouteCard = ({
   setActiveTab,
@@ -51,10 +52,10 @@ export const RouteCard = ({
             <button
               key={index}
               onClick={() => handleTabButton(item)}
-              className={`${isActive && "card-gradient-text"} font-bold w-full md:w-fit hover:text-[#FFFFFF99] transition-all`}
+              className={`${isPostToken && isActive && "card-gradient-text"} font-bold w-full md:w-fit hover:text-[#FFFFFF99] transition-all`}
             >
               {item}
-              {isActive ? (
+              {isPostToken && isActive ? (
                 <div className="w-full h-1 rounded route-active-bar mt-2 xl:mt-3"></div>
               ) : (
                 <div className="mt-3 xl:mt-4"></div>

@@ -33,7 +33,7 @@ import {
   useTotalAmountLocked,
   useClaimableLockRewards,
   useGaugeAddress,
-  useTokenMaxLoanValue,
+  useTokenLoanValue,
   useAccountHealth,
   useSelectTokenBalance,
   useAccountCollateral,
@@ -251,7 +251,7 @@ describe("Pool details component", () => {
       fetchTokenBalance: jest.fn(),
       tokenBalance: "1000",
     }));
-    (useTokenMaxLoanValue as jest.Mock).mockImplementation(() => ({
+    (useTokenLoanValue as jest.Mock).mockImplementation(() => ({
       fetchTokenBalance: jest.fn(),
       tokenBalance: "1000",
     }));

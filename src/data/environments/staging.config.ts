@@ -97,8 +97,8 @@ export const stagingEnvironment: IEnvironment = {
   contractPrefix: "https://sepolia.basescan.org/address",
   chainId: CHAIN_IDS.BASE_SEPOLIA,
   contracts: {
-    LendingPoolLens: "0xB99Caa9905cf847AD19e5435FaB5743F37dDf0d7",
-    AccountActor: "0x86C61197E8fc0904F0458C81Ab32E3fB5F2e138C",
+    LendingPoolLens: "0x62093Df902F24A3Fe8D6CF5F42f77B8EfA881910",
+    AccountActor: "0xAF7Cf4B05d8713752E16c5C77428EE044d2431c5",
     InterestRatesProjector: "0xcbaA2bBCE7d15131914Cf7Db7944E06b2143dEB1",
     PriceFeed: "0x4f69E2b5c3a93F33932e0faFAb3B516510aa5ab6",
     LockingGaugeRewardsDistributor:
