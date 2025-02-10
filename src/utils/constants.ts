@@ -76,8 +76,7 @@ export const positionsHeaderItem = [
   "Supplied",
   "Borrowed",
   "Health Factor",
-  "Stake/Earn",
-  "Lock/Earn",
+  ...(isPostToken ? ["Stake/Earn", "Lock/Earn"] : []),
 ];
 
 export const LOCKTIMES = [
