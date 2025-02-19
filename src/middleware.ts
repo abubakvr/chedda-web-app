@@ -84,7 +84,8 @@ export async function middleware(request: NextRequest) {
     }
   } catch (error) {
     console.error("Error fetching geolocation data:", error);
-    // Handle the error gracefully, perhaps by logging it or displaying a message to the user
+    return NextResponse.redirect(new URL("/markets", request.url));
+    // Todo: Handle the error gracefully, perhaps by logging it or displaying a message to the user
   }
 
   return response;
