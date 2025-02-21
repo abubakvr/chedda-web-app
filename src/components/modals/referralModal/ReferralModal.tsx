@@ -26,7 +26,7 @@ export const ReferralModal = ({
   const [isCopied, setIsCopied] = useState(false);
   const { account } = useWeb3React();
 
-  const qrCodeData = `https://chedda.finance/markets?ref=${referralCode}`;
+  const qrCodeData = `https://testnet.chedda.finance/markets?ref=${referralCode}`;
 
   const handleCopyClick = () => {
     setIsCopied(true);

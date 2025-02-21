@@ -196,10 +196,10 @@ const getCheddaPrice: GetDataFunction<number> = async ({
   environment,
 }) => {
   if (!asset) return null;
-  const priceOracle = chedda.priceOracle(environment.contracts.PriceFeed);
+  const priceOracle = chedda.diaPriceOracle(environment.contracts.PriceFeed);
   const decimals = await priceOracle.decimals();
   const assetPrice = await priceOracle.readPrice(asset);
-  return parseBigNumberToFloat(assetPrice, decimals, 10);
+  return parseBigNumberToFloat(assetPrice[0], decimals, 10);
 };
 
 const getTokenPrice: GetDataFunction<number> = async ({

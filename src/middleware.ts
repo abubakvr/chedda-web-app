@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
   // Define the CSP policy with the nonce
   const cspHeader = `
     default-src 'self';
-    connect-src 'self' https://base-sepolia.g.alchemy.com https://sepolia.infura.io/ https://api-testnet.layerzero-scan.com/ https://www.google-analytics.com/ https://api.ipstack.com/ https://leaderboard-api-422055794768.us-central1.run.app/;
+    connect-src 'self' https://*.alchemy.com https://*.infura.io/ https://api-testnet.layerzero-scan.com/ https://www.google-analytics.com/ https://api.ipstack.com/ https://leaderboard-api-422055794768.us-central1.run.app/;
     script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval';
     style-src 'self' 'nonce-${nonce}' https://fonts.cdnfonts.com;
     img-src 'self' blob: data:;

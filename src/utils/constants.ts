@@ -175,7 +175,7 @@ export const poolCategories: IPoolCategory[] = [
 ];
 
 export const poolFilters: IPoolCategories = {
-  "0xe57e895eB8E87FdDB6B867F2153f047Fc27b8917": {
+  "0x19575ed9A07041fB04fdC8528260ca9219378d35": {
     categories: ["defi"],
   },
 };

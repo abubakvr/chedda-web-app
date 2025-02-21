@@ -47,7 +47,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
   const { isActive, provider } = useWeb3React();
   const isRegisteredRef = useRef(false);
 
-  const qrCodeData = `https://chedda.finance/markets?ref=${referralCode}`;
+  const qrCodeData = `https://testnet.chedda.finance/markets?ref=${referralCode}`;
   const parsedCheddaBalance = parseBigNumberToFloat(cheddaTokenBalance, 18, 5);
 
   const copyAddress = (field: "refcode" | "wallet") => {

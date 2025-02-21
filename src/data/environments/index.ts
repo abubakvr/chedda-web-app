@@ -3,8 +3,8 @@ import { stagingEnvironment } from "./staging.config";
 import { mainnetEnvironment } from "./mainnet.config";
 
 export const currentEnvironment =
-  process.env.NEXT_PUBLIC_DEPLOYED_ENV === "mainnet"
+  process.env.DEPLOYED_ENV === "mainnet"
     ? mainnetEnvironment
-    : process.env.NEXT_PUBLIC_DEPLOYED_ENV === "staging"
+    : process.env.DEPLOYED_ENV === "staging"
       ? stagingEnvironment
       : testnetEnvironment;
