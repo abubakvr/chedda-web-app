@@ -25,6 +25,8 @@ import DocumentIcon from "@/assets/icon/document-icon.svg";
 
 export const infuraKey = process.env.NEXT_PUBLIC_INFURA_KEY;
 export const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_KEY;
+export const isPostToken: boolean =
+  process.env.NEXT_PUBLIC_POST_TOKEN === "true";
 export const GA_TRACKING_ID = "G-XL1Y4DPW9J";
 
 // localstorage constants
@@ -39,6 +41,8 @@ export const BRIDGE_DOC_URL =
   "https://docs.chedda.finance/chedda/protocol/cross-chain-tokens";
 export const HOMEPAGE_LINK = "https://www.chedda.finance";
 export const CHEDDA_TERMS_LINK = "https://www.chedda.finance/terms";
+export const BASE_CHEDDA_API_URL =
+  "https://leaderboard-api-422055794768.us-central1.run.app/api";
 
 export const ethAddress = "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511";
 
@@ -72,12 +76,10 @@ export const positionsHeaderItem = [
   "Supplied",
   "Borrowed",
   "Health Factor",
-  "Stake/Earn",
-  "Lock/Earn",
+  ...(isPostToken ? ["Stake/Earn", "Lock/Earn"] : []),
 ];
 
 export const LOCKTIMES = [
-  { title: "1 hr", duration: 0.0418, multiplier: 0, value: 0 },
   { title: "30 days", duration: 30, multiplier: 0.25, value: 1 },
   { title: "90 days", duration: 90, multiplier: 1, value: 2 },
   { title: "180 days", duration: 180, multiplier: 2, value: 3 },
@@ -93,7 +95,7 @@ export const sourceChains: ISourceChain[] = [
     endpointId: 40245,
     jsonRpcUrl: `https://base-sepolia.g.alchemy.com/v2/${alchemyKey}`,
     txUrlPrefix: "https://sepolia.basescan.org/tx",
-    priceFeed: "0xFe09e4d727Eda07D5C0e961EbE04c7c0f0B0C2C6",
+    priceFeed: "0xE831DFd1DDFCce163c0B16B35aD2dc411129EC7d",
     ethAddress: "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511",
   },
   {
@@ -160,16 +162,20 @@ export const poolCategories: IPoolCategory[] = [
       "border-[#00F0FF] bg-[#01212864] md:px-1 py-1 h-7 md:h-8 lg:h-9 ",
     hoverClass: "hover:border-[#00F0FF] hover:bg-[#01212864]",
   },
+  {
+    label: "#Memes",
+    keyword: "Memes",
+    itemCount: 0,
+    icon: stackIcon,
+    activeIcon: stackIconActive,
+    activeClass:
+      "border-[#C142F0] bg-[#2D142D68] md:px-1 py-1 h-7 md:h-8 lg:h-9 ",
+    hoverClass: "hover:border-[#C142F0] hover:bg-[#2D142D68]",
+  },
 ];
 
 export const poolFilters: IPoolCategories = {
-  "0x3153dE50b45868fF2B8bf38C6A29B8822e35c771": {
-    categories: ["stable coin"],
-  },
-  "0x0fFD5fB4B3160A2709E120A7484AEE03500c55b3": {
-    categories: ["stable coin"],
-  },
-  "0x2c01212f051A59D88A1361db1E2041896dB4af64": {
+  "0x19575ed9A07041fB04fdC8528260ca9219378d35": {
     categories: ["defi"],
   },
 };

@@ -63,8 +63,8 @@ describe("Helper functions", () => {
       expect(displayProjectedHealthFactor(100, null, 2)).toBe(2);
     });
 
-    it("should return 100 when totalBorrowed is 0", () => {
-      expect(displayProjectedHealthFactor(0, 1.5, 2)).toBe(100);
+    it("should return value when totalBorrowed is 0", () => {
+      expect(displayProjectedHealthFactor(0, 1.5, 2)).toBe(1.5);
     });
   });
 

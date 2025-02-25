@@ -68,7 +68,7 @@ const getPoolState: GetDataFunction<IPoolStateResponse[]> = async ({
   chedda,
   signer,
 }) => {
-  const graphTimes = createTimestamps(0.5, 25);
+  const graphTimes = createTimestamps(0.0417, 25);
   const lendingPool = chedda.lendingPool(poolId, signer);
   const events = (await lendingPool.getEventLogs(
     "PoolState",
@@ -196,10 +196,10 @@ const getCheddaPrice: GetDataFunction<number> = async ({
   environment,
 }) => {
   if (!asset) return null;
-  const priceOracle = chedda.priceOracle(environment.contracts.PriceFeed);
+  const priceOracle = chedda.diaPriceOracle(environment.contracts.PriceFeed);
   const decimals = await priceOracle.decimals();
   const assetPrice = await priceOracle.readPrice(asset);
-  return parseBigNumberToFloat(assetPrice, decimals, 10);
+  return parseBigNumberToFloat(assetPrice[0], decimals, 10);
 };
 
 const getTokenPrice: GetDataFunction<number> = async ({
@@ -211,10 +211,10 @@ const getTokenPrice: GetDataFunction<number> = async ({
   if (!asset) return null;
   const lendingPool = chedda.lendingPool(poolId, signer);
   const priceFeed = await lendingPool.priceFeed();
-  const priceOracle = chedda.priceOracle(priceFeed);
+  const priceOracle = chedda.diaPriceOracle(priceFeed);
   const assetPrice = await priceOracle.readPrice(asset);
   const decimals = await priceOracle.decimals();
-  return parseBigNumberToFloat(assetPrice, decimals, 10);
+  return parseBigNumberToFloat(assetPrice[0], decimals, 10);
 };
 
 export const getAccountCollateral: GetDataFunction<bigint> = async ({
@@ -240,7 +240,7 @@ export const getAccountHealth: GetDataFunction<bigint> = async ({
   return await lendingPool?.accountHealth(account);
 };
 
-export const getTokenMaxLoanValue: GetDataFunction<bigint> = async ({
+export const getTokenLoanValue: GetDataFunction<bigint> = async ({
   poolId,
   signer,
   chedda,
@@ -250,7 +250,7 @@ export const getTokenMaxLoanValue: GetDataFunction<bigint> = async ({
   if (!asset) return null;
   const lendingPool = chedda.lendingPool(poolId, signer);
   const amount = ethers.parseUnits("1", decimals);
-  return await lendingPool.tokenMaxLoanValue(asset, amount);
+  return await lendingPool.tokenLoanValue(asset, amount);
 };
 
 const getStakingBalance: GetDataFunction<bigint> = async ({
@@ -602,11 +602,11 @@ export const useSelectTokenBalance = (asset: string): HookResult<bigint> => {
   return useFetcher<bigint>(getSelectTokenBalance, asset);
 };
 
-export const useTokenMaxLoanValue = (
+export const useTokenLoanValue = (
   asset: string,
   decimals: number
 ): HookResult<bigint> => {
-  return useFetcher<bigint>(getTokenMaxLoanValue, asset, decimals);
+  return useFetcher<bigint>(getTokenLoanValue, asset, decimals);
 };
 
 export const useLpAllowance = (): HookResult<bigint> => {

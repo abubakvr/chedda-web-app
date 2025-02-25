@@ -6,7 +6,7 @@ import { PositionItem } from "./PositionItem";
 import { VaultSkeleton } from "@/components/ui";
 import { IPositionResponse } from "@/utils/types";
 import { ConnectWalletBox } from "./ConnectWalletBox";
-import { positionsHeaderItem } from "@/utils/constants";
+import { isPostToken, positionsHeaderItem } from "@/utils/constants";
 import { getAccountPositions } from "@/utils/helpers";
 import { EmptyPositionCard } from "./EmptyPositionCard";
 
@@ -78,7 +78,9 @@ export const MyPositions = ({
           </div>
         </div>
         {isWalletConnected && getAccountPositions(allPositions).length > 0 && (
-          <div className="mt-2 pb-3 lg:pb-4 sm:mt-4 lg:mt-10 hidden md:grid grid-cols-7 border-b  gap-x-20  border-gray-500 border-opacity-20">
+          <div
+            className={`mt-2 pb-3 lg:pb-4 sm:mt-4 lg:mt-10 hidden md:grid ${isPostToken ? "grid-cols-7" : "grid-cols-5"} border-b  gap-x-20  border-gray-500 border-opacity-20`}
+          >
             {positionsHeaderItem.map((item: string, index: number) => (
               <div key={index} className={`w-max flex  justify-start`}>
                 <div

@@ -1,6 +1,6 @@
 import { Chedda } from "chedda-sdk";
 import { Signer, ErrorCode } from "ethers";
-import { ISourceChain, IToken, IPositionResponse } from "./types";
+import { ISourceChain, IPositionResponse, IBridgeToken } from "./types";
 
 export function findNearestIndex(sortedArray: number[], targetNumber: number) {
   // Check if the array is empty
@@ -59,7 +59,7 @@ export function displayProjectedHealthFactor(
   parsedHealthFactor: number
 ): number {
   if (
-    totalBorrowed !== 0 &&
+    totalBorrowed !== null &&
     projectedHealthFactor !== null &&
     projectedHealthFactor !== undefined &&
     projectedHealthFactor < 100 &&
@@ -182,7 +182,7 @@ export function projectDateTime(days: number) {
  * - It returns the token's bridged address if the source does not match the destination.
  */
 export const getTokenBridgeAddress = (
-  selectedToken: IToken,
+  selectedToken: IBridgeToken,
   selectedChain: ISourceChain
 ) => {
   return selectedToken.source === selectedChain.key &&
@@ -206,7 +206,7 @@ export const getTokenBridgeAddress = (
  * - It returns the token's bridged address if the source does not match the destination chain key.
  */
 export const getTokenBalanceAddress = (
-  selectedToken: IToken,
+  selectedToken: IBridgeToken,
   selectedChain: ISourceChain
 ) => {
   return selectedToken.source === selectedChain.key
@@ -252,4 +252,42 @@ export const createKey = (
   asset: string = ""
 ) => {
   return `${hookName} + ${pathname} + ${asset}`;
+};
+
+export const generateSignature = async (
+  parameters: string,
+  secret: string,
+  timestamp: string,
+  recvWindow: number
+): Promise<string> => {
+  const data = timestamp + recvWindow + parameters;
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    new TextEncoder().encode(data)
+  );
+  return Array.from(new Uint8Array(signature))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+};
+
+export const getReferrerFromUrl = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const refCode = urlParams.get("ref");
+  const savedRefCode = localStorage.getItem("referrer");
+  if (refCode) {
+    localStorage.setItem("referrer", refCode);
+    return refCode;
+  } else if (savedRefCode) {
+    return savedRefCode;
+  } else {
+    return undefined;
+  }
 };

@@ -10,7 +10,6 @@ import {
   useClaimableLockRewards,
   useTotalWeightSum,
   useLockedChedda,
-  useTokenPrice,
   useTotalAmountLocked,
   useTotalWeight,
   useCheddaPrice,
@@ -71,7 +70,7 @@ const LockTab = ({
     fetchData: fetchClaimableRewards,
   } = useClaimableLockRewards();
 
-  const { data: CheddaTokenPrice } = useTokenPrice(
+  const { data: CheddaTokenPrice } = useCheddaPrice(
     currentEnvironment?.contracts.CheddaToken
   );
 

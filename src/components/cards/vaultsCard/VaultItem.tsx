@@ -19,6 +19,7 @@ const poolFilters = [
   { keyword: "Defi", icon: defiIcon },
   { keyword: "Gamefi", icon: gamefiIcon },
   { keyword: "Bluechip", icon: bluechipIcon },
+  { keyword: "Memes", icon: defiIcon },
 ];
 
 export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
@@ -88,8 +89,8 @@ export const VaultItem = ({ pool }: { pool: IPoolStatsResponse }) => {
                       />
                       <Image
                         style={{ color: "" }}
-                        src={collateral.sourceLogo}
-                        alt="icon image"
+                        src={collateral?.sourceLogo}
+                        alt={collateral?.symbol}
                         className="absolute w-[14px] h-[14px] xl:w-[18px] xl:h-[18px] top-0 left-0"
                       />
                     </div>

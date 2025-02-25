@@ -10,6 +10,7 @@ import {
 } from "@/utils/formatters";
 import { IPositionResponse } from "@/utils/types";
 import { getHealthFactorColor } from "@/utils/helpers";
+import { isPostToken } from "@/utils/constants";
 
 interface PositionItemProps {
   pool: IPositionResponse;
@@ -23,7 +24,7 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
         {/** Web View */}
         <div
           data-testid="position-item"
-          className="lg:h-28 w-full px-7 py-5 lg:py-5 hidden md:grid grid-cols-7 grid-row-bg gap-x-20 text-white hover:opacity-80 hover:bg-blue-200 hover:bg-opacity-10 transition-all duration-500 cursor-pointer"
+          className={`lg:h-28 w-full px-7 py-5 lg:py-5 hidden md:grid ${isPostToken ? "grid-cols-7" : "grid-cols-5"} grid-row-bg gap-x-20 text-white hover:opacity-80 hover:bg-blue-200 hover:bg-opacity-10 transition-all duration-500 cursor-pointer`}
         >
           <div className="flex flex-col justify-center text-sm md:col-span-1 space-y-2 w-max">
             <div className="flex items-center ">
@@ -83,27 +84,34 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
               </div>
             </div>
           </div>
-          <div className="flex justify-start items-center w-max">
-            <div className="text-2xs lg:text-sm flex flex-col font-semibold md:col-span-1">
-              <div data-testid="staked-amount">
-                {formatLargeNumber(pool.staked)} CHEDDA
-              </div>
-              <div className="opacity-50 mt-1.5" data-testid="staked-value">
-                {formatCurrency(pool.staked * cheddaTokenPrice)}
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-start items-center w-max">
-            <div className="text-2xs lg:text-sm flex flex-col font-semibold md:col-span-1">
-              <div data-testid="locked-amount">
-                {formatLargeNumber(pool.locked)} CHEDDA
-              </div>
-              <div className="opacity-50 mt-1.5" data-testid="locked-value">
-                {formatCurrency(pool.locked * cheddaTokenPrice)}
+          {isPostToken && (
+            <div className="flex justify-start items-center w-max">
+              <div className="text-2xs lg:text-sm flex flex-col font-semibold md:col-span-1">
+                <div data-testid="staked-amount">
+                  {formatLargeNumber(pool.staked)} CHEDDA
+                </div>
+                <div className="opacity-50 mt-1.5" data-testid="staked-value">
+                  {formatCurrency(pool.staked * cheddaTokenPrice)}
+                </div>
               </div>
             </div>
-          </div>
-          <div className="flex items-center" data-testid="arrow-forward">
+          )}
+          {isPostToken && (
+            <div className="flex justify-start items-center w-max">
+              <div className="text-2xs lg:text-sm flex flex-col font-semibold md:col-span-1">
+                <div data-testid="locked-amount">
+                  {formatLargeNumber(pool.locked)} CHEDDA
+                </div>
+                <div className="opacity-50 mt-1.5" data-testid="locked-value">
+                  {formatCurrency(pool.locked * cheddaTokenPrice)}
+                </div>
+              </div>
+            </div>
+          )}
+          <div
+            className="flex items-center md:pr-7 xl:pr-16 justify-end"
+            data-testid="arrow-forward"
+          >
             <Image
               style={{ color: "" }}
               src={arrowForward}
@@ -112,7 +120,7 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
           </div>
         </div>
         {/** Mobile Items */}
-        <div className="md:hidden ">
+        <div className="md:hidden">
           <div
             className="justify-between text-white text-sm mt-3 p-4"
             data-testid={"position-item"}
@@ -169,28 +177,32 @@ export const PositionItem = ({ pool, cheddaTokenPrice }: PositionItemProps) => {
                 </span>
               </div>
             </div>
-            <div className="flex justify-between mt-8">
-              <div className="text-2xs md:text-xs text-mist">Stake/Earn</div>
-              <div className="flex flex-col items-end text-2xs md:text-xs">
-                <span className="font-bold">
-                  {formatLargeNumber(pool.staked)} CHEDDA
-                </span>
-                <span className="text-mist">
-                  {formatCurrency(pool.staked * cheddaTokenPrice)}
-                </span>
+            {isPostToken && (
+              <div className="flex justify-between mt-8">
+                <div className="text-2xs md:text-xs text-mist">Stake/Earn</div>
+                <div className="flex flex-col items-end text-2xs md:text-xs">
+                  <span className="font-bold">
+                    {formatLargeNumber(pool.staked)} CHEDDA
+                  </span>
+                  <span className="text-mist">
+                    {formatCurrency(pool.staked * cheddaTokenPrice)}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className="flex justify-between mt-4">
-              <div className="text-2xs text-mist">Lock/Earn</div>
-              <div className="flex flex-col items-end text-2xs md:text-xs">
-                <span className="font-bold">
-                  {formatLargeNumber(pool.locked)} CHEDDA
-                </span>
-                <span className="text-mist">
-                  {formatCurrency(pool.locked * cheddaTokenPrice)}
-                </span>
+            )}
+            {isPostToken && (
+              <div className="flex justify-between mt-4">
+                <div className="text-2xs text-mist">Lock/Earn</div>
+                <div className="flex flex-col items-end text-2xs md:text-xs">
+                  <span className="font-bold">
+                    {formatLargeNumber(pool.locked)} CHEDDA
+                  </span>
+                  <span className="text-mist">
+                    {formatCurrency(pool.locked * cheddaTokenPrice)}
+                  </span>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </Link>

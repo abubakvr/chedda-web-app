@@ -8,12 +8,14 @@ interface ClaimRewardsProps {
   isWalletConnected: boolean;
   cheddaTokenPrice: number | undefined;
   cheddaTokenPriceLoading: boolean;
+  fetchCheddaBalance: () => void;
 }
 
 export const ClaimRewards = ({
   isWalletConnected,
   cheddaTokenPrice,
   cheddaTokenPriceLoading,
+  fetchCheddaBalance,
 }: ClaimRewardsProps) => {
   const [txLoading, setTxLoading] = useState(false);
   const {
@@ -50,6 +52,7 @@ export const ClaimRewards = ({
                   type: "success",
                 });
                 fetchAllClaimableRewards(false);
+                fetchCheddaBalance();
               } else {
                 const txMessage = `An error occurred while proccessing your transaction`;
                 addToast({

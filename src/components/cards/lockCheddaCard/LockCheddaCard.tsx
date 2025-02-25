@@ -71,7 +71,7 @@ export const LockCheddaCard: FC<LockCardProps> = ({
   } = useTransaction("");
   const { addToast } = useToast();
 
-  const parsedAllowance = parseBigNumberToFloat(cheddaAllowance);
+  const parsedAllowance = parseBigNumberToFloat(cheddaAllowance, 18, 10);
   const parsedCheddaBalance = parseBigNumberToFloat(cheddaTokenBalance);
   const parsedLockedCheddaAmount = parseBigNumberToFloat(lockedChedda?.amount);
   const parsedLockedCheddaExpiry = new Date(

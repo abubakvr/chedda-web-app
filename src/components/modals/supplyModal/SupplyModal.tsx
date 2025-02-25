@@ -72,7 +72,10 @@ export const SupplyModal: FC<SupplyModalProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState(defaultTab || "Deposit");
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState({
+    message: "",
+    txHash: "",
+  });
   const [txLoading, setTxLoading] = useState(false);
   const [clearInputField, setClearInputField] = useState(false);
   const [supplyAmount, setSupplyAmount] = useState<number>(0);
@@ -92,7 +95,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     asset.address
   );
 
-  const parsedAllowance = parseBigNumberToFloat(allowance, asset.decimals);
+  const parsedAllowance = parseBigNumberToFloat(allowance, asset.decimals, 10);
   const parsedSupplied = parseBigNumberToFloat(supplied, asset.decimals);
   const parsedAssetBalance = parseBigNumberToFloat(
     assetBalance,
@@ -142,7 +145,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
             const txMessage = `You've successfully supplied ${formatNumber(
               supplyAmount
             )} ${asset.symbol}`;
-            setSuccessMessage(txMessage);
+            setSuccessMessage({ message: txMessage, txHash: res.hash });
             setSupplyAmount(0);
             setClearInputField(true);
             setOpenSuccessModal(true);
@@ -254,8 +257,12 @@ export const SupplyModal: FC<SupplyModalProps> = ({
       <SuccessModal
         onClose={closeSuccessModal}
         isOpen={openSuccessModal}
-        modalMessage={successMessage}
-        continueAction={() => setOpenSuccessModal(false)}
+        modalMessage={successMessage.message}
+        txHash={successMessage.txHash}
+        continueAction={() => {
+          setOpenSuccessModal(false);
+          setClearInputField(true);
+        }}
         stakeAction={() => setActivePoolTab("Stake")}
       />
       <div
@@ -277,7 +284,12 @@ export const SupplyModal: FC<SupplyModalProps> = ({
               </h2>
               <button
                 className="text-2xl md:text-3xl lg:text-4xl cursor-pointer font-bold text-white relative hover:opacity-85"
-                onClick={onClose}
+                onClick={() => {
+                  onClose();
+                  setSupplyAmount(0);
+                  setWithdrawAmount(0);
+                  setClearInputField(true);
+                }}
               >
                 &times;
               </button>

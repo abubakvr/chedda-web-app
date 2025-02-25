@@ -33,7 +33,7 @@ export const WelcomeModal = () => {
 
   const handleAcceptTerms = () => {
     if (allChecked) {
-      localStorage.setItem("userAcceptance", JSON.stringify("accepted"));
+      localStorage.setItem("userAcceptance", "accepted");
       setIsModalOpen(false);
     }
   };

@@ -1,8 +1,10 @@
 "use client";
 import React from "react";
 import SuccessIcon from "@/assets/icon/success-icon.svg";
+import LinkOut from "@/assets/icon/link-out.svg";
 import Image from "next/image";
 import { Button } from "@/components/common";
+import { currentEnvironment } from "@/data/environments";
 
 interface SuccessModalProps {
   isOpen: boolean;
@@ -10,12 +12,14 @@ interface SuccessModalProps {
   modalMessage: string;
   continueAction: () => void;
   stakeAction: () => void;
+  txHash: string;
 }
 
 export const SuccessModal = ({
   onClose,
   isOpen,
   modalMessage,
+  txHash,
   continueAction,
   stakeAction,
 }: SuccessModalProps) => {
@@ -78,6 +82,18 @@ export const SuccessModal = ({
               Continue
             </Button>
           </div>
+          <a
+            href={`${currentEnvironment?.txUrlPrefix}/${txHash}`}
+            className="relative text-mist text-xs md:text-sm lg:text-lg w-full flex items-center justify-end gap-x-1 mt-3 hover:underline"
+          >
+            <p>Review tx details</p>
+            <Image
+              style={{ color: "" }}
+              src={LinkOut}
+              alt="link out"
+              className="h-3 w-3 md:w-4 md:h-4 opacity-60"
+            />
+          </a>
         </div>
       </div>
     </div>

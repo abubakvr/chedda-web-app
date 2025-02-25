@@ -8,7 +8,6 @@ import {
 } from "chedda-sdk";
 import { poolFilters } from "./constants";
 import {
-  formatNumber,
   formatCurrency,
   formatLargeNumber,
   formatAsPercentage,
@@ -116,9 +115,7 @@ export const getAggregateInfo = (
     },
     {
       title: "No. Of Vaults",
-      value: formatNumber(
-        parseBigNumberToFloat(aggregateStats?.numberOfVaults, 0, 0)
-      ),
+      value: parseBigNumberToFloat(aggregateStats?.numberOfVaults, 0, 0),
     },
     {
       title: "Total Earned",
