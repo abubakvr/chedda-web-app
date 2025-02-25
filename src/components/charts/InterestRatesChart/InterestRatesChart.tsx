@@ -66,8 +66,11 @@ export const InterestRatesChart = ({
 }: {
   utilizationRate: bigint | undefined;
 }) => {
-  const { data: interestRates, isLoading } = useRatesProjector();
+  const { data, isLoading } = useRatesProjector();
   const parsedUtilizationRate = parseBigNumberToFloat(utilizationRate, 18, 2);
+
+  const interestRates = data?.interestRatesArray;
+  const interestRatesModel = data?.interestRatesModel;
 
   if (isLoading) {
     return (
@@ -111,7 +114,7 @@ export const InterestRatesChart = ({
           </div>
         </div>
         <a
-          href={`${currentEnvironment?.contractPrefix}/${currentEnvironment.contracts.InterestRatesProjector}`}
+          href={`${currentEnvironment?.contractPrefix}/${interestRatesModel}`}
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-x-1 border-2 rounded-md py-1 px-2 md:py-[6px] md:px-3 border-[#ffffff60] hover:opacity-70"

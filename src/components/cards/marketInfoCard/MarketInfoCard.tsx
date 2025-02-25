@@ -65,7 +65,10 @@ export const MarketInfoCard: React.FC<MarketInfoCardProps> = ({
           {
             label: "Supply Cap",
             value: `${formatLargeNumber(
-              parseBigNumberToFloat(marketInfo?.supplyCap)
+              parseBigNumberToFloat(
+                marketInfo?.supplyCap,
+                poolStats?.asset.decimals
+              )
             )} ${poolStats?.asset?.symbol}`,
           },
           {

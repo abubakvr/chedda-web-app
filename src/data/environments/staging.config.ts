@@ -8,7 +8,7 @@ import {
 
 enum Chain {
   BASE = "base",
-  ETHEREUM = "ethereum",  
+  ETHEREUM = "ethereum",
 }
 
 enum TokenType {
@@ -90,9 +90,10 @@ const bridgeTokens = generateBridgeTokenConfig(bridgeTokenList, mainnetTokens);
 
 export const stagingEnvironment: IEnvironment = {
   production: false,
-  environmentName: "Base Mainnet",
+  environmentName: "Base",
   jsonRpcUrl: `https://base-mainnet.g.alchemy.com/v2/${alchemyKey}`,
   webSocketUrl: `wss://base-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+  hostUrl: `https://staging.chedda.finance`,
   txUrlPrefix: "https://basescan.org/tx",
   contractPrefix: "https://basescan.org/address",
   chainId: CHAIN_IDS.BASE_MAINNET,

@@ -123,17 +123,26 @@ const getPoolStats: GetDataFunction<IPoolStatsResponse> = async ({
   return formatPoolStats(poolStats, environment.tokens);
 };
 
-const getRatesProjectorData: GetDataFunction<
-  IInterestRatesProjection[]
-> = async ({ poolId, chedda, signer, environment }) => {
+const getRatesProjectorData: GetDataFunction<{
+  interestRatesModel: string;
+  interestRatesArray: IInterestRatesProjection[];
+}> = async ({ poolId, chedda, signer, environment }) => {
   const lendingPool = chedda.lendingPool(poolId, signer);
   const ratesProjector = chedda.interestRateProjector(
     environment.contracts.InterestRatesProjector,
     signer
   );
 
-  const interestRateModel = await lendingPool.interestRatesModel();
-  return await ratesProjector.projection(interestRateModel, utilizationsArray);
+  const interestRatesModel = await lendingPool.interestRatesModel();
+  const interestRatesArray = await ratesProjector.projection(
+    interestRatesModel,
+    utilizationsArray
+  );
+
+  return {
+    interestRatesModel,
+    interestRatesArray,
+  };
 };
 
 export const getAvailableLiquidity: GetDataFunction<bigint> = async ({
@@ -564,8 +573,14 @@ export const usePoolStatsList = (): HookResult<IPoolStatsResponse[]> =>
 export const usePoolStats = (): HookResult<IPoolStatsResponse> =>
   useFetcher<IPoolStatsResponse>(getPoolStats);
 
-export const useRatesProjector = (): HookResult<IInterestRatesProjection[]> =>
-  useFetcher<IInterestRatesProjection[]>(getRatesProjectorData);
+export const useRatesProjector = (): HookResult<{
+  interestRatesModel: string;
+  interestRatesArray: IInterestRatesProjection[];
+}> =>
+  useFetcher<{
+    interestRatesModel: string;
+    interestRatesArray: IInterestRatesProjection[];
+  }>(getRatesProjectorData);
 
 export const useAvailableLiquidity = (): HookResult<bigint> =>
   useFetcher<bigint>(getAvailableLiquidity);
