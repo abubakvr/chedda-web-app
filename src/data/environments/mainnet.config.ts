@@ -93,6 +93,7 @@ export const mainnetEnvironment: IEnvironment = {
   environmentName: "Base Sepolia",
   jsonRpcUrl: `https://base-sepolia.g.alchemy.com/v2/${alchemyKey}`,
   webSocketUrl: `wss://base-sepolia.g.alchemy.com/v2/${alchemyKey}`,
+  hostUrl: `https://app.chedda.finance`,
   txUrlPrefix: "https://sepolia.basescan.org/tx",
   contractPrefix: "https://sepolia.basescan.org/address",
   chainId: CHAIN_IDS.BASE_SEPOLIA,

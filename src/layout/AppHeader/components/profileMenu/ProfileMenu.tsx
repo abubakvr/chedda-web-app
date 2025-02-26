@@ -28,6 +28,7 @@ import { ReferralModal } from "@/components/modals";
 import { useWeb3React } from "@web3-react/core";
 import { generateSignature, getReferrerFromUrl } from "@/utils/helpers";
 import TourStep from "@/components/ui/tourStep/TourStep";
+import { currentEnvironment } from "@/data/environments";
 
 const SIGN_MESSAGE = "Sign this message to authenticate your wallet.";
 const recvWindow = 5000;
@@ -47,11 +48,11 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
   const { isActive, provider } = useWeb3React();
   const isRegisteredRef = useRef(false);
 
-  const qrCodeData = `https://testnet.chedda.finance/markets?ref=${referralCode}`;
+  const referralUrl = `${currentEnvironment.hostUrl}/markets?ref=${referralCode}`;
   const parsedCheddaBalance = parseBigNumberToFloat(cheddaTokenBalance, 18, 5);
 
   const copyAddress = (field: "refcode" | "wallet") => {
-    copyToClipboard(field === "wallet" ? (account ?? "") : qrCodeData)
+    copyToClipboard(field === "wallet" ? (account ?? "") : referralUrl)
       .then(() => {
         setCopyLabel("Copied");
         setTimeout(() => {
@@ -308,9 +309,9 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
                 </p>
                 <div className="text-xs lg:text-sm xl:text-sm relative mt-2 flex items-center justify-between px-2 py-2 border rounded-[4px] border-[#8080CC] bg-[#FFFFFF0A]">
                   <p>
-                    {qrCodeData.substring(0, 10) +
+                    {referralUrl.substring(0, 10) +
                       "..." +
-                      qrCodeData.substring(qrCodeData.length - 9)}
+                      referralUrl.substring(referralUrl.length - 9)}
                   </p>
                   <button
                     className="relative address-container hover:opacity-70"

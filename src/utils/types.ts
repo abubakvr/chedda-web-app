@@ -66,6 +66,7 @@ export interface IEnvironment {
   environmentName: string;
   jsonRpcUrl: string;
   webSocketUrl: string;
+  hostUrl: string;
   txUrlPrefix: string;
   contractPrefix: string;
   chainId: number;

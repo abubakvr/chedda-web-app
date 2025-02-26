@@ -4,6 +4,7 @@ import { Button } from "@/components/common";
 import { useLocalStorageGet } from "@/hooks";
 import { QRCodeSVG } from "qrcode.react";
 import { useWeb3React } from "@web3-react/core";
+import { currentEnvironment } from "@/data/environments";
 import CopyButton from "@/components/ui/copyButton/CopyButton";
 
 interface ReferralModalProps {
@@ -26,7 +27,7 @@ export const ReferralModal = ({
   const [isCopied, setIsCopied] = useState(false);
   const { account } = useWeb3React();
 
-  const qrCodeData = `https://testnet.chedda.finance/markets?ref=${referralCode}`;
+  const qrCodeData = `${currentEnvironment.hostUrl}/markets?ref=${referralCode}`;
 
   const handleCopyClick = () => {
     setIsCopied(true);
@@ -90,7 +91,11 @@ export const ReferralModal = ({
               <div className="border-b border-b-[#FFFFFF70] w-1/3 md:w-1/2 flex-shrink"></div>
             </div>
             <div className="text-xs lg:text-sm xl:text-lg relative mt-4 flex items-center justify-between p-2 md:px-4 md:py-3 border rounded-md border-[#8080CC] bg-[#FFFFFF0A]">
-              <p className="hidden md:flex">{qrCodeData}</p>
+              <p className="hidden md:flex">
+                {qrCodeData.substring(0, 30) +
+                  "..." +
+                  qrCodeData.substring(qrCodeData.length - 17)}
+              </p>
               <p className="md:hidden">
                 {qrCodeData.substring(0, 20) +
                   "..." +

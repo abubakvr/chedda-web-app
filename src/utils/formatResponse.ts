@@ -114,7 +114,7 @@ export const getAggregateInfo = (
       ),
     },
     {
-      title: "No. Of Vaults",
+      title: "No. Of Pools",
       value: parseBigNumberToFloat(aggregateStats?.numberOfVaults, 0, 0),
     },
     {
