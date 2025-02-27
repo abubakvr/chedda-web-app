@@ -101,10 +101,10 @@ export const mainnetEnvironment: IEnvironment = {
   contracts: {
     LendingPoolLens: "0x7F48845A5D311d17B117CEBFAb05A4Af03488d7F",
     AccountActor: "0x7d17a828a3c2D2e823DAfF263cb78F3b42F2f169",
-    InterestRatesProjector: "0xfE985fEf25DC44c6359BAC01BA1D34d1596b24eC",
-    PriceFeed: "0x989ae31649095f8Ccd687f74c005FAB55c3B1999",
+    InterestRatesProjector: "0x014d8297a25543Aa246a0aba94d5498A79Ed97c8",
+    PriceFeed: "0x5B6DE84935fe999a02B6927F7c8433f362De7C1a",
     LockingGaugeRewardsDistributor:
-      "0xB0A47be6707E3122F1CF4C2259897E6e97380E1A",
+      "0x4cd61FF74dF3e3DCf24D4391f54efAc1f174a805",
     CheddaToken: "0xAA74BE45C0e21c105b7981C6E6FdFd946dc49f27",
     veChedda: "0x0",
     Faucet: "0x0A5Fe3dd684B1aA04d156d42C259a9feF887255e",

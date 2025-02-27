@@ -99,8 +99,8 @@ export const stagingEnvironment: IEnvironment = {
   contractPrefix: "https://basescan.org/address",
   chainId: CHAIN_IDS.BASE_MAINNET,
   contracts: {
-    LendingPoolLens: "0x7F48845A5D311d17B117CEBFAb05A4Af03488d7F",
-    AccountActor: "0x7d17a828a3c2D2e823DAfF263cb78F3b42F2f169",
+    LendingPoolLens: "0xe7C94063e55d1E8333dcb5807399aC5C05d9Acc9",
+    AccountActor: "0x976B5b9e89378e9299849f033150eE302657A3Ed",
     InterestRatesProjector: "0xfE985fEf25DC44c6359BAC01BA1D34d1596b24eC",
     PriceFeed: "0x989ae31649095f8Ccd687f74c005FAB55c3B1999",
     LockingGaugeRewardsDistributor:
