@@ -62,10 +62,15 @@ export const DepositTab = ({
     isLoading;
   const { depositCollateral, approveAsset } = useTransaction(tokenAddress);
 
-  const parsedAllowance = parseBigNumberToFloat(allowance, decimals, 10);
-  const parsedAssetBalance = parseBigNumberToFloat(tokenBalance, decimals);
+  const parsedAllowance = parseBigNumberToFloat(allowance, decimals, decimals);
+  const parsedAssetBalance = parseBigNumberToFloat(
+    tokenBalance,
+    decimals,
+    decimals
+  );
   const parsedAccountCollateral = parseBigNumberToFloat(
     accountCollateralAmount,
+    decimals,
     decimals
   );
   const parsedHealthFactor = parseBigNumberToFloat(healthFactor, 18, 10);

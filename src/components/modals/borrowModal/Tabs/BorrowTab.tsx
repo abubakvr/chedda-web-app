@@ -48,6 +48,7 @@ export const BorrowTab = ({
 
   const parsedAvailableLiquidity = parseBigNumberToFloat(
     availableLiquidity,
+    decimals,
     decimals
   );
 
@@ -141,7 +142,7 @@ export const BorrowTab = ({
           }}
           clearInputField={clearInputField}
           setClearInputField={setClearInputField}
-          maxValue={maxBorrowValue.toString()}
+          maxValue={maxBorrowValue.toFixed(6)}
           assetPrice={Number(tokenValue) || 0}
         />
         <Button

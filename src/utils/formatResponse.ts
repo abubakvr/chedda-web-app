@@ -170,18 +170,23 @@ export const formatCollateralInfo = (
     const myCollateral = collateralDeposited?.find(
       (collateral) => collateral.token === item.collateral
     );
+
     return {
       asset: tokens[item.collateral],
       decimals: item.decimals,
-      value: parseBigNumberToFloat(item.value),
+      value: parseBigNumberToFloat(item.value, 18, 10),
       amountDeposited: formatLargeNumber(
-        parseBigNumberToFloat(item.amountDeposited, item.decimals)
+        parseBigNumberToFloat(item.amountDeposited, item.decimals, 10)
       ),
       myCollateralValue: formatCurrency(
-        parseBigNumberToFloat(myCollateral?.value)
+        parseBigNumberToFloat(myCollateral?.value, 18, 10)
       ),
       myCollateralAmount: formatLargeNumber(
-        parseBigNumberToFloat(myCollateral?.amount, myCollateral?.decimals)
+        parseBigNumberToFloat(
+          myCollateral?.amount,
+          myCollateral?.decimals,
+          myCollateral?.decimals
+        )
       ),
       collateralFactor: formatAsPercentage(
         parseBigNumberToFloat(item.ltv, 18, 10)

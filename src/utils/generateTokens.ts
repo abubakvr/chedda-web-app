@@ -20,6 +20,7 @@ import brettLogo from "@/assets/logos/brett-logo.png";
 import toshiLogo from "@/assets/logos/toshi-logo.png";
 import benjiLogo from "@/assets/logos/benji-logo.png";
 import migglesLogo from "@/assets/logos/miggles-logo.png";
+import degenLogo from "@/assets/logos/degen-logo.png";
 import { DECIMALS, IBridgeTokenConfig, ITokenConfig } from "@/utils/types";
 
 export const tokenConfig = {
@@ -168,6 +169,13 @@ export const tokenConfig = {
     logo: migglesLogo,
     decimals: DECIMALS.STANDARD,
     color: "#F5F5DC",
+    sourceLogo: baseLogo,
+  },
+  DEGEN: {
+    name: "Degen",
+    logo: degenLogo,
+    decimals: DECIMALS.STANDARD,
+    color: "#9400D3",
     sourceLogo: baseLogo,
   },
 } as const;

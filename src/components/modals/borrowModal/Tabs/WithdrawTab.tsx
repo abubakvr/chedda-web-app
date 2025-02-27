@@ -58,6 +58,7 @@ export const WithdrawTab = ({
 
   const parsedAccountCollateralAmount = parseBigNumberToFloat(
     accountCollateralAmount,
+    decimals,
     decimals
   );
 
