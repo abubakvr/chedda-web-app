@@ -117,10 +117,7 @@ describe("WelcomeModal Component", () => {
     fireEvent.click(screen.getByRole("button", { name: /accept/i }));
 
     // Check if localStorage.setItem was called with the correct value
-    expect(mockSetItem).toHaveBeenCalledWith(
-      "userAcceptance",
-      JSON.stringify("accepted")
-    );
+    expect(mockSetItem).toHaveBeenCalledWith("userAcceptance", "accepted");
 
     // Modal should now be invisible
     expect(screen.getByTestId("welcomeModal")).toHaveClass(

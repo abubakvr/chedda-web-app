@@ -36,22 +36,28 @@ export interface IToken {
   logo: StaticImageData;
   decimals: number;
   color: string;
-  bridgeToken: boolean;
+  sourceLogo: StaticImageData;
+}
+
+export interface IBridgeToken extends IToken {
   type?: string;
   oftAdapter?: string;
   bridgedOft: string;
   nativeChain?: string;
   source?: string;
-  sourceLogo: StaticImageData;
 }
 
 export interface ITokenConfig {
   [tokenAddress: string]: IToken;
 }
 
+export interface IBridgeTokenConfig {
+  [tokenAddress: string]: IBridgeToken;
+}
+
 export interface IPoolCategories {
   [poolAddress: string]: {
-    categories: ("stable coin" | "defi" | "bluechip" | "gamefi")[];
+    categories: ("stable coin" | "defi" | "bluechip" | "gamefi" | "memes")[];
   };
 }
 
@@ -60,6 +66,7 @@ export interface IEnvironment {
   environmentName: string;
   jsonRpcUrl: string;
   webSocketUrl: string;
+  hostUrl: string;
   txUrlPrefix: string;
   contractPrefix: string;
   chainId: number;
@@ -74,6 +81,7 @@ export interface IEnvironment {
     Faucet: string;
   };
   tokens: ITokenConfig;
+  bridgeTokens: IBridgeTokenConfig;
 }
 
 export interface IConvertedPoolStats {
@@ -238,3 +246,9 @@ export interface IPoolCategory {
   activeClass: string;
   hoverClass: string;
 }
+
+export const DECIMALS = {
+  STANDARD: 18,
+  STABLE: 6,
+  BTC: 8,
+};

@@ -123,17 +123,26 @@ const getPoolStats: GetDataFunction<IPoolStatsResponse> = async ({
   return formatPoolStats(poolStats, environment.tokens);
 };
 
-const getRatesProjectorData: GetDataFunction<
-  IInterestRatesProjection[]
-> = async ({ poolId, chedda, signer, environment }) => {
+const getRatesProjectorData: GetDataFunction<{
+  interestRatesModel: string;
+  interestRatesArray: IInterestRatesProjection[];
+}> = async ({ poolId, chedda, signer, environment }) => {
   const lendingPool = chedda.lendingPool(poolId, signer);
   const ratesProjector = chedda.interestRateProjector(
     environment.contracts.InterestRatesProjector,
     signer
   );
 
-  const interestRateModel = await lendingPool.interestRatesModel();
-  return await ratesProjector.projection(interestRateModel, utilizationsArray);
+  const interestRatesModel = await lendingPool.interestRatesModel();
+  const interestRatesArray = await ratesProjector.projection(
+    interestRatesModel,
+    utilizationsArray
+  );
+
+  return {
+    interestRatesModel,
+    interestRatesArray,
+  };
 };
 
 export const getAvailableLiquidity: GetDataFunction<bigint> = async ({
@@ -196,10 +205,10 @@ const getCheddaPrice: GetDataFunction<number> = async ({
   environment,
 }) => {
   if (!asset) return null;
-  const priceOracle = chedda.priceOracle(environment.contracts.PriceFeed);
+  const priceOracle = chedda.diaPriceOracle(environment.contracts.PriceFeed);
   const decimals = await priceOracle.decimals();
   const assetPrice = await priceOracle.readPrice(asset);
-  return parseBigNumberToFloat(assetPrice, decimals, 10);
+  return parseBigNumberToFloat(assetPrice[0], decimals, 10);
 };
 
 const getTokenPrice: GetDataFunction<number> = async ({
@@ -211,10 +220,10 @@ const getTokenPrice: GetDataFunction<number> = async ({
   if (!asset) return null;
   const lendingPool = chedda.lendingPool(poolId, signer);
   const priceFeed = await lendingPool.priceFeed();
-  const priceOracle = chedda.priceOracle(priceFeed);
+  const priceOracle = chedda.diaPriceOracle(priceFeed);
   const assetPrice = await priceOracle.readPrice(asset);
   const decimals = await priceOracle.decimals();
-  return parseBigNumberToFloat(assetPrice, decimals, 10);
+  return parseBigNumberToFloat(assetPrice[0], decimals, 10);
 };
 
 export const getAccountCollateral: GetDataFunction<bigint> = async ({
@@ -240,7 +249,7 @@ export const getAccountHealth: GetDataFunction<bigint> = async ({
   return await lendingPool?.accountHealth(account);
 };
 
-export const getTokenMaxLoanValue: GetDataFunction<bigint> = async ({
+export const getTokenLoanValue: GetDataFunction<bigint> = async ({
   poolId,
   signer,
   chedda,
@@ -250,7 +259,7 @@ export const getTokenMaxLoanValue: GetDataFunction<bigint> = async ({
   if (!asset) return null;
   const lendingPool = chedda.lendingPool(poolId, signer);
   const amount = ethers.parseUnits("1", decimals);
-  return await lendingPool.tokenMaxLoanValue(asset, amount);
+  return await lendingPool.tokenLoanValue(asset, amount);
 };
 
 const getStakingBalance: GetDataFunction<bigint> = async ({
@@ -564,8 +573,14 @@ export const usePoolStatsList = (): HookResult<IPoolStatsResponse[]> =>
 export const usePoolStats = (): HookResult<IPoolStatsResponse> =>
   useFetcher<IPoolStatsResponse>(getPoolStats);
 
-export const useRatesProjector = (): HookResult<IInterestRatesProjection[]> =>
-  useFetcher<IInterestRatesProjection[]>(getRatesProjectorData);
+export const useRatesProjector = (): HookResult<{
+  interestRatesModel: string;
+  interestRatesArray: IInterestRatesProjection[];
+}> =>
+  useFetcher<{
+    interestRatesModel: string;
+    interestRatesArray: IInterestRatesProjection[];
+  }>(getRatesProjectorData);
 
 export const useAvailableLiquidity = (): HookResult<bigint> =>
   useFetcher<bigint>(getAvailableLiquidity);
@@ -602,11 +617,11 @@ export const useSelectTokenBalance = (asset: string): HookResult<bigint> => {
   return useFetcher<bigint>(getSelectTokenBalance, asset);
 };
 
-export const useTokenMaxLoanValue = (
+export const useTokenLoanValue = (
   asset: string,
   decimals: number
 ): HookResult<bigint> => {
-  return useFetcher<bigint>(getTokenMaxLoanValue, asset, decimals);
+  return useFetcher<bigint>(getTokenLoanValue, asset, decimals);
 };
 
 export const useLpAllowance = (): HookResult<bigint> => {

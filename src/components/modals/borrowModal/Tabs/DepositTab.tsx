@@ -62,10 +62,15 @@ export const DepositTab = ({
     isLoading;
   const { depositCollateral, approveAsset } = useTransaction(tokenAddress);
 
-  const parsedAllowance = parseBigNumberToFloat(allowance, decimals);
-  const parsedAssetBalance = parseBigNumberToFloat(tokenBalance, decimals);
+  const parsedAllowance = parseBigNumberToFloat(allowance, decimals, decimals);
+  const parsedAssetBalance = parseBigNumberToFloat(
+    tokenBalance,
+    decimals,
+    decimals
+  );
   const parsedAccountCollateral = parseBigNumberToFloat(
     accountCollateralAmount,
+    decimals,
     decimals
   );
   const parsedHealthFactor = parseBigNumberToFloat(healthFactor, 18, 10);
@@ -92,6 +97,7 @@ export const DepositTab = ({
 
       const parsedAmount = ethers.parseUnits(inputAmount.toString(), decimals);
       setTxLoading(true);
+
       if (inputAmount <= parsedAllowance) {
         depositCollateral(parsedAmount)
           .then(async (res) => {

@@ -5,6 +5,7 @@ import LinkOut from "@/assets/icon/link-out.svg";
 import Image from "next/image";
 import { Button } from "@/components/common";
 import { currentEnvironment } from "@/data/environments";
+import { isPostToken } from "@/utils/constants";
 
 interface SuccessModalProps {
   isOpen: boolean;
@@ -61,23 +62,27 @@ export const SuccessModal = ({
               Stake LP tokens, earn CHEDDA — secure rewards in a streamlined and
               rewarding staking venture.
             </div>
+            {isPostToken && (
+              <>
+                <Button
+                  type="primary"
+                  size="large"
+                  className="mt-6 md:mt-10 lg:mt-12"
+                  onClick={() => {
+                    stakeAction();
+                    onClose();
+                  }}
+                >
+                  Stake LP Tokens
+                </Button>
+                <div className="my-1 md:my-3 text-2xl text-white">or</div>
+              </>
+            )}
             <Button
-              type="primary"
-              size="large"
-              className="mt-6 md:mt-10 lg:mt-12"
-              onClick={() => {
-                stakeAction();
-                onClose();
-              }}
-            >
-              Stake LP Tokens
-            </Button>
-            <div className="my-1 md:my-3 text-2xl text-white">or</div>
-            <Button
-              type="secondary"
+              type={isPostToken ? "secondary" : "primary"}
               size="large"
               onClick={continueAction}
-              className="mt-1"
+              className={isPostToken ? "mt-1" : "mt-8"}
             >
               Continue
             </Button>

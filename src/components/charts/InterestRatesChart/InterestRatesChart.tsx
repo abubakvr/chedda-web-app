@@ -1,4 +1,3 @@
-import React from "react";
 import {
   XAxis,
   YAxis,
@@ -7,6 +6,7 @@ import {
   LineChart,
   Line,
   CartesianGrid,
+  ReferenceLine,
 } from "recharts";
 import Image from "next/image";
 import LinkOut from "@/assets/icon/link-out.svg";
@@ -61,8 +61,16 @@ const CustomTooltip: React.FC<CustomTooltipProps<Payload>> = (props) => {
   );
 };
 
-export const InterestRatesChart = () => {
-  const { data: interestRates, isLoading } = useRatesProjector();
+export const InterestRatesChart = ({
+  utilizationRate,
+}: {
+  utilizationRate: bigint | undefined;
+}) => {
+  const { data, isLoading } = useRatesProjector();
+  const parsedUtilizationRate = parseBigNumberToFloat(utilizationRate, 18, 2);
+
+  const interestRates = data?.interestRatesArray;
+  const interestRatesModel = data?.interestRatesModel;
 
   if (isLoading) {
     return (
@@ -106,7 +114,7 @@ export const InterestRatesChart = () => {
           </div>
         </div>
         <a
-          href={`${currentEnvironment?.contractPrefix}/${currentEnvironment.contracts.InterestRatesProjector}`}
+          href={`${currentEnvironment?.contractPrefix}/${interestRatesModel}`}
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-x-1 border-2 rounded-md py-1 px-2 md:py-[6px] md:px-3 border-[#ffffff60] hover:opacity-70"
@@ -125,6 +133,8 @@ export const InterestRatesChart = () => {
       <div className="mt-5 xl:mt-8 pl-1 pr-2 md:px-3 xl:px-7 pb-2 md:pb-4 h-[150px] md:h-[210px] xl:h-[250px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={interestRates}>
+            {/* Add this new Scatter component before the Lines */}
+
             <YAxis
               tick={{ fontSize: 8, fill: "#FFFFFF50" }}
               tickFormatter={(data) => `${data * 100}%`}
@@ -148,6 +158,12 @@ export const InterestRatesChart = () => {
               padding={{ right: 6 }}
             />
             <Tooltip content={<CustomTooltip />} />
+            <ReferenceLine
+              x={parsedUtilizationRate}
+              stroke="#FFFFFF"
+              strokeWidth={0.7}
+              strokeDasharray="3 3"
+            />
             <CartesianGrid
               strokeDasharray="3 3"
               vertical={false}

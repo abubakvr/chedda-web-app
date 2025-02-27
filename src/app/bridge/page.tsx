@@ -7,12 +7,10 @@ import { Suspense, useCallback, useEffect, useState } from "react";
 import { parseBigNumberToFloat } from "@/utils/formatters";
 import { getTokenBalanceAddress, getTokenBridgeAddress } from "@/utils/helpers";
 import { sourceChains } from "@/utils/constants";
-import { ISourceChain, IToken } from "@/utils/types";
+import { IBridgeToken, ISourceChain, IToken } from "@/utils/types";
 import { currentEnvironment } from "@/data/environments";
 
-const tokenList = Object.values(currentEnvironment.tokens);
-const bridgeTokens = tokenList.filter((item) => item.bridgeToken);
-
+const bridgeTokens = Object.values(currentEnvironment.bridgeTokens);
 const Page = () => {
   const [estimatedGasFee, setEstimatedGas] = useState({
     gasETHFee: 0,
@@ -21,7 +19,9 @@ const Page = () => {
   const [tokenDataLoading, setTokenDataLoading] = useState(false);
   const [allowance, setAllowance] = useState<number>(0);
   const [tokenPrice, setTokenPrice] = useState<number>(0);
-  const [selectedToken, setSelectedToken] = useState<IToken>(bridgeTokens[0]);
+  const [selectedToken, setSelectedToken] = useState<IBridgeToken>(
+    bridgeTokens[0]
+  );
   const [selectedChain, setSelectedChain] = useState<ISourceChain>(
     sourceChains[0]
   );
@@ -102,7 +102,7 @@ const Page = () => {
           tokenDataLoading={tokenDataLoading}
           allowance={allowance}
           tokenPrice={tokenPrice}
-          tokenList={tokenList}
+          tokenList={bridgeTokens}
           getEstimatedGas={getEstimatedGas}
           fetchTokenData={fetchTokenData}
           selectedToken={selectedToken}

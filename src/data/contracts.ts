@@ -1,0 +1,10 @@
+export const contracts = {
+  LendingPoolLens: "0xB99Caa9905cf847AD19e5435FaB5743F37dDf0d7",
+  AccountActor: "0x86C61197E8fc0904F0458C81Ab32E3fB5F2e138C",
+  InterestRatesProjector: "0xcbaA2bBCE7d15131914Cf7Db7944E06b2143dEB1",
+  PriceFeed: "0x4f69E2b5c3a93F33932e0faFAb3B516510aa5ab6",
+  LockingGaugeRewardsDistributor: "0xB0A47be6707E3122F1CF4C2259897E6e97380E1A",
+  CheddaToken: "0xAB3ABb5C1B69dC4fFe6B6FA0D633DD436E1639c2",
+  veChedda: "0x0",
+  Faucet: "0x0A5Fe3dd684B1aA04d156d42C259a9feF887255e",
+};

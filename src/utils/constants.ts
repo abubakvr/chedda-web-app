@@ -25,6 +25,8 @@ import DocumentIcon from "@/assets/icon/document-icon.svg";
 
 export const infuraKey = process.env.NEXT_PUBLIC_INFURA_KEY;
 export const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_KEY;
+export const isPostToken: boolean =
+  process.env.NEXT_PUBLIC_POST_TOKEN === "true";
 export const GA_TRACKING_ID = "G-XL1Y4DPW9J";
 
 // localstorage constants
@@ -39,6 +41,8 @@ export const BRIDGE_DOC_URL =
   "https://docs.chedda.finance/chedda/protocol/cross-chain-tokens";
 export const HOMEPAGE_LINK = "https://www.chedda.finance";
 export const CHEDDA_TERMS_LINK = "https://www.chedda.finance/terms";
+export const BASE_CHEDDA_API_URL =
+  "https://leaderboard-api-422055794768.us-central1.run.app/api";
 
 export const ethAddress = "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511";
 
@@ -72,8 +76,7 @@ export const positionsHeaderItem = [
   "Supplied",
   "Borrowed",
   "Health Factor",
-  "Stake/Earn",
-  "Lock/Earn",
+  ...(isPostToken ? ["Stake/Earn", "Lock/Earn"] : []),
 ];
 
 export const LOCKTIMES = [
@@ -159,17 +162,30 @@ export const poolCategories: IPoolCategory[] = [
       "border-[#00F0FF] bg-[#01212864] md:px-1 py-1 h-7 md:h-8 lg:h-9 ",
     hoverClass: "hover:border-[#00F0FF] hover:bg-[#01212864]",
   },
+  {
+    label: "#Memes",
+    keyword: "Memes",
+    itemCount: 0,
+    icon: stackIcon,
+    activeIcon: stackIconActive,
+    activeClass:
+      "border-[#C142F0] bg-[#2D142D68] md:px-1 py-1 h-7 md:h-8 lg:h-9 ",
+    hoverClass: "hover:border-[#C142F0] hover:bg-[#2D142D68]",
+  },
 ];
 
 export const poolFilters: IPoolCategories = {
-  "0x2a9dc7463EA224dDCa477296051D95694b0bb05C": {
-    categories: ["stable coin"],
-  },
-  "0x461fb6906dD46e4ED8fA354b3e4E5e7cB102171F": {
-    categories: ["stable coin"],
-  },
-  "0x7e41fF84f262a182C2928D4817220F47eb89aeCc": {
+  "0x46E7d8649a06226FA5626675cf804cb13DEDED74": {
     categories: ["defi"],
+  },
+  "0x11041c5cc87E1e4848A0f0328d2807170f1950FD": {
+    categories: ["defi"],
+  },
+  "0x21dF6De90fd8dDAF415bB10D026a9B66E861524c": {
+    categories: ["memes"],
+  },
+  "0x446Ad0A238C97bCEEd9A2f45E07e4e87b5693252": {
+    categories: ["memes"],
   },
 };
 

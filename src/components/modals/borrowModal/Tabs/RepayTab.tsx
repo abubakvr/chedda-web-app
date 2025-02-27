@@ -55,9 +55,14 @@ export const RepayTab = ({
   const parsedTotalAccountCollateralValue = totalCollateralValue;
   const parsedAvailableLiquidity = parseBigNumberToFloat(
     availableLiquidity,
+    decimals,
     decimals
   );
-  const parsedAssetBalance = parseBigNumberToFloat(tokenBalance, decimals);
+  const parsedAssetBalance = parseBigNumberToFloat(
+    tokenBalance,
+    decimals,
+    decimals
+  );
 
   const valueOfAssetsBorrowed = totalBorrowed * assetPrice;
 
@@ -66,7 +71,7 @@ export const RepayTab = ({
   const parsedHealthFactor = parseBigNumberToFloat(healthFactor);
 
   const maxInputValue = Math.min(totalBorrowed, parsedAssetBalance);
-  const parsedAllowance = parseBigNumberToFloat(allowance, decimals);
+  const parsedAllowance = parseBigNumberToFloat(allowance, decimals, decimals);
   const projectedHealthFactor =
     parsedTotalAccountCollateralValue /
     (valueOfAssetsBorrowed - valueOfNewCollateral);

@@ -4,10 +4,14 @@ on:
   push:
     branches:
       - main
+      - develop
+      - staging
 
   pull_request:
     branches:
       - main
+      - develop
+      - staging
 
 jobs:
   Test_Build_Format:

@@ -1,5 +1,11 @@
 import Image from "next/image";
-import React, { useEffect, useState, MouseEvent, useCallback } from "react";
+import React, {
+  useEffect,
+  useState,
+  MouseEvent,
+  useCallback,
+  useRef,
+} from "react";
 import ArrowDown from "@/assets/icon/arrow-down.svg";
 import CopyIcon from "@/assets/icon/copy-icon-white.svg";
 import LinkOut from "@/assets/icon/link-out-gradient.svg";
@@ -8,11 +14,24 @@ import { walletConnect } from "@/connectors/walletConnect";
 import { coinbaseWallet } from "@/connectors/coinbaseWallet";
 import { ConnectButton } from "../connectButton/ConnectButton";
 import { copyToClipboard } from "@/utils/copyToClipboard";
-import { connectorIdKey } from "@/utils/constants";
+import {
+  alchemyKey,
+  BASE_CHEDDA_API_URL,
+  connectorIdKey,
+} from "@/utils/constants";
 import { Blockie } from "@/components/ui";
 import { useCheddaBalance } from "@/hooks";
 import { formatNumber, parseBigNumberToFloat } from "@/utils/formatters";
 import { sendGAEvent } from "@next/third-parties/google";
+import { useUserReferralCode } from "@/hooks/useReferralCode";
+import { ReferralModal } from "@/components/modals";
+import { useWeb3React } from "@web3-react/core";
+import { generateSignature, getReferrerFromUrl } from "@/utils/helpers";
+import TourStep from "@/components/ui/tourStep/TourStep";
+import { currentEnvironment } from "@/data/environments";
+
+const SIGN_MESSAGE = "Sign this message to authenticate your wallet.";
+const recvWindow = 5000;
 
 interface ProfileMenuProps {
   account: string | undefined;
@@ -21,17 +40,23 @@ interface ProfileMenuProps {
 export const ProfileMenu = ({ account }: ProfileMenuProps) => {
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
-  const [copyLabel, setCopyLabel] = useState("Copy Address");
+  const [copyLabel, setCopyLabel] = useState("Copy");
+  const [isRefModalOpen, setIsRefModalOpen] = useState(false);
+  const [isTourBoxOpen, setIsTourBoxOpen] = useState(false);
   const { data: cheddaTokenBalance } = useCheddaBalance();
+  const { referralCode, getUserReferralCode } = useUserReferralCode();
+  const { isActive, provider } = useWeb3React();
+  const isRegisteredRef = useRef(false);
 
+  const referralUrl = `${currentEnvironment.hostUrl}/markets?ref=${referralCode}`;
   const parsedCheddaBalance = parseBigNumberToFloat(cheddaTokenBalance, 18, 5);
 
-  const copyAddress = () => {
-    copyToClipboard(account ?? "")
+  const copyAddress = (field: "refcode" | "wallet") => {
+    copyToClipboard(field === "wallet" ? (account ?? "") : referralUrl)
       .then(() => {
         setCopyLabel("Copied");
         setTimeout(() => {
-          setCopyLabel("Copy Address");
+          setCopyLabel("Copy");
         }, 1500);
       })
       .catch((error) => {
@@ -39,8 +64,56 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
       });
   };
 
+  const registerUser = useCallback(
+    async (walletAddress: string, referrer: string | undefined) => {
+      if (!provider) return;
+      try {
+        const signer = provider.getSigner();
+        const signature = await signer.signMessage(SIGN_MESSAGE);
+
+        const timestamp = Date.now().toString(); // Move inside the function
+        const parameters = JSON.stringify({
+          walletAddress,
+          message: SIGN_MESSAGE,
+          signature,
+          referralCode: referrer,
+        });
+
+        const apiSignature = await generateSignature(
+          parameters,
+          alchemyKey!,
+          timestamp,
+          recvWindow
+        );
+
+        const response = await fetch(`${BASE_CHEDDA_API_URL}/register`, {
+          method: "POST",
+          headers: {
+            "X-Signature": apiSignature,
+            "X-Timestamp": timestamp,
+            "X-Recv-Window": recvWindow.toString(),
+            "Content-Type": "application/json",
+          },
+          body: parameters,
+        });
+
+        if (response.ok) {
+          const refCode = await getUserReferralCode();
+          if (refCode) {
+            setIsRefModalOpen(true);
+          }
+          return true;
+        }
+      } catch (error) {
+        console.error("Error registering user:", error);
+      }
+    },
+    [provider, getUserReferralCode]
+  );
+
   const openProfileMenu = () => {
     setIsOpenProfileMenu(!isOpenProfileMenu);
+    setIsTourBoxOpen(false);
     sendGAEvent("event", `Profile Menu`, {
       value: `Opened Profile Menu`,
     });
@@ -50,6 +123,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
     const targetElement = event.target as HTMLElement;
     if (!targetElement.closest(".profile-menu-container")) {
       setIsOpenProfileMenu(false);
+      setIsTourBoxOpen(false);
     }
   };
 
@@ -91,9 +165,41 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
     };
   }, []);
 
+  const checkAndRegister = useCallback(async () => {
+    if (isRegisteredRef.current) return;
+
+    const paramRefCode = getReferrerFromUrl();
+    if (!account || !isActive) return;
+
+    const registeredWallet = localStorage.getItem("registeredWallet");
+    if (registeredWallet === account) return;
+
+    try {
+      const refCode = await getUserReferralCode();
+      if (refCode?.length) {
+        localStorage.setItem("referralModalCount", "0");
+        setIsRefModalOpen(true);
+        return;
+      }
+
+      const registrationSuccess = await registerUser(account, paramRefCode);
+      if (registrationSuccess) {
+        localStorage.setItem("registeredWallet", account);
+        localStorage.setItem("referralModalCount", "0");
+        isRegisteredRef.current = true;
+      }
+    } catch (error) {
+      console.error("Error checking and registering:", error);
+    }
+  }, [account, isActive, registerUser, getUserReferralCode]);
+
   useEffect(() => {
     if (account !== undefined) setIsConnected(true);
   }, [account]);
+
+  useEffect(() => {
+    checkAndRegister();
+  }, [checkAndRegister]);
 
   return (
     <>
@@ -102,6 +208,12 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
           className="relative profile-menu-container"
           data-testid="profile-menu-container"
         >
+          <ReferralModal
+            referralCode={referralCode}
+            isRefModalOpen={isRefModalOpen}
+            setIsRefModalOpen={setIsRefModalOpen}
+            setIsTourBoxOpen={setIsTourBoxOpen}
+          />
           <button
             onClick={openProfileMenu}
             className="h-8 w-28 lg:h-10 xl:h-12 lg:w-36 xl:w-40 p-2 px-1 rounded-md md:rounded-lg text-3xs lg:text-sm account_button flex justify-evenly items-center hover:opacity-90 font-bold"
@@ -124,6 +236,16 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
             </div>
           </button>
           <div
+            className={`absolute mt-4 min-w-[230px] right-0 text-white rounded-md shadow-lg z-10 transition-all duration-300 ease-in-out transform ${
+              isTourBoxOpen ? "opacity-100 visible" : "opacity-0 invisible"
+            }`}
+          >
+            <TourStep
+              closeModal={() => setIsTourBoxOpen(false)}
+              position="top"
+            />
+          </div>
+          <div
             className={`absolute mt-2.5 min-w-[230px] right-0 bg-[#13161F] menu-bg text-white rounded-md shadow-lg z-10 transition-all duration-300 ease-in-out transform ${
               isOpenProfileMenu ? "opacity-100 visible" : "opacity-0 invisible"
             }`}
@@ -133,7 +255,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
             <ul className="more-dropdown list-reset font-semibold px-4">
               <li
                 className="py-4 rounded-t-md border-b border-[#2D2A6B]"
-                onClick={copyAddress}
+                onClick={() => copyAddress("wallet")}
               >
                 <div className="flex gap-3 justify-between items-center">
                   <div className="flex items-center gap-2">
@@ -146,7 +268,7 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
                   <button
                     className="relative address-container hover:opacity-70"
                     data-testid="copy-address-button"
-                    onClick={copyAddress}
+                    onClick={() => copyAddress("wallet")}
                   >
                     <Image
                       style={{ color: "" }}
@@ -180,6 +302,33 @@ export const ProfileMenu = ({ account }: ProfileMenuProps) => {
                     alt="Link Out"
                   />
                 </a>
+              </li>
+              <li>
+                <p className="text-sm text-[#FFFFFF70] mt-3">
+                  Your Referral Link:{" "}
+                </p>
+                <div className="text-xs lg:text-sm xl:text-sm relative mt-2 flex items-center justify-between px-2 py-2 border rounded-[4px] border-[#8080CC] bg-[#FFFFFF0A]">
+                  <p>
+                    {referralUrl.substring(0, 10) +
+                      "..." +
+                      referralUrl.substring(referralUrl.length - 9)}
+                  </p>
+                  <button
+                    className="relative address-container hover:opacity-70"
+                    data-testid="copy-refcode-button"
+                    onClick={() => copyAddress("refcode")}
+                  >
+                    <Image
+                      style={{ color: "" }}
+                      src={CopyIcon}
+                      width={21}
+                      alt="Copy"
+                    />
+                    <div className="tooltip" data-testid="address-copy-tooltip">
+                      {copyLabel}
+                    </div>
+                  </button>
+                </div>
               </li>
               <li className="py-4 rounded-b-md cursor-pointer flex items-center">
                 <button

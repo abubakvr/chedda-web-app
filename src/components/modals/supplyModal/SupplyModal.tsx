@@ -17,6 +17,7 @@ import {
 } from "@/hooks";
 import {
   formatAsPercentage,
+  formatLargeNumber,
   formatNumber,
   parseBigNumberToFloat,
 } from "@/utils/formatters";
@@ -95,15 +96,29 @@ export const SupplyModal: FC<SupplyModalProps> = ({
     asset.address
   );
 
-  const parsedAllowance = parseBigNumberToFloat(allowance, asset.decimals);
-  const parsedSupplied = parseBigNumberToFloat(supplied, asset.decimals);
-  const parsedAssetBalance = parseBigNumberToFloat(
-    assetBalance,
+  const parsedAllowance = parseBigNumberToFloat(
+    allowance,
+    asset.decimals,
     asset.decimals
   );
-  const parsedMaxAmount = parseBigNumberToFloat(tokenBalance, asset.decimals);
+  const parsedSupplied = parseBigNumberToFloat(
+    supplied,
+    asset.decimals,
+    asset.decimals
+  );
+  const parsedAssetBalance = parseBigNumberToFloat(
+    assetBalance,
+    asset.decimals,
+    asset.decimals
+  );
+  const parsedMaxAmount = parseBigNumberToFloat(
+    tokenBalance,
+    asset.decimals,
+    asset.decimals
+  );
   const parsedAvailableLiquidity = parseBigNumberToFloat(
     available,
+    asset.decimals,
     asset.decimals
   );
   const maxWithdrawAmount = Math.min(
@@ -142,7 +157,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
         if (res) {
           const result = await res.wait();
           if (result.status === 1) {
-            const txMessage = `You've successfully supplied ${formatNumber(
+            const txMessage = `You've successfully supplied ${formatLargeNumber(
               supplyAmount
             )} ${asset.symbol}`;
             setSuccessMessage({ message: txMessage, txHash: res.hash });
@@ -259,7 +274,10 @@ export const SupplyModal: FC<SupplyModalProps> = ({
         isOpen={openSuccessModal}
         modalMessage={successMessage.message}
         txHash={successMessage.txHash}
-        continueAction={() => setOpenSuccessModal(false)}
+        continueAction={() => {
+          setOpenSuccessModal(false);
+          setClearInputField(true);
+        }}
         stakeAction={() => setActivePoolTab("Stake")}
       />
       <div
@@ -281,7 +299,12 @@ export const SupplyModal: FC<SupplyModalProps> = ({
               </h2>
               <button
                 className="text-2xl md:text-3xl lg:text-4xl cursor-pointer font-bold text-white relative hover:opacity-85"
-                onClick={onClose}
+                onClick={() => {
+                  onClose();
+                  setSupplyAmount(0);
+                  setWithdrawAmount(0);
+                  setClearInputField(true);
+                }}
               >
                 &times;
               </button>

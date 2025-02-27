@@ -4,7 +4,8 @@ const originalConsoleError = console.error;
 
 global.window = global.window || {};
 global.window.GA = jest.fn(); // or global.window.ga = jest.fn();
-
+process.env.NEXT_PUBLIC_POST_TOKEN = "true";
+process.env.DEPLOYED_ENV = "testnet";
 beforeAll(() => {
   // Suppress console errors
   jest.mock("@next/third-parties/google");

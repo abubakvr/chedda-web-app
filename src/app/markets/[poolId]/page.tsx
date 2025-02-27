@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import LockTab from "./lock/LockTab";
 import PoolTab from "./pool/PoolTab";
 import StakeTab from "./stake/StakeTab";
+import { isPostToken } from "@/utils/constants";
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -35,8 +36,6 @@ const Page = () => {
   const { data: CheddaTokenBalance, fetchData: fetchCheddaTokenBalance } =
     useCheddaBalance();
 
-  const routePaths = ["Pool", "Stake", "Lock"];
-
   const pageTabs = [
     {
       name: "Pool",
@@ -53,41 +52,48 @@ const Page = () => {
         />
       ),
     },
-    {
-      name: "Stake",
-      info: "Stake your LP tokens to earn CHEDDA token rewards. CHEDDA token emissions are directed by how much CHEDDA is locked in a pools gauge.",
-      tab: (
-        <StakeTab
-          asset={poolStats?.asset}
-          setActiveTab={setActiveTab}
-          fetchPoolStats={fetchPoolStats}
-          lpTokenBalance={lpTokenBalance}
-          fetchLpTokenBalance={fetchLpTokenBalance}
-          fetchAccountInfo={fetchAccountInfo}
-          fetchCheddaTokenBalance={fetchCheddaTokenBalance}
-        />
-      ),
-    },
-    {
-      name: "Lock",
-      info: "Lock CHEDDA to direct token emissions and earn locking rewards. Locked tokens are susceptible to slashing in case of a shortfall event in the associated pool.",
-      tab: (
-        <LockTab
-          asset={poolStats?.asset}
-          fetchPoolStats={fetchPoolStats}
-          CheddaTokenBalance={CheddaTokenBalance}
-          fetchCheddaTokenBalance={fetchCheddaTokenBalance}
-        />
-      ),
-    },
+    ...(isPostToken
+      ? [
+          {
+            name: "Stake",
+            info: "Stake your LP tokens to earn CHEDDA token rewards. CHEDDA token emissions are directed by how much CHEDDA is locked in a pools gauge.",
+            tab: (
+              <StakeTab
+                asset={poolStats?.asset}
+                setActiveTab={setActiveTab}
+                fetchPoolStats={fetchPoolStats}
+                lpTokenBalance={lpTokenBalance}
+                fetchLpTokenBalance={fetchLpTokenBalance}
+                fetchAccountInfo={fetchAccountInfo}
+                fetchCheddaTokenBalance={fetchCheddaTokenBalance}
+              />
+            ),
+          },
+          {
+            name: "Lock",
+            info: "Lock CHEDDA to direct token emissions and earn locking rewards. Locked tokens are susceptible to slashing in case of a shortfall event in the associated pool.",
+            tab: (
+              <LockTab
+                asset={poolStats?.asset}
+                fetchPoolStats={fetchPoolStats}
+                CheddaTokenBalance={CheddaTokenBalance}
+                fetchCheddaTokenBalance={fetchCheddaTokenBalance}
+              />
+            ),
+          },
+        ]
+      : []),
   ];
+
+  const routePaths = pageTabs.map((tab) => tab.name);
 
   const routeInfo =
     pageTabs.find((item) => item.name === activeTab)?.info || "";
+
   return (
     <div>
       <div
-        className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:[w-5/6] 3xl:w-[1600px] mx-auto pb-10"
+        className="w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-[1600px] mx-auto pb-10"
         data-testid="pool-container"
       >
         <div className="mt-4 lg:mt-7 mb-6 lg:mb-7">

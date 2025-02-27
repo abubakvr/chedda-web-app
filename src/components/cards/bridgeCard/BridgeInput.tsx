@@ -7,7 +7,7 @@ import { ethers } from "ethers";
 import { BridgeAmountField } from "@/components/common/input/BridgeAmountField";
 import { Button } from "@/components/common";
 import { BridgeCardInfo } from "./BridgeCardInfo";
-import { ISourceChain, IToken } from "@/utils/types";
+import { ISourceChain, IBridgeToken } from "@/utils/types";
 import { useState } from "react";
 import { useBridge, useSwitchChain, useToast } from "@/hooks";
 import { useWeb3React } from "@web3-react/core";
@@ -15,6 +15,7 @@ import { formatNumber } from "@/utils/formatters";
 import { ConfirmationScreen } from "./ConfirmationScreen";
 import { getTokenBalanceAddress, getTokenBridgeAddress } from "@/utils/helpers";
 import { TransactionDetails } from "./TransactionDetails";
+import { isPostToken } from "@/utils/constants";
 
 interface TokenBalances {
   [key: string]: number | null;
@@ -22,8 +23,8 @@ interface TokenBalances {
 
 interface BridgeInputProps {
   selectedChain: ISourceChain;
-  selectedToken: IToken;
-  tokenList: IToken[];
+  selectedToken: IBridgeToken;
+  tokenList: IBridgeToken[];
   tokenBalances: TokenBalances;
   estimatedGasFee: any;
   destinationChain: ISourceChain;
@@ -283,7 +284,8 @@ export const BridgeInput = ({
           </p>
           <button
             onClick={() => handleActiveScreen("tokenselect")}
-            className="token-select relative flex w-full py-3 px-3 sm:py-4 md:px-4 lg:px-7 lg:py-5 mt-2 items-center gap-x-2 md:gap-x-3 lg:gap-x-4"
+            className={`${isPostToken ? "token-select" : "text-2xl rounded-2xl border-2 border-white/20 bg-white/4 opacity-40"} relative flex w-full py-3 px-3 sm:py-4 md:px-4 lg:px-7 lg:py-5 mt-2 items-center gap-x-2 md:gap-x-3 lg:gap-x-4`}
+            disabled={!isPostToken}
             data-testid="bridge-input-from-chain"
           >
             <Image
@@ -292,15 +294,16 @@ export const BridgeInput = ({
               alt="icon-logo"
               className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10"
             />
-            <span className="text-sm md:text-lg font-bold">
+            <span className="text-sm md:text-lg lg:text-xl font-bold">
               {selectedChain.name}
             </span>
           </button>
         </div>
         <div className="relative w-max flex items-center">
           <button
-            className="relative mt-6 w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9 hover:opacity-75"
+            className={`${!isPostToken && "opacity-40"} relative mt-6 w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9 hover:opacity-75`}
             onClick={() => handleChainSwitch()}
+            disabled={!isPostToken}
             data-testid="bridge-input-refresh-button"
           >
             <Image
@@ -316,8 +319,9 @@ export const BridgeInput = ({
             To
           </p>
           <button
-            className="token-select flex w-full py-3 px-3 sm:py-4 md:px-4 lg:px-7 lg:py-5 mt-2 items-center gap-x-2 md:gap-x-3 lg:gap-x-4"
+            className={`${isPostToken ? "token-select" : "text-2xl rounded-2xl border-2 border-white/20 bg-white/4 opacity-40"} flex w-full py-3 px-3 sm:py-4 md:px-4 lg:px-7 lg:py-5 mt-2 items-center gap-x-2 md:gap-x-3 lg:gap-x-4`}
             data-testid="bridge-input-to-chain"
+            disabled={!isPostToken}
           >
             <Image
               style={{ color: "" }}
@@ -347,7 +351,10 @@ export const BridgeInput = ({
               : `0 ${selectedToken.symbol}`}
         </p>
       </div>
-      <div data-testid="bridge-input-amount-field">
+      <div
+        className={!isPostToken ? "opacity-40 pointer-events-none" : ""}
+        data-testid={`bridge-input-amount-field`}
+      >
         <BridgeAmountField
           onChange={(value) => {
             setAmount(parseFloat(value));
@@ -380,11 +387,19 @@ export const BridgeInput = ({
         onClick={() => handleBridgeToken()}
         className={wrongChain ? "mt-3" : "mt-4 md:mt-6 lg:mt-8"}
         isLoading={isLoading || tokenDataLoading}
-        disabled={isLoading || wrongChain}
+        disabled={!isPostToken || isLoading || wrongChain}
         data-testid="bridge-input-action-button"
       >
         {buttonName}
       </Button>
+      {!isPostToken && (
+        <div
+          className="mt-1.5 md:mt-2 text-xs md:text-sm text-error relative font-bold"
+          data-testid="bridge-input-wrong-network"
+        >
+          *Bridge feature is not yet available to use.
+        </div>
+      )}
       <div>
         <h2
           className="mt-3 md:mt-6 lg:mt-8 tet-sm md:text-lg lg:text-xl font-bold"
