@@ -91,7 +91,7 @@ const bridgeTokens = generateBridgeTokenConfig(bridgeTokenList, mainnetTokens);
 
 export const stagingEnvironment: IEnvironment = {
   production: false,
-  environmentName: "Base",
+  environmentName: "Base Staging",
   jsonRpcUrl: `https://base-mainnet.g.alchemy.com/v2/${alchemyKey}`,
   webSocketUrl: `wss://base-mainnet.g.alchemy.com/v2/${alchemyKey}`,
   hostUrl: `https://staging.chedda.finance`,

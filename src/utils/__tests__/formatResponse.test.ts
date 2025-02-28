@@ -181,7 +181,7 @@ describe("getAggregateInfo", () => {
       totalBorrowedValue: BigInt("2000000000000000000"),
       totalAvailableValue: BigInt("3000000000000000000"),
       numberOfVaults: BigInt("4"),
-      totalFeesPaid: BigInt("5000000000000000000"),
+      totalFeesPaid: BigInt("5"),
       tvl: BigInt("6000000000000000000"),
     };
 
