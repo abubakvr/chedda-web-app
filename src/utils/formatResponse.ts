@@ -120,7 +120,7 @@ export const getAggregateInfo = (
     {
       title: "Total Earned",
       value: formatCurrency(
-        parseBigNumberToFloat(aggregateStats?.totalFeesPaid)
+        parseBigNumberToFloat(aggregateStats?.totalFeesPaid, 0)
       ),
     },
     {

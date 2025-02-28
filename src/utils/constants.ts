@@ -175,16 +175,18 @@ export const poolCategories: IPoolCategory[] = [
 ];
 
 export const poolFilters: IPoolCategories = {
+  //staging
   "0x46E7d8649a06226FA5626675cf804cb13DEDED74": {
-    categories: ["defi"],
-  },
-  "0x11041c5cc87E1e4848A0f0328d2807170f1950FD": {
-    categories: ["defi"],
-  },
-  "0x21dF6De90fd8dDAF415bB10D026a9B66E861524c": {
-    categories: ["memes"],
+    categories: ["bluechip"],
   },
   "0x446Ad0A238C97bCEEd9A2f45E07e4e87b5693252": {
+    categories: ["memes"],
+  },
+  //Mainnet
+  "0xE5c35103D75a72035B7B21Bb8e3Fd1e06920e5b0": {
+    categories: ["bluechip"],
+  },
+  "0x7677DcdaCE362b4185dB2eE47472108156397936": {
     categories: ["memes"],
   },
 };
