@@ -7,7 +7,12 @@ import CheddaMiniLogo from "@/assets/logos/chedda-logo.svg";
 import MenuIcon from "@/assets/icon/menu-icon.svg";
 import { usePathname } from "next/navigation";
 import { NetworkIndicator, ProfileMenu } from "./components";
-import { connectorIdKey, menuItems, moreMenuItems } from "@/utils/constants";
+import {
+  connectorIdKey,
+  HOMEPAGE_LINK,
+  menuItems,
+  moreMenuItems,
+} from "@/utils/constants";
 import { useWeb3React } from "@web3-react/core";
 import { metaMask } from "@/connectors/metaMask";
 import { getName } from "@/connectors/getConnectorName";
@@ -86,12 +91,12 @@ export const HeaderComponent: React.FC = () => {
           />
         )}
         <div className="flex h-16 lg:h-20 xl:h-24 flex-row justify-between w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-[1600px] mx-auto items-center">
-          <div>
+          <a href={HOMEPAGE_LINK} target="_blank" aria-label="home">
             <Image
               style={{ color: "" }}
               src={CheddaLogo}
               width={30}
-              className="lg:w-32 xl:w-40 hidden lg:flex"
+              className="lg:w-32 xl:w-40 hidden lg:flex hover:opacity-85"
               alt="App Logo"
               data-testid="app-logo"
               priority={true}
@@ -105,7 +110,7 @@ export const HeaderComponent: React.FC = () => {
               alt="Chedda Logo"
               data-testid="chedda-logo"
             />
-          </div>
+          </a>
           <div className="hidden md:flex flex-row text-white space-x-5 lg:space-x-10 text-2xs lg:text-sm xl:text-lg font-bold md:ml-24 mt-4 lg:mt-4 xl:ml-0">
             {menuItems.map((item, index) => (
               <Link
