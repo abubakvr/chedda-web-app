@@ -562,6 +562,22 @@ input:checked + .slider:before {
   opacity: 1; /* Show the pseudo-element on hover */
 }
 
+.gold-gradient-text {
+  background: linear-gradient(
+    0deg,
+    #fff0da 1.04%,
+    #94641e 4.17%,
+    #fff2db 82.81%,
+    #eac885 93.75%,
+    #fbf5d1 97.92%,
+    #bd9a4b 99.99%,
+    #ecd8a3 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .filter-box {
   position: relative;
   border-radius: 8px;

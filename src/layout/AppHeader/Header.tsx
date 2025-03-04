@@ -21,6 +21,7 @@ import { coinbaseWallet } from "@/connectors/coinbaseWallet";
 import { NavDropdown, NetworkSwitchBanner, PacmanLogo } from "@/components/ui";
 import { currentEnvironment } from "@/data/environments";
 import { MobileNav } from "./components/MobileNav/MobileNav";
+import goldStar from "@/assets/icon/star-icon.svg";
 
 export const HeaderComponent: React.FC = () => {
   const [navOpen, setNavOpen] = useState(false);
@@ -126,6 +127,18 @@ export const HeaderComponent: React.FC = () => {
                 ) : null}
               </Link>
             ))}
+            <a
+              href={`${HOMEPAGE_LINK}/points`}
+              target="_blank"
+              className={`flex space-x-1 items-center mb-4 relative hover:opacity-75 transition-all duration-300`}
+            >
+              <Image
+                src={goldStar}
+                alt="gold star"
+                className="w-2.5 h-2.5 lg:w-4 lg:h-4"
+              />
+              <p className="gold-gradient-text ">Points</p>
+            </a>
             <NavDropdown menuItems={moreMenuItems} />
           </div>
           <div className="flex flex-row space-x-2 lg:space-x-6 text-white">
