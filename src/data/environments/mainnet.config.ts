@@ -94,7 +94,7 @@ export const mainnetEnvironment: IEnvironment = {
   environmentName: "Base",
   jsonRpcUrl: `https://base-mainnet.g.alchemy.com/v2/${alchemyKey}`,
   webSocketUrl: `wss://base-mainnet.g.alchemy.com/v2/${alchemyKey}`,
-  hostUrl: `https://staging.chedda.finance`,
+  hostUrl: `https://app.chedda.finance`,
   txUrlPrefix: "https://basescan.org/tx",
   contractPrefix: "https://basescan.org/address",
   chainId: CHAIN_IDS.BASE_MAINNET,
