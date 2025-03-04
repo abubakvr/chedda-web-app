@@ -119,9 +119,10 @@ export const getAggregateInfo = (
     },
     {
       title: "Total Earned",
-      value: formatCurrency(
-        parseBigNumberToFloat(aggregateStats?.totalFeesPaid, 0)
-      ),
+      value: "0",
+      // value: formatCurrency(
+      //   parseBigNumberToFloat(aggregateStats?.totalFeesPaid, 18)
+      // ),
     },
     {
       title: "TVL",
