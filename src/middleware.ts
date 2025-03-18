@@ -6,12 +6,34 @@ const ACCESS_KEY = process.env.IPSTACK_ACCESS_KEY as string;
 // Set the cookie with an expiry of 2 days (in seconds)
 const MAX_AGE = 2 * 24 * 60 * 60;
 
-export async function middleware(request: NextRequest) {
-  // Generate a nonce for CSP
-  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
+const RATE_LIMIT = 100; // Max 100 requests per 10 seconds
+const RATE_LIMIT_WINDOW = 10 * 1000; // 10 seconds
+const ipMap = new Map<string, { count: number; lastRequest: number }>();
 
-  // Define the CSP policy with the nonce
-  const cspHeader = `
+function handleRateLimit(ip: string) {
+  const now = Date.now();
+
+  if (!ipMap.has(ip)) {
+    ipMap.set(ip, { count: 1, lastRequest: now });
+    return null;
+  }
+
+  const userData = ipMap.get(ip)!;
+  if (now - userData.lastRequest < RATE_LIMIT_WINDOW) {
+    userData.count++;
+    if (userData.count > RATE_LIMIT) {
+      return new NextResponse("Too many requests, slow down.", {
+        status: 429,
+      });
+    }
+  } else {
+    ipMap.set(ip, { count: 1, lastRequest: now });
+  }
+  return null;
+}
+
+function generateCSPHeader(nonce: string): string {
+  return `
     default-src 'self';
     connect-src 'self' https://*.alchemy.com https://*.infura.io/ https://api-testnet.layerzero-scan.com/ https://www.google-analytics.com/ https://api.ipstack.com/ https://leaderboard-api-422055794768.us-central1.run.app/;
     script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval';
@@ -25,67 +47,97 @@ export async function middleware(request: NextRequest) {
     upgrade-insecure-requests;
   `
     .replace(/\s{2,}/g, " ")
-    .trim(); // Clean up extra spaces and newlines
+    .trim();
+}
 
-  // Prepare request headers and add nonce
+function applyCSP(request: NextRequest, nonce: string) {
+  const cspHeader = generateCSPHeader(nonce);
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-nonce", nonce);
   requestHeaders.set("Content-Security-Policy", cspHeader);
 
-  // Create a response object with the modified headers
   const response = NextResponse.next({
     request: {
       headers: requestHeaders,
     },
   });
 
-  // Add CSP to the response headers
   response.headers.set("Content-Security-Policy", cspHeader);
+  return response;
+}
 
-  // Check for a cookie that stores the user's country
+async function handleGeoRestriction(
+  request: NextRequest,
+  response: NextResponse
+) {
   const countryCookie = request.cookies.get("client-ip-country")?.value;
+
   if (countryCookie) {
     const isRestricted = RESTRICTED_COUNTRIES_CODE.includes(countryCookie);
-    // Redirect if the user is from a restricted country and not already on /restricted
     if (isRestricted && !request.nextUrl.pathname.startsWith("/restricted")) {
       return NextResponse.redirect(new URL("/restricted", request.url));
     }
-  }
-
-  // If no cookie, extract IP address
-  let ipAddress =
-    request.headers.get("x-forwarded-for") || request.ip || "Unknown IP";
-  if (ipAddress.includes(",")) {
-    ipAddress = ipAddress.split(",")[0].trim(); // Handle multiple IPs in case of proxies
-  }
-
-  try {
-    // Fetch geolocation data from IP
-    const geoRes = await fetch(getIpUrl(ipAddress, ACCESS_KEY));
-    const geoData = await geoRes.json();
-
-    const isRestricted = RESTRICTED_COUNTRIES_CODE.includes(
-      geoData.country_code
-    );
-    // Redirect to /restricted if the country is restricted
-    if (isRestricted && !request.nextUrl.pathname.startsWith("/restricted")) {
-      return NextResponse.redirect(new URL("/restricted", request.url));
+  } else {
+    let ipAddress =
+      request.headers.get("x-forwarded-for") || request.ip || "Unknown IP";
+    if (ipAddress.includes(",")) {
+      ipAddress = ipAddress.split(",")[0].trim();
     }
 
-    // Set a cookie to store the user's country for future requests
-    response.cookies.set("client-ip-country", geoData.country_code, {
-      path: "/",
-      expires: MAX_AGE,
-    });
+    try {
+      const geoRes = await fetch(getIpUrl(ipAddress, ACCESS_KEY));
+      const geoData = await geoRes.json();
 
-    // Redirect '/' to '/markets'
-    if (!isRestricted && request.nextUrl.pathname === "/") {
+      const isRestricted = RESTRICTED_COUNTRIES_CODE.includes(
+        geoData.country_code
+      );
+
+      if (isRestricted && !request.nextUrl.pathname.startsWith("/restricted")) {
+        return NextResponse.redirect(new URL("/restricted", request.url));
+      }
+
+      response.cookies.set("client-ip-country", geoData.country_code, {
+        path: "/",
+        expires: MAX_AGE,
+      });
+    } catch (error) {
+      console.error("Error fetching geolocation data:", error);
       return NextResponse.redirect(new URL("/markets", request.url));
     }
-  } catch (error) {
-    console.error("Error fetching geolocation data:", error);
+  }
+  return null; // No geo-restriction redirect needed
+}
+
+function handleRootRedirect(request: NextRequest, isRestricted: boolean) {
+  if (!isRestricted && request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/markets", request.url));
-    // Todo: Handle the error gracefully, perhaps by logging it or displaying a message to the user
+  }
+  return null;
+}
+
+export async function middleware(request: NextRequest) {
+  const ip = request.headers.get("x-forwarded-for") || request.ip || "unknown";
+
+  const rateLimitResponse = handleRateLimit(ip);
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
+
+  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
+  let response = applyCSP(request, nonce);
+
+  const geoRestrictionResponse = await handleGeoRestriction(request, response);
+  if (geoRestrictionResponse) {
+    return geoRestrictionResponse;
+  }
+  const countryCookie = request.cookies.get("client-ip-country")?.value;
+  const isRestricted = countryCookie
+    ? RESTRICTED_COUNTRIES_CODE.includes(countryCookie)
+    : false;
+
+  const redirectResponse = handleRootRedirect(request, isRestricted);
+  if (redirectResponse) {
+    return redirectResponse;
   }
 
   return response;
