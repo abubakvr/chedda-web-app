@@ -13,12 +13,7 @@ import { IFormattedCollateral } from "@/utils/types";
 import { CollateralInfoChart } from "@/components/charts";
 import { useNonce } from "@/hooks/useNonce";
 
-const collateralHeaderItems = [
-  "Collateral",
-  "Deposited",
-  "My Deposits",
-  "Collateral Factor",
-];
+const collateralHeaderItems = ["Collateral", "Deposited", "My Deposits", "LTV"];
 interface CollateralInfoCardProps {
   collateralInfo: IFormattedCollateral[] | undefined;
   accountInfo: IAccountInfo | undefined;

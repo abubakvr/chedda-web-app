@@ -7,4 +7,6 @@ export const currentEnvironment =
     ? mainnetEnvironment
     : process.env.DEPLOYED_ENV === "staging"
       ? stagingEnvironment
-      : testnetEnvironment;
+      : process.env.DEPLOYED_ENV === "testnet"
+        ? testnetEnvironment
+        : mainnetEnvironment;

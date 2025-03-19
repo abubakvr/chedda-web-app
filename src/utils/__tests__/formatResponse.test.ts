@@ -181,7 +181,7 @@ describe("getAggregateInfo", () => {
       totalBorrowedValue: BigInt("2000000000000000000"),
       totalAvailableValue: BigInt("3000000000000000000"),
       numberOfVaults: BigInt("4"),
-      totalFeesPaid: BigInt("5000000000000000000"),
+      totalFeesPaid: BigInt("5"),
       tvl: BigInt("6000000000000000000"),
     };
 
@@ -194,7 +194,7 @@ describe("getAggregateInfo", () => {
       { title: "Total Borrowed", value: "$2.00" },
       { title: "Total Available", value: "$3.00" },
       { title: "No. Of Pools", value: 4 },
-      { title: "Total Earned", value: "$5.00" },
+      { title: "Total Earned", value: "0" },
       { title: "TVL", value: "$6.00" },
     ]);
   });

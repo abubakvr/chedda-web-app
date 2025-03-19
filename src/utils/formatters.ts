@@ -60,7 +60,7 @@ export const parseBigNumberToFloat = (
   decimals: number | string = "ether",
   floatPoint?: number
 ): number => {
-  if (!val || !BigInt(val)) {
+  if (!val) {
     return 0.0;
   }
 
@@ -72,7 +72,7 @@ export const parseBigNumberToFloat = (
     }
 
     const validFloatPoint = Number.isInteger(floatPoint) ? floatPoint : 2;
-    return toFixedTrunc(parsedValue, validFloatPoint ?? 0);
+    return toFixedTrunc(parsedValue, validFloatPoint || 2);
   } catch (error) {
     // Handle unexpected errors and return default value
     return 0.0;
@@ -92,12 +92,36 @@ export const formatCurrency = (number?: string | number, plain?: boolean) => {
   }
 
   const numericValue = typeof number === "string" ? parseFloat(number) : number;
-
   return `${
     plain
-      ? "$" + toFixedTruncString(numericValue, 2)
+      ? "$" + dynamicFixed(numericValue)
       : "$" + formatLargeNumber(numericValue)
   }`;
+};
+
+const dynamicFixed = (num: number) => {
+  let decimalPlaces = 2;
+  const numStr = num.toString();
+
+  if (numStr.includes(".") && num < 1) {
+    const decimalPart = numStr.split(".")[1];
+    let firstNonZeroIndex = -1;
+    for (let i = 0; i < decimalPart.length; i++) {
+      if (decimalPart[i] !== "0") {
+        firstNonZeroIndex = i;
+        break;
+      }
+    }
+
+    if (firstNonZeroIndex >= 5) {
+      return "0.00";
+    }
+
+    if (firstNonZeroIndex !== -1) {
+      decimalPlaces = firstNonZeroIndex + 1;
+    }
+  }
+  return toFixedTruncString(num, Math.max(2, Math.min(decimalPlaces, 5)));
 };
 
 /**
@@ -131,7 +155,7 @@ export const formatLargeNumber = (
 
   const num = largerNumber / divisor;
 
-  const formattedNumber = isFloat ? toFixedTruncString(num, 2) : num.toString();
+  const formattedNumber = isFloat ? dynamicFixed(num) : num.toString();
 
   return (
     formattedNumber +

@@ -34,10 +34,11 @@ const TOKEN_ADDRESSES = {
   SAND: "0x9eb80c8E7b37bbbA9024D400F38Df6eC95d7D9AD",
   cbETH: "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
   cbBTC: "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
-  BRETT: "0x324bdE7aA1b130bE41E6eE79d5B6f60Db2dE2D62",
-  TOSHI: "0x69c6AE47a9eCEB29b1d1a15c16f25AD9D74678df",
+  BRETT: "0x532f27101965dd16442E59d40670FaF5eBB142E4",
+  TOSHI: "0xAC1Bd2486aAf3B5C0fc3Fd868558b082a531B2B4",
   BENJI: "0x5BCf9dEe88Db86430E05bd244A31235163ee2B88",
   MIGGLES: "0x54DDe893342e0295c0a9D4F188003Dca77067c6B",
+  DEGEN: "0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed",
 };
 
 const bridgeTokenList = [
@@ -90,7 +91,7 @@ const bridgeTokens = generateBridgeTokenConfig(bridgeTokenList, mainnetTokens);
 
 export const stagingEnvironment: IEnvironment = {
   production: false,
-  environmentName: "Base",
+  environmentName: "Base Staging",
   jsonRpcUrl: `https://base-mainnet.g.alchemy.com/v2/${alchemyKey}`,
   webSocketUrl: `wss://base-mainnet.g.alchemy.com/v2/${alchemyKey}`,
   hostUrl: `https://staging.chedda.finance`,
@@ -98,7 +99,7 @@ export const stagingEnvironment: IEnvironment = {
   contractPrefix: "https://basescan.org/address",
   chainId: CHAIN_IDS.BASE_MAINNET,
   contracts: {
-    LendingPoolLens: "0x860E6d2d5aC5Edd08bc3fD7E449A1936A2733C4c",
+    LendingPoolLens: "0xe7C94063e55d1E8333dcb5807399aC5C05d9Acc9",
     AccountActor: "0x976B5b9e89378e9299849f033150eE302657A3Ed",
     InterestRatesProjector: "0xfE985fEf25DC44c6359BAC01BA1D34d1596b24eC",
     PriceFeed: "0x989ae31649095f8Ccd687f74c005FAB55c3B1999",

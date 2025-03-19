@@ -1,11 +1,12 @@
 "use client";
 import React, { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
-import { menuItems, moreMenuItems } from "@/utils/constants";
+import { HOMEPAGE_LINK, menuItems, moreMenuItems } from "@/utils/constants";
 import { PacmanLogo } from "@/components/ui";
 import { usePathname } from "next/navigation";
 import { sendGAEvent } from "@next/third-parties/google";
 import LinkOut from "@/assets/icon/link-out-grey.svg";
+import goldStar from "@/assets/icon/star-icon.svg";
 import Link from "next/link";
 
 export const MobileNav = ({
@@ -69,6 +70,14 @@ export const MobileNav = ({
               </div>
             </Link>
           ))}
+          <a
+            href={`${HOMEPAGE_LINK}/points`}
+            target="_blank"
+            className={`flex space-x-1.5 items-center mb-4 relative hover:opacity-75 transition-all duration-300`}
+          >
+            <Image src={goldStar} alt="gold star" className="w-5 h-5" />
+            <p className="gold-gradient-text ">Points</p>
+          </a>
         </div>
         <div className="w-full border-b border-[#201D47] my-8" />
         <div className="gap-y-8">

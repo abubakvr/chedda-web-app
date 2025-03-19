@@ -17,11 +17,11 @@ enum TokenType {
 }
 
 const TOKEN_ADDRESSES = {
-  CHEDDA: "0xAB3ABb5C1B69dC4fFe6B6FA0D633DD436E1639c2",
-  USDC: "0xc349d33292F4958d5E616035241bE2ab2dE85100",
+  CHEDDA: "0xAA74BE45C0e21c105b7981C6E6FdFd946dc49f27",
+  USDC: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
   USDT: "0xF621E3fF2379d9a64a614A4D8C6b0dD6fa014A18",
-  DAI: "0xF6eea61d35B5A1DdCF7071eC7d5F6a62d649143b",
-  WETH: "0x2F59Dd801e498a4E80454cbf022313eAB7C5d511",
+  DAI: "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb",
+  WETH: "0x4200000000000000000000000000000000000006",
   WBTC: "0x12110BA7e972D03f90fCDe07F92e603f9D1ED982",
   AERO: "0x2d5246fcC20Df5Cdf5346254702a7cBD77E7DBC3",
   AAVE: "0x0414920Dc0C3Bb615A3d8EAA239D55c4258AAae0",
@@ -32,12 +32,13 @@ const TOKEN_ADDRESSES = {
   GALA: "0xf66312E6e525271C4d8F65353a24bA593079739c",
   BEAM: "0x85b21815bCe36a8AD51E8cba234E7A746FE1d41a",
   SAND: "0x9eb80c8E7b37bbbA9024D400F38Df6eC95d7D9AD",
-  cbETH: "0xF1cF6113d2f6B44Bffa7C44D82640Db4e721B48a",
-  cbBTC: "0x1bf0aeb4C1A1C0896887814d679defcc1325EdE3",
-  BRETT: "0x324bdE7aA1b130bE41E6eE79d5B6f60Db2dE2D62",
-  TOSHI: "0x69c6AE47a9eCEB29b1d1a15c16f25AD9D74678df",
+  cbETH: "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
+  cbBTC: "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+  BRETT: "0x532f27101965dd16442E59d40670FaF5eBB142E4",
+  TOSHI: "0xAC1Bd2486aAf3B5C0fc3Fd868558b082a531B2B4",
   BENJI: "0x5BCf9dEe88Db86430E05bd244A31235163ee2B88",
   MIGGLES: "0x54DDe893342e0295c0a9D4F188003Dca77067c6B",
+  DEGEN: "0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed",
 };
 
 const bridgeTokenList = [
@@ -79,35 +80,35 @@ const bridgeTokenList = [
   },
 ];
 
-const testnetTokens = generateTokenConfig(
+const mainnetTokens = generateTokenConfig(
   Object.entries(TOKEN_ADDRESSES).map(([symbol, address]) => ({
     symbol: symbol as keyof typeof TOKEN_ADDRESSES,
     address,
   }))
 );
 
-const bridgeTokens = generateBridgeTokenConfig(bridgeTokenList, testnetTokens);
+const bridgeTokens = generateBridgeTokenConfig(bridgeTokenList, mainnetTokens);
 
 export const mainnetEnvironment: IEnvironment = {
   production: false,
-  environmentName: "Base Sepolia",
-  jsonRpcUrl: `https://base-sepolia.g.alchemy.com/v2/${alchemyKey}`,
-  webSocketUrl: `wss://base-sepolia.g.alchemy.com/v2/${alchemyKey}`,
+  environmentName: "Base",
+  jsonRpcUrl: `https://base-mainnet.g.alchemy.com/v2/${alchemyKey}`,
+  webSocketUrl: `wss://base-mainnet.g.alchemy.com/v2/${alchemyKey}`,
   hostUrl: `https://app.chedda.finance`,
-  txUrlPrefix: "https://sepolia.basescan.org/tx",
-  contractPrefix: "https://sepolia.basescan.org/address",
-  chainId: CHAIN_IDS.BASE_SEPOLIA,
+  txUrlPrefix: "https://basescan.org/tx",
+  contractPrefix: "https://basescan.org/address",
+  chainId: CHAIN_IDS.BASE_MAINNET,
   contracts: {
-    LendingPoolLens: "0xB99Caa9905cf847AD19e5435FaB5743F37dDf0d7",
-    AccountActor: "0x86C61197E8fc0904F0458C81Ab32E3fB5F2e138C",
-    InterestRatesProjector: "0xcbaA2bBCE7d15131914Cf7Db7944E06b2143dEB1",
-    PriceFeed: "0x4f69E2b5c3a93F33932e0faFAb3B516510aa5ab6",
+    LendingPoolLens: "0x7F48845A5D311d17B117CEBFAb05A4Af03488d7F",
+    AccountActor: "0x7d17a828a3c2D2e823DAfF263cb78F3b42F2f169",
+    InterestRatesProjector: "0x014d8297a25543Aa246a0aba94d5498A79Ed97c8",
+    PriceFeed: "0x5B6DE84935fe999a02B6927F7c8433f362De7C1a",
     LockingGaugeRewardsDistributor:
-      "0xB0A47be6707E3122F1CF4C2259897E6e97380E1A",
-    CheddaToken: "0xAB3ABb5C1B69dC4fFe6B6FA0D633DD436E1639c2",
+      "0x4cd61FF74dF3e3DCf24D4391f54efAc1f174a805",
+    CheddaToken: "0xAA74BE45C0e21c105b7981C6E6FdFd946dc49f27",
     veChedda: "0x0",
     Faucet: "0x0A5Fe3dd684B1aA04d156d42C259a9feF887255e",
   },
-  tokens: testnetTokens,
+  tokens: mainnetTokens,
   bridgeTokens,
 };

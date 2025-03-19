@@ -7,7 +7,12 @@ import CheddaMiniLogo from "@/assets/logos/chedda-logo.svg";
 import MenuIcon from "@/assets/icon/menu-icon.svg";
 import { usePathname } from "next/navigation";
 import { NetworkIndicator, ProfileMenu } from "./components";
-import { connectorIdKey, menuItems, moreMenuItems } from "@/utils/constants";
+import {
+  connectorIdKey,
+  HOMEPAGE_LINK,
+  menuItems,
+  moreMenuItems,
+} from "@/utils/constants";
 import { useWeb3React } from "@web3-react/core";
 import { metaMask } from "@/connectors/metaMask";
 import { getName } from "@/connectors/getConnectorName";
@@ -16,6 +21,7 @@ import { coinbaseWallet } from "@/connectors/coinbaseWallet";
 import { NavDropdown, NetworkSwitchBanner, PacmanLogo } from "@/components/ui";
 import { currentEnvironment } from "@/data/environments";
 import { MobileNav } from "./components/MobileNav/MobileNav";
+import goldStar from "@/assets/icon/star-icon.svg";
 
 export const HeaderComponent: React.FC = () => {
   const [navOpen, setNavOpen] = useState(false);
@@ -86,12 +92,12 @@ export const HeaderComponent: React.FC = () => {
           />
         )}
         <div className="flex h-16 lg:h-20 xl:h-24 flex-row justify-between w-11/12 lg:w-[95%] xl:w-11/12 2xl:w-5/6 3xl:w-[1600px] mx-auto items-center">
-          <div>
+          <a href={HOMEPAGE_LINK} target="_blank" aria-label="home">
             <Image
               style={{ color: "" }}
               src={CheddaLogo}
               width={30}
-              className="lg:w-32 xl:w-40 hidden lg:flex"
+              className="lg:w-32 xl:w-40 hidden lg:flex hover:opacity-85"
               alt="App Logo"
               data-testid="app-logo"
               priority={true}
@@ -105,7 +111,7 @@ export const HeaderComponent: React.FC = () => {
               alt="Chedda Logo"
               data-testid="chedda-logo"
             />
-          </div>
+          </a>
           <div className="hidden md:flex flex-row text-white space-x-5 lg:space-x-10 text-2xs lg:text-sm xl:text-lg font-bold md:ml-24 mt-4 lg:mt-4 xl:ml-0">
             {menuItems.map((item, index) => (
               <Link
@@ -121,6 +127,18 @@ export const HeaderComponent: React.FC = () => {
                 ) : null}
               </Link>
             ))}
+            <a
+              href={`${HOMEPAGE_LINK}/points`}
+              target="_blank"
+              className={`flex space-x-1 items-center mb-4 relative hover:opacity-75 transition-all duration-300`}
+            >
+              <Image
+                src={goldStar}
+                alt="gold star"
+                className="w-2.5 h-2.5 lg:w-4 lg:h-4"
+              />
+              <p className="gold-gradient-text ">Points</p>
+            </a>
             <NavDropdown menuItems={moreMenuItems} />
           </div>
           <div className="flex flex-row space-x-2 lg:space-x-6 text-white">
