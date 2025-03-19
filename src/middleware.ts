@@ -1,35 +1,24 @@
+import { RateLimiterMemory } from "rate-limiter-flexible";
 import { NextRequest, NextResponse } from "next/server";
 import { RESTRICTED_COUNTRIES_CODE } from "./data/restrictedCountries";
 import { getIpUrl } from "./utils/helpers";
+
+const rateLimiter = new RateLimiterMemory({
+  points: 10, // Allow 10 requests
+  duration: 1, // Per second
+});
 
 const ACCESS_KEY = process.env.IPSTACK_ACCESS_KEY as string;
 // Set the cookie with an expiry of 2 days (in seconds)
 const MAX_AGE = 2 * 24 * 60 * 60;
 
-const RATE_LIMIT = 100; // Max 100 requests per 10 seconds
-const RATE_LIMIT_WINDOW = 10 * 1000; // 10 seconds
-const ipMap = new Map<string, { count: number; lastRequest: number }>();
-
-function handleRateLimit(ip: string) {
-  const now = Date.now();
-
-  if (!ipMap.has(ip)) {
-    ipMap.set(ip, { count: 1, lastRequest: now });
-    return null;
+async function handleRateLimit(ip: string) {
+  try {
+    await rateLimiter.consume(ip); // Track IP requests
+    return NextResponse.next();
+  } catch {
+    return new NextResponse("Too Many Requests", { status: 429 });
   }
-
-  const userData = ipMap.get(ip)!;
-  if (now - userData.lastRequest < RATE_LIMIT_WINDOW) {
-    userData.count++;
-    if (userData.count > RATE_LIMIT) {
-      return new NextResponse("Too many requests, slow down.", {
-        status: 429,
-      });
-    }
-  } else {
-    ipMap.set(ip, { count: 1, lastRequest: now });
-  }
-  return null;
 }
 
 function generateCSPHeader(nonce: string): string {
