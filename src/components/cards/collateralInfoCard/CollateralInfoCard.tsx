@@ -12,8 +12,17 @@ import { CollateralInfoSkeleton } from "@/components/ui";
 import { IFormattedCollateral } from "@/utils/types";
 import { CollateralInfoChart } from "@/components/charts";
 import { useNonce } from "@/hooks/useNonce";
+import { CollateralTable } from "@/components/ui/collateralTable/CollateralTable";
 
-const collateralHeaderItems = ["Collateral", "Deposited", "My Deposits", "LTV"];
+const collateralHeaderItems = [
+  { name: "Collateral" },
+  { name: "Deposited" },
+  { name: "My Deposits" },
+  { name: "LTV", info: "Loan to value ratio" },
+  { name: "LLTV", info: "Liquidation loan to value ratio." },
+  { name: "Bonus", info: "Liquidation Bonus" },
+  { name: "Penalty", info: "Liquidation Penalty" },
+];
 interface CollateralInfoCardProps {
   collateralInfo: IFormattedCollateral[] | undefined;
   accountInfo: IAccountInfo | undefined;
@@ -38,12 +47,12 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
       className="flex flex-col justify-between"
       data-testid="collateral-info-card"
     >
-      <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 xl:px-8 h-11 xl:h-[50px] items-center">
+      <div className="card-header-bg flex justify-between w-full rounded-t-lg px-4 md:px-6 lg:px-4 xl:px-8 h-11 xl:h-[50px] items-center">
         <div className="text-white text-opacity-50 font-bold text-2xs lg:text-xs xl:text-sm uppercase">
           Collateral Info
         </div>
       </div>
-      <div className="p-4 md:p-6 xl:p-8 md:pt-4 xl:pt-4">
+      <div className="p-4 md:p-6 xl:p-8 md:pt-4 lg:px-4 xl:pt-4">
         <div
           className="w-full flex pb-4 border rounded-lg  text-mist border-frost bg-glass"
           data-testid="collateral-info-container"
@@ -128,137 +137,11 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
             </div>
           </div>
         </div>
-        {/* Desktop view */}
-        <div className="hidden md:flex w-full h-10 rounded mt-4 bg-[#ffffff05] px-8 justify-between text-white items-center">
-          {collateralHeaderItems.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className="text-mist text-2xs lg:text-xs font-bold w-28"
-                data-testid={`collateral-header-item-${index}`}
-              >
-                {item}
-              </div>
-            );
-          })}
-        </div>
-        <div className="hidden md:flex flex-col px-8 mt-4">
-          {collateralInfo?.map((item, index) => {
-            return (
-              <div
-                className="flex justify-between text-white text-sm mt-3"
-                key={index}
-                data-testid={`collateral-item-${index}`}
-              >
-                <div className="w-28">
-                  <div className="flex items-center gap-x-2">
-                    <div className="flex relative">
-                      <Image
-                        style={{ color: "" }}
-                        src={item.asset.logo}
-                        alt={item.asset.name}
-                        className="w-8 h-8 xl:w-10 xl:h-10"
-                        data-testid={`collateral-item-logo-${index}`}
-                      />
-                      <Image
-                        style={{ color: "" }}
-                        src={item.asset?.sourceLogo}
-                        alt="icon image"
-                        className="absolute w-[14px] h-[14px] xl:w-[18px] xl:h-[18px] top-0 left-0"
-                      />
-                    </div>
-                    <div className="font-bold text-xs lg:text-sm">
-                      {item.asset.symbol}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col w-28 text-xs lg:text-sm">
-                  <span className="font-bold">
-                    {item.amountDeposited} {item.asset.symbol}
-                  </span>
-                  <span className="text-mist mt-1">
-                    {formatCurrency(item.value)}
-                  </span>
-                </div>
-                <div className="flex flex-col w-28 text-xs lg:text-sm">
-                  <span className="font-bold">
-                    {item.myCollateralAmount} {item.asset.symbol}
-                  </span>
-                  <span className="text-mist mt-1">
-                    {item.myCollateralValue}
-                  </span>
-                </div>
-                <div
-                  className="w-28 pl-1 text-xs lg:text-sm"
-                  data-testid={`collateral-factor-${index}`}
-                >
-                  <span className="font-bold">{item.collateralFactor}</span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        {/* Mobile view */}
-        <div className="md:hidden mt-4 border rounded-lg  text-mist border-frost bg-glass">
-          {collateralInfo?.map((item, index) => {
-            return (
-              <div
-                className="justify-between text-white text-sm mt-3 p-4 border-b border-frost"
-                key={index}
-                data-testid={`mobile-collateral-item-${index}`}
-              >
-                <div className="flex items-center gap-x-2">
-                  <div className="flex relative">
-                    <Image
-                      style={{ color: "" }}
-                      src={item.asset.logo}
-                      alt={item.asset.name}
-                      className="w-8 h-8 xl:w-10 xl:h-10"
-                      data-testid={`mobile-collateral-item-logo-${index}`}
-                    />
-                    <Image
-                      style={{ color: "" }}
-                      src={item.asset?.sourceLogo}
-                      alt="icon image"
-                      className="absolute w-[14px] h-[14px] xl:w-[18px] xl:h-[18px] top-0 left-0"
-                    />
-                  </div>
-                  <div className="font-bold text-xs xl:text-sm">
-                    {item.asset.symbol}
-                  </div>
-                </div>
-                <div className="flex justify-between mt-4">
-                  <div className="text-2xs text-mist">Deposited</div>
-                  <div className="flex flex-col items-end text-2xs">
-                    <span className="font-bold">
-                      {item.amountDeposited} {item.asset.symbol}
-                    </span>
-                    <span className="text-mist">
-                      {formatCurrency(item.value)}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex justify-between mt-2">
-                  <div className="text-2xs text-mist">My Deposits</div>
-                  <div className="flex flex-col items-end text-2xs">
-                    <span className="font-bold">
-                      {item.myCollateralAmount} {item.asset.symbol}
-                    </span>
-                    <span className="text-mist">{item.myCollateralValue}</span>
-                  </div>
-                </div>
-                <div className="flex justify-between mt-2">
-                  <div className="text-2xs text-mist">Collateral Factor</div>
-                  <div
-                    className="pl-1 text-2xs"
-                    data-testid={`mobile-collateral-factor-${index}`}
-                  >
-                    <span className="font-bold">{item.collateralFactor}</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        <div>
+          <CollateralTable
+            collateralHeaderItems={collateralHeaderItems}
+            collateralInfo={collateralInfo}
+          />
         </div>
       </div>
     </div>

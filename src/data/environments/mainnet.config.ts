@@ -99,7 +99,7 @@ export const mainnetEnvironment: IEnvironment = {
   contractPrefix: "https://basescan.org/address",
   chainId: CHAIN_IDS.BASE_MAINNET,
   contracts: {
-    LendingPoolLens: "0x7F48845A5D311d17B117CEBFAb05A4Af03488d7F",
+    LendingPoolLens: "0x929B16A3c0683E75Ced2E1c82e640eAe6cCB0a29",
     AccountActor: "0x7d17a828a3c2D2e823DAfF263cb78F3b42F2f169",
     InterestRatesProjector: "0x014d8297a25543Aa246a0aba94d5498A79Ed97c8",
     PriceFeed: "0x5B6DE84935fe999a02B6927F7c8433f362De7C1a",
