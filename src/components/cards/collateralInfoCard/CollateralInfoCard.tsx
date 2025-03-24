@@ -54,7 +54,7 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
       </div>
       <div className="p-4 md:p-6 xl:p-8 md:pt-4 lg:px-4 xl:pt-4">
         <div
-          className="w-full flex pb-4 border rounded-lg  text-mist border-frost bg-glass"
+          className="w-full flex py-8 border rounded-lg  text-mist border-frost bg-glass"
           data-testid="collateral-info-container"
         >
           <div className="w-2/5 flex items-center justify-center">
@@ -82,47 +82,9 @@ export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
                 );
               })}
             </div>
-            <div className="mt-4 md:mt-6 xl:mt-8 md:flex space-y-1 md:space-y-0 md:gap-x-16 text-3xs md:text-2xs lg:text-xs font-[400]">
-              <div
-                data-testid="liquidation-threshold"
-                className="grid grid-cols-2 gap-x-8 md:grid-cols-1"
-              >
-                <div className="flex items-center gap-x-2">
-                  <div className="font-bold">Liquidation threshold</div>
-                  <Image
-                    style={{ color: "" }}
-                    src={InfoIcon}
-                    alt="Info Icon"
-                    className="w-2.5 h-2.5 md:w-3 md:h-3 xl:w-4 xl:h-4"
-                  />
-                </div>
-                <div className="md:mt-2">
-                  {formatAsPercentage(
-                    parseBigNumberToFloat(marketInfo?.liquidationThreshold)
-                  )}
-                </div>
-              </div>
-              <div
-                data-testid="liquidation-penalty"
-                className="grid grid-cols-2 gap-x-8 md:grid-cols-1"
-              >
-                <div className="flex items-center gap-x-2">
-                  <div className="font-bold">Liquidation Penalty</div>
-                  <Image
-                    style={{ color: "" }}
-                    src={InfoIcon}
-                    alt="Info Icon"
-                    className="w-2.5 h-2.5 md:w-3 md:h-3 xl:w-4 xl:h-4"
-                  />
-                </div>
-                <div className="md:mt-2">
-                  {formatAsPercentage(
-                    parseBigNumberToFloat(marketInfo?.liquidationPenalty)
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="mt-4 md:mt-6 xl:mt-8">
+            {/* <div className="mt-4 md:mt-6 xl:mt-8 md:flex space-y-1 md:space-y-0 md:gap-x-16 text-3xs md:text-2xs lg:text-xs font-[400]">
+            </div> */}
+            <div className="mt-4 md:mt-6 xl:mt-12">
               <div className="text-white text-2xs md:text-xs sm:text-sm font-bold">
                 MY COLLATERAL
               </div>
