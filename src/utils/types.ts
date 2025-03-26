@@ -37,6 +37,7 @@ export interface IToken {
   decimals: number;
   color: string;
   sourceLogo: StaticImageData;
+  source: string;
 }
 
 export interface IBridgeToken extends IToken {
@@ -44,7 +45,6 @@ export interface IBridgeToken extends IToken {
   oftAdapter?: string;
   bridgedOft: string;
   nativeChain?: string;
-  source?: string;
 }
 
 export interface ITokenConfig {
@@ -137,7 +137,10 @@ export interface IFormattedCollateral {
   amountDeposited: string;
   myCollateralValue: string;
   myCollateralAmount: string;
-  collateralFactor: string;
+  ltv: string;
+  lltv: string;
+  bonus: string;
+  penalty: string;
 }
 
 export interface IPoolStateResponse extends IPoolState {

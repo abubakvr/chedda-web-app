@@ -38,7 +38,7 @@ describe("CollateralInfoCard", () => {
     const collateralHeaderItems = screen.getAllByTestId(
       /^collateral-header-item-/
     );
-    expect(collateralHeaderItems).toHaveLength(4); // Assuming there are 4 header items
+    expect(collateralHeaderItems).toHaveLength(7); // Assuming there are 4 header items
 
     // Check if individual collateral items are rendered
     mockCollateralInfo.forEach((_, index) => {
@@ -53,11 +53,17 @@ describe("CollateralInfoCard", () => {
       );
       expect(collateralItemLogo).toBeInTheDocument();
 
-      const collateralFactor = screen.getByTestId(`collateral-factor-${index}`);
-      expect(collateralFactor).toBeInTheDocument();
-      expect(collateralFactor).toHaveTextContent(
-        mockCollateralInfo[index].collateralFactor
-      );
+      const ltv = screen.getByTestId(`ltv-${index}`);
+      expect(ltv).toBeInTheDocument();
+
+      const lltv = screen.getByTestId(`lltv-${index}`);
+      expect(lltv).toBeInTheDocument();
+
+      const bonus = screen.getByTestId(`bonus-${index}`);
+      expect(bonus).toBeInTheDocument();
+
+      const penalty = screen.getByTestId(`penalty-${index}`);
+      expect(penalty).toBeInTheDocument();
     });
   });
 

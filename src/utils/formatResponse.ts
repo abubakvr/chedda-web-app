@@ -189,8 +189,11 @@ export const formatCollateralInfo = (
           myCollateral?.decimals
         )
       ),
-      collateralFactor: formatAsPercentage(
-        parseBigNumberToFloat(item.ltv, 18, 10)
+      ltv: formatAsPercentage(parseBigNumberToFloat(item.ltv, 18, 10)),
+      lltv: formatAsPercentage(parseBigNumberToFloat(item.lltv, 18, 10)),
+      bonus: formatAsPercentage(parseBigNumberToFloat(item.liqBonus, 18, 10)),
+      penalty: formatAsPercentage(
+        parseBigNumberToFloat(item.liqPenalty, 18, 10)
       ),
     };
   });

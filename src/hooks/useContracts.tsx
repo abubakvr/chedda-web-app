@@ -53,6 +53,7 @@ export const getCollateralInfo: GetDataFunction<ICollateralInfo[]> = async ({
   lens,
   poolId,
 }) => {
+  console.log(await lens.getPoolCollateral(poolId));
   return await lens.getPoolCollateral(poolId);
 };
 

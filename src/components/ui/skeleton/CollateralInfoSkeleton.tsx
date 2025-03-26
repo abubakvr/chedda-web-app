@@ -5,7 +5,10 @@ export const CollateralInfoSkeleton = () => {
     "Collateral",
     "Deposited",
     "My Deposits",
-    "Collateral Factor",
+    "LTV",
+    "LLTV",
+    "Bonus",
+    "Penalty",
   ];
 
   return (
@@ -61,7 +64,7 @@ export const CollateralInfoSkeleton = () => {
             </div>
           </div>
         </div>
-        <div className="hidden md:grid w-full h-10 rounded mt-4 bg-[#ffffff05] px-8 grid-cols-4 text-white items-center">
+        <div className="hidden md:grid w-full h-10 rounded mt-4 bg-[#ffffff05] px-4 grid-cols-7 text-white items-center">
           {collateralHeaderItems.map((item, index) => {
             return (
               <div
@@ -74,11 +77,11 @@ export const CollateralInfoSkeleton = () => {
             );
           })}
         </div>
-        <div className="hidden md:flex flex-col px-8 mt-4">
+        <div className="hidden md:flex flex-col px-4 mt-4">
           {Array.from({ length: 3 }).map((_, rowIndex) => (
             <div
               key={rowIndex}
-              className="grid grid-cols-4 text-white text-sm font-bold justify-end mt-4"
+              className="grid grid-cols-7 text-white text-sm font-bold justify-end mt-4"
             >
               <div className="flex items-center gap-x-2">
                 <div
@@ -86,7 +89,7 @@ export const CollateralInfoSkeleton = () => {
                   data-testid={`loading-asset-${rowIndex + 1}`}
                 ></div>
                 <div
-                  className="w-16 h-5 rounded bg-mist-light"
+                  className="w-12 h-5 rounded bg-mist-light"
                   data-testid={`loading-asset-amount-${rowIndex + 1}`}
                 ></div>
               </div>
@@ -103,16 +106,34 @@ export const CollateralInfoSkeleton = () => {
               <div className="flex flex-col space-y-1">
                 <div
                   className="w-20 h-5 rounded bg-mist-light"
-                  data-testid={`loading-my-deposits-${rowIndex + 1}`}
+                  data-testid={`loading-deposited-${rowIndex + 1}`}
                 ></div>
                 <div
                   className="w-16 h-4 rounded bg-mist-light"
-                  data-testid={`loading-my-deposits-value-${rowIndex + 1}`}
+                  data-testid={`loading-deposited-value-${rowIndex + 1}`}
                 ></div>
               </div>
               <div className="flex items-center">
                 <div
-                  className="w-20 h-5 rounded bg-mist-light"
+                  className="w-16 h-5 rounded bg-mist-light"
+                  data-testid={`loading-collateral-factor-${rowIndex + 1}`}
+                ></div>
+              </div>
+              <div className="flex items-center">
+                <div
+                  className="w-16 h-5 rounded bg-mist-light"
+                  data-testid={`loading-collateral-factor-${rowIndex + 1}`}
+                ></div>
+              </div>
+              <div className="flex items-center">
+                <div
+                  className="w-16 h-5 rounded bg-mist-light"
+                  data-testid={`loading-collateral-factor-${rowIndex + 1}`}
+                ></div>
+              </div>
+              <div className="flex items-center">
+                <div
+                  className="w-16 h-5 rounded bg-mist-light"
                   data-testid={`loading-collateral-factor-${rowIndex + 1}`}
                 ></div>
               </div>
