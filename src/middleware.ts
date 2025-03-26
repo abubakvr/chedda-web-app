@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
   // Generate a nonce for CSP
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
 
-  // Define the CSP policy with the nonce
+  // Define the CSP policy with nonce
   const cspHeader = `
     default-src 'self';
     connect-src 'self' https://*.alchemy.com https://*.infura.io/ https://api-testnet.layerzero-scan.com/ https://www.google-analytics.com/ https://api.ipstack.com/ https://leaderboard-api-422055794768.us-central1.run.app/;
@@ -39,7 +39,6 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  // Add CSP to the response headers
   response.headers.set("Content-Security-Policy", cspHeader);
 
   // Check for a cookie that stores the user's country
