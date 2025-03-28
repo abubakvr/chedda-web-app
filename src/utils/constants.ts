@@ -176,10 +176,10 @@ export const poolCategories: IPoolCategory[] = [
 
 export const poolFilters: IPoolCategories = {
   //staging
-  "0x46E7d8649a06226FA5626675cf804cb13DEDED74": {
+  "0xda39319376624C52fb5E63A5Ee881bAa845D800D": {
     categories: ["bluechip"],
   },
-  "0x446Ad0A238C97bCEEd9A2f45E07e4e87b5693252": {
+  "0xCc13f3A65C0B9884849e7aF121B26BaeC5D992fB": {
     categories: ["memes"],
   },
   //Mainnet
