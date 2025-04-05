@@ -128,6 +128,8 @@ export interface IPoolStatsResponse {
 
 export interface ICollateralInfo extends IPoolCollateralInfo {
   decimals: number;
+  collateralBalance: bigint;
+  collateralValue: number;
 }
 
 export interface IFormattedCollateral {

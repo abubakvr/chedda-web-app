@@ -49,12 +49,83 @@ export const getMarketInfo: GetDataFunction<IMarketInfo> = async ({
   return await lens.getMarketInfo(poolId);
 };
 
+const getTokenPriceAndDecimals = async (
+  chedda: any,
+  poolId: string,
+  signer: any
+) => {
+  const lendingPool = chedda.lendingPool(poolId, signer);
+  const priceFeed = await lendingPool.priceFeed();
+  const priceOracle = chedda.diaPriceOracle(priceFeed);
+  const tokenDecimals = await priceOracle.decimals();
+  return { priceOracle, tokenDecimals };
+};
+
+const getCollateralItemInfo = async (
+  item: ICollateralInfo,
+  priceOracle: any,
+  tokenDecimals: number,
+  chedda: any,
+  signer: any,
+  poolId: string
+) => {
+  const token = chedda.erc20token(item.collateral, signer);
+  const tokenPrice = await priceOracle.readPrice(item.collateral);
+  const collateralBalance = await token.balanceOf(poolId);
+
+  const parsedTokenPrice = parseBigNumberToFloat(
+    tokenPrice[0],
+    tokenDecimals,
+    10
+  );
+  const parsedTokenBalance = parseBigNumberToFloat(
+    collateralBalance,
+    item.decimals,
+    10
+  );
+
+  return {
+    collateral: item.collateral,
+    value: item.value,
+    amountDeposited: item.amountDeposited,
+    ltv: item.ltv,
+    lltv: item.lltv,
+    decimals: item.decimals,
+    liqBonus: item.liqBonus,
+    liqPenalty: item.liqPenalty,
+    collateralBalance,
+    collateralValue: parsedTokenPrice * parsedTokenBalance,
+  };
+};
+
 export const getCollateralInfo: GetDataFunction<ICollateralInfo[]> = async ({
   lens,
+  chedda,
   poolId,
+  signer,
 }) => {
-  console.log(await lens.getPoolCollateral(poolId));
-  return await lens.getPoolCollateral(poolId);
+  const poolCollateral: ICollateralInfo[] =
+    await lens.getPoolCollateral(poolId);
+  const { priceOracle, tokenDecimals } = await getTokenPriceAndDecimals(
+    chedda,
+    poolId,
+    signer
+  );
+
+  const collateralAssets = await Promise.all(
+    poolCollateral.map((item) =>
+      getCollateralItemInfo(
+        item,
+        priceOracle,
+        tokenDecimals,
+        chedda,
+        signer,
+        poolId
+      )
+    )
+  );
+
+  return collateralAssets;
 };
 
 const getAggregateStats: GetDataFunction<ISummaryStats[]> = async ({

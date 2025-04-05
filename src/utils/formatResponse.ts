@@ -175,9 +175,9 @@ export const formatCollateralInfo = (
     return {
       asset: tokens[item.collateral],
       decimals: item.decimals,
-      value: parseBigNumberToFloat(item.value, 18, 10),
+      value: item.collateralValue, // Use computed collateral value
       amountDeposited: formatLargeNumber(
-        parseBigNumberToFloat(item.amountDeposited, item.decimals, 10)
+        parseBigNumberToFloat(item.collateralBalance, item.decimals, 10) // // Use computed collateral balance
       ),
       myCollateralValue: formatCurrency(
         parseBigNumberToFloat(myCollateral?.value, 18, 10)

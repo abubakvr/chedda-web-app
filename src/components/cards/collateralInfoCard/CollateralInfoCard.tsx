@@ -1,12 +1,6 @@
 "use client";
 import React from "react";
-import Image from "next/image";
-import InfoIcon from "@/assets/icon/gradient-info-icon.svg";
-import {
-  formatAsPercentage,
-  formatCurrency,
-  parseBigNumberToFloat,
-} from "@/utils/formatters";
+import { formatCurrency, parseBigNumberToFloat } from "@/utils/formatters";
 import { IAccountInfo, IMarketInfo } from "chedda-sdk";
 import { CollateralInfoSkeleton } from "@/components/ui";
 import { IFormattedCollateral } from "@/utils/types";
@@ -33,7 +27,6 @@ interface CollateralInfoCardProps {
 export const CollateralInfoCard: React.FC<CollateralInfoCardProps> = ({
   collateralInfo,
   accountInfo,
-  marketInfo,
   isLoading,
 }) => {
   const { nonce } = useNonce();

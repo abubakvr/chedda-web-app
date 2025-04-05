@@ -338,6 +338,8 @@ describe("formatCollateralInfo", () => {
         decimals: 18,
         value: BigInt("1000000000000000000"),
         amountDeposited: BigInt("2000000000000000000"),
+        collateralBalance: BigInt("2000000000000000000"),
+        collateralValue: 1,
         ltv: BigInt("3000000000000000000"),
         lltv: BigInt("3000000000000000000"),
         liqBonus: BigInt("3000000000000000000"),
