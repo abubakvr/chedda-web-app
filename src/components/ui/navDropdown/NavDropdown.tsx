@@ -46,7 +46,7 @@ export const NavDropdown: React.FC<DropdownMenuProps> = ({ menuItems }) => {
         </span>
       </button>
       <ul
-        className={`more-dropdown p-2 transition-all duration-300 ease-in-out absolute mt-1 w-28 left-0 bg-[#201D47] menu-ng text-white rounded-sm shadow-lg z-10 font-bold ${
+        className={`more-dropdown p-2 transition-all duration-300 ease-in-out absolute mt-1 w-28 left-0 bg-[#130B1E] menu-ng text-white rounded-sm shadow-lg z-10 font-bold ${
           openMoreMenu ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
         data-testid="dropdown-menu"

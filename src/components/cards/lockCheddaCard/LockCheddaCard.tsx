@@ -196,7 +196,7 @@ export const LockCheddaCard: FC<LockCardProps> = ({
         className="lg:min-w-[400px] xl:min-w-[460px] text-white px-6 py-5 xl:px-8 xl:py-6"
         data-testid="lock-card-container"
       >
-        <div className="flex bg-[#201D47] rounded-lg justify-between p-2">
+        <div className="flex bg-[#130B1E] rounded-lg justify-between p-2">
           <Tab
             label="Lock"
             isActive={activeTab === "Lock"}

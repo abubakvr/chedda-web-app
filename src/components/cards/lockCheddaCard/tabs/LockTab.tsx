@@ -100,7 +100,7 @@ export const LockTab: FC<LockTabProps> = ({
                   setShowWarning(false);
                 }}
                 data-testid={`lock-days-button-${index}`}
-                className={`bg-[#201D47] rounded-lg flex justify-center items-center w-full relative lock-time-box transition-all ${lockTime === item.value ? "modal-button" : ""}`}
+                className={`bg-[#130B1E] rounded-lg flex justify-center items-center w-full relative lock-time-box transition-all ${lockTime === item.value ? "modal-button" : ""}`}
               >
                 <div className="absolute -top-2 lg:-top-3 right-0">
                   <span className="multiplier-circle  bg-[#151532] text-white rounded-full w-4 h-4 lg:w-7 lg:h-7 text-[5px] lg:text-3xs flex justify-center items-center">

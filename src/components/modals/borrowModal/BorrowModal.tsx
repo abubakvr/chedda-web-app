@@ -138,7 +138,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
                 &times;
               </button>
             </div>
-            <div className="flex mt-3 md:mt-4 lg:mt-6 bg-[#201D47] rounded-lg justify-between p-2">
+            <div className="flex mt-3 md:mt-4 lg:mt-6 bg-[#130B1EA3] rounded-lg justify-between p-2">
               <Tab
                 label="Deposit"
                 isActive={activeTab === "Deposit"}

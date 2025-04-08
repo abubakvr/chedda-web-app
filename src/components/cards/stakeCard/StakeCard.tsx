@@ -200,7 +200,7 @@ export const StakeCard: FC<StakeModalProps> = ({
         className="lg:min-w-[400px] xl:min-w-[460px] text-white px-4 py-4 md:px-6 md:py-5 xl:px-8 xl:py-6"
         data-testid="stake-card-container"
       >
-        <div className="flex bg-[#201D47] rounded-lg justify-between p-2">
+        <div className="flex bg-[#130B1E] rounded-lg justify-between p-2">
           <Tab
             label="Stake"
             isActive={activeTab === "Stake"}

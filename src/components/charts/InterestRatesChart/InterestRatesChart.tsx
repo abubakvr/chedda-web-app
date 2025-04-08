@@ -38,19 +38,19 @@ const CustomTooltip: React.FC<CustomTooltipProps<Payload>> = (props) => {
       className="tooltip-bg rounded-lg p-4 pb-2 auto"
     >
       <div className="grid grid-cols-3 justify-between gap-y-2 gap-x-2 mb-2 text-xs">
-        <div className="text-mist col-span-2 ">Utilization:</div>
+        <div className="text-off-white col-span-2 ">Utilization:</div>
         <div className="text-white col-span-1 font-bold">
           {formatAsPercentage(
             parseBigNumberToFloat(dataPoint?.payload.utilization, 18)
           )}
         </div>
-        <div className="text-mist col-span-2">Supply APR:</div>
+        <div className="text-off-white col-span-2">Supply APR:</div>
         <div className="supply-gradient-text col-span-1 font-bold">
           {formatAsPercentage(
             parseBigNumberToFloat(dataPoint?.payload.effectiveSupplyRate, 18, 5)
           )}
         </div>
-        <div className="text-mist col-span-2">Borrow APR:</div>
+        <div className="text-off-white col-span-2">Borrow APR:</div>
         <div className="borrow-gradient-text col-span-1 font-bold">
           {formatAsPercentage(
             parseBigNumberToFloat(dataPoint?.payload.borrowRate, 18, 5)

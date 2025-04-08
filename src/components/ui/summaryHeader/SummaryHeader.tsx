@@ -1,5 +1,5 @@
 import React from "react";
-import backIcon from "@/assets/icon/back-icon.svg";
+import backIcon from "@/assets/icon/pool-back-icon.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { IToken } from "@/utils/types";

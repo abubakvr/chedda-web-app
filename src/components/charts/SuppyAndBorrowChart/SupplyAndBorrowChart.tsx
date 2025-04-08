@@ -52,30 +52,30 @@ const CustomTooltip: React.FC<CustomTooltipProps<Payload>> = (props) => {
       data-testid="custom-tooltip"
       className="tooltip-bg rounded-lg p-4 pb-2 auto"
     >
-      <div className="text-mist text-xs pb-3 font-bold">
+      <div className="text-off-white text-xs pb-3 font-bold">
         {formattedDate && <div>{formattedDate()}</div>}
       </div>
       <div className="grid grid-cols-3 justify-between gap-y-2 gap-x-2 mb-2 text-xs font-bold">
-        <div className="text-mist col-span-2">Supply APR:</div>
+        <div className="text-off-white col-span-2">Supply APR:</div>
         <div className="supply-gradient-text col-span-1">
           {formatAsPercentage(
             parseBigNumberToFloat(dataPoint?.payload.supplyRate, 18, 3)
           )}
         </div>
-        <div className="text-mist col-span-2">Borrow APR:</div>
+        <div className="text-off-white col-span-2">Borrow APR:</div>
         <div className="borrow-gradient-text col-span-1">
           {formatAsPercentage(
             parseBigNumberToFloat(dataPoint?.payload.borrowRate, 18, 3)
           )}
         </div>
 
-        <div className="text-mist col-span-2 ">Supplied:</div>
+        <div className="text-off-white col-span-2 ">Supplied:</div>
         <div className="supply-gradient-text col-span-1">
           {formatLargeNumber(
             parseBigNumberToFloat(dataPoint?.payload.supplied, props.decimals)
           )}
         </div>
-        <div className="text-mist col-span-2">Borrowed:</div>
+        <div className="text-off-white col-span-2">Borrowed:</div>
         <div className="borrow-gradient-text col-span-1">
           {formatLargeNumber(
             parseBigNumberToFloat(dataPoint?.payload.borrowed, props.decimals)

@@ -17,6 +17,7 @@ const config: Config = {
         "3xl": "1920px",
       },
       colors: {
+        "off-white": "#FFFFFF90",
         mist: "#FFFFFF70",
         "mist-light": "#FFFFFF20",
         success: "#44B410",

@@ -74,7 +74,7 @@ export const SelectMenu = ({
       </button>
       <div
         data-testid="select-menu"
-        className={`p-2 transition-all absolute mt-1 w-32 right-0 bg-[#201D47] menu-ng text-white rounded-sm shadow-lg z-10 ${
+        className={`p-2 transition-all absolute mt-1 w-32 right-0 bg-[#130B1E] menu-ng text-white rounded-sm shadow-lg z-10 ${
           isOpenSelectMenu ? "" : "hidden"
         }`}
       >

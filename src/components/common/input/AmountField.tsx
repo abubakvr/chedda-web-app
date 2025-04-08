@@ -85,7 +85,7 @@ export const AmountField: FC<InputWithMaxButtonProps> = ({
         </div>
       </div>
       <button
-        className={`px-4 py-3 lg:px-5 lg:py-4 text-xs lg:text-lg h-full rounded bg-[#201D47] hover:bg-[#261da2] relative ${
+        className={`px-4 py-3 lg:px-5 lg:py-4 text-xs lg:text-lg h-full rounded bg-[#130B1E] hover:bg-[#261da2] relative ${
           maxActive && "bg-[#261da2]"
         }`}
         onClick={onMaxButtonClick}

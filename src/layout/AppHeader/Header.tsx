@@ -80,9 +80,7 @@ export const HeaderComponent: React.FC = () => {
     <div>
       <MobileNav navOpen={navOpen} setNavOpen={setNavOpen} />
       <div
-        className={`w-full fixed opacity-100 z-10 app-header items-center ${
-          isScrolled && "border-b border-gray-800"
-        }`}
+        className={`w-full fixed opacity-100 z-10 items-center border-b border-[#FFFFFF0F] app-header`}
         data-testid="header-component"
       >
         {isWrongNetwork && (
