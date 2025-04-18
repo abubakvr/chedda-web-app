@@ -10,7 +10,7 @@ export const ChatBot = () => {
       webhookUrl:
         "https://chedda.app.n8n.cloud/webhook/7bc4e919-195e-4109-8663-35cecfe8a484/chat",
       initialMessages: [
-        "Eyy welcome to the familia! 👋🧀",
+        "Eyy, welcome to the familia! 👋🧀",
         "I'm Giovanni, your Chedda Finance consigliere. What can I help you with today?",
       ],
     });
