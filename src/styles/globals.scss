@@ -28,23 +28,23 @@
   --defi-box-gradient: linear-gradient(100deg, #f3943d 10.34%, #fde34d 86.26%);
   --tooltip-bg: #13101f;
 
-  --chat--color-primary: #fde34d; /* Changed to yellow accent from your UI */
-  --chat--color-primary-shade-50: #f3943d; /* Your original orange */
-  --chat--color-primary-shade-100: #51d5fa; /* Changed to blue accent from your UI */
-  --chat--color-secondary: #51d5fa; /* Keeping your blue */
-  --chat--color-secondary-shade-50: #c63de5; /* Keeping your purple */
+  --chat--color-primary: #fde34d;
+  --chat--color-primary-shade-50: #f3943d;
+  --chat--color-primary-shade-100: #51d5fa;
+  --chat--color-secondary: #51d5fa;
+  --chat--color-secondary-shade-50: #c63de5;
   --chat--color-white: #ffffff;
   --chat--color-light: #e6e9f1;
   --chat--color-light-shade-50: #c2c5cc;
   --chat--color-light-shade-100: #777980;
   --chat--color-medium: #d2d4d9;
-  --chat--color-dark: #0e0c15; /* Keeping your dark background */
+  --chat--color-dark: #0e0c15;
   --chat--color-disabled: #777980;
-  --chat--color-typing: #51d5fa; /* Changed to match secondary color */
+  --chat--color-typing: #51d5fa;
 
   --chat--spacing: 1rem !important;
   --chat--border: 0rem !important;
-  --chat--border-radius: 0.75rem !important; /* Slightly increased radius */
+  --chat--border-radius: 0.75rem !important;
   --chat--transition-duration: 0.2s !important;
 
   --chat--window--width: 350px !important;
@@ -52,11 +52,11 @@
 
   --chat--header-height: auto;
   --chat--header--padding: calc(var(--chat--spacing) / 2) var(--chat--spacing) !important;
-  --chat--header--background: #13101f !important; /* Using darker background from body */
-  --chat--header--color: #ffffff !important; /* Made brighter for contrast */
-  --chat--header--border-top: 0px solid rgba(253, 227, 77, 0.2) !important; /* Yellow accent border */
+  --chat--header--background: #13101f !important;
+  --chat--header--color: #ffffff !important;
+  --chat--header--border-top: 0px solid rgba(253, 227, 77, 0.2) !important;
   --chat--header--border-bottom: 1px solid rgba(253, 227, 77, 0.07) !important;
-  --chat--body--background: #0e0c15 !important; /* Darkened slightly from original */
+  --chat--body--background: #0e0c15 !important;
   --chat--heading--font-size: 1.25rem !important;
   --chat--subtitle--font-size: 0.875rem !important;
   --chat--subtitle--line-height: 1.5 !important;
@@ -65,33 +65,28 @@
 
   --chat--message--font-size: 0.775rem;
   --chat--message--padding: calc(var(--chat--spacing) / 2) !important;
-  --chat--message--border-radius: 0.75rem !important; /* Matching window border radius */
+  --chat--message--border-radius: 0.75rem !important;
   --chat--message-line-height: 1.4 !important;
-  --chat--message--bot--background: #1d1838 !important; /* Slightly lighter than body background */
-  --chat--message--bot--color: #ffffff !important; /* Brighter text for readability */
-  --chat--message--bot--border: 0px solid rgba(255, 255, 255, 0.2) !important; /* Subtle blue border */
-  --chat--message--user--background: #642b6e !important; /* Keeping your orange for user messages */
-  --chat--message--user--color: #ffffff !important; /* Dark text for contrast */
+  --chat--message--bot--background: #1d1838 !important;
+  --chat--message--bot--color: #ffffff !important;
+  --chat--message--bot--border: 0px solid rgba(255, 255, 255, 0.2) !important;
+  --chat--message--user--background: #642b6e !important;
+  --chat--message--user--color: #ffffff !important;
   --chat--message--user--border: none !important;
-  --chat--message--pre--background: rgba(
-    14,
-    3,
-    44,
-    0.5
-  ) !important; /* Darker code blocks */
+  --chat--message--pre--background: rgba(14, 3, 44, 0.5) !important;
 
   --chat--toggle--background: #4829c3 !important;
-  --chat--toggle--hover--background: #31168d !important; /* Darker purple on hover */
-  --chat--toggle--active--background: #261d30 !important; /* Darker orange when active */
-  --chat--toggle--color: #0e0c15; /* Dark text on toggle button */
+  --chat--toggle--hover--background: #31168d !important;
+  --chat--toggle--active--background: #261d30 !important;
+  --chat--toggle--color: #ffffff;
   --chat--toggle--size: 56px;
 
-  --chat--input--background: #1d1838 !important; /* Matching bot message background */
-  --chat--input--send--button--background: #1d1838 !important; /* Yellow accent */
-  --chat--input--send--button--color: #ffffff !important; /* Dark color for contrast */
+  --chat--input--background: #1d1838 !important;
+  --chat--input--send--button--background: #1d1838 !important;
+  --chat--input--send--button--color: #ffffff !important;
   --chat--input--text-color: #ffffff !important;
-  --chat--input--border: 0px solid rgba(81, 213, 250, 0.3) !important; /* Subtle blue border */
-  --chat--window--border: 1px solid #19294d !important; /* Blue accent border */
+  --chat--input--border: 0px solid rgba(81, 213, 250, 0.3) !important;
+  --chat--window--border: 1px solid #19294d !important;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
