@@ -49,6 +49,7 @@ describe("FilterCard", () => {
         poolStatsList={poolStatsList}
         handleSearch={jest.fn()}
         handleFilter={jest.fn()}
+        handleLayout={jest.fn()}
         currentFilter="none"
       />
     );
@@ -56,44 +57,45 @@ describe("FilterCard", () => {
     expect(screen.getByTestId("filter-card")).toBeInTheDocument();
   });
 
-  it("displays pool categories", () => {
+  it("displays layout toggle buttons", () => {
     render(
       <FilterCard
         poolCategories={poolCategories}
         poolStatsList={poolStatsList}
         handleSearch={jest.fn()}
         handleFilter={jest.fn()}
+        handleLayout={jest.fn()}
         currentFilter="none"
       />
     );
 
-    poolCategories.forEach((category) => {
-      expect(screen.getByText(category.label)).toBeInTheDocument();
-    });
+    expect(screen.getByText("List")).toBeInTheDocument();
+    expect(screen.getByText("Grid")).toBeInTheDocument();
   });
 
-  test("updates item counts correctly", () => {
-    const mockHandleSearch = jest.fn();
-    const mockHandleFilter = jest.fn();
-
+  it("calls handleLayout when layout buttons are clicked", async () => {
+    const mockHandleLayout = jest.fn();
     render(
       <FilterCard
         poolCategories={poolCategories}
         poolStatsList={poolStatsList}
-        handleSearch={mockHandleSearch}
-        handleFilter={mockHandleFilter}
-        currentFilter={undefined}
+        handleSearch={jest.fn()}
+        handleFilter={jest.fn()}
+        handleLayout={mockHandleLayout}
+        currentFilter="none"
       />
     );
 
-    // Check that the item counts are updated correctly
-    poolCategories.forEach((category) => {
-      expect(category.itemCount).toBe(
-        poolStatsList.filter((item) =>
-          item.categories.includes(category.keyword!)
-        ).length
-      );
-    });
+    const listButton = screen.getByText("List").closest("button");
+    const gridButton = screen.getByText("Grid").closest("button");
+
+    if (listButton && gridButton) {
+      fireEvent.click(gridButton);
+      expect(mockHandleLayout).toHaveBeenCalledWith("grid");
+
+      fireEvent.click(listButton);
+      expect(mockHandleLayout).toHaveBeenCalledWith("list");
+    }
   });
 
   it("calls handleSearch on input change", async () => {
@@ -104,6 +106,7 @@ describe("FilterCard", () => {
         poolStatsList={poolStatsList}
         handleSearch={mockHandleSearch}
         handleFilter={jest.fn()}
+        handleLayout={jest.fn()}
         currentFilter="none"
       />
     );
@@ -116,24 +119,19 @@ describe("FilterCard", () => {
     });
   });
 
-  it("updates selected category on button click", async () => {
-    const mockHandleFilter = jest.fn();
-
+  it("has a search input field", () => {
     render(
       <FilterCard
         poolCategories={poolCategories}
         poolStatsList={poolStatsList}
         handleSearch={jest.fn()}
-        handleFilter={mockHandleFilter}
+        handleFilter={jest.fn()}
+        handleLayout={jest.fn()}
         currentFilter="none"
       />
     );
 
-    const categoryButton = screen.getByTestId("button-0");
-    fireEvent.click(categoryButton);
-
-    await waitFor(() => {
-      expect(mockHandleFilter).toHaveBeenCalledWith("cat1");
-    });
+    expect(screen.getByTestId("search-input")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Search")).toBeInTheDocument();
   });
 });

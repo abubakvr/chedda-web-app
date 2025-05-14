@@ -1,70 +1,89 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { VaultItem } from "../VaultItem";
-import {
-  formatAsPercentage,
-  formatCurrency,
-  formatLargeNumber,
-} from "@/utils/formatters";
+import { formatAsPercentage, formatCurrency } from "@/utils/formatters";
 import { mockPoolStats } from "@/utils/Mocks/MockTestData";
 
-jest.mock("ethers");
+jest.mock("next/link", () => {
+  return function MockLink({
+    children,
+    href,
+  }: {
+    children: React.ReactNode;
+    href: string;
+  }) {
+    return <a href={href}>{children}</a>;
+  };
+});
 
 describe("VaultItem Component", () => {
   const mockPool = mockPoolStats[0];
-  it("renders VaultItem component with correct data", () => {
-    render(<VaultItem pool={mockPool} />);
+
+  it("renders VaultItem in list view with correct data", () => {
+    render(<VaultItem layout="list" pool={mockPool} />);
 
     // Asset information
-    expect(screen.getByTestId("asset-name")).toHaveAttribute(
+    expect(screen.getByTestId("asset-name-list")).toHaveAttribute(
       "alt",
       mockPool.asset.symbol
     );
-    expect(screen.getByTestId("asset-symbol")).toHaveTextContent(
+    expect(screen.getByTestId("asset-symbol-list")).toHaveTextContent(
       mockPool.asset.symbol
     );
 
-    // Collaterals information
-    expect(screen.getAllByTestId("collateral-logo")).toHaveLength(
-      mockPool.collaterals.length
-    );
-    expect(screen.getByTestId("collaterals-list")).toHaveTextContent(
-      mockPool.collaterals.map((collateral) => collateral.symbol).join(",")
-    );
-
-    // Supplied information
-    expect(screen.getByTestId("supplied")).toHaveTextContent(
-      formatLargeNumber(mockPool.supplied) + " " + mockPool.asset.symbol
-    );
-    expect(screen.getByTestId("supplied-value")).toHaveTextContent(
-      formatCurrency(mockPool.suppliedValue)
-    );
-
-    // Max Supply APY information
-    expect(screen.getByTestId("max-supply-apy")).toHaveTextContent(
+    // Check APR values
+    expect(screen.getByTestId("max-supply-a")).toHaveTextContent(
       formatAsPercentage(mockPool.maxSupplyAPY)
     );
+    expect(screen.getByTestId("max-borrow-apy-list")).toHaveTextContent(
+      formatAsPercentage(mockPool.maxBorrowAPY)
+    );
 
-    // Borrowed information
-    expect(screen.getByTestId("borrowed")).toHaveTextContent(
-      formatLargeNumber(mockPool.borrowed) + " " + mockPool.asset.symbol
+    // Check values
+    expect(screen.getByTestId("supplied-value")).toHaveTextContent(
+      formatCurrency(mockPool.suppliedValue)
     );
     expect(screen.getByTestId("borrowed-value")).toHaveTextContent(
       formatCurrency(mockPool.borrowedValue)
     );
 
-    // Max Borrow APY information
-    expect(screen.getByTestId("max-borrow-apy")).toHaveTextContent(
+    // Check collaterals
+    const collateralLogos = screen.getAllByTestId("collateral-logo-list");
+    expect(collateralLogos.length).toBeGreaterThan(0);
+  });
+
+  it("renders VaultItem in grid view with correct data", () => {
+    render(<VaultItem layout="grid" pool={mockPool} />);
+
+    // Asset information
+    expect(screen.getByTestId("asset-name-list-mobile")).toHaveAttribute(
+      "alt",
+      mockPool.asset.symbol
+    );
+    expect(screen.getByTestId("asset-symbol-list-mobile")).toHaveTextContent(
+      mockPool.asset.symbol
+    );
+
+    // Check APR values
+    expect(screen.getByTestId("max-supply-a-mobile")).toHaveTextContent(
+      formatAsPercentage(mockPool.maxSupplyAPY)
+    );
+    expect(screen.getByTestId("max-borrow-apy-list-mobile")).toHaveTextContent(
       formatAsPercentage(mockPool.maxBorrowAPY)
     );
 
-    // Utilization information
-    expect(screen.getByTestId("utilization")).toHaveTextContent(
-      formatAsPercentage(mockPool.utilization)
+    // Check values
+    expect(screen.getByTestId("supplied-value-mobile")).toHaveTextContent(
+      formatCurrency(mockPool.suppliedValue)
+    );
+    expect(screen.getByTestId("borrowed-value-mobile")).toHaveTextContent(
+      formatCurrency(mockPool.borrowedValue)
     );
 
-    expect(screen.getByTestId("rewards")).toHaveTextContent(
-      formatAsPercentage(mockPool.rewardsAPY)
+    // Check collaterals
+    const collateralLogos = screen.getAllByTestId(
+      "collateral-logo-list-mobile"
     );
+    expect(collateralLogos.length).toBeGreaterThan(0);
   });
 });

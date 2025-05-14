@@ -31,7 +31,7 @@ const Tab: FC<{
 }> = ({ label, isActive, onClick, testId }) => (
   <button
     data-testid={testId}
-    className={`text-2xs lg:text-sm font-bold px-4 py-2 focus:outline-none relative w-full hover:bg-haze-purple ${
+    className={`text-2xs lg:text-sm font-bold px-4 py-2 focus:outline-none relative w-full hover:bg-[#152540a3] ${
       isActive && "modal-button rounded"
     }`}
     onClick={onClick}
@@ -196,7 +196,7 @@ export const LockCheddaCard: FC<LockCardProps> = ({
         className="lg:min-w-[400px] xl:min-w-[460px] text-white px-6 py-5 xl:px-8 xl:py-6"
         data-testid="lock-card-container"
       >
-        <div className="flex bg-[#130B1E] rounded-lg justify-between p-2">
+        <div className="flex bg-[#0e327059] rounded-lg justify-between p-2">
           <Tab
             label="Lock"
             isActive={activeTab === "Lock"}

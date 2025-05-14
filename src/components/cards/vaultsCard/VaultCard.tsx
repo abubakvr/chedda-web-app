@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { VaultItem } from "./VaultItem";
 import { IPoolStatsResponse, IToken } from "@/utils/types";
 import { FilterCard } from "./FilterCard";
@@ -11,7 +11,8 @@ export const VaultCard = ({
   poolStatsList: IPoolStatsResponse[] | undefined;
 }) => {
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<string | undefined>(undefined);
+  const [filter, setFilter] = useState<string>("");
+  const [layout, setLayout] = useState<"list" | "grid">("list");
 
   const matchSearchItem = (item: IPoolStatsResponse, searchKeyword: string) => {
     const normalizedSearchKeyword = searchKeyword?.toLowerCase() || "";
@@ -27,8 +28,8 @@ export const VaultCard = ({
     const matchesCollaterals = item.collaterals.some((collateral: IToken) =>
       collateral.symbol.toLowerCase().includes(normalizedSearchKeyword)
     );
-    const matchCategories = item.categories.some((categories: string) =>
-      categories.toLowerCase().includes(normalizedSearchKeyword)
+    const matchCategories = item.categories.some((category: string) =>
+      category.toLowerCase().includes(normalizedSearchKeyword)
     );
 
     return (
@@ -43,38 +44,34 @@ export const VaultCard = ({
     item: IPoolStatsResponse,
     filterKeyword: string
   ) => {
-    const normalizedFilterKeyword = filterKeyword?.toLowerCase() || "";
+    if (!filterKeyword) return true;
 
-    const matchCategories = item.categories.some((categories: string) =>
-      categories.toLowerCase().includes(normalizedFilterKeyword)
+    const normalizedFilterKeyword = filterKeyword.toLowerCase();
+
+    return item.categories.some(
+      (category: string) => category.toLowerCase() === normalizedFilterKeyword
     );
-
-    return matchCategories;
   };
 
   const filteredPoolStatsList = poolStatsList?.filter((item) => {
-    if (!query && !filter) {
-      return true;
-    }
-    const matchesSearch = query && matchSearchItem(item, query);
-    const matchesFilter = filter && matchFilterItems(item, filter);
-    return matchesSearch || matchesFilter;
+    const matchesSearch = !query || matchSearchItem(item, query);
+    const matchesFilter = !filter || matchFilterItems(item, filter);
+
+    return matchesSearch && matchesFilter;
   });
 
   const noPoolsFound = filteredPoolStatsList?.length === 0;
 
   const handleSearch = (keyword: string) => {
-    setFilter(undefined);
     setQuery(keyword);
   };
 
   const handleFilter = (keyword: string) => {
-    setQuery("");
-    if (!keyword) {
-      setFilter(undefined);
-    } else {
-      setFilter(keyword);
-    }
+    setFilter(keyword === filter ? "" : keyword);
+  };
+
+  const handleLayout = (keyword: "list" | "grid") => {
+    setLayout(keyword);
   };
 
   return (
@@ -82,18 +79,21 @@ export const VaultCard = ({
       <FilterCard
         poolCategories={poolCategories}
         poolStatsList={poolStatsList}
+        handleLayout={handleLayout}
         handleFilter={handleFilter}
         handleSearch={handleSearch}
         currentFilter={filter}
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-4 md:mt-6 w-full gap-x-6 lg:gap-x-4 xl:gap-x-6 gap-y-4 md:gap-y-6">
+      <div
+        className={`${layout === "list" ? "flex flex-col gap-y-3 md:gap-y-4 w-full" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 lg:gap-x-4 xl:gap-x-6 gap-y-4 md:gap-y-6"} mt-4 md:mt-4 w-full `}
+      >
         {filteredPoolStatsList?.map((item, index) => (
           <div key={index} className="vault-item">
-            <VaultItem pool={item} />
+            <VaultItem layout={layout} pool={item} />
           </div>
         ))}
       </div>
-      {(query || filter) && noPoolsFound && (
+      {noPoolsFound && (
         <div className="text-white flex justify-center p-16 w-full pool-card items-center">
           No pools found.
         </div>

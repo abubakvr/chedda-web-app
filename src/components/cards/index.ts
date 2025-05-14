@@ -10,3 +10,4 @@ export * from "./claimRewardsCard/ClaimRewardsCard";
 export * from "./lockCheddaCard/LockCheddaCard";
 export * from "./lockingInfoCard/LockingInfoCard";
 export * from "./mobileSummaryCard/MobileSummaryCard";
+export * from "./marketsSummaryCard/MarketsSummaryCard";

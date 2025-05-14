@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { PageTitle, PageContainer } from "@/components/common";
+import { PageTitle, PageContainer, PageHeader } from "@/components/common";
 import { MyPositions } from "./components/MyPositions";
 import { BridgeSection } from "./components/BridgeSection";
 import { ClaimRewards } from "./components/ClaimRewards";
@@ -29,9 +29,8 @@ const Page = () => {
 
   return (
     <PageContainer>
-      <PageTitle title="DASHBOARD">
-        Track all your positions in one place.
-      </PageTitle>
+      <PageHeader>DASHBOARD</PageHeader>
+      <PageTitle>Track all your positions in one place.</PageTitle>
       {isPostToken && (
         <div className="mt-4 md:mt-6 md:flex justify-between w-full gap-x-6 space-y-4 md:space-y-0">
           <div className="md:w-1/2 lg:w-[59%] xl:w-[62%]">

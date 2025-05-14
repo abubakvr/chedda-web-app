@@ -151,8 +151,10 @@ export interface IPoolStateResponse extends IPoolState {
 }
 
 export interface ISummaryStats {
+  icon: StaticImageData;
   title: string;
   value: string | number;
+  addCurrencySymbol?: boolean;
 }
 
 export interface HookResult<T> {

@@ -3,22 +3,89 @@
 @tailwind utilities;
 @import url("https://fonts.cdnfonts.com/css/satoshi");
 
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/SpaceGrotesk-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 300 700; /* Variable font weight range from light to bold */
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Individual weights for better browser compatibility */
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/SpaceGrotesk-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 300; /* Light */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/SpaceGrotesk-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 400; /* Regular */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/SpaceGrotesk-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 500; /* Medium */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/SpaceGrotesk-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 600; /* Semi-bold */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/SpaceGrotesk-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 700; /* Bold */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bangers";
+  src: url("/assets/fonts/Bangers-Regular.ttf") format("truetype");
+  font-weight: 400; /* Regular */
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --card-bg: rgba(29, 17, 45, 0.88);
-  --card-header-bg: linear-gradient(137deg, #5ddefa, #6257f2, 90%);
-  --header-bg: #13101f;
-  --header-button-bg: linear-gradient(137deg, #4fd7fa 8.34%, #c438ef 95.26%);
-  --primary-button: linear-gradient(86.02deg, #f3943d -8.86%, #fde34d 129.9%);
-  --secondary-button-bg: linear-gradient(
-    90.02deg,
-    #f28e05 -8.86%,
-    #c43aef 100.9%
+  --card-bg: linear-gradient(
+    96deg,
+    rgba(0, 9, 33, 0.96) 0%,
+    rgba(2, 13, 49, 0.96) 100%
   );
-  --card-gradient-text: linear-gradient(157deg, #51d5fa 8.34%, #b74af1 60.26%);
-  --button-gradient-text: linear-gradient(
-    100deg,
-    #f28e05 30.34%,
-    #c63de5 60.26%
+  --card-header-bg: linear-gradient(137deg, #5ddefa, #6257f2, 90%);
+  --header-bg: rgb(6, 11, 26);
+  --header-button-bg: linear-gradient(137deg, #4fd8fc 8.34%, #2b22de 95.26%);
+  --primary-button: linear-gradient(86.02deg, #f3943d -8.86%, #fde34d 129.9%);
+  --secondary-button-bg: radial-gradient(
+    246.05% 97.89% at 75.86% 15.02%,
+    #7582fc 0%,
+    #42b0f5 100%
+  );
+  --card-gradient-text: linear-gradient(137deg, #4fd8fc 8.34%, #2b22de 95.26%);
+  --button-gradient-text: radial-gradient(
+    246.05% 97.89% at 75.86% 15.02%,
+    #7582fc 0%,
+    #42b0f5 100%
   );
   --manage-gradient-text: linear-gradient(
     100deg,
@@ -26,7 +93,7 @@
     #c63de5 86.26%
   );
   --defi-box-gradient: linear-gradient(100deg, #f3943d 10.34%, #fde34d 86.26%);
-  --tooltip-bg: #13101f;
+  --tooltip-bg: rgba(5, 41, 65, 0.843);
 
   --chat--color-primary: #fde34d;
   --chat--color-primary-shade-50: #f3943d;
@@ -105,26 +172,17 @@ input::placeholder {
 :root {
   --grain-size: 0.5px;
   --grain-opacity: 0.1;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
-  pointer-events: none;
-  background-image: url("/backgrounds/grain-bg.svg");
+  background: #0e0c15 url("/backgrounds/app-bg.png") no-repeat;
+  background-repeat: no-repeat;
 }
 
 body {
   background: #0e0c15 url("/backgrounds/app-bg.png") no-repeat;
+  background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
   min-height: 100vh;
-  font-family: "Satoshi", sans-serif;
+  font-family: "Space Grotesk";
   color: "white";
 }
 
@@ -184,7 +242,7 @@ body {
 }
 
 .card-header-bg {
-  background: #2b1943;
+  background: #092b4b77;
 }
 
 .pool-card::before,
@@ -197,12 +255,20 @@ body {
   inset: 0;
   border-radius: 8px;
   padding: 1px;
-  background: linear-gradient(68.02deg, #54d0fa10 40%, #b854dd 84%);
+  background: rgba(255, 255, 255, 0.08);
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
+}
+
+.collateral-chip {
+  background: linear-gradient(
+    80deg,
+    #011443 25.25%,
+    rgba(119, 120, 137, 0.4) 98.05%
+  );
 }
 
 .success-toast::before {
@@ -249,12 +315,20 @@ body {
 
 .primary-button {
   position: relative;
-  background: linear-gradient(168.02deg, #f28e05 -8.86%, #c438ef 100.9%);
+  background: radial-gradient(
+    246.05% 97.89% at 75.86% 15.02%,
+    #7582fc 0%,
+    #42b0f5 100%
+  );
+  transition: background 0.3s ease;
 }
 
 .primary-button:hover {
-  background: linear-gradient(86.02deg, #c438ef -8.86%, #f28e05 129.9%);
-  opacity: 50;
+  background: radial-gradient(
+    246.05% 97.89% at 75.86% 15.02%,
+    #8a94ff 0%,
+    #54c2ff 100%
+  );
 }
 
 .logo-cascade {
@@ -352,15 +426,15 @@ div.vault-item:last-child {
 .error-toast,
 .app-modal {
   background: linear-gradient(
-    80deg,
-    #2c1443 25.25%,
-    rgba(83, 84, 108, 0.4) 98.05%
+    84deg,
+    #011443 2.15%,
+    rgba(119, 120, 137, 0.4) 98.17%
   );
   position: relative;
 }
 
 .modal-button {
-  background: linear-gradient(137deg, #51d5fa 8.34%, #b74af1 95.26%);
+  background: rgba(152, 148, 249, 0.16);
 }
 
 .switch {
@@ -454,7 +528,7 @@ input:checked + .slider:before {
 }
 
 .route-active-bar {
-  background: linear-gradient(137deg, #51d5fa 8.34%, #b74af1 95.26%);
+  background: linear-gradient(137deg, #4fd8fc 8.34%, #2b22de 95.26%);
 }
 
 .multiplier-circle {
@@ -498,7 +572,7 @@ input:checked + .slider:before {
   inset: 0;
   border-radius: 8px;
   padding: 1px;
-  background: linear-gradient(167.02deg, #51d5fa 8.86%, #b74af1 90.9%);
+  background: rgba(18, 88, 138, 0.76);
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -513,7 +587,7 @@ input:checked + .slider:before {
   inset: 0;
   border-radius: 8px;
   padding: 1px;
-  background: linear-gradient(68.02deg, #54d0fa10 40%, #b854dd 84%);
+  background: rgba(255, 255, 255, 0.08);
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -744,10 +818,10 @@ input:checked + .slider:before {
 }
 
 .mobile-nav {
-  background: radial-gradient(
-    59.97% 59.97% at 50% 48.72%,
-    #1d123a 0%,
-    #030303 100%
+  background: linear-gradient(
+    96deg,
+    rgba(0, 9, 33, 0.96) 0%,
+    rgba(2, 13, 49, 0.96) 100%
   );
 }
 

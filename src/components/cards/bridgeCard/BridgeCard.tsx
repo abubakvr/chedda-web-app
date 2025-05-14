@@ -8,7 +8,7 @@ import { sourceChains } from "@/utils/constants";
 import { useBridge } from "@/hooks";
 import { parseBigNumberToFloat } from "@/utils/formatters";
 import { useLocalStorageGet } from "@/hooks/useLocalStorage";
-import { PageTitle } from "@/components/common";
+import { PageHeader, PageTitle } from "@/components/common";
 
 export interface IBridgeCardProps {
   estimatedGasFee: {
@@ -126,7 +126,8 @@ export const BridgeCard = ({
   return (
     <div className="sticky ">
       <div className="md:hidden">
-        <PageTitle title="BRIDGE">
+        <PageHeader>BRIDGE</PageHeader>
+        <PageTitle>
           Bridge assets from other networks to use on Chedda. Bridged assets can
           be supplied or used as collateral in Chedda lending pools. Bridged
           assets can be bridged back at any time.

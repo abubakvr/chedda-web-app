@@ -189,26 +189,32 @@ export const mockAggregateStats: ISummaryStats[] = [
   {
     title: "Total Supplied",
     value: "$0.00",
+    icon: {} as StaticImageData,
   },
   {
     title: "Total Borrowed",
     value: "$0.00",
+    icon: {} as StaticImageData,
   },
   {
     title: "Total Available",
     value: "$0.00",
+    icon: {} as StaticImageData,
   },
   {
     title: "No. Of Vaults",
     value: "0.00",
+    icon: {} as StaticImageData,
   },
   {
     title: "Total Earned",
     value: "$0.00",
+    icon: {} as StaticImageData,
   },
   {
     title: "TVL",
     value: "$0.00",
+    icon: {} as StaticImageData,
   },
 ];
 

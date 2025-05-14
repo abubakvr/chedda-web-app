@@ -49,7 +49,7 @@ const Tab: FC<{
 }> = ({ label, isActive, onClick, testId }) => (
   <button
     data-testid={testId}
-    className={`text-2xs md:text-xs lg:text-sm font-bold px-4 py-2 focus:outline-none relative w-full hover:bg-haze-purple ${
+    className={`text-2xs md:text-xs lg:text-sm font-bold px-4 py-2 focus:outline-none relative w-full hover:bg-[#152540a3] ${
       isActive && "modal-button rounded"
     }`}
     onClick={onClick}
@@ -309,7 +309,7 @@ export const SupplyModal: FC<SupplyModalProps> = ({
                 &times;
               </button>
             </div>
-            <div className="flex mt-3 md:mt-4 lg:mt-6 bg-[#130B1EA3] rounded-lg justify-between p-2">
+            <div className="flex mt-3 md:mt-4 lg:mt-6 bg-[#000B1EA3] rounded-lg justify-between p-2">
               <Tab
                 label="Deposit"
                 isActive={activeTab === "Deposit"}

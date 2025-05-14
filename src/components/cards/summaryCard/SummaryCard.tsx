@@ -1,4 +1,5 @@
 import { ISummaryStats } from "@/utils/types";
+import Image from "next/image";
 
 interface SummaryCardProps {
   stats: ISummaryStats[] | undefined;
@@ -9,13 +10,13 @@ export const SummaryCard = ({ stats, isLoading }: SummaryCardProps) => {
   if (isLoading) {
     return (
       <div
-        className="w-full grid grid-cols-3 lg:grid-cols-6 flex-row flex-wrap gap-4"
+        className="summary-card w-full grid grid-cols-3 lg:grid-cols-6 flex-row flex-wrap gap-4"
         data-testid="loading-element"
       >
         {[...Array(6)].map((_, index) => (
           <div
             key={index}
-            className="w-full flex-grow summary-card rounded-lg text-white p-4 md:p-6 xl:p-8 flex justify-center"
+            className="w-full flex-grow rounded-lg text-white p-4 md:p-6 xl:p-8 flex justify-center"
           >
             <div className="flex-grow flex flex-col gap-y-1">
               <div
@@ -43,29 +44,44 @@ export const SummaryCard = ({ stats, isLoading }: SummaryCardProps) => {
   return (
     <div
       data-testid="summary-card"
-      className="w-full grid grid-cols-3 lg:grid-cols-6 flex-row flex-wrap gap-4"
+      className="summary-card w-full grid grid-cols-3 lg:grid-cols-6 flex-row flex-wrap gap-4 p-6 lg:p-6"
     >
       {stats?.map((item, index) => (
         <div
           key={index}
-          className="summary-card rounded-lg text-white p-4 sm:p-6 lg:p-6 xl:p-8 flex flex-col justify-center"
+          className={`rounded-lg text-white flex flex-col justify-center`}
         >
-          <div className="w-full flex flex-col">
-            <div
-              data-testid="summary-title"
-              className="text-white opacity-50 font-open-sans md:text-2xs lg:text-xs font-semibold leading-6 tracking-wide"
-            >
-              {item.title}
-            </div>
-            {!isLoading && item.value && (
-              <div
-                data-testid="summary-value"
-                className={`${
-                  index >= 4 && "card-gradient-text font-bold"
-                }  lg: mt-1 xl:mt-2 text-white font-open-sans md:text-lg lg:text-xl xl:text-2xl font-bold tracking-wide`}
-              >
-                {item.value}
+          <div className="h-full px-4 lg:px-0  flex">
+            <div className={`w-full flex flex-col h-full`}>
+              <div className="flex space-x-2 items-center">
+                <div className="">
+                  <Image src={item.icon} alt={item.title + " icon"} />
+                </div>
+                <div
+                  data-testid="summary-title"
+                  className="text-white opacity-50 font-open-sans md:text-2xs lg:text-sm font-semibold leading-6 tracking-wide"
+                >
+                  {item.title}
+                </div>
               </div>
+              {!isLoading && item.value && (
+                <div
+                  data-testid="summary-value"
+                  className={`flex items-center space-x-1 ${
+                    index >= 4 && "card-gradient-text font-bold"
+                  }  lg: mt-1 xl:mt-2 text-white font-open-sans md:text-lg lg:text-xl xl:text-3xl font-bold tracking-wide`}
+                >
+                  {item.addCurrencySymbol && (
+                    <span className="md:text-xs lg:text-sm xl:text-lg text-mist">
+                      $
+                    </span>
+                  )}
+                  <span>{item.value}</span>
+                </div>
+              )}
+            </div>
+            {index < stats.length - 1 && (
+              <div className="h-full border-r border-[#9894F9]/10"></div>
             )}
           </div>
         </div>

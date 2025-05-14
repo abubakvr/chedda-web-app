@@ -160,12 +160,71 @@ describe("getAggregateInfo", () => {
 
     // Assert
     expect(result).toEqual([
-      { title: "Total Supplied", value: "$1.00" },
-      { title: "Total Borrowed", value: "$2.00" },
-      { title: "Total Available", value: "$3.00" },
-      { title: "No. Of Pools", value: 4 },
-      { title: "Total Earned", value: "0" },
-      { title: "TVL", value: "$6.00" },
+      {
+        title: "Total Supplied",
+        value: "1.00",
+        addCurrencySymbol: true,
+        icon: {
+          src: "/img.jpg",
+          width: 40,
+          height: 40,
+          blurDataURL: "data:image/png;base64,imagedata",
+        },
+      },
+      {
+        title: "Total Borrowed",
+        value: "2.00",
+        addCurrencySymbol: true,
+        icon: {
+          src: "/img.jpg",
+          width: 40,
+          height: 40,
+          blurDataURL: "data:image/png;base64,imagedata",
+        },
+      },
+      {
+        title: "Total Available",
+        value: "3.00",
+        addCurrencySymbol: true,
+        icon: {
+          src: "/img.jpg",
+          width: 40,
+          height: 40,
+          blurDataURL: "data:image/png;base64,imagedata",
+        },
+      },
+      {
+        title: "No. Of Pools",
+        value: 4,
+        icon: {
+          src: "/img.jpg",
+          width: 40,
+          height: 40,
+          blurDataURL: "data:image/png;base64,imagedata",
+        },
+      },
+      {
+        title: "Total Earned",
+        value: "0",
+        addCurrencySymbol: true,
+        icon: {
+          src: "/img.jpg",
+          width: 40,
+          height: 40,
+          blurDataURL: "data:image/png;base64,imagedata",
+        },
+      },
+      {
+        title: "TVL",
+        value: "6.00",
+        addCurrencySymbol: true,
+        icon: {
+          src: "/img.jpg",
+          width: 40,
+          height: 40,
+          blurDataURL: "data:image/png;base64,imagedata",
+        },
+      },
     ]);
   });
 });
@@ -317,12 +376,66 @@ describe("getPoolSummaryData", () => {
 
     // Assert
     expect(result).toEqual([
-      { title: "Total Supply", value: "1.00K" },
-      { title: "Base Supply APY", value: "5.00%" },
-      { title: "Total Borrowed", value: "500.00" },
-      { title: "Base Borrow APR", value: "3.00%" },
-      { title: "MAX Supply APR", value: "7.00%" },
-      { title: "MAX Borrow APR", value: "4.00%" },
+      {
+        title: "Total Supply",
+        value: "1.00K",
+        icon: {
+          src: "/img.jpg",
+          width: 40,
+          height: 40,
+          blurDataURL: "data:image/png;base64,imagedata",
+        },
+      },
+      {
+        title: "Base Supply APY",
+        value: "5.00%",
+        icon: {
+          src: "/img.jpg",
+          width: 40,
+          height: 40,
+          blurDataURL: "data:image/png;base64,imagedata",
+        },
+      },
+      {
+        title: "Total Borrowed",
+        value: "500.00",
+        icon: {
+          src: "/img.jpg",
+          width: 40,
+          height: 40,
+          blurDataURL: "data:image/png;base64,imagedata",
+        },
+      },
+      {
+        title: "Base Borrow APR",
+        value: "3.00%",
+        icon: {
+          src: "/img.jpg",
+          width: 40,
+          height: 40,
+          blurDataURL: "data:image/png;base64,imagedata",
+        },
+      },
+      {
+        title: "MAX Supply APR",
+        value: "7.00%",
+        icon: {
+          src: "/img.jpg",
+          width: 40,
+          height: 40,
+          blurDataURL: "data:image/png;base64,imagedata",
+        },
+      },
+      {
+        title: "MAX Borrow APR",
+        value: "4.00%",
+        icon: {
+          src: "/img.jpg",
+          width: 40,
+          height: 40,
+          blurDataURL: "data:image/png;base64,imagedata",
+        },
+      },
     ]);
   });
 });

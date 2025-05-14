@@ -23,6 +23,13 @@ import {
   IFormattedCollateral,
 } from "./types";
 
+import TotalSupplied from "@/assets/svg/total-supplied-icon.svg";
+import TotalBorrowed from "@/assets/svg/total-borrowed-icon.svg";
+import TotalAvailable from "@/assets/svg/total-earned-icon.svg";
+import NoOfPools from "@/assets/svg/no-of-pools-icon.svg";
+import TotalEarned from "@/assets/svg/total-earned-icon.svg";
+import TVL from "@/assets/svg/tvl-icon.svg";
+
 export const formatPoolStatsList = (
   response: IPoolStats[],
   tokens: ITokenConfig
@@ -96,37 +103,48 @@ export const getAggregateInfo = (
 ): ISummaryStats[] => {
   return [
     {
+      icon: TotalSupplied,
       title: "Total Supplied",
-      value: formatCurrency(
+      value: formatLargeNumber(
         parseBigNumberToFloat(aggregateStats?.totalSuppliedValue)
       ),
+      addCurrencySymbol: true,
     },
     {
+      icon: TotalBorrowed,
       title: "Total Borrowed",
-      value: formatCurrency(
+      value: formatLargeNumber(
         parseBigNumberToFloat(aggregateStats?.totalBorrowedValue)
       ),
+      addCurrencySymbol: true,
     },
     {
+      icon: TotalAvailable,
       title: "Total Available",
-      value: formatCurrency(
+      value: formatLargeNumber(
         parseBigNumberToFloat(aggregateStats?.totalAvailableValue)
       ),
+      addCurrencySymbol: true,
     },
     {
+      icon: NoOfPools,
       title: "No. Of Pools",
       value: parseBigNumberToFloat(aggregateStats?.numberOfVaults, 0, 0),
     },
     {
+      icon: TotalEarned,
       title: "Total Earned",
       value: "0",
+      addCurrencySymbol: true,
       // value: formatCurrency(
       //   parseBigNumberToFloat(aggregateStats?.totalFeesPaid, 18)
       // ),
     },
     {
+      icon: TVL,
       title: "TVL",
-      value: formatCurrency(parseBigNumberToFloat(aggregateStats?.tvl)),
+      value: formatLargeNumber(parseBigNumberToFloat(aggregateStats?.tvl)),
+      addCurrencySymbol: true,
     },
   ];
 };
@@ -136,26 +154,32 @@ export const getPoolSummaryData = (
 ): ISummaryStats[] => {
   return [
     {
+      icon: TotalEarned,
       title: "Total Supply",
       value: formatLargeNumber(poolSummary?.supplied),
     },
     {
+      icon: TotalEarned,
       title: "Base Supply APY",
       value: formatAsPercentage(poolSummary?.baseSupplyAPY),
     },
     {
+      icon: TotalEarned,
       title: "Total Borrowed",
       value: formatLargeNumber(poolSummary?.borrowed),
     },
     {
+      icon: TotalEarned,
       title: "Base Borrow APR",
       value: formatAsPercentage(poolSummary?.baseBorrowAPY),
     },
     {
+      icon: TotalEarned,
       title: "MAX Supply APR",
       value: formatAsPercentage(poolSummary?.maxSupplyAPY),
     },
     {
+      icon: TotalEarned,
       title: "MAX Borrow APR",
       value: formatAsPercentage(poolSummary?.maxBorrowAPY),
     },
