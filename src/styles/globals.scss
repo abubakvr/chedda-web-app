@@ -172,12 +172,12 @@ input::placeholder {
 :root {
   --grain-size: 0.5px;
   --grain-opacity: 0.1;
-  background: #0e0c15 url("/backgrounds/app-bg.png") no-repeat;
+  background: #0e0c15 url("/backgrounds/blue-app-bg.png") no-repeat;
   background-repeat: no-repeat;
 }
 
 body {
-  background: #0e0c15 url("/backgrounds/app-bg.png") no-repeat;
+  background: #0e0c15 url("/backgrounds/blue-app-bg.png") no-repeat;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
